@@ -3,77 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Kingdom</title>
+    <title>Medieval Kingdom: Tap & Build</title>
     <style>
-        body { background: #2c3e50; color: white; font-family: sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
-        .resources { display: flex; justify-content: space-around; background: #34495e; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid #f1c40f; }
-        .resource-item { font-size: 14px; font-weight: bold; }
+        body { background: #2c3e50; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
+        .resources { display: flex; justify-content: space-around; background: #34495e; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid #f1c40f; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .resource-item { font-size: 14px; font-weight: bold; line-height: 1.4; }
         .building-container { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px; }
-        .building-card { background: rgba(52, 73, 94, 0.8); padding: 15px; border-radius: 15px; border: 2px solid #95a5a6; display: flex; flex-direction: column; align-items: center; }
-        .building-img { width: 150px; height: 120px; object-fit: contain; margin: 10px 0; }
-        button { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 80%; font-weight: bold; transition: 0.3s; }
-        button:active { transform: scale(0.95); }
-        button:disabled { background: #7f8c8d; }
-        h3 { margin: 5px 0; color: #f1c40f; }
+        .building-card { background: rgba(52, 73, 94, 0.9); padding: 20px; border-radius: 15px; border: 2px solid #95a5a6; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+        .building-card:hover { border-color: #f1c40f; }
+        .building-img { width: 160px; height: 130px; object-fit: contain; margin: 10px 0; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
+        button { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 90%; font-weight: bold; font-size: 16px; transition: 0.2s; box-shadow: 0 4px 0 #1e8449; }
+        button:active { transform: translateY(3px); box-shadow: 0 1px 0 #1e8449; }
+        button:disabled { background: #7f8c8d; box-shadow: 0 4px 0 #5d6d7e; cursor: not-allowed; }
+        h3 { margin: 5px 0; color: #f1c40f; text-shadow: 1px 1px 2px black; }
+        .stats { font-size: 13px; color: #bdc3c7; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div class="resources">
-        <div class="resource-item">🪵 <span id="wood">0</span><br><small>+<span id="w-rate">0</span>/s</small></div>
-        <div class="resource-item">🌾 <span id="food">0</span><br><small>+<span id="f-rate">0</span>/s</small></div>
-        <div class="resource-item">🪨 <span id="stone">0</span><br><small>+<span id="s-rate">0</span>/s</small></div>
-        <div class="resource-item">💰 <span id="gold">50</span></div>
+        <div class="resource-item">🪵 <span id="wood">0</span><br><small style="color:#2ecc71">+<span id="w-rate">0</span>/sn</small></div>
+        <div class="resource-item">🌾 <span id="food">0</span><br><small style="color:#2ecc71">+<span id="f-rate">0</span>/sn</small></div>
+        <div class="resource-item">🪨 <span id="stone">0</span><br><small style="color:#2ecc71">+<span id="s-rate">0</span>/sn</small></div>
+        <div class="resource-item">💰 <span id="gold">50</span><br><small>Altın</small></div>
     </div>
 
     <div class="building-container">
         <div class="building-card">
             <h3>Ana Bina (Lvl <span id="lvl-main">1</span>)</h3>
-            <img src="images/ana-bina.png" class="building-img">
-            <button onclick="upgrade('main')">Geliştir (<span id="cost-main">500</span> Odun)</button>
+            <img src="ana-bina.png" class="building-img">
+            <div class="stats">Krallığının kalbi.</div>
+            <button id="btn-main" onclick="upgrade('main')">Geliştir (<span id="cost-main">500</span> Odun)</button>
         </div>
 
         <div class="building-card">
             <h3>Odun Kampı (Lvl <span id="lvl-wood">0</span>)</h3>
-            <img src="images/odun-kampi.png" class="building-img">
-            <button onclick="upgrade('wood')">Geliştir (<span id="cost-wood">100</span> Odun)</button>
+            <img src="odun-kampi.png" class="building-img">
+            <div class="stats">Saniyelik Üretim: <span id="prod-wood">0</span></div>
+            <button id="btn-wood" onclick="upgrade('wood')">Geliştir (<span id="cost-wood">100</span> Odun)</button>
         </div>
 
         <div class="building-card">
             <h3>Tarla (Lvl <span id="lvl-food">0</span>)</h3>
-            <img src="images/tarla.png" class="building-img">
-            <button onclick="upgrade('food')">Geliştir (<span id="cost-food">100</span> Buğday)</button>
+            <img src="tarla.png" class="building-img">
+            <div class="stats">Saniyelik Üretim: <span id="prod-food">0</span></div>
+            <button id="btn-food" onclick="upgrade('food')">Geliştir (<span id="cost-food">100</span> Buğday)</button>
         </div>
 
         <div class="building-card">
             <h3>Taş Ocağı (Lvl <span id="lvl-stone">0</span>)</h3>
-            <img src="images/taş-ocağı.png" class="building-img">
-            <button onclick="upgrade('stone')">Geliştir (<span id="cost-stone">100</span> Taş)</button>
+            <img src="tas-ocagi.png" class="building-img">
+            <div class="stats">Saniyelik Üretim: <span id="prod-stone">0</span></div>
+            <button id="btn-stone" onclick="upgrade('stone')">Geliştir (<span id="cost-stone">100</span> Taş)</button>
         </div>
     </div>
 
     <script>
-        // HAFIZA SİSTEMİ: Önce tarayıcıda kayıt var mı bak, yoksa başlangıç değerlerini kullan.
-        let savedData = JSON.parse(localStorage.getItem('myKingdomData'));
-
+        // Veri Yapısı ve Hafıza (LocalStorage)
+        let savedData = JSON.parse(localStorage.getItem('medievalGameSave'));
+        
         let game = savedData || {
-            res: { wood: 1000, food: 2000, stone: 500, gold: 50 },
+            res: { wood: 500, food: 500, stone: 200, gold: 50 },
             lvls: { main: 1, wood: 0, food: 0, stone: 0 },
             costs: { main: 500, wood: 100, food: 100, stone: 100 }
         };
 
-        // Verileri Kaydetme Fonksiyonu
-        function save() {
-            localStorage.setItem('myKingdomData', JSON.stringify(game));
+        function saveGame() {
+            localStorage.setItem('medievalGameSave', JSON.stringify(game));
         }
 
-        // Kaynak Üretim Döngüsü
+        // Üretim Döngüsü (Her saniye)
         setInterval(() => {
-            game.res.wood += game.lvls.wood * 1;
-            game.res.food += game.lvls.food * 2;
-            game.res.stone += game.lvls.stone * 0.5;
+            game.res.wood += (game.lvls.wood * 1.5);
+            game.res.food += (game.lvls.food * 2);
+            game.res.stone += (game.lvls.stone * 0.8);
             updateUI();
-            save(); // Her saniye otomatik kaydet
+            saveGame();
         }, 1000);
 
         function upgrade(type) {
@@ -83,11 +88,11 @@
             if (game.res[resType] >= cost) {
                 game.res[resType] -= cost;
                 game.lvls[type]++;
-                game.costs[type] = Math.floor(game.costs[type] * 1.6);
+                game.costs[type] = Math.floor(game.costs[type] * 1.7);
                 updateUI();
-                save();
+                saveGame();
             } else {
-                alert("Yeterli kaynak yok!");
+                alert("Yeterli kaynağın yok!");
             }
         }
 
@@ -97,17 +102,23 @@
             document.getElementById('stone').innerText = Math.floor(game.res.stone);
             document.getElementById('gold').innerText = game.res.gold;
 
-            document.getElementById('w-rate').innerText = game.lvls.wood * 1;
-            document.getElementById('f-rate').innerText = game.lvls.food * 2;
-            document.getElementById('s-rate').innerText = game.lvls.stone * 0.5;
+            document.getElementById('w-rate').innerText = (game.lvls.wood * 1.5).toFixed(1);
+            document.getElementById('f-rate').innerText = (game.lvls.food * 2).toFixed(1);
+            document.getElementById('s-rate').innerText = (game.lvls.stone * 0.8).toFixed(1);
 
             for (let b in game.lvls) {
                 if(document.getElementById('lvl-'+b)) {
                     document.getElementById('lvl-'+b).innerText = game.lvls[b];
                     document.getElementById('cost-'+b).innerText = game.costs[b];
                 }
+                if(b !== 'main' && document.getElementById('prod-'+b)) {
+                    let rate = (b === 'wood') ? 1.5 : (b === 'food' ? 2 : 0.8);
+                    document.getElementById('prod-'+b).innerText = (game.lvls[b] * rate).toFixed(1);
+                }
             }
         }
+
+        // İlk açılışta ekranı güncelle
         updateUI();
     </script>
 </body>

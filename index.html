@@ -1,30 +1,77 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tap Game</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Airdrop Kingdom</title>
+    <style>
+        body { background: #2c3e50; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; }
+        .resources { display: flex; justify-content: space-around; background: #34495e; padding: 10px; border-radius: 10px; margin-bottom: 20px; }
+        .building-card { background: #7f8c8d; padding: 20px; border-radius: 15px; border: 3px solid #f1c40f; }
+        button { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:disabled { background: #95a5a6; }
+        .timer { color: #f1c40f; font-weight: bold; margin-top: 10px; }
+    </style>
 </head>
 <body>
 
-<div class="header">TAP GAME</div>
+    <h2>🏰 Krallığım</h2>
 
-<div class="game">
-  <img src="https://i.imgur.com/4AiXzf8.png" id="tapItem">
-  <div id="score">0</div>
-</div>
+    <div class="resources">
+        <div>🪵 Odun: <span id="wood">1000</span></div>
+        <div>🌾 Buğday: <span id="food">2000</span></div>
+        <div>🪨 Taş: <span id="stone">500</span></div>
+    </div>
 
-<div class="energy">
-  ⚡ <span id="energy">50</span> / 50
-</div>
+    <div class="building-card">
+        <h3>Ana Bina (Seviye <span id="main-level">1</span>)</h3>
+        <p>Yükseltme Maliyeti: <br> 1000 Odun | 2000 Buğday | 500 Taş</p>
+        <button id="upgrade-btn" onclick="startUpgrade()">Yükselt (1 Dakika)</button>
+        <div id="status" class="timer"></div>
+    </div>
 
-<div class="menu">
-  <button>Home</button>
-  <button>Tasks</button>
-  <button>Invite</button>
-</div>
+    <script>
+        // Kaynaklar
+        let wood = 1000; let food = 2000; let stone = 500; let level = 1;
+        let isUpgrading = false;
 
-<script src="app.js"></script>
+        function updateUI() {
+            document.getElementById('wood').innerText = wood;
+            document.getElementById('food').innerText = food;
+            document.getElementById('stone').innerText = stone;
+            document.getElementById('main-level').innerText = level;
+        }
+
+        function startUpgrade() {
+            if (wood >= 1000 && food >= 2000 && stone >= 500 && !isUpgrading) {
+                // Kaynakları harca
+                wood -= 1000; food -= 2000; stone -= 500;
+                isUpgrading = true;
+                updateUI();
+
+                let timeLeft = 60; // 60 saniye
+                const btn = document.getElementById('upgrade-btn');
+                const status = document.getElementById('status');
+                
+                btn.disabled = true;
+
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    status.innerText = "İnşaat bitiyor: " + timeLeft + "s";
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        level++;
+                        isUpgrading = false;
+                        status.innerText = "İnşaat Tamamlandı!";
+                        btn.disabled = false;
+                        updateUI();
+                    }
+                }, 1000);
+            } else {
+                alert("Yeterli kaynak yok!");
+            }
+        }
+    </script>
 </body>
 </html>

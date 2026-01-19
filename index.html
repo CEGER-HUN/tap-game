@@ -2,123 +2,139 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Kingdom: Tap & Build</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medieval Saga</title>
     <style>
-        body { background: #2c3e50; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
-        .resources { display: flex; justify-content: space-around; background: #34495e; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid #f1c40f; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        .resource-item { font-size: 14px; font-weight: bold; line-height: 1.4; }
-        .building-container { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px; }
-        .building-card { background: rgba(52, 73, 94, 0.9); padding: 20px; border-radius: 15px; border: 2px solid #95a5a6; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
-        .building-card:hover { border-color: #f1c40f; }
-        .building-img { width: 160px; height: 130px; object-fit: contain; margin: 10px 0; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
-        button { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 90%; font-weight: bold; font-size: 16px; transition: 0.2s; box-shadow: 0 4px 0 #1e8449; }
-        button:active { transform: translateY(3px); box-shadow: 0 1px 0 #1e8449; }
-        button:disabled { background: #7f8c8d; box-shadow: 0 4px 0 #5d6d7e; cursor: not-allowed; }
-        h3 { margin: 5px 0; color: #f1c40f; text-shadow: 1px 1px 2px black; }
-        .stats { font-size: 13px; color: #bdc3c7; margin-bottom: 10px; }
+        :root { --gold: #f1c40f; --bg: #2d3436; }
+        body { background: #55efc4; margin: 0; font-family: 'Arial', sans-serif; overflow: hidden; }
+        
+        /* ÜST KAYNAK ÇUBUĞU */
+        .header { 
+            position: fixed; top: 0; width: 100%; height: 60px;
+            background: rgba(0,0,0,0.6); display: flex; align-items: center;
+            justify-content: space-around; z-index: 100; backdrop-filter: blur(5px);
+        }
+        .res-pill { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 12px; color: white; border: 1px solid rgba(255,255,255,0.2); }
+
+        /* HARİTA ALANI */
+        #map {
+            width: 100vw; height: 100vh;
+            background: url('https://img.freepik.com/free-vector/green-grass-top-view-background-summer-nature-outdoor_1017-43891.jpg');
+            background-size: 400px; position: relative;
+        }
+
+        /* BİNALARIN HARİTA ÜZERİNDEKİ DURUŞU */
+        .building { 
+            position: absolute; text-align: center; cursor: pointer;
+            transition: transform 0.2s; -webkit-tap-highlight-color: transparent;
+        }
+        .building:active { transform: scale(1.1); }
+        .building img { width: 80px; filter: drop-shadow(0 10px 5px rgba(0,0,0,0.3)); }
+        .lvl-badge { background: #e67e22; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+
+        /* ALT MENÜ (NAVIGASYON) */
+        .navbar {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: #2d3436; display: flex; justify-content: space-around; align-items: center;
+            border-top: 3px solid var(--gold);
+        }
+        .nav-item { color: #b2bec3; font-size: 10px; text-align: center; flex: 1; }
+        .nav-item.active { color: var(--gold); }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 4px; }
+
+        /* GELİŞTİRME PANELİ (Açılır Pencere) */
+        #ui-panel {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 40%;
+            background: #34495e; border-radius: 25px 25px 0 0; z-index: 200;
+            transition: 0.4s; padding: 20px; box-sizing: border-box; color: white;
+        }
+        #ui-panel.open { bottom: 0; }
     </style>
 </head>
 <body>
 
-    <div class="resources">
-        <div class="resource-item">🪵 <span id="wood">0</span><br><small style="color:#2ecc71">+<span id="w-rate">0</span>/sn</small></div>
-        <div class="resource-item">🌾 <span id="food">0</span><br><small style="color:#2ecc71">+<span id="f-rate">0</span>/sn</small></div>
-        <div class="resource-item">🪨 <span id="stone">0</span><br><small style="color:#2ecc71">+<span id="s-rate">0</span>/sn</small></div>
-        <div class="resource-item">💰 <span id="gold">50</span><br><small>Altın</small></div>
+    <div class="header">
+        <div class="res-pill">🪵 <span id="wood">0</span></div>
+        <div class="res-pill">🌾 <span id="food">0</span></div>
+        <div class="res-pill">🪨 <span id="stone">0</span></div>
+        <div class="res-pill">💎 <span id="gold">0</span></div>
     </div>
 
-    <div class="building-container">
-        <div class="building-card">
-            <h3>Ana Bina (Lvl <span id="lvl-main">1</span>)</h3>
-            <img src="ana-bina.png" class="building-img">
-            <div class="stats">Krallığının kalbi.</div>
-            <button id="btn-main" onclick="upgrade('main')">Geliştir (<span id="cost-main">500</span> Odun)</button>
+    <div id="map">
+        <div class="building" style="top: 25%; left: 40%;" onclick="openPanel('main')">
+            <img src="ana-bina.png"><span class="lvl-badge">Lv <span id="lvl-main">1</span></span>
         </div>
+        <div class="building" style="top: 15%; left: 10%;" onclick="openPanel('wood')">
+            <img src="odun-kampi.png"><span class="lvl-badge">Lv <span id="lvl-wood">0</span></span>
+        </div>
+        <div class="building" style="top: 45%; left: 60%;" onclick="openPanel('food')">
+            <img src="tarla.png"><span class="lvl-badge">Lv <span id="lvl-food">0</span></span>
+        </div>
+        <div class="building" style="top: 60%; left: 20%;" onclick="openPanel('stone')">
+            <img src="tas-ocagi.png"><span class="lvl-badge">Lv <span id="lvl-stone">0</span></span>
+        </div>
+    </div>
 
-        <div class="building-card">
-            <h3>Odun Kampı (Lvl <span id="lvl-wood">0</span>)</h3>
-            <img src="odun-kampi.png" class="building-img">
-            <div class="stats">Saniyelik Üretim: <span id="prod-wood">0</span></div>
-            <button id="btn-wood" onclick="upgrade('wood')">Geliştir (<span id="cost-wood">100</span> Odun)</button>
-        </div>
+    <div id="ui-panel">
+        <h2 id="panel-title">Bina Adı</h2>
+        <p id="panel-desc">Üretim: +5/sn</p>
+        <button onclick="confirmUpgrade()" id="up-btn" style="width:100%; padding:15px; background:#27ae60; color:white; border:none; border-radius:10px; font-weight:bold;">YÜKSELT</button>
+        <button onclick="closePanel()" style="background:none; border:none; color:#bdc3c7; margin-top:10px; width:100%;">Kapat</button>
+    </div>
 
-        <div class="building-card">
-            <h3>Tarla (Lvl <span id="lvl-food">0</span>)</h3>
-            <img src="tarla.png" class="building-img">
-            <div class="stats">Saniyelik Üretim: <span id="prod-food">0</span></div>
-            <button id="btn-food" onclick="upgrade('food')">Geliştir (<span id="cost-food">100</span> Buğday)</button>
-        </div>
-
-        <div class="building-card">
-            <h3>Taş Ocağı (Lvl <span id="lvl-stone">0</span>)</h3>
-            <img src="tas-ocagi.png" class="building-img">
-            <div class="stats">Saniyelik Üretim: <span id="prod-stone">0</span></div>
-            <button id="btn-stone" onclick="upgrade('stone')">Geliştir (<span id="cost-stone">100</span> Taş)</button>
-        </div>
+    <div class="navbar">
+        <div class="nav-item active">🏰<br>Şehir</div>
+        <div class="nav-item">⚔️<br>Savaş</div>
+        <div class="nav-item">🛡️<br>Klan</div>
+        <div class="nav-item">📋<br>Görevler</div>
     </div>
 
     <script>
-        // Veri Yapısı ve Hafıza (LocalStorage)
-        let savedData = JSON.parse(localStorage.getItem('medievalGameSave'));
-        
-        let game = savedData || {
-            res: { wood: 500, food: 500, stone: 200, gold: 50 },
+        // Kayıt ve Ekonomi Mekaniği (Öncekiyle aynı mantık)
+        let selectedType = "";
+        let game = JSON.parse(localStorage.getItem('medPro_v1')) || {
+            res: { wood: 1000, food: 1000, stone: 500, gold: 50 },
             lvls: { main: 1, wood: 0, food: 0, stone: 0 },
             costs: { main: 500, wood: 100, food: 100, stone: 100 }
         };
 
-        function saveGame() {
-            localStorage.setItem('medievalGameSave', JSON.stringify(game));
+        function openPanel(type) {
+            selectedType = type;
+            document.getElementById('panel-title').innerText = type.toUpperCase();
+            document.getElementById('up-btn').innerText = "YÜKSELT (" + game.costs[type] + ")";
+            document.getElementById('ui-panel').classList.add('open');
         }
 
-        // Üretim Döngüsü (Her saniye)
-        setInterval(() => {
-            game.res.wood += (game.lvls.wood * 1.5);
-            game.res.food += (game.lvls.food * 2);
-            game.res.stone += (game.lvls.stone * 0.8);
-            updateUI();
-            saveGame();
-        }, 1000);
+        function closePanel() { document.getElementById('ui-panel').classList.remove('open'); }
 
-        function upgrade(type) {
-            let cost = game.costs[type];
-            let resType = (type === 'main') ? 'wood' : type;
-
-            if (game.res[resType] >= cost) {
-                game.res[resType] -= cost;
-                game.lvls[type]++;
-                game.costs[type] = Math.floor(game.costs[type] * 1.7);
+        function confirmUpgrade() {
+            let cost = game.costs[selectedType];
+            if (game.res.wood >= cost) { // Basitleştirilmiş kontrol
+                game.res.wood -= cost;
+                game.lvls[selectedType]++;
+                game.costs[selectedType] = Math.floor(game.costs[selectedType] * 1.8);
                 updateUI();
-                saveGame();
-            } else {
-                alert("Yeterli kaynağın yok!");
-            }
+                closePanel();
+                localStorage.setItem('medPro_v1', JSON.stringify(game));
+            } else { alert("Kaynak yetersiz!"); }
         }
+
+        setInterval(() => {
+            game.res.wood += game.lvls.wood * 2;
+            game.res.food += game.lvls.food * 3;
+            game.res.stone += game.lvls.stone * 1;
+            updateUI();
+        }, 1000);
 
         function updateUI() {
             document.getElementById('wood').innerText = Math.floor(game.res.wood);
             document.getElementById('food').innerText = Math.floor(game.res.food);
             document.getElementById('stone').innerText = Math.floor(game.res.stone);
             document.getElementById('gold').innerText = game.res.gold;
-
-            document.getElementById('w-rate').innerText = (game.lvls.wood * 1.5).toFixed(1);
-            document.getElementById('f-rate').innerText = (game.lvls.food * 2).toFixed(1);
-            document.getElementById('s-rate').innerText = (game.lvls.stone * 0.8).toFixed(1);
-
-            for (let b in game.lvls) {
-                if(document.getElementById('lvl-'+b)) {
-                    document.getElementById('lvl-'+b).innerText = game.lvls[b];
-                    document.getElementById('cost-'+b).innerText = game.costs[b];
-                }
-                if(b !== 'main' && document.getElementById('prod-'+b)) {
-                    let rate = (b === 'wood') ? 1.5 : (b === 'food' ? 2 : 0.8);
-                    document.getElementById('prod-'+b).innerText = (game.lvls[b] * rate).toFixed(1);
-                }
+            for(let key in game.lvls) {
+                if(document.getElementById('lvl-'+key)) document.getElementById('lvl-'+key).innerText = game.lvls[key];
             }
         }
-
-        // İlk açılışta ekranı güncelle
         updateUI();
     </script>
 </body>

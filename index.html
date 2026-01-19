@@ -3,103 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Kingdom: Rise of Airdrop</title>
+    <title>Medieval Kingdom</title>
     <style>
-        body { background: #2c3e50; color: white; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
+        body { background: #2c3e50; color: white; font-family: sans-serif; text-align: center; margin: 0; padding-bottom: 50px; }
         .resources { display: flex; justify-content: space-around; background: #34495e; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 3px solid #f1c40f; }
         .resource-item { font-size: 14px; font-weight: bold; }
-        .building-container { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 15px; margin-top: 10px; }
-        .building-card { background: #34495e; padding: 15px; border-radius: 10px; border: 2px solid #95a5a6; }
-        .building-card h3 { margin-top: 0; color: #f1c40f; }
-        button { background: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
+        .building-container { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px; }
+        .building-card { background: rgba(52, 73, 94, 0.8); padding: 15px; border-radius: 15px; border: 2px solid #95a5a6; display: flex; flex-direction: column; align-items: center; }
+        .building-img { width: 150px; height: 120px; object-fit: contain; margin: 10px 0; }
+        button { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 80%; font-weight: bold; transition: 0.3s; }
+        button:active { transform: scale(0.95); }
         button:disabled { background: #7f8c8d; }
-        .stats { font-size: 12px; color: #bdc3c7; margin: 5px 0; }
+        h3 { margin: 5px 0; color: #f1c40f; }
     </style>
 </head>
 <body>
 
     <div class="resources">
-        <div class="resource-item">🪵 <span id="wood">1000</span><br><small>+<span id="w-rate">0</span>/sn</small></div>
-        <div class="resource-item">🌾 <span id="food">2000</span><br><small>+<span id="f-rate">0</span>/sn</small></div>
-        <div class="resource-item">🪨 <span id="stone">500</span><br><small>+<span id="s-rate">0</span>/sn</small></div>
-        <div class="resource-item">💰 <span id="gold">50</span><br><small>Altın</small></div>
+        <div class="resource-item">🪵 <span id="wood">0</span><br><small>+<span id="w-rate">0</span>/s</small></div>
+        <div class="resource-item">🌾 <span id="food">0</span><br><small>+<span id="f-rate">0</span>/s</small></div>
+        <div class="resource-item">🪨 <span id="stone">0</span><br><small>+<span id="s-rate">0</span>/s</small></div>
+        <div class="resource-item">💰 <span id="gold">50</span></div>
     </div>
 
     <div class="building-container">
         <div class="building-card">
-            <h3>🏰 Ana Bina (Seviye <span id="lvl-main">1</span>)</h3>
-            <div class="stats">Yeni binaların kilidini açar.</div>
-            <button onclick="upgrade('main')">Yükselt (<span id="cost-main">1000</span> Kaynak)</button>
+            <h3>Ana Bina (Lvl <span id="lvl-main">1</span>)</h3>
+            <img src="images/ana-bina.png" class="building-img">
+            <button onclick="upgrade('main')">Geliştir (<span id="cost-main">500</span> Odun)</button>
         </div>
 
         <div class="building-card">
-            <h3>🪓 Odun Kampı (Seviye <span id="lvl-wood">0</span>)</h3>
-            <div class="stats">Üretim: <span id="prod-wood">0</span> odun/sn</div>
-            <button id="btn-wood" onclick="upgrade('wood')">Yükselt (<span id="cost-wood">200</span> Odun)</button>
+            <h3>Odun Kampı (Lvl <span id="lvl-wood">0</span>)</h3>
+            <img src="images/odun-kampi.png" class="building-img">
+            <button onclick="upgrade('wood')">Geliştir (<span id="cost-wood">100</span> Odun)</button>
         </div>
 
         <div class="building-card">
-            <h3>🌾 Buğday Tarlası (Seviye <span id="lvl-food">0</span>)</h3>
-            <div class="stats">Üretim: <span id="prod-food">0</span> buğday/sn</div>
-            <button id="btn-food" onclick="upgrade('food')">Yükselt (<span id="cost-food">200</span> Buğday)</button>
+            <h3>Tarla (Lvl <span id="lvl-food">0</span>)</h3>
+            <img src="images/tarla.png" class="building-img">
+            <button onclick="upgrade('food')">Geliştir (<span id="cost-food">100</span> Buğday)</button>
         </div>
 
         <div class="building-card">
-            <h3>🪨 Taş Ocağı (Seviye <span id="lvl-stone">0</span>)</h3>
-            <div class="stats">Üretim: <span id="prod-stone">0</span> taş/sn</div>
-            <button id="btn-stone" onclick="upgrade('stone')">Yükselt (<span id="cost-stone">200</span> Taş)</button>
+            <h3>Taş Ocağı (Lvl <span id="lvl-stone">0</span>)</h3>
+            <img src="images/taş-ocağı.png" class="building-img">
+            <button onclick="upgrade('stone')">Geliştir (<span id="cost-stone">100</span> Taş)</button>
         </div>
     </div>
 
     <script>
-        // Başlangıç Verileri
-        let res = { wood: 1000, food: 2000, stone: 500, gold: 50 };
-        let lvls = { main: 1, wood: 0, food: 0, stone: 0 };
-        let costs = { main: 1000, wood: 200, food: 200, stone: 200 };
+        // HAFIZA SİSTEMİ: Önce tarayıcıda kayıt var mı bak, yoksa başlangıç değerlerini kullan.
+        let savedData = JSON.parse(localStorage.getItem('myKingdomData'));
 
-        // Saniyelik Üretim Döngüsü
+        let game = savedData || {
+            res: { wood: 1000, food: 2000, stone: 500, gold: 50 },
+            lvls: { main: 1, wood: 0, food: 0, stone: 0 },
+            costs: { main: 500, wood: 100, food: 100, stone: 100 }
+        };
+
+        // Verileri Kaydetme Fonksiyonu
+        function save() {
+            localStorage.setItem('myKingdomData', JSON.stringify(game));
+        }
+
+        // Kaynak Üretim Döngüsü
         setInterval(() => {
-            res.wood += lvls.wood * 1; // Her seviye saniyede 1 birim üretir
-            res.food += lvls.food * 2; // Buğday daha hızlı üretilir
-            res.stone += lvls.stone * 0.5; // Taş zor üretilir
+            game.res.wood += game.lvls.wood * 1;
+            game.res.food += game.lvls.food * 2;
+            game.res.stone += game.lvls.stone * 0.5;
             updateUI();
+            save(); // Her saniye otomatik kaydet
         }, 1000);
 
         function upgrade(type) {
-            let cost = costs[type];
-            // Basit kontrol: Odun kampı odunla, tarla buğdayla, taş ocağı taşla gelişir
-            let resType = (type === 'main') ? 'wood' : type; 
+            let cost = game.costs[type];
+            let resType = (type === 'main') ? 'wood' : type;
 
-            if (res[resType] >= cost) {
-                res[resType] -= cost;
-                lvls[type]++;
-                costs[type] = Math.floor(costs[type] * 1.5); // Maliyet her seviyede %50 artar
+            if (game.res[resType] >= cost) {
+                game.res[resType] -= cost;
+                game.lvls[type]++;
+                game.costs[type] = Math.floor(game.costs[type] * 1.6);
                 updateUI();
+                save();
             } else {
-                alert("Yetersiz kaynak!");
+                alert("Yeterli kaynak yok!");
             }
         }
 
         function updateUI() {
-            // Kaynaklar
-            document.getElementById('wood').innerText = Math.floor(res.wood);
-            document.getElementById('food').innerText = Math.floor(res.food);
-            document.getElementById('stone').innerText = Math.floor(res.stone);
-            document.getElementById('gold').innerText = res.gold;
+            document.getElementById('wood').innerText = Math.floor(game.res.wood);
+            document.getElementById('food').innerText = Math.floor(game.res.food);
+            document.getElementById('stone').innerText = Math.floor(game.res.stone);
+            document.getElementById('gold').innerText = game.res.gold;
 
-            // Üretim Hızları
-            document.getElementById('w-rate').innerText = lvls.wood * 1;
-            document.getElementById('f-rate').innerText = lvls.food * 2;
-            document.getElementById('s-rate').innerText = lvls.stone * 0.5;
+            document.getElementById('w-rate').innerText = game.lvls.wood * 1;
+            document.getElementById('f-rate').innerText = game.lvls.food * 2;
+            document.getElementById('s-rate').innerText = game.lvls.stone * 0.5;
 
-            // Seviyeler ve Maliyetler
-            for (let b in lvls) {
+            for (let b in game.lvls) {
                 if(document.getElementById('lvl-'+b)) {
-                    document.getElementById('lvl-'+b).innerText = lvls[b];
-                    document.getElementById('cost-'+b).innerText = costs[b];
-                }
-                if(b !== 'main') {
-                    document.getElementById('prod-'+b).innerText = (b==='food' ? lvls[b]*2 : (b==='stone' ? lvls[b]*0.5 : lvls[b]*1));
+                    document.getElementById('lvl-'+b).innerText = game.lvls[b];
+                    document.getElementById('cost-'+b).innerText = game.costs[b];
                 }
             }
         }

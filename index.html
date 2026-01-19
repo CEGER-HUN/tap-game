@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Medieval Saga</title>
+    <title>Medieval Saga: Pro</title>
     <style>
         :root { --gold: #f1c40f; --bg: #2d3436; }
         
@@ -11,63 +11,73 @@
             margin: 0; 
             padding: 0; 
             overflow: hidden; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #27ae60;
         }
 
-        /* YENİ ARKA PLAN AYARI */
+        /* ARKA PLAN AYARI - KESİN ÇALIŞAN YÖNTEM */
         #map {
             width: 100vw;
             height: 100vh;
-            background-image: url('https://i.ibb.co/vYm6p6n/grass-texture.jpg');
+            /* Bu doku şeffaftır ve altındaki yeşil renkle birleşerek şık bir çimen görüntüsü verir */
+            background-image: url('https://www.transparenttextures.com/patterns/paddy.png'), 
+                              linear-gradient(to bottom, #2ecc71, #27ae60);
             background-repeat: repeat;
-            background-size: 250px; /* Çimenlerin büyüklüğünü buradan ayarlayabilirsin */
+            background-size: 150px;
             position: relative;
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.3); /* Kenarlara derinlik verir */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.4);
         }
 
         /* ÜST KAYNAK ÇUBUĞU */
         .header { 
-            position: fixed; top: 0; width: 100%; height: 50px;
-            background: rgba(0,0,0,0.7); display: flex; align-items: center;
-            justify-content: space-around; z-index: 100; backdrop-filter: blur(5px);
+            position: fixed; top: 0; width: 100%; height: 55px;
+            background: rgba(0,0,0,0.75); display: flex; align-items: center;
+            justify-content: space-around; z-index: 100; backdrop-filter: blur(8px);
             border-bottom: 2px solid var(--gold);
         }
-        .res-pill { font-size: 14px; color: white; font-weight: bold; }
+        .res-pill { font-size: 13px; color: white; font-weight: bold; text-shadow: 1px 1px 2px black; }
 
-        /* BİNALAR (HARİTA ÜZERİNDEKİ YERLERİ) */
+        /* BİNALAR */
         .building { 
             position: absolute; text-align: center; cursor: pointer;
             transition: transform 0.2s; -webkit-tap-highlight-color: transparent;
         }
         .building:active { transform: scale(1.1); }
         .building img { 
-            width: 100px; 
-            filter: drop-shadow(0 15px 10px rgba(0,0,0,0.4)); /* Çimenin üzerinde gölge yapar */
+            width: 110px; 
+            filter: drop-shadow(0 15px 8px rgba(0,0,0,0.4));
         }
         .lvl-badge { 
-            background: #e67e22; color: white; padding: 2px 8px; 
-            border-radius: 10px; font-size: 11px; font-weight: bold;
-            border: 1px solid white;
+            background: #d35400; color: white; padding: 2px 10px; 
+            border-radius: 12px; font-size: 11px; font-weight: bold;
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
-        /* ALT MENÜ */
+        /* ALT NAVİGASYON */
         .navbar {
-            position: fixed; bottom: 0; width: 100%; height: 65px;
+            position: fixed; bottom: 0; width: 100%; height: 70px;
             background: #2d3436; display: flex; justify-content: space-around; align-items: center;
             border-top: 3px solid var(--gold); z-index: 150;
         }
-        .nav-item { color: #b2bec3; font-size: 11px; text-align: center; }
+        .nav-item { color: #b2bec3; font-size: 11px; text-align: center; flex: 1; }
         .nav-item.active { color: var(--gold); }
+        .nav-icon { font-size: 22px; display: block; margin-bottom: 2px; }
 
-        /* PANEL */
+        /* GELİŞTİRME PANELİ */
         #ui-panel {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: 35%;
-            background: #34495e; border-radius: 25px 25px 0 0; z-index: 200;
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 38%;
+            background: #34495e; border-radius: 30px 30px 0 0; z-index: 200;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            padding: 20px; box-sizing: border-box; color: white; border-top: 4px solid var(--gold);
+            padding: 25px; box-sizing: border-box; color: white; 
+            border-top: 5px solid var(--gold); box-shadow: 0 -10px 25px rgba(0,0,0,0.5);
         }
         #ui-panel.open { bottom: 0; }
-        .up-btn { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .up-btn { 
+            width: 100%; padding: 16px; background: #27ae60; color: white; 
+            border: none; border-radius: 15px; font-weight: bold; 
+            font-size: 18px; cursor: pointer; box-shadow: 0 4px 0 #1e8449;
+        }
+        .up-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1e8449; }
     </style>
 </head>
 <body>
@@ -80,46 +90,46 @@
     </div>
 
     <div id="map">
-        <div class="building" style="top: 25%; left: 35%;" onclick="openPanel('main', 'Ana Bina')">
+        <div class="building" style="top: 25%; left: 35%;" onclick="openPanel('main', 'Ana Bina', 'Krallığının yönetim merkezi.')">
             <img src="ana-bina.png"><br><span class="lvl-badge">Lv <span id="lvl-main">1</span></span>
         </div>
-        <div class="building" style="top: 10%; left: 10%;" onclick="openPanel('wood', 'Odun Kampı')">
+        <div class="building" style="top: 15%; left: 10%;" onclick="openPanel('wood', 'Odun Kampı', 'İnşaatlar için kereste üretir.')">
             <img src="odun-kampi.png"><br><span class="lvl-badge">Lv <span id="lvl-wood">0</span></span>
         </div>
-        <div class="building" style="top: 50%; left: 55%;" onclick="openPanel('food', 'Buğday Tarlası')">
+        <div class="building" style="top: 48%; left: 58%;" onclick="openPanel('food', 'Buğday Tarlası', 'Ordun ve halkın için besin sağlar.')">
             <img src="tarla.png"><br><span class="lvl-badge">Lv <span id="lvl-food">0</span></span>
         </div>
-        <div class="building" style="top: 65%; left: 15%;" onclick="openPanel('stone', 'Taş Ocağı')">
+        <div class="building" style="top: 62%; left: 22%;" onclick="openPanel('stone', 'Taş Ocağı', 'Gelişmiş yapılar için taş üretir.')">
             <img src="tas-ocagi.png"><br><span class="lvl-badge">Lv <span id="lvl-stone">0</span></span>
         </div>
     </div>
 
     <div id="ui-panel">
-        <h2 id="panel-title" style="margin-top:0">Bina</h2>
-        <p id="panel-desc" style="color: #bdc3c7;">Geliştirerek üretimi artırabilirsin.</p>
+        <h2 id="panel-title" style="margin:0 0 10px 0; color: var(--gold);">Bina</h2>
+        <p id="panel-desc" style="color: #bdc3c7; margin-bottom: 20px;">Açıklama yükleniyor...</p>
         <button onclick="confirmUpgrade()" id="up-btn" class="up-btn">YÜKSELT</button>
-        <button onclick="closePanel()" style="background:none; border:none; color:#bdc3c7; margin-top:15px; width:100%; cursor:pointer;">Kapat</button>
+        <button onclick="closePanel()" style="background:none; border:none; color:#95a5a6; margin-top:20px; width:100%; font-weight:bold;">KAPAT</button>
     </div>
 
     <div class="navbar">
-        <div class="nav-item active">🏰<br>Şehir</div>
-        <div class="nav-item">⚔️<br>Savaş</div>
-        <div class="nav-item">🛡️<br>Klan</div>
-        <div class="nav-item">📋<br>Görevler</div>
+        <div class="nav-item active"><span class="nav-icon">🏰</span>Şehir</div>
+        <div class="nav-item"><span class="nav-icon">⚔️</span>Savaş</div>
+        <div class="nav-item"><span class="nav-icon">🛡️</span>Klan</div>
+        <div class="nav-item"><span class="nav-icon">📋</span>Görevler</div>
     </div>
 
     <script>
         let selectedType = "";
-        // v3 veritabanı (temiz başlangıç)
-        let game = JSON.parse(localStorage.getItem('medPro_v3')) || {
+        let game = JSON.parse(localStorage.getItem('medPro_v4')) || {
             res: { wood: 500, food: 500, stone: 200, gold: 50 },
             lvls: { main: 1, wood: 0, food: 0, stone: 0 },
             costs: { main: 500, wood: 100, food: 100, stone: 100 }
         };
 
-        function openPanel(type, name) {
+        function openPanel(type, name, desc) {
             selectedType = type;
             document.getElementById('panel-title').innerText = name;
+            document.getElementById('panel-desc').innerText = desc;
             document.getElementById('up-btn').innerText = "YÜKSELT (" + game.costs[type] + ")";
             document.getElementById('ui-panel').classList.add('open');
         }
@@ -136,14 +146,15 @@
                 game.costs[selectedType] = Math.floor(game.costs[selectedType] * 1.8);
                 updateUI();
                 closePanel();
-                localStorage.setItem('medPro_v3', JSON.stringify(game));
-            } else { alert("Yeterli " + rType + " yok!"); }
+                localStorage.setItem('medPro_v4', JSON.stringify(game));
+            } else { alert("Yeterli " + rType + " kaynağın yok!"); }
         }
 
+        // Üretim Döngüsü
         setInterval(() => {
-            game.res.wood += game.lvls.wood * 2;
-            game.res.food += game.lvls.food * 3;
-            game.res.stone += game.lvls.stone * 1;
+            game.res.wood += game.lvls.wood * 2.5;
+            game.res.food += game.lvls.food * 3.5;
+            game.res.stone += game.lvls.stone * 1.2;
             updateUI();
         }, 1000);
 

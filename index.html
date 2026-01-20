@@ -1,183 +1,67 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Medieval Saga: Mobile</title>
+    <title>Maden Oyunu</title>
     <style>
-        :root { --gold: #f1c40f; --panel-bg: #2d3436; }
-        
-        body { 
-            margin: 0; padding: 0; overflow: hidden; 
-            font-family: 'Segoe UI', sans-serif; background-color: #27ae60;
-        }
-
-        /* MOBİL OYUN HARİTASI */
-        #map {
-            width: 100vw; height: 100vh;
-            /* Pepe'li görseldeki gibi canlı bir yeşil zemin */
-            background-color: #55efc4;
-            background-image: 
-                radial-gradient(circle at 20% 30%, #44bd32 5%, transparent 10%),
-                radial-gradient(circle at 80% 70%, #44bd32 3%, transparent 8%);
-            background-size: 100px 100px;
-            position: relative;
-        }
-
-        /* YOL (Yukarıdan aşağıya, hafif kıvrımlı hissi) */
-        #road {
-            position: absolute; left: 50%; top: 0; width: 70px; height: 100%;
-            background: #d3ad7f; transform: translateX(-50%);
-            box-shadow: 0 0 30px rgba(0,0,0,0.15);
-            border-left: 5px solid #c29a6a;
-            border-right: 5px solid #c29a6a;
-        }
-
-        /* ÜST KAYNAK BARı */
-        .header { 
-            position: fixed; top: 15px; width: 90%; left: 5%; height: 45px;
-            background: rgba(0,0,0,0.6); display: flex; align-items: center;
-            justify-content: space-around; z-index: 100; border-radius: 25px;
-            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3);
-        }
-        .res-box { color: white; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
-
-        /* BİNALAR (Yolun sağına ve soluna dizilim) */
-        .building { 
-            position: absolute; text-align: center; cursor: pointer;
-            transition: transform 0.2s; -webkit-tap-highlight-color: transparent;
-        }
-        .building img { 
-            width: 95px; filter: drop-shadow(0 12px 6px rgba(0,0,0,0.3));
-        }
-        .b-label {
-            background: rgba(255,255,255,0.9); color: #2d3436; padding: 2px 8px;
-            border-radius: 12px; font-size: 11px; font-weight: bold; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        /* ALT MENÜ */
-        .navbar {
-            position: fixed; bottom: 0; width: 100%; height: 80px;
-            background: #2f3640; display: flex; justify-content: space-around; 
-            align-items: center; border-top: 3px solid var(--gold); z-index: 150;
-        }
-        .nav-item { color: #dcdde1; font-size: 10px; text-align: center; flex: 1; }
-        .nav-item.active { color: white; font-weight: bold; }
-        .city-btn {
-            background: white; border-radius: 50%; width: 55px; height: 55px;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; border: 4px solid #2f3640; margin-top: -35px; color: #2f3640;
-        }
-
-        /* GELİŞTİRME PANELİ */
-        #ui-panel {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: 35%;
-            background: #353b48; border-radius: 30px 30px 0 0; z-index: 200;
-            transition: 0.4s ease-out; padding: 25px; box-sizing: border-box; color: white;
-            border-top: 5px solid var(--gold);
-        }
-        #ui-panel.open { bottom: 0; }
-        .up-btn { 
-            width: 100%; padding: 15px; background: #44bd32; color: white; 
-            border: none; border-radius: 15px; font-weight: bold; font-size: 18px;
-            box-shadow: 0 4px 0 #2d8a25;
-        }
+        body { background: black; color: white; text-align: center; font-family: Arial; padding: 20px; }
+        .character { background: #333; margin: 10px; padding: 20px; border-radius: 10px; cursor: pointer; display: inline-block; width: 200px; }
+        .character:hover { background: #555; }
+        button { background: gold; color: black; padding: 15px 30px; font-size: 20px; border: none; border-radius: 10px; margin: 20px; cursor: pointer; }
+        input { padding: 10px; font-size: 18px; margin: 10px; }
     </style>
 </head>
 <body>
-
-    <div id="map">
-        <div id="road"></div>
-
-        <div class="header">
-            <div class="res-box">🪵 <span id="wood">0</span></div>
-            <div class="res-box">🌾 <span id="food">0</span></div>
-            <div class="res-box">🪨 <span id="stone">0</span></div>
-            <div class="res-box">💰 <span id="gold">0</span></div>
+    <h1>⛏️ MADEN OYUNU</h1>
+    <p>Karakterini seç, 3 saatte bir madene git!</p>
+    
+    <input type="text" id="isim" placeholder="İsmin" />
+    
+    <div>
+        <div class="character" onclick="karakterSec('madenci')">
+            <h2>⛏️ Madenci</h2>
+            <p>%30 fazla maden</p>
         </div>
-
-        <div class="building" style="top: 12%; left: 8%;" onclick="openPanel('wood', 'Odun Kampı')">
-            <img src="odun-kampi.png"><br><span class="b-label">Lv <span id="lvl-wood">0</span></span>
+        <div class="character" onclick="karakterSec('savasci')">
+            <h2>⚔️ Savaşçı</h2>
+            <p>%20 fazla saldırı</p>
         </div>
-        
-        <div class="building" style="top: 25%; right: 10%;" onclick="openPanel('main', 'Ana Bina')">
-            <img src="ana-bina.png" style="width: 110px;"><br><span class="b-label">Lv <span id="lvl-main">1</span></span>
-        </div>
-
-        <div class="building" style="top: 48%; left: 12%;" onclick="openPanel('food', 'Tarla')">
-            <img src="tarla.png"><br><span class="b-label">Lv <span id="lvl-food">0</span></span>
-        </div>
-
-        <div class="building" style="top: 65%; right: 12%;" onclick="openPanel('stone', 'Taş Ocağı')">
-            <img src="tas-ocagi.png"><br><span class="b-label">Lv <span id="lvl-stone">0</span></span>
+        <div class="character" onclick="karakterSec('okcu')">
+            <h2>🏹 Okçu</h2>
+            <p>%15 kritik vuruş</p>
         </div>
     </div>
-
-    <div id="ui-panel">
-        <h2 id="panel-title" style="margin:0; color: var(--gold);">Bina Adı</h2>
-        <p style="color: #bdc3c7; font-size: 14px; margin: 10px 0 25px 0;">Krallığını geliştirmek için seviye atlat.</p>
-        <button onclick="confirmUpgrade()" id="up-btn" class="up-btn">YÜKSELT</button>
-        <button onclick="closePanel()" style="background:none; border:none; color:#7f8c8d; margin-top:15px; width:100%; cursor:pointer;">KAPAT</button>
-    </div>
-
-    <div class="navbar">
-        <div class="nav-item active">
-            <div class="city-btn">🏰<br><span style="font-size: 8px;">City</span></div>
-        </div>
-        <div class="nav-item">⚔️<br>Savaş</div>
-        <div class="nav-item">🛡️<br>Klan</div>
-        <div class="nav-item">📋<br>Görevler</div>
-    </div>
-
+    
+    <button onclick="oyunaBasla()">OYUNA BAŞLA</button>
+    
     <script>
-        let selectedType = "";
-        let game = JSON.parse(localStorage.getItem('medPro_v5')) || {
-            res: { wood: 500, food: 500, stone: 200, gold: 50 },
-            lvls: { main: 1, wood: 0, food: 0, stone: 0 },
-            costs: { main: 500, wood: 100, food: 100, stone: 100 }
-        };
-
-        function openPanel(type, name) {
-            selectedType = type;
-            document.getElementById('panel-title').innerText = name;
-            document.getElementById('up-btn').innerText = "YÜKSELT (" + game.costs[type] + ")";
-            document.getElementById('ui-panel').classList.add('open');
+        let secilenKarakter = '';
+        
+        function karakterSec(tip) {
+            secilenKarakter = tip;
+            alert(tip + " seçildi!");
         }
-
-        function closePanel() { document.getElementById('ui-panel').classList.remove('open'); }
-
-        function confirmUpgrade() {
-            let cost = game.costs[selectedType];
-            let rType = (selectedType === 'main' || selectedType === 'wood') ? 'wood' : (selectedType === 'food' ? 'food' : 'stone');
-            
-            if (game.res[rType] >= cost) {
-                game.res[rType] -= cost;
-                game.lvls[selectedType]++;
-                game.costs[selectedType] = Math.floor(game.costs[selectedType] * 1.8);
-                updateUI();
-                closePanel();
-                localStorage.setItem('medPro_v5', JSON.stringify(game));
-            } else { alert("Kaynak yetersiz!"); }
-        }
-
-        setInterval(() => {
-            game.res.wood += game.lvls.wood * 2;
-            game.res.food += game.lvls.food * 3;
-            game.res.stone += game.lvls.stone * 1.2;
-            updateUI();
-        }, 1000);
-
-        function updateUI() {
-            document.getElementById('wood').innerText = Math.floor(game.res.wood);
-            document.getElementById('food').innerText = Math.floor(game.res.food);
-            document.getElementById('stone').innerText = Math.floor(game.res.stone);
-            document.getElementById('gold').innerText = game.res.gold;
-            for(let key in game.lvls) {
-                if(document.getElementById('lvl-'+key)) document.getElementById('lvl-'+key).innerText = game.lvls[key];
+        
+        function oyunaBasla() {
+            const isim = document.getElementById('isim').value;
+            if (!isim || !secilenKarakter) {
+                alert("İsim ve karakter seç!");
+                return;
             }
+            
+            // Kaydet
+            const oyuncu = {
+                isim: isim,
+                karakter: secilenKarakter,
+                altin: 100,
+                seviye: 1,
+                maden: null
+            };
+            
+            localStorage.setItem('oyuncu', JSON.stringify(oyuncu));
+            
+            // Oyun sayfasına git
+            window.location.href = 'game.html';
         }
-        updateUI();
     </script>
 </body>
 </html>

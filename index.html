@@ -1,118 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tap Mining Game</title>
-<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-<style>
-body { margin: 0; background: #000; }
-canvas { display: block; margin: auto; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Idle Mining Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            touch-action: none;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        #backgroundLayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bgImage {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            image-rendering: crisp-edges;
+        }
+
+        #wagonContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            z-index: 10;
+        }
+
+        #wagonSprite {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: crisp-edges;
+        }
+
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            z-index: 100;
+            color: white;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+        }
+
+        #coinCounter {
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .coin-icon {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ffd700, #ffaa00);
+            border-radius: 50%;
+            display: inline-block;
+            border: 2px solid #ffed4e;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        #timer {
+            font-size: 18px;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        #startButton {
+            padding: 20px 60px;
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #startButton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        #startButton:active {
+            transform: scale(0.98);
+        }
+
+        #startButton:disabled {
+            background: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+            z-index: 50;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            #wagonContainer {
+                width: 150px;
+                height: 150px;
+            }
+
+            #coinCounter {
+                font-size: 20px;
+            }
+
+            #startButton {
+                padding: 15px 40px;
+                font-size: 20px;
+            }
+
+            #status {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #wagonContainer {
+                width: 120px;
+                height: 120px;
+            }
+
+            #coinCounter {
+                font-size: 18px;
+            }
+
+            .coin-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            #timer {
+                font-size: 16px;
+            }
+
+            #startButton {
+                padding: 12px 30px;
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div id="gameContainer">
+        <div id="backgroundLayer"></div>
+        
+        <div id="wagonContainer">
+            <img id="wagonSprite" src="" alt="Wagon">
+        </div>
 
-<script>
-const WORK_TIME = 10800000; // 3 saat (test için 10000 yapabilirsin)
-const BG_SPEED = 1;
+        <div id="hud">
+            <div id="coinCounter">
+                <span class="coin-icon"></span>
+                <span id="coinAmount">0</span>
+            </div>
+            <div id="timer">Time: 00:00:00</div>
+        </div>
 
-let game;
-let working = false;
-let startTime = 0;
+        <div id="status"></div>
 
-const config = {
-  type: Phaser.AUTO,
-  width: 960,
-  height: 540,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
-  },
-  scene: {
-    preload,
-    create,
-    update
-  }
-};
+        <div id="controls">
+            <button id="startButton">START MINING</button>
+        </div>
+    </div>
 
-new Phaser.Game(config);
+    <script>
+        // Game Configuration
+        const CONFIG = {
+            MINING_DURATION: 3 * 60 * 60 * 1000, // 3 hours in milliseconds
+            WAGON_FRAME_DURATION: 200, // ms per frame
+            BACKGROUND_SCROLL_SPEED: 1.5, // pixels per frame
+            COINS_PER_SECOND: 10,
+            WAGON_FRAMES: 5,
+            BACKGROUND_IMAGES: 5
+        };
 
-function preload() {
-  // Backgrounds
-  for (let i = 1; i <= 5; i++) {
-    this.load.image("bg" + i, "./assets/bg" + i + ".png");
-  }
-  
-  // Wagon frames
-  this.load.image("w1", "./assets/wagon1.png");
-  this.load.image("w2", "./assets/wagon2.png");
-  this.load.image("w3", "./assets/wagon3.png");
-  this.load.image("w4", "./assets/wagon4.png");
-  this.load.image("w5", "./assets/wagon5.png");
-}
+        // Game State
+        const gameState = {
+            isRunning: false,
+            coins: 0,
+            startTime: null,
+            endTime: null,
+            currentWagonFrame: 1,
+            backgroundPositions: [],
+            animationFrameId: null,
+            wagonAnimationInterval: null,
+            coinGenerationInterval: null
+        };
 
-let bg1, bg2;
-let bgIndex = 1;
+        // DOM Elements
+        const elements = {
+            backgroundLayer: document.getElementById('backgroundLayer'),
+            wagonSprite: document.getElementById('wagonSprite'),
+            coinAmount: document.getElementById('coinAmount'),
+            timer: document.getElementById('timer'),
+            startButton: document.getElementById('startButton'),
+            status: document.getElementById('status')
+        };
 
-function create() {
-  bg1 = this.add.tileSprite(0, 0, 960, 540, "bg1").setOrigin(0, 0);
-  bg2 = this.add.tileSprite(960, 0, 960, 540, "bg2").setOrigin(0, 0);
+        // GitHub Pages base URL - BURAYA KENDİ GITHUB PAGES URL'NİZİ YAZIN
+        const GITHUB_BASE_URL = 'https://KULLANICI_ADINIZ.github.io/REPO_ADINIZ/';
+        
+        // Initialize background layers
+        function initBackgrounds() {
+            elements.backgroundLayer.innerHTML = '';
+            gameState.backgroundPositions = [];
 
-  this.anims.create({
-    key: "move",
-    frames: [
-      { key: "w1" },
-      { key: "w2" },
-      { key: "w3" },
-      { key: "w4" },
-      { key: "w5" }
-    ],
-    frameRate: 8,
-    repeat: -1
-  });
+            for (let i = 0; i < CONFIG.BACKGROUND_IMAGES; i++) {
+                const bgImg = document.createElement('img');
+                bgImg.className = 'bgImage';
+                bgImg.src = `${GITHUB_BASE_URL}assets/bg${i + 1}.png`;
+                bgImg.style.left = `${i * 100}%`;
+                bgImg.style.opacity = i === 0 ? '1' : '0.7';
+                bgImg.style.zIndex = CONFIG.BACKGROUND_IMAGES - i;
+                elements.backgroundLayer.appendChild(bgImg);
+                
+                gameState.backgroundPositions.push({
+                    element: bgImg,
+                    x: i * window.innerWidth,
+                    speed: CONFIG.BACKGROUND_SCROLL_SPEED * (1 + i * 0.2) // Parallax effect
+                });
+            }
+        }
 
-  this.wagon = this.add.sprite(480, 380, "w1");
-  this.wagon.play("move");
+        // Update background scroll
+        function updateBackgrounds() {
+            if (!gameState.isRunning) return;
 
-  this.startText = this.add.text(480, 80, "START", {
-    fontSize: "48px",
-    color: "#00ff00",
-    backgroundColor: "#000",
-    padding: {x:20, y:10}
-  }).setOrigin(0.5).setInteractive();
+            gameState.backgroundPositions.forEach((bg, index) => {
+                bg.x -= bg.speed;
 
-  this.startText.on("pointerdown", () => {
-    if (!working) {
-      startMining(this);
-    } else {
-      stopMining(this);
-    }
-  });
-}
+                // When background scrolls completely off screen, move it to the right
+                if (bg.x <= -window.innerWidth) {
+                    bg.x += window.innerWidth * CONFIG.BACKGROUND_IMAGES;
+                }
 
-function update() {
-  if (working) {
-    bg1.tilePositionX += BG_SPEED;
-    bg2.tilePositionX += BG_SPEED;
+                bg.element.style.left = `${bg.x}px`;
+            });
+        }
 
-    if (Date.now() - startTime >= WORK_TIME) {
-      stopMining(this);
-    }
-  }
-}
+        // Animate wagon sprite
+        function animateWagon() {
+            gameState.currentWagonFrame = (gameState.currentWagonFrame % CONFIG.WAGON_FRAMES) + 1;
+            elements.wagonSprite.src = `${GITHUB_BASE_URL}assets/wagon${gameState.currentWagonFrame}.png`;
+        }
 
-function startMining(scene) {
-  working = true;
-  startTime = Date.now();
-  scene.startText.setText("WORKING...");
-}
+        // Generate coins
+        function generateCoins() {
+            gameState.coins += CONFIG.COINS_PER_SECOND;
+            elements.coinAmount.textContent = Math.floor(gameState.coins).toLocaleString();
+        }
 
-function stopMining(scene) {
-  working = false;
-  scene.startText.setText("START");
-}
-</script>
+        // Update timer display
+        function updateTimer() {
+            if (!gameState.isRunning) return;
 
+            const now = Date.now();
+            const elapsed = now - gameState.startTime;
+            const remaining = Math.max(0, CONFIG.MINING_DURATION - elapsed);
+
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+            elements.timer.textContent = `Time: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Check if mining session is complete
+            if (remaining <= 0) {
+                stopMining(true);
+            }
+        }
+
+        // Main game loop
+        function gameLoop() {
+            if (!gameState.isRunning) return;
+
+            updateBackgrounds();
+            updateTimer();
+
+            gameState.animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        // Start mining
+        function startMining() {
+            gameState.isRunning = true;
+            gameState.startTime = Date.now();
+            gameState.endTime = gameState.startTime + CONFIG.MINING_DURATION;
+
+            elements.startButton.disabled = true;
+            elements.startButton.textContent = 'MINING...';
+            elements.status.style.display = 'none';
+
+            // Start wagon animation
+            gameState.wagonAnimationInterval = setInterval(animateWagon, CONFIG.WAGON_FRAME_DURATION);
+
+            // Start coin generation
+            gameState.coinGenerationInterval = setInterval(generateCoins, 1000);
+
+            // Start game loop
+            gameLoop();
+        }
+
+        // Stop mining
+        function stopMining(completed = false) {
+            gameState.isRunning = false;
+
+            // Clear all intervals
+            if (gameState.wagonAnimationInterval) {
+                clearInterval(gameState.wagonAnimationInterval);
+            }
+            if (gameState.coinGenerationInterval) {
+                clearInterval(gameState.coinGenerationInterval);
+            }
+            if (gameState.animationFrameId) {
+                cancelAnimationFrame(gameState.animationFrameId);
+            }
+
+            // Reset wagon to first frame
+            elements.wagonSprite.src = `${GITHUB_BASE_URL}assets/wagon1.png`;
+            gameState.currentWagonFrame = 1;
+
+            // Update UI
+            elements.startButton.disabled = false;
+            elements.startButton.textContent = 'START MINING';
+
+            if (completed) {
+                elements.status.textContent = '🎉 Mining Complete! 🎉\nClick START to mine again';
+                elements.status.style.display = 'block';
+                
+                // Hide status after 5 seconds
+                setTimeout(() => {
+                    elements.status.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Event Listeners
+        elements.startButton.addEventListener('click', () => {
+            if (!gameState.isRunning) {
+                startMining();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            initBackgrounds();
+        });
+
+        // Initialize game on load
+        window.addEventListener('load', () => {
+            initBackgrounds();
+            elements.wagonSprite.src = `${GITHUB_BASE_URL}assets/wagon1.png`;
+            elements.coinAmount.textContent = '0';
+            elements.timer.textContent = 'Time: 03:00:00';
+        });
+
+        // Prevent page scrolling on mobile
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
 </body>
 </html>

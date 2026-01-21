@@ -2,72 +2,113 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Tap Game</title>
-<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mining Demo</title>
+
 <style>
-body { margin:0; background:black; }
-canvas { display:block; margin:auto; }
+body {
+  margin: 0;
+  background: #000;
+  font-family: Arial;
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 300px;
+  overflow: hidden;
+  background: black;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  animation: scroll 20s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+#ui {
+  padding: 10px;
+  background: #111;
+  color: white;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
 </style>
 </head>
+
 <body>
 
+<div id="game">
+  <div id="bg" class="bg"></div>
+</div>
+
+<div id="ui">
+  <button onclick="startGame()">START</button>
+  <span id="timer">03:00:00</span>
+</div>
+
 <script>
-const WIDTH = 960;
-const HEIGHT = 540;
-const SPEED = 1;
+const backgrounds = [
+  "assets/bg1.png",
+  "assets/bg2.png",
+  "assets/bg3.png",
+  "assets/bg4.png",
+  "assets/bg5.png"
+];
 
-let working = true;
-let bg1, bg2;
-let bgIndex = 1;
-const TOTAL_BG = 5;
+let bgIndex = 0;
+let duration = 3 * 60 * 60; // 3 saat saniye
+let timerInterval;
+let bgInterval;
 
-const config = {
-  type: Phaser.AUTO,
-  width: WIDTH,
-  height: HEIGHT,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
-  },
-  scene: { preload, create, update }
-};
+const bg = document.getElementById("bg");
+const timer = document.getElementById("timer");
 
-new Phaser.Game(config);
+bg.style.backgroundImage = `url(${backgrounds[0]})`;
 
-function preload() {
-  for (let i = 1; i <= 5; i++) {
-    this.load.image("bg" + i, "./assets/bg" + i + ".png");
+function startGame() {
+  bg.style.animationPlayState = "running";
+
+  clearInterval(timerInterval);
+  clearInterval(bgInterval);
+
+  timerInterval = setInterval(updateTimer, 1000);
+
+  bgInterval = setInterval(() => {
+    bgIndex = (bgIndex + 1) % backgrounds.length;
+    bg.style.backgroundImage = `url(${backgrounds[bgIndex]})`;
+  }, 15000); // her 15 saniyede arka plan değişir
+}
+
+function updateTimer() {
+  if (duration <= 0) {
+    clearInterval(timerInterval);
+    clearInterval(bgInterval);
+    bg.style.animationPlayState = "paused";
+    return;
   }
-}
 
-function create() {
-  bg1 = this.add.image(0, 0, "bg1").setOrigin(0, 0);
-  bg2 = this.add.image(WIDTH, 0, "bg2").setOrigin(0, 0);
+  duration--;
 
-  scaleToScreen(bg1);
-  scaleToScreen(bg2);
-}
+  let h = String(Math.floor(duration / 3600)).padStart(2, "0");
+  let m = String(Math.floor((duration % 3600) / 60)).padStart(2, "0");
+  let s = String(duration % 60).padStart(2, "0");
 
-function update() {
-  bg1.x -= SPEED;
-  bg2.x -= SPEED;
-
-  if (bg1.x <= -bg1.displayWidth) resetBG(bg1);
-  if (bg2.x <= -bg2.displayWidth) resetBG(bg2);
-}
-
-function resetBG(bg) {
-  bgIndex++;
-  if (bgIndex > TOTAL_BG) bgIndex = 1;
-
-  bg.setTexture("bg" + bgIndex);
-  scaleToScreen(bg);
-  bg.x = WIDTH;
-}
-
-function scaleToScreen(image) {
-  const scale = WIDTH / image.width;
-  image.setScale(scale);
+  timer.textContent = `${h}:${m}:${s}`;
 }
 </script>
 

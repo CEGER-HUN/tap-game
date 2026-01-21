@@ -1,78 +1,103 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MineDash — P2E Demo</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<title>Mining Game</title>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+}
+canvas {
+    display: block;
+    margin: auto;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>MineDash — Mining Demo (Frontend Only)</h1>
 
-    <section id="auth">
-      <h2>Player Login</h2>
-      <label>
-        Username:
-        <input id="username" placeholder="choose a username" />
-      </label>
-      <label>
-        Character name:
-        <input id="charname" placeholder="your character's name" />
-      </label>
-      <button id="btn-register">Register / Switch</button>
-      <p class="muted">This demo stores data in your browser (localStorage).</p>
-    </section>
+<script>
+const WORK_TIME = 10800000; // 3 saat (test için istersen 10000 yap → 10 saniye)
 
-    <section id="main" class="hidden">
-      <div class="row">
-        <div class="card">
-          <h3>Character</h3>
-          <p id="display-character">—</p>
-          <p id="display-season-points">Season points: 0</p>
-          <button id="btn-reset-account" class="danger small">Reset this account</button>
-        </div>
+let wagon;
+let working = false;
+let startTime = 0;
+let buttonText;
 
-        <div class="card">
-          <h3>Mining</h3>
-          <p id="mining-status">Not mining</p>
-          <button id="btn-start-mine">Send to Mine</button>
-          <button id="btn-claim" class="small">Claim</button>
-          <p class="muted">Mining duration: <span id="mining-duration-text">3 hours</span></p>
-          <label><input type="checkbox" id="demo-mode" /> Demo mode (10s) for testing</label>
-        </div>
+const config = {
+    type: Phaser.AUTO,
+    width: 960,
+    height: 540,
+    scene: { preload, create, update }
+};
 
-        <div class="card">
-          <h3>Inventory</h3>
-          <ul id="inventory-list">
-            <li>Gold: 0</li>
-            <li>Iron: 0</li>
-            <li>Coal: 0</li>
-          </ul>
-        </div>
-      </div>
+new Phaser.Game(config);
 
-      <div class="row">
-        <div class="card full">
-          <h3>Activity Log</h3>
-          <div id="log"></div>
-        </div>
-      </div>
+function preload() {
+    this.load.image('bg', 'assets/background.png');
+    this.load.image('w1', 'assets/wagon1.png');
+    this.load.image('w2', 'assets/wagon2.png');
+    this.load.image('w3', 'assets/wagon3.png');
+    this.load.image('w4', 'assets/wagon4.png');
+    this.load.image('w5', 'assets/wagon5.png');
+}
 
-      <div class="row">
-        <div class="card full">
-          <h3>Leaderboard (local)</h3>
-          <ol id="leaderboard"></ol>
-          <button id="btn-reset-all" class="danger small">Reset All Data (local)</button>
-        </div>
-      </div>
-    </section>
+function create() {
+    this.add.image(480, 270, 'bg');
 
-    <footer>
-      <p>Note: This is a front-end demo only. For real play-to-earn you need a backend to securely validate and persist data, and (optionally) blockchain integration for on-chain assets.</p>
-    </footer>
-  </div>
+    wagon = this.add.sprite(480, 360, 'w1');
 
-  <script src="script.js"></script>
+    this.anims.create({
+        key: 'move',
+        frames: [
+            { key: 'w1' },
+            { key: 'w2' },
+            { key: 'w3' },
+            { key: 'w4' },
+            { key: 'w5' }
+        ],
+        frameRate: 8,
+        repeat: -1
+    });
+
+    buttonText = this.add.text(480, 100, "START", {
+        fontSize: "48px",
+        color: "#00ff00",
+        backgroundColor: "#000",
+        padding: { x: 20, y: 10 }
+    }).setOrigin(0.5).setInteractive();
+
+    buttonText.on("pointerdown", () => {
+        if (!working) startGame();
+    });
+}
+
+function update() {
+    if (!working) return;
+
+    const elapsed = Date.now() - startTime;
+
+    if (elapsed >= WORK_TIME) {
+        stopGame();
+    }
+}
+
+function startGame() {
+    working = true;
+    startTime = Date.now();
+    wagon.play("move");
+    buttonText.setText("WORKING...");
+}
+
+function stopGame() {
+    working = false;
+    wagon.stop();
+    buttonText.setText("START");
+}
+</script>
+
 </body>
 </html>

@@ -14,9 +14,9 @@ canvas { display:block; margin:auto; }
 <script>
 const WIDTH = 960;
 const HEIGHT = 540;
-const SPEED = 1.2;
+const SPEED = 1;
 
-let working = false;
+let working = true;
 let bg1, bg2;
 let bgIndex = 1;
 const TOTAL_BG = 5;
@@ -25,6 +25,10 @@ const config = {
   type: Phaser.AUTO,
   width: WIDTH,
   height: HEIGHT,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   scene: { preload, create, update }
 };
 
@@ -34,49 +38,22 @@ function preload() {
   for (let i = 1; i <= 5; i++) {
     this.load.image("bg" + i, "./assets/bg" + i + ".png");
   }
-
-  for (let i = 1; i <= 5; i++) {
-    this.load.image("w" + i, "./assets/wagon" + i + ".png");
-  }
 }
 
 function create() {
-  bg1 = this.add.image(0, HEIGHT/2, "bg1").setOrigin(0,0.5);
-  bg2 = this.add.image(WIDTH, HEIGHT/2, "bg2").setOrigin(0,0.5);
+  bg1 = this.add.image(0, 0, "bg1").setOrigin(0, 0);
+  bg2 = this.add.image(WIDTH, 0, "bg2").setOrigin(0, 0);
 
-  const wagon = this.add.sprite(WIDTH/2, 400, "w1");
-
-  this.anims.create({
-    key: "move",
-    frames: [
-      {key:"w1"},{key:"w2"},{key:"w3"},{key:"w4"},{key:"w5"}
-    ],
-    frameRate: 8,
-    repeat: -1
-  });
-
-  wagon.play("move");
-
-  const startBtn = this.add.text(WIDTH/2, 60, "START", {
-    fontSize: "48px",
-    backgroundColor: "#000",
-    padding: {x:20,y:10}
-  }).setOrigin(0.5).setInteractive();
-
-  startBtn.on("pointerdown", () => {
-    working = !working;
-    startBtn.setText(working ? "WORKING..." : "START");
-  });
+  scaleToScreen(bg1);
+  scaleToScreen(bg2);
 }
 
 function update() {
-  if (!working) return;
-
   bg1.x -= SPEED;
   bg2.x -= SPEED;
 
-  if (bg1.x <= -WIDTH) resetBG(bg1);
-  if (bg2.x <= -WIDTH) resetBG(bg2);
+  if (bg1.x <= -bg1.displayWidth) resetBG(bg1);
+  if (bg2.x <= -bg2.displayWidth) resetBG(bg2);
 }
 
 function resetBG(bg) {
@@ -84,7 +61,13 @@ function resetBG(bg) {
   if (bgIndex > TOTAL_BG) bgIndex = 1;
 
   bg.setTexture("bg" + bgIndex);
+  scaleToScreen(bg);
   bg.x = WIDTH;
+}
+
+function scaleToScreen(image) {
+  const scale = WIDTH / image.width;
+  image.setScale(scale);
 }
 </script>
 

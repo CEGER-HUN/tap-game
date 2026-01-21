@@ -2,130 +2,89 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Mining Game</title>
-
+<title>Tap Game</title>
 <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-
 <style>
-body {
-  margin: 0;
-  background: black;
-}
-canvas {
-  display: block;
-  margin: auto;
-}
+body { margin:0; background:black; }
+canvas { display:block; margin:auto; }
 </style>
 </head>
 <body>
 
 <script>
-const WORK_TIME = 10000; // TEST için 10 saniye. Gerçek: 10800000
+const WIDTH = 960;
+const HEIGHT = 540;
+const SPEED = 1.2;
 
 let working = false;
-let startTime = 0;
-
-let wagon;
-let startText;
-
-let bgA, bgB;
+let bg1, bg2;
 let bgIndex = 1;
 const TOTAL_BG = 5;
 
 const config = {
   type: Phaser.AUTO,
-  width: 960,
-  height: 540,
+  width: WIDTH,
+  height: HEIGHT,
   scene: { preload, create, update }
 };
 
 new Phaser.Game(config);
 
 function preload() {
-  // 5 arka plan
-  this.load.image("bg1", "./assets/bg1.png");
-  this.load.image("bg2", "./assets/bg2.png");
-  this.load.image("bg3", "./assets/bg3.png");
-  this.load.image("bg4", "./assets/bg4.png");
-  this.load.image("bg5", "./assets/bg5.png");
+  for (let i = 1; i <= 5; i++) {
+    this.load.image("bg" + i, "./assets/bg" + i + ".png");
+  }
 
-  // Vagon frameleri
-  this.load.image("w1", "./assets/wagon1.png");
-  this.load.image("w2", "./assets/wagon2.png");
-  this.load.image("w3", "./assets/wagon3.png");
-  this.load.image("w4", "./assets/wagon4.png");
-  this.load.image("w5", "./assets/wagon5.png");
+  for (let i = 1; i <= 5; i++) {
+    this.load.image("w" + i, "./assets/wagon" + i + ".png");
+  }
 }
 
 function create() {
-  // Arka planlar
-  bgA = this.add.image(480, 270, "bg1");
-  bgB = this.add.image(1440, 270, "bg2");
+  bg1 = this.add.image(0, HEIGHT/2, "bg1").setOrigin(0,0.5);
+  bg2 = this.add.image(WIDTH, HEIGHT/2, "bg2").setOrigin(0,0.5);
 
-  // Vagon
-  wagon = this.add.sprite(480, 380, "w1");
+  const wagon = this.add.sprite(WIDTH/2, 400, "w1");
 
   this.anims.create({
     key: "move",
     frames: [
-      { key: "w1" },
-      { key: "w2" },
-      { key: "w3" },
-      { key: "w4" },
-      { key: "w5" }
+      {key:"w1"},{key:"w2"},{key:"w3"},{key:"w4"},{key:"w5"}
     ],
     frameRate: 8,
     repeat: -1
   });
 
-  // Start butonu
-  startText = this.add.text(480, 80, "START", {
+  wagon.play("move");
+
+  const startBtn = this.add.text(WIDTH/2, 60, "START", {
     fontSize: "48px",
-    color: "#00ff00",
     backgroundColor: "#000",
-    padding: { x: 20, y: 10 }
+    padding: {x:20,y:10}
   }).setOrigin(0.5).setInteractive();
 
-  startText.on("pointerdown", () => {
-    if (!working) startGame();
+  startBtn.on("pointerdown", () => {
+    working = !working;
+    startBtn.setText(working ? "WORKING..." : "START");
   });
 }
 
 function update() {
   if (!working) return;
 
-  // Arka plan akışı
-  bgA.x -= 1;
-  bgB.x -= 1;
+  bg1.x -= SPEED;
+  bg2.x -= SPEED;
 
-  if (bgA.x <= -480) recycleBG(bgA);
-  if (bgB.x <= -480) recycleBG(bgB);
-
-  // Süre kontrolü
-  if (Date.now() - startTime > WORK_TIME) {
-    stopGame();
-  }
+  if (bg1.x <= -WIDTH) resetBG(bg1);
+  if (bg2.x <= -WIDTH) resetBG(bg2);
 }
 
-function recycleBG(bg) {
+function resetBG(bg) {
   bgIndex++;
   if (bgIndex > TOTAL_BG) bgIndex = 1;
 
   bg.setTexture("bg" + bgIndex);
-  bg.x = 1440;
-}
-
-function startGame() {
-  working = true;
-  startTime = Date.now();
-  wagon.play("move");
-  startText.setText("WORKING...");
-}
-
-function stopGame() {
-  working = false;
-  wagon.stop();
-  startText.setText("START");
+  bg.x = WIDTH;
 }
 </script>
 

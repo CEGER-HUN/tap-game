@@ -1,114 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mining Demo</title>
-
+<title>Tap Mining Game</title>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
 <style>
-body {
-  margin: 0;
-  background: #000;
-  font-family: Arial;
-}
-
-#game {
-  position: relative;
-  width: 100vw;
-  height: 300px;
-  overflow: hidden;
-  background: black;
-}
-
-.bg {
-  position: absolute;
-  top: 0;
-  width: 200%;
-  height: 100%;
-  background-repeat: repeat-x;
-  background-size: auto 100%;
-  animation: scroll 20s linear infinite;
-  animation-play-state: paused;
-}
-
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-#ui {
-  padding: 10px;
-  background: #111;
-  color: white;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-}
-
+body { margin: 0; background: #000; }
+canvas { display: block; margin: auto; }
 </style>
 </head>
 
 <body>
 
-<div id="game">
-  <div id="bg" class="bg"></div>
-</div>
-
-<div id="ui">
-  <button onclick="startGame()">START</button>
-  <span id="timer">03:00:00</span>
-</div>
-
 <script>
-const backgrounds = [
-  "assets/bg1.png",
-  "assets/bg2.png",
-  "assets/bg3.png",
-  "assets/bg4.png",
-  "assets/bg5.png"
-];
+const WORK_TIME = 10800000; // 3 saat (test için 10000 yapabilirsin)
+const BG_SPEED = 1;
 
-let bgIndex = 0;
-let duration = 3 * 60 * 60; // 3 saat saniye
-let timerInterval;
-let bgInterval;
+let game;
+let working = false;
+let startTime = 0;
 
-const bg = document.getElementById("bg");
-const timer = document.getElementById("timer");
+const config = {
+  type: Phaser.AUTO,
+  width: 960,
+  height: 540,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  scene: {
+    preload,
+    create,
+    update
+  }
+};
 
-bg.style.backgroundImage = `url(${backgrounds[0]})`;
+new Phaser.Game(config);
 
-function startGame() {
-  bg.style.animationPlayState = "running";
-
-  clearInterval(timerInterval);
-  clearInterval(bgInterval);
-
-  timerInterval = setInterval(updateTimer, 1000);
-
-  bgInterval = setInterval(() => {
-    bgIndex = (bgIndex + 1) % backgrounds.length;
-    bg.style.backgroundImage = `url(${backgrounds[bgIndex]})`;
-  }, 15000); // her 15 saniyede arka plan değişir
+function preload() {
+  // Backgrounds
+  for (let i = 1; i <= 5; i++) {
+    this.load.image("bg" + i, "./assets/bg" + i + ".png");
+  }
+  
+  // Wagon frames
+  this.load.image("w1", "./assets/wagon1.png");
+  this.load.image("w2", "./assets/wagon2.png");
+  this.load.image("w3", "./assets/wagon3.png");
+  this.load.image("w4", "./assets/wagon4.png");
+  this.load.image("w5", "./assets/wagon5.png");
 }
 
-function updateTimer() {
-  if (duration <= 0) {
-    clearInterval(timerInterval);
-    clearInterval(bgInterval);
-    bg.style.animationPlayState = "paused";
-    return;
+let bg1, bg2;
+let bgIndex = 1;
+
+function create() {
+  bg1 = this.add.tileSprite(0, 0, 960, 540, "bg1").setOrigin(0, 0);
+  bg2 = this.add.tileSprite(960, 0, 960, 540, "bg2").setOrigin(0, 0);
+
+  this.anims.create({
+    key: "move",
+    frames: [
+      { key: "w1" },
+      { key: "w2" },
+      { key: "w3" },
+      { key: "w4" },
+      { key: "w5" }
+    ],
+    frameRate: 8,
+    repeat: -1
+  });
+
+  this.wagon = this.add.sprite(480, 380, "w1");
+  this.wagon.play("move");
+
+  this.startText = this.add.text(480, 80, "START", {
+    fontSize: "48px",
+    color: "#00ff00",
+    backgroundColor: "#000",
+    padding: {x:20, y:10}
+  }).setOrigin(0.5).setInteractive();
+
+  this.startText.on("pointerdown", () => {
+    if (!working) {
+      startMining(this);
+    } else {
+      stopMining(this);
+    }
+  });
+}
+
+function update() {
+  if (working) {
+    bg1.tilePositionX += BG_SPEED;
+    bg2.tilePositionX += BG_SPEED;
+
+    if (Date.now() - startTime >= WORK_TIME) {
+      stopMining(this);
+    }
   }
+}
 
-  duration--;
+function startMining(scene) {
+  working = true;
+  startTime = Date.now();
+  scene.startText.setText("WORKING...");
+}
 
-  let h = String(Math.floor(duration / 3600)).padStart(2, "0");
-  let m = String(Math.floor((duration % 3600) / 60)).padStart(2, "0");
-  let s = String(duration % 60).padStart(2, "0");
-
-  timer.textContent = `${h}:${m}:${s}`;
+function stopMining(scene) {
+  working = false;
+  scene.startText.setText("START");
 }
 </script>
 

@@ -2,44 +2,55 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Season Clicker</title>
+
 <style>
 body {
-  background: radial-gradient(circle,#0f0c29,#302b63,#24243e);
+  background: radial-gradient(circle,#050014,#14002e,#000);
   color:white;
   font-family:Arial;
   text-align:center;
   margin:0;
+  overflow:hidden;
 }
+h1 { margin-top:20px; }
+
+.card {
+  background:rgba(255,255,255,0.05);
+  padding:15px;
+  border-radius:16px;
+  margin:10px;
+}
+
 #coin {
-  font-size:80px;
+  font-size:90px;
   cursor:pointer;
-  transition: transform 0.1s;
+  user-select:none;
+  transition: transform 0.05s;
 }
 #coin:active {
-  transform: scale(0.9);
+  transform: scale(0.85);
 }
+
 .pop {
   position:absolute;
+  font-weight:bold;
   color:#00ffcc;
+  pointer-events:none;
   animation: float 1s forwards;
 }
 @keyframes float {
   from {opacity:1; transform:translateY(0);}
   to {opacity:0; transform:translateY(-80px);}
 }
-.card {
-  background:rgba(255,255,255,0.05);
-  margin:10px;
-  padding:15px;
-  border-radius:15px;
-}
+
 button {
   padding:10px 20px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   background:#00ffcc;
-  cursor:pointer;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -47,36 +58,57 @@ button {
 
 <h1>🚀 Season Clicker</h1>
 
-<div class="card">Player: <span id="user">Guest</span></div>
-<div class="card">Season Points: <span id="score">0</span></div>
+<div class="card">👤 Player: <span id="user">Guest</span></div>
+<div class="card">💎 Points: <span id="score">0</span></div>
 
-<div id="coin">💎</div>
+<div id="coin">💠</div>
 
-<div class="card">⏳ Season Ends: <span id="timer"></span></div>
+<div class="card">⏳ Season ends in: <span id="timer"></span></div>
 
 <div class="card">
-Daily Bonus: <span id="bonusStatus"></span><br>
-<button onclick="claimBonus()">Claim</button>
+🎁 Daily Bonus: <span id="bonusStatus"></span><br><br>
+<button onclick="claimBonus()">Claim Bonus</button>
 </div>
 
-<audio id="tapSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+<audio id="tapSound" preload="auto">
+  <source src="https://www.soundjay.com/button/sounds/button-16.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-let score = parseInt(localStorage.getItem("score")) || 0;
-let lastBonus = localStorage.getItem("bonus") || 0;
-document.getElementById("score").innerText = score;
+/* ---------- STORAGE ---------- */
+let score = Number(localStorage.getItem("score") || 0);
+let lastBonus = Number(localStorage.getItem("lastBonus") || 0);
+let seasonEnd = Number(localStorage.getItem("seasonEnd"));
 
-document.getElementById("coin").onclick = e => {
-  if (score > 9999999) return; // anti cheat basit
+if (!seasonEnd || seasonEnd < Date.now()) {
+  seasonEnd = Date.now() + 6*24*60*60*1000;
+  localStorage.setItem("seasonEnd", seasonEnd);
+}
+
+const scoreEl = document.getElementById("score");
+scoreEl.innerText = score;
+
+/* ---------- TAP ---------- */
+const coin = document.getElementById("coin");
+const sound = document.getElementById("tapSound");
+
+coin.addEventListener("click", e => {
+  if(score > 1000000) return; // anti cheat cap
+
   score++;
   localStorage.setItem("score", score);
-  document.getElementById("score").innerText = score;
-  document.getElementById("tapSound").play();
-  pop(e.clientX, e.clientY);
-};
+  scoreEl.innerText = score;
 
+  sound.currentTime = 0;
+  sound.play().catch(()=>{});
+
+  pop(e.touches ? e.touches[0].clientX : e.clientX,
+      e.touches ? e.touches[0].clientY : e.clientY);
+});
+
+/* ---------- POP ---------- */
 function pop(x,y){
-  let el = document.createElement("div");
+  const el = document.createElement("div");
   el.className = "pop";
   el.innerText = "+1";
   el.style.left = x+"px";
@@ -85,42 +117,46 @@ function pop(x,y){
   setTimeout(()=>el.remove(),1000);
 }
 
+/* ---------- BONUS ---------- */
 function claimBonus(){
-  let now = Date.now();
-  if(now - lastBonus > 86400000){
-    score += 100;
+  const now = Date.now();
+  if(now - lastBonus >= 86400000){
+    score += 500;
     lastBonus = now;
-    localStorage.setItem("bonus", now);
     localStorage.setItem("score", score);
-    alert("🎁 +100 Bonus!");
+    localStorage.setItem("lastBonus", lastBonus);
+    alert("🎁 +500 bonus!");
   } else {
-    alert("Bonus already claimed.");
+    alert("Already claimed today.");
   }
 }
 
 function updateBonus(){
-  let now = Date.now();
+  const now = Date.now();
   document.getElementById("bonusStatus").innerText =
-    (now - lastBonus > 86400000) ? "Available" : "Claimed";
+    (now - lastBonus >= 86400000) ? "Available" : "Claimed";
 }
-
 setInterval(updateBonus,1000);
 
-let seasonEnd = Date.now() + 6*24*60*60*1000;
+/* ---------- TIMER ---------- */
 function updateTimer(){
-  let d = seasonEnd - Date.now();
-  if(d < 0) return document.getElementById("timer").innerText = "Season Ended";
-  let h = Math.floor(d/3600000);
-  let m = Math.floor(d/60000)%60;
-  let s = Math.floor(d/1000)%60;
-  document.getElementById("timer").innerText = `${h}h ${m}m ${s}s`;
+  const diff = seasonEnd - Date.now();
+  if(diff <= 0){
+    document.getElementById("timer").innerText = "Season Ended";
+    return;
+  }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor(diff/3600000)%24;
+  const m = Math.floor(diff/60000)%60;
+  const s = Math.floor(diff/1000)%60;
+  document.getElementById("timer").innerText = `${d}d ${h}h ${m}m ${s}s`;
 }
 setInterval(updateTimer,1000);
 
-// Telegram username
-if(window.Telegram?.WebApp){
+/* ---------- TELEGRAM ---------- */
+if(window.Telegram?.WebApp?.initDataUnsafe?.user){
   document.getElementById("user").innerText =
-    Telegram.WebApp.initDataUnsafe?.user?.username || "TG User";
+    Telegram.WebApp.initDataUnsafe.user.username || "TG User";
 }
 </script>
 </body>

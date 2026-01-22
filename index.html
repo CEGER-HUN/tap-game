@@ -1,15 +1,148 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Coin Game</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Vankedisi Trader</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  background:#0f0f0f;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+#game {
+  max-width:400px;
+  margin:auto;
+}
+button {
+  padding:15px;
+  font-size:18px;
+  border-radius:15px;
+  margin:5px;
+}
+.buy { background:green; color:white;}
+.sell { background:red; color:white;}
+.info { margin:10px; font-size:18px;}
+</style>
 </head>
 <body>
 
-  <h1 id="counter">Coins: 0</h1>
+<div id="game">
+  <h2>🐾 Vankedisi Trader</h2>
 
-  <button id="coin">🪙</button>
+  <div class="info">PAW: <span id="paw">10000</span></div>
+  <div class="info">PNL: <span id="pnl">0</span></div>
+  <div class="info">Session: <span id="time">0</span>s</div>
 
-  <script src="game.js"></script>
+  <canvas id="chart"></canvas>
+
+  <div>
+    <button class="buy" onclick="buy()">BUY</button>
+    <button class="sell" onclick="sell()">SELL</button>
+  </div>
+
+  <div id="status"></div>
+</div>
+
+<script>
+let paw = 10000;
+let pnl = 0;
+let price = 100;
+let entryPrice = null;
+let inPosition = false;
+
+let sessionTime = Math.floor(Math.random()*25)+5;
+let timeLeft = sessionTime;
+
+document.getElementById("time").innerText = timeLeft;
+
+const ctx = document.getElementById('chart').getContext('2d');
+let labels = [];
+let data = [];
+
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Price',
+      data: data,
+      borderWidth: 2,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive:true,
+    scales: {
+      x: { display:false },
+      y: { display:false }
+    },
+    plugins:{
+      legend:{display:false}
+    }
+  }
+});
+
+function updatePrice() {
+  price += (Math.random() - 0.45) * 5;
+  if(price < 10) price = 10;
+
+  labels.push('');
+  data.push(price);
+  if(labels.length > 50) {
+    labels.shift();
+    data.shift();
+  }
+  chart.update();
+}
+
+setInterval(updatePrice, 500);
+
+let timer = setInterval(() => {
+  timeLeft--;
+  document.getElementById("time").innerText = timeLeft;
+
+  if(timeLeft <= 0){
+    rug();
+  }
+}, 1000);
+
+function buy(){
+  if(inPosition) return;
+  entryPrice = price;
+  inPosition = true;
+  document.getElementById("status").innerText = "Pozisyon açıldı";
+}
+
+function sell(){
+  if(!inPosition) return;
+  let diff = price - entryPrice;
+  let gain = Math.round(diff * 10);
+  pnl += gain;
+  paw += gain;
+  if(paw < 0) paw = 0;
+
+  document.getElementById("pnl").innerText = pnl;
+  document.getElementById("paw").innerText = paw;
+  document.getElementById("status").innerText = gain >= 0 ? "Kâr: "+gain : "Zarar: "+gain;
+
+  inPosition = false;
+}
+
+function rug(){
+  if(inPosition){
+    document.getElementById("status").innerText = "💥 RUG! Pozisyon yandı.";
+  } else {
+    document.getElementById("status").innerText = "Session bitti.";
+  }
+
+  inPosition = false;
+
+  sessionTime = Math.floor(Math.random()*25)+5;
+  timeLeft = sessionTime;
+}
+</script>
 </body>
 </html>

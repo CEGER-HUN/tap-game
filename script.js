@@ -72,19 +72,63 @@ coin.addEventListener('click', (e) => {
     updateUI();
 });
 
+// YENİ: Güzel Level Up Bildirimi
 function levelUp() {
+    const oldLevel = gameState.level;
     gameState.level++;
     gameState.xp = 0;
     gameState.xpToNextLevel = Math.floor(gameState.xpToNextLevel * 1.5);
     
+    // Bonus reward
+    const bonus = gameState.level * 50;
+    gameState.score += bonus;
+    
     // Confetti effect
     createConfetti();
     
-    // Show level up notification
-    showNotification(`🎉 Level ${gameState.level}!`, 'success');
+    // Güzel bildirim göster
+    showLevelUpNotification(gameState.level, bonus);
+}
+
+function showLevelUpNotification(level, bonus) {
+    // Overlay oluştur
+    const overlay = document.createElement('div');
+    overlay.className = 'notification-overlay';
+    document.body.appendChild(overlay);
     
-    // Bonus reward
-    gameState.score += gameState.level * 50;
+    // Bildirim oluştur
+    const notification = document.createElement('div');
+    notification.className = 'level-up-notification';
+    notification.innerHTML = `
+        <div class="emoji">🎉</div>
+        <h2>LEVEL ${level}!</h2>
+        <p>Tebrikler! Yeni seviyeye ulaştın</p>
+        <div class="bonus">+${bonus} Bonus Coin 💰</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 3 saniye sonra kapat
+    setTimeout(() => {
+        notification.classList.add('hide');
+        overlay.style.animation = 'fadeOut 0.3s ease';
+        
+        setTimeout(() => {
+            notification.remove();
+            overlay.remove();
+        }, 400);
+    }, 3000);
+    
+    // Tıklayınca kapat
+    overlay.addEventListener('click', () => {
+        notification.classList.add('hide');
+        overlay.style.animation = 'fadeOut 0.3s ease';
+        
+        setTimeout(() => {
+            notification.remove();
+            overlay.remove();
+        }, 400);
+    });
 }
 
 function runAutoClickers() {

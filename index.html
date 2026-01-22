@@ -2,9 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Vankedisi Trader</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<title>Vankedisi Clicker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
   background:#0f0f0f;
@@ -12,137 +11,105 @@ body {
   font-family:Arial;
   text-align:center;
 }
-#game {
+.container {
   max-width:400px;
   margin:auto;
+  padding:20px;
 }
 button {
-  padding:15px;
-  font-size:18px;
-  border-radius:15px;
-  margin:5px;
+  padding:20px;
+  font-size:20px;
+  border-radius:20px;
+  margin:10px;
+  background:gold;
+  border:none;
 }
-.buy { background:green; color:white;}
-.sell { background:red; color:white;}
-.info { margin:10px; font-size:18px;}
+.card {
+  background:#1a1a1a;
+  padding:15px;
+  border-radius:15px;
+  margin:10px 0;
+}
+input {
+  padding:10px;
+  border-radius:10px;
+  border:none;
+}
 </style>
 </head>
 <body>
 
-<div id="game">
-  <h2>🐾 Vankedisi Trader</h2>
+<div class="container">
+  <h2>🐾 Vankedisi Clicker</h2>
 
-  <div class="info">PAW: <span id="paw">10000</span></div>
-  <div class="info">PNL: <span id="pnl">0</span></div>
-  <div class="info">Session: <span id="time">0</span>s</div>
-
-  <canvas id="chart"></canvas>
-
-  <div>
-    <button class="buy" onclick="buy()">BUY</button>
-    <button class="sell" onclick="sell()">SELL</button>
+  <div class="card">
+    Kullanıcı adı:
+    <input id="username" placeholder="nick yaz">
+    <button onclick="saveName()">Kaydet</button>
   </div>
 
-  <div id="status"></div>
+  <div class="card">
+    <h3>Sezon Puanı: <span id="score">0</span></h3>
+    <button onclick="clickCoin()">🪙 Tıkla +1</button>
+  </div>
+
+  <div class="card">
+    <h3>🏆 Leaderboard</h3>
+    <ol id="leaderboard"></ol>
+  </div>
+
+  <div class="card">
+    <h3>💰 Ödül Havuzu</h3>
+    <p>Bu sezon havuz: <b>500 USDT</b></p>
+    <p>İlk 10 ödül alır</p>
+  </div>
 </div>
 
 <script>
-let paw = 10000;
-let pnl = 0;
-let price = 100;
-let entryPrice = null;
-let inPosition = false;
+let score = parseInt(localStorage.getItem("score")) || 0;
+let username = localStorage.getItem("username") || "";
 
-let sessionTime = Math.floor(Math.random()*25)+5;
-let timeLeft = sessionTime;
+document.getElementById("score").innerText = score;
+document.getElementById("username").value = username;
 
-document.getElementById("time").innerText = timeLeft;
-
-const ctx = document.getElementById('chart').getContext('2d');
-let labels = [];
-let data = [];
-
-const chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: labels,
-    datasets: [{
-      label: 'Price',
-      data: data,
-      borderWidth: 2,
-      tension: 0.4
-    }]
-  },
-  options: {
-    responsive:true,
-    scales: {
-      x: { display:false },
-      y: { display:false }
-    },
-    plugins:{
-      legend:{display:false}
-    }
-  }
-});
-
-function updatePrice() {
-  price += (Math.random() - 0.45) * 5;
-  if(price < 10) price = 10;
-
-  labels.push('');
-  data.push(price);
-  if(labels.length > 50) {
-    labels.shift();
-    data.shift();
-  }
-  chart.update();
+function saveName(){
+  username = document.getElementById("username").value;
+  if(username.length < 2) return alert("İsim gir");
+  localStorage.setItem("username", username);
+  updateLeaderboard();
 }
 
-setInterval(updatePrice, 500);
-
-let timer = setInterval(() => {
-  timeLeft--;
-  document.getElementById("time").innerText = timeLeft;
-
-  if(timeLeft <= 0){
-    rug();
-  }
-}, 1000);
-
-function buy(){
-  if(inPosition) return;
-  entryPrice = price;
-  inPosition = true;
-  document.getElementById("status").innerText = "Pozisyon açıldı";
+function clickCoin(){
+  if(!username) return alert("Önce isim gir");
+  score++;
+  localStorage.setItem("score", score);
+  document.getElementById("score").innerText = score;
+  updateLeaderboard();
 }
 
-function sell(){
-  if(!inPosition) return;
-  let diff = price - entryPrice;
-  let gain = Math.round(diff * 10);
-  pnl += gain;
-  paw += gain;
-  if(paw < 0) paw = 0;
+function updateLeaderboard(){
+  if(!username) return;
 
-  document.getElementById("pnl").innerText = pnl;
-  document.getElementById("paw").innerText = paw;
-  document.getElementById("status").innerText = gain >= 0 ? "Kâr: "+gain : "Zarar: "+gain;
+  let board = JSON.parse(localStorage.getItem("board")) || {};
 
-  inPosition = false;
+  board[username] = score;
+
+  localStorage.setItem("board", JSON.stringify(board));
+
+  let sorted = Object.entries(board)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0,10);
+
+  let html = "";
+  sorted.forEach((u,i)=>{
+    html += `<li>${u[0]} - ${u[1]} puan</li>`;
+  });
+
+  document.getElementById("leaderboard").innerHTML = html;
 }
 
-function rug(){
-  if(inPosition){
-    document.getElementById("status").innerText = "💥 RUG! Pozisyon yandı.";
-  } else {
-    document.getElementById("status").innerText = "Session bitti.";
-  }
-
-  inPosition = false;
-
-  sessionTime = Math.floor(Math.random()*25)+5;
-  timeLeft = sessionTime;
-}
+updateLeaderboard();
 </script>
+
 </body>
 </html>

@@ -1,47 +1,176 @@
+:root {
+    --primary: #ffd700;
+    --secondary: #6c5ce7;
+    --bg-dark: #121212;
+    --card-bg: #1e1e1e;
+    --text: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
 
 body {
-  background: linear-gradient(135deg, #0f051d, #1b0f2f);
-  font-family: Arial, sans-serif;
-  color: white;
-  text-align: center;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
+.game-container {
+    width: 100%;
+    max-width: 450px;
+    height: 90vh;
+    background: var(--card-bg);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
 }
 
-#coin {
-  width: 150px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
+/* Üst Panel */
+header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-#coin:active {
-  transform: scale(1.1);
+#score {
+    font-size: 3rem;
+    color: var(--primary);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-.shop button {
-  margin: 10px;
-  padding: 10px;
-  background: #00ffd5;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+.level-container {
+    margin-top: 10px;
 }
 
-.xp-bar {
-  width: 100%;
-  height: 15px;
-  background: #333;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 10px 0;
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
 }
 
-#xpFill {
-  height: 100%;
-  width: 0%;
-  background: #00ffd5;
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #333;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary), #a29bfe);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Coin Alanı */
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#main-coin {
+    font-size: 150px;
+    cursor: pointer;
+    transition: transform 0.1s active;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+}
+
+#main-coin:active {
+    transform: scale(0.9);
+}
+
+/* Yüzen Puan Efekti */
+.floating-text {
+    position: absolute;
+    color: var(--primary);
+    font-weight: bold;
+    pointer-events: none;
+    animation: floatUp 0.8s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100px); opacity: 0; }
+}
+
+/* Menü ve Modallar */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #333;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    border-radius: 30px;
+    z-index: 10;
+}
+
+.modal-content {
+    padding: 25px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.item {
+    background: #2d2d2d;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.item button {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 480px) {
+    .game-container {
+        height: 100vh;
+        border-radius: 0;
+    }
 }

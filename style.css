@@ -10,12 +10,13 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     user-select: none;
+    -webkit-tap-highlight-color: transparent; /* Mobildeki mavi kareyi kaldırır */
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: #000;
     color: var(--text);
     display: flex;
     justify-content: center;
@@ -27,104 +28,86 @@ body {
 .game-container {
     width: 100%;
     max-width: 450px;
-    height: 90vh;
+    height: 100%;
     background: var(--card-bg);
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
     padding: 20px;
     position: relative;
 }
 
-/* Üst Panel */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    padding-top: 20px;
 }
 
 #score {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--primary);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-.level-container {
-    margin-top: 10px;
-}
-
-.level-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-}
+.level-container { margin-top: 15px; }
 
 .progress-bar {
     width: 100%;
-    height: 12px;
+    height: 10px;
     background: #333;
-    border-radius: 6px;
-    overflow: hidden;
+    border-radius: 5px;
+    margin-top: 8px;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--secondary), #a29bfe);
+    background: var(--secondary);
     width: 0%;
-    transition: width 0.3s ease;
+    border-radius: 5px;
+    transition: width 0.3s;
 }
 
-/* Coin Alanı */
 main {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: relative; /* Efektler için önemli */
 }
 
 #main-coin {
-    font-size: 150px;
+    font-size: 180px;
     cursor: pointer;
-    transition: transform 0.1s active;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.2));
+    outline: none;
 }
 
-#main-coin:active {
-    transform: scale(0.9);
-}
+#main-coin:active { transform: scale(0.95); }
 
-/* Yüzen Puan Efekti */
 .floating-text {
     position: absolute;
     color: var(--primary);
     font-weight: bold;
+    font-size: 1.5rem;
     pointer-events: none;
-    animation: floatUp 0.8s ease-out forwards;
+    animation: floatUp 0.6s ease-out forwards;
+    z-index: 100;
 }
 
 @keyframes floatUp {
     0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-100px); opacity: 0; }
+    100% { transform: translateY(-120px); opacity: 0; }
 }
 
-/* Menü ve Modallar */
 .tabs {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+    padding-bottom: 20px;
 }
 
 .tabs button {
     flex: 1;
-    padding: 12px;
+    padding: 15px;
     border: none;
-    border-radius: 12px;
-    background: #333;
+    border-radius: 15px;
+    background: #2d2d2d;
     color: white;
-    cursor: pointer;
     font-weight: bold;
 }
 
@@ -132,45 +115,26 @@ main {
     display: none;
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px);
-    border-radius: 30px;
-    z-index: 10;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
 }
 
-.modal-content {
-    padding: 25px;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
+.modal-content { padding: 30px; }
 
 .item {
-    background: #2d2d2d;
+    background: #333;
     padding: 15px;
-    border-radius: 15px;
+    border-radius: 12px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer;
 }
 
 .item button {
     background: var(--secondary);
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 10px 20px;
     border-radius: 8px;
-}
-
-/* Mobil Uyumluluk */
-@media (max-width: 480px) {
-    .game-container {
-        height: 100vh;
-        border-radius: 0;
-    }
 }

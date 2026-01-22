@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Modern Clicker Game</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -25,11 +25,10 @@
             </div>
         </header>
 
-        <main>
+        <main id="game-main">
             <div id="coin-container">
                 <div id="main-coin">🪙</div>
             </div>
-            <div id="active-boosters"></div>
         </main>
 
         <nav class="tabs">
@@ -48,23 +47,23 @@
                     <div class="item" onclick="buyClickPower()">
                         <div class="item-info">
                             <h3>Click Power</h3>
-                            <p>Tıklama başına <span id="click-inc-val">+1</span></p>
+                            <p>Tıklama: <span id="click-inc-val">+1</span></p>
                         </div>
-                        <button id="buy-click">Maliyet: 50</button>
+                        <button id="buy-click">50</button>
                     </div>
                     <div class="item" onclick="buyAutoClicker()">
                         <div class="item-info">
                             <h3>Auto Clicker</h3>
-                            <p>Saniyede <span id="auto-inc-val">1</span> coin</p>
+                            <p>Saniyede: <span id="auto-inc-val">1</span></p>
                         </div>
-                        <button id="buy-auto">Maliyet: 100</button>
+                        <button id="buy-auto">100</button>
                     </div>
                     <div class="item" onclick="buyBooster()">
                         <div class="item-info">
                             <h3>2x Booster</h3>
-                            <p>30 Saniye boyunca 2 kat kazanç</p>
+                            <p>30 Sn 2 Kat Puan</p>
                         </div>
-                        <button id="buy-boost">Maliyet: 500</button>
+                        <button id="buy-boost">500</button>
                     </div>
                 </div>
             </div>
@@ -76,8 +75,7 @@
                     <h2>Görevler</h2>
                     <span class="close" onclick="closeModal()">&times;</span>
                 </div>
-                <div id="task-list">
-                    </div>
+                <div id="task-list"></div>
             </div>
         </div>
     </div>

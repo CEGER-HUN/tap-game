@@ -1,115 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Vankedisi Clicker</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Season Clicker</title>
+
 <style>
 body {
-  background:#0f0f0f;
-  color:white;
-  font-family:Arial;
-  text-align:center;
+  margin: 0;
+  background: radial-gradient(circle at top, #1f1f1f, #000);
+  font-family: Arial, sans-serif;
+  color: white;
 }
-.container {
-  max-width:400px;
-  margin:auto;
-  padding:20px;
+
+.app {
+  max-width: 420px;
+  margin: auto;
+  padding: 15px;
 }
-button {
-  padding:20px;
-  font-size:20px;
-  border-radius:20px;
-  margin:10px;
-  background:gold;
-  border:none;
-}
+
 .card {
-  background:#1a1a1a;
-  padding:15px;
-  border-radius:15px;
-  margin:10px 0;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 20px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 20px rgba(255,215,0,0.05);
 }
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.score {
+  text-align: center;
+  font-size: 40px;
+  color: gold;
+}
+
+.click-btn {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle, gold, orange);
+  font-size: 22px;
+  font-weight: bold;
+  display: block;
+  margin: 20px auto;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.click-btn:active {
+  transform: scale(0.9);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.small {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
 input {
-  padding:10px;
-  border-radius:10px;
-  border:none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  margin-top: 8px;
+}
+
+ol {
+  padding-left: 20px;
 }
 </style>
 </head>
-<body>
 
-<div class="container">
-  <h2>🐾 Vankedisi Clicker</h2>
+<body>
+<div class="app">
 
   <div class="card">
-    Kullanıcı adı:
-    <input id="username" placeholder="nick yaz">
+    <div class="title">🐾 Clicker Season Game</div>
+  </div>
+
+  <div class="card">
+    <div class="small">Username</div>
+    <input id="name" placeholder="nick gir">
     <button onclick="saveName()">Kaydet</button>
   </div>
 
   <div class="card">
-    <h3>Sezon Puanı: <span id="score">0</span></h3>
-    <button onclick="clickCoin()">🪙 Tıkla +1</button>
+    <div class="small">Season Points</div>
+    <div class="score" id="points">0</div>
+    <button class="click-btn" onclick="earn()">TAP</button>
   </div>
 
   <div class="card">
-    <h3>🏆 Leaderboard</h3>
-    <ol id="leaderboard"></ol>
+    <div class="row">
+      <b>🏆 Leaderboard</b>
+      <span class="small">Top 10</span>
+    </div>
+    <ol id="board"></ol>
   </div>
 
   <div class="card">
-    <h3>💰 Ödül Havuzu</h3>
-    <p>Bu sezon havuz: <b>500 USDT</b></p>
-    <p>İlk 10 ödül alır</p>
+    <b>💰 Reward Pool</b>
+    <p class="small">This season: 500 USDT</p>
+    <p class="small">Top 10 players rewarded</p>
   </div>
+
 </div>
 
 <script>
-let score = parseInt(localStorage.getItem("score")) || 0;
-let username = localStorage.getItem("username") || "";
+let points = parseInt(localStorage.getItem("points")) || 0;
+let name = localStorage.getItem("name") || "";
 
-document.getElementById("score").innerText = score;
-document.getElementById("username").value = username;
+document.getElementById("points").innerText = points;
+document.getElementById("name").value = name;
 
-function saveName(){
-  username = document.getElementById("username").value;
-  if(username.length < 2) return alert("İsim gir");
-  localStorage.setItem("username", username);
-  updateLeaderboard();
+function saveName() {
+  name = document.getElementById("name").value.trim();
+  if(name.length < 2) return alert("Nick gir");
+  localStorage.setItem("name", name);
+  updateBoard();
 }
 
-function clickCoin(){
-  if(!username) return alert("Önce isim gir");
-  score++;
-  localStorage.setItem("score", score);
-  document.getElementById("score").innerText = score;
-  updateLeaderboard();
+function earn() {
+  if(!name) return alert("Önce isim gir");
+  points++;
+  localStorage.setItem("points", points);
+  document.getElementById("points").innerText = points;
+  updateBoard();
 }
 
-function updateLeaderboard(){
-  if(!username) return;
+function updateBoard() {
+  if(!name) return;
 
   let board = JSON.parse(localStorage.getItem("board")) || {};
-
-  board[username] = score;
-
+  board[name] = points;
   localStorage.setItem("board", JSON.stringify(board));
 
   let sorted = Object.entries(board)
-    .sort((a,b) => b[1]-a[1])
+    .sort((a,b)=>b[1]-a[1])
     .slice(0,10);
 
   let html = "";
   sorted.forEach((u,i)=>{
-    html += `<li>${u[0]} - ${u[1]} puan</li>`;
+    html += `<li>${u[0]} — ${u[1]}</li>`;
   });
 
-  document.getElementById("leaderboard").innerHTML = html;
+  document.getElementById("board").innerHTML = html;
 }
 
-updateLeaderboard();
+updateBoard();
 </script>
-
 </body>
 </html>

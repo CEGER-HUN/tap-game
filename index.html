@@ -2,189 +2,126 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Season Clicker Pro</title>
-
+<title>Season Clicker</title>
 <style>
 body {
-  margin: 0;
-  background: radial-gradient(circle at top, #1a1a1a, #000);
-  font-family: Arial, sans-serif;
-  color: white;
+  background: radial-gradient(circle,#0f0c29,#302b63,#24243e);
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  margin:0;
 }
-
-.app {
-  max-width: 420px;
-  margin: auto;
-  padding: 15px;
-}
-
-.card {
-  background: #0e0e0e;
-  border: 1px solid #222;
-  border-radius: 20px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 0 25px rgba(255,215,0,0.05);
-}
-
-.title {
-  text-align: center;
-  font-size: 26px;
-  font-weight: bold;
-  color: gold;
-  text-shadow: 0 0 10px gold;
-}
-
-.score {
-  text-align: center;
-  font-size: 46px;
-  color: gold;
-  text-shadow: 0 0 15px gold;
-}
-
-.click-btn {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: none;
-  background: radial-gradient(circle, gold, orange);
-  font-size: 22px;
-  font-weight: bold;
-  display: block;
-  margin: 20px auto;
-  cursor: pointer;
-  box-shadow: 0 0 30px gold;
+#coin {
+  font-size:80px;
+  cursor:pointer;
   transition: transform 0.1s;
 }
-
-.click-btn:active {
+#coin:active {
   transform: scale(0.9);
 }
-
-.small { font-size: 14px; opacity: 0.7; }
-
-.coin {
-  position: absolute;
-  color: gold;
-  font-weight: bold;
-  animation: fly 1s forwards;
-  pointer-events: none;
+.pop {
+  position:absolute;
+  color:#00ffcc;
+  animation: float 1s forwards;
 }
-
-@keyframes fly {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-80px); }
+@keyframes float {
+  from {opacity:1; transform:translateY(0);}
+  to {opacity:0; transform:translateY(-80px);}
+}
+.card {
+  background:rgba(255,255,255,0.05);
+  margin:10px;
+  padding:15px;
+  border-radius:15px;
+}
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#00ffcc;
+  cursor:pointer;
 }
 </style>
 </head>
-
 <body>
-<div class="app">
 
-  <div class="card title">🐾 Season Clicker</div>
+<h1>🚀 Season Clicker</h1>
 
-  <div class="card">
-    <div class="small">Player</div>
-    <div id="user">Loading...</div>
-  </div>
+<div class="card">Player: <span id="user">Guest</span></div>
+<div class="card">Season Points: <span id="score">0</span></div>
 
-  <div class="card">
-    <div class="small">Season Points</div>
-    <div class="score" id="points">0</div>
-    <button class="click-btn" onclick="tap()">TAP</button>
-  </div>
+<div id="coin">💎</div>
 
-  <div class="card">
-    <div class="small">⏳ Season ends in</div>
-    <div id="timer"></div>
-  </div>
+<div class="card">⏳ Season Ends: <span id="timer"></span></div>
 
-  <div class="card">
-    <b>🎁 Daily Bonus</b>
-    <p id="bonusText">Checking...</p>
-    <button onclick="claimBonus()">Claim Bonus</button>
-  </div>
-
+<div class="card">
+Daily Bonus: <span id="bonusStatus"></span><br>
+<button onclick="claimBonus()">Claim</button>
 </div>
 
-<audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_9b1e5a86de.mp3"></audio>
+<audio id="tapSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
 
 <script>
-// Telegram username
-let username = "Guest";
-if (window.Telegram?.WebApp?.initDataUnsafe?.user?.username) {
-  username = "@" + Telegram.WebApp.initDataUnsafe.user.username;
-}
-document.getElementById("user").innerText = username;
+let score = parseInt(localStorage.getItem("score")) || 0;
+let lastBonus = localStorage.getItem("bonus") || 0;
+document.getElementById("score").innerText = score;
 
-// Points
-let points = parseInt(localStorage.getItem("points")) || 0;
-document.getElementById("points").innerText = points;
+document.getElementById("coin").onclick = e => {
+  if (score > 9999999) return; // anti cheat basit
+  score++;
+  localStorage.setItem("score", score);
+  document.getElementById("score").innerText = score;
+  document.getElementById("tapSound").play();
+  pop(e.clientX, e.clientY);
+};
 
-// Anti cheat
-let lastTap = 0;
-
-// Tap
-function tap(){
-  let now = Date.now();
-  if(now - lastTap < 120) return;
-  lastTap = now;
-
-  points++;
-  localStorage.setItem("points", points);
-  document.getElementById("points").innerText = points;
-
-  document.getElementById("clickSound").play();
-  spawnCoin();
+function pop(x,y){
+  let el = document.createElement("div");
+  el.className = "pop";
+  el.innerText = "+1";
+  el.style.left = x+"px";
+  el.style.top = y+"px";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1000);
 }
 
-// Coin animation
-function spawnCoin(){
-  let c = document.createElement("div");
-  c.className = "coin";
-  c.innerText = "+1";
-  c.style.left = (window.innerWidth/2) + "px";
-  c.style.top = (window.innerHeight/2) + "px";
-  document.body.appendChild(c);
-  setTimeout(()=>c.remove(),1000);
-}
-
-// Season timer (7 days loop)
-let seasonEnd = parseInt(localStorage.getItem("seasonEnd"));
-if(!seasonEnd){
-  seasonEnd = Date.now() + 7*24*60*60*1000;
-  localStorage.setItem("seasonEnd", seasonEnd);
-}
-
-setInterval(()=>{
-  let diff = seasonEnd - Date.now();
-  if(diff <= 0){
-    points = 0;
-    localStorage.setItem("points",0);
-    seasonEnd = Date.now() + 7*24*60*60*1000;
-    localStorage.setItem("seasonEnd",seasonEnd);
-  }
-  let h = Math.floor(diff/1000/60/60);
-  let m = Math.floor(diff/1000/60)%60;
-  let s = Math.floor(diff/1000)%60;
-  document.getElementById("timer").innerText = `${h}h ${m}m ${s}s`;
-},1000);
-
-// Daily bonus
 function claimBonus(){
-  let last = parseInt(localStorage.getItem("bonus")) || 0;
-  if(Date.now() - last < 86400000){
-    document.getElementById("bonusText").innerText = "Already claimed today.";
-    return;
+  let now = Date.now();
+  if(now - lastBonus > 86400000){
+    score += 100;
+    lastBonus = now;
+    localStorage.setItem("bonus", now);
+    localStorage.setItem("score", score);
+    alert("🎁 +100 Bonus!");
+  } else {
+    alert("Bonus already claimed.");
   }
-  points += 100;
-  localStorage.setItem("points",points);
-  localStorage.setItem("bonus",Date.now());
-  document.getElementById("points").innerText = points;
-  document.getElementById("bonusText").innerText = "✅ 100 points claimed!";
 }
 
+function updateBonus(){
+  let now = Date.now();
+  document.getElementById("bonusStatus").innerText =
+    (now - lastBonus > 86400000) ? "Available" : "Claimed";
+}
+
+setInterval(updateBonus,1000);
+
+let seasonEnd = Date.now() + 6*24*60*60*1000;
+function updateTimer(){
+  let d = seasonEnd - Date.now();
+  if(d < 0) return document.getElementById("timer").innerText = "Season Ended";
+  let h = Math.floor(d/3600000);
+  let m = Math.floor(d/60000)%60;
+  let s = Math.floor(d/1000)%60;
+  document.getElementById("timer").innerText = `${h}h ${m}m ${s}s`;
+}
+setInterval(updateTimer,1000);
+
+// Telegram username
+if(window.Telegram?.WebApp){
+  document.getElementById("user").innerText =
+    Telegram.WebApp.initDataUnsafe?.user?.username || "TG User";
+}
 </script>
 </body>
 </html>

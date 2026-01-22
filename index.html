@@ -1,34 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Season Clicker</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Clicker Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="game-container">
+        <header>
+            <div class="stats">
+                <h1 id="score">0</h1>
+                <p>Coins</p>
+            </div>
+            <div class="level-container">
+                <div class="level-info">
+                    <span id="level-text">Level 1</span>
+                    <span id="xp-text">0 / 100 XP</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="xp-fill" class="progress-fill"></div>
+                </div>
+            </div>
+        </header>
 
-<div class="container">
-  <h1>🚀 Season Clicker</h1>
+        <main>
+            <div id="coin-container">
+                <div id="main-coin">🪙</div>
+            </div>
+            <div id="active-boosters"></div>
+        </main>
 
-  <div class="stats">
-    <p>Points: <span id="points">0</span></p>
-    <p>Level: <span id="level">1</span></p>
-  </div>
+        <nav class="tabs">
+            <button onclick="showTab('shop')"><i class="fas fa-shopping-cart"></i> Market</button>
+            <button onclick="showTab('tasks')"><i class="fas fa-tasks"></i> Görevler</button>
+            <button onclick="claimDailyBonus()" id="daily-btn"><i class="fas fa-calendar-check"></i> Günlük</button>
+        </nav>
 
-  <div class="xp-bar">
-    <div id="xpFill"></div>
-  </div>
+        <div id="shop-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Market</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="shop-items">
+                    <div class="item" onclick="buyClickPower()">
+                        <div class="item-info">
+                            <h3>Click Power</h3>
+                            <p>Tıklama başına <span id="click-inc-val">+1</span></p>
+                        </div>
+                        <button id="buy-click">Maliyet: 50</button>
+                    </div>
+                    <div class="item" onclick="buyAutoClicker()">
+                        <div class="item-info">
+                            <h3>Auto Clicker</h3>
+                            <p>Saniyede <span id="auto-inc-val">1</span> coin</p>
+                        </div>
+                        <button id="buy-auto">Maliyet: 100</button>
+                    </div>
+                    <div class="item" onclick="buyBooster()">
+                        <div class="item-info">
+                            <h3>2x Booster</h3>
+                            <p>30 Saniye boyunca 2 kat kazanç</p>
+                        </div>
+                        <button id="buy-boost">Maliyet: 500</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Blue_star.svg/512px-Blue_star.svg.png"
-       id="coin" />
-
-  <h2>🛒 Shop</h2>
-  <div class="shop">
-    <button onclick="buyClickPower()">+1 Click Power (100)</button>
-    <button onclick="buyAutoClicker()">Auto Clicker (250)</button>
-  </div>
-</div>
-
-<script src="script.js"></script>
+        <div id="tasks-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Görevler</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div id="task-list">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Season Clicker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Season Clicker Pro</title>
 
 <style>
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #1f1f1f, #000);
+  background: radial-gradient(circle at top, #1a1a1a, #000);
   font-family: Arial, sans-serif;
   color: white;
 }
@@ -20,24 +20,27 @@ body {
 }
 
 .card {
-  background: #111;
+  background: #0e0e0e;
   border: 1px solid #222;
   border-radius: 20px;
   padding: 15px;
   margin-bottom: 15px;
-  box-shadow: 0 0 20px rgba(255,215,0,0.05);
+  box-shadow: 0 0 25px rgba(255,215,0,0.05);
 }
 
 .title {
   text-align: center;
   font-size: 26px;
   font-weight: bold;
+  color: gold;
+  text-shadow: 0 0 10px gold;
 }
 
 .score {
   text-align: center;
-  font-size: 40px;
+  font-size: 46px;
   color: gold;
+  text-shadow: 0 0 15px gold;
 }
 
 .click-btn {
@@ -51,6 +54,7 @@ body {
   display: block;
   margin: 20px auto;
   cursor: pointer;
+  box-shadow: 0 0 30px gold;
   transition: transform 0.1s;
 }
 
@@ -58,26 +62,19 @@ body {
   transform: scale(0.9);
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
+.small { font-size: 14px; opacity: 0.7; }
+
+.coin {
+  position: absolute;
+  color: gold;
+  font-weight: bold;
+  animation: fly 1s forwards;
+  pointer-events: none;
 }
 
-.small {
-  opacity: 0.7;
-  font-size: 14px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-  margin-top: 8px;
-}
-
-ol {
-  padding-left: 20px;
+@keyframes fly {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-80px); }
 }
 </style>
 </head>
@@ -85,80 +82,109 @@ ol {
 <body>
 <div class="app">
 
-  <div class="card">
-    <div class="title">🐾 Clicker Season Game</div>
-  </div>
+  <div class="card title">🐾 Season Clicker</div>
 
   <div class="card">
-    <div class="small">Username</div>
-    <input id="name" placeholder="nick gir">
-    <button onclick="saveName()">Kaydet</button>
+    <div class="small">Player</div>
+    <div id="user">Loading...</div>
   </div>
 
   <div class="card">
     <div class="small">Season Points</div>
     <div class="score" id="points">0</div>
-    <button class="click-btn" onclick="earn()">TAP</button>
+    <button class="click-btn" onclick="tap()">TAP</button>
   </div>
 
   <div class="card">
-    <div class="row">
-      <b>🏆 Leaderboard</b>
-      <span class="small">Top 10</span>
-    </div>
-    <ol id="board"></ol>
+    <div class="small">⏳ Season ends in</div>
+    <div id="timer"></div>
   </div>
 
   <div class="card">
-    <b>💰 Reward Pool</b>
-    <p class="small">This season: 500 USDT</p>
-    <p class="small">Top 10 players rewarded</p>
+    <b>🎁 Daily Bonus</b>
+    <p id="bonusText">Checking...</p>
+    <button onclick="claimBonus()">Claim Bonus</button>
   </div>
 
 </div>
 
+<audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_9b1e5a86de.mp3"></audio>
+
 <script>
-let points = parseInt(localStorage.getItem("points")) || 0;
-let name = localStorage.getItem("name") || "";
-
-document.getElementById("points").innerText = points;
-document.getElementById("name").value = name;
-
-function saveName() {
-  name = document.getElementById("name").value.trim();
-  if(name.length < 2) return alert("Nick gir");
-  localStorage.setItem("name", name);
-  updateBoard();
+// Telegram username
+let username = "Guest";
+if (window.Telegram?.WebApp?.initDataUnsafe?.user?.username) {
+  username = "@" + Telegram.WebApp.initDataUnsafe.user.username;
 }
+document.getElementById("user").innerText = username;
 
-function earn() {
-  if(!name) return alert("Önce isim gir");
+// Points
+let points = parseInt(localStorage.getItem("points")) || 0;
+document.getElementById("points").innerText = points;
+
+// Anti cheat
+let lastTap = 0;
+
+// Tap
+function tap(){
+  let now = Date.now();
+  if(now - lastTap < 120) return;
+  lastTap = now;
+
   points++;
   localStorage.setItem("points", points);
   document.getElementById("points").innerText = points;
-  updateBoard();
+
+  document.getElementById("clickSound").play();
+  spawnCoin();
 }
 
-function updateBoard() {
-  if(!name) return;
-
-  let board = JSON.parse(localStorage.getItem("board")) || {};
-  board[name] = points;
-  localStorage.setItem("board", JSON.stringify(board));
-
-  let sorted = Object.entries(board)
-    .sort((a,b)=>b[1]-a[1])
-    .slice(0,10);
-
-  let html = "";
-  sorted.forEach((u,i)=>{
-    html += `<li>${u[0]} — ${u[1]}</li>`;
-  });
-
-  document.getElementById("board").innerHTML = html;
+// Coin animation
+function spawnCoin(){
+  let c = document.createElement("div");
+  c.className = "coin";
+  c.innerText = "+1";
+  c.style.left = (window.innerWidth/2) + "px";
+  c.style.top = (window.innerHeight/2) + "px";
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),1000);
 }
 
-updateBoard();
+// Season timer (7 days loop)
+let seasonEnd = parseInt(localStorage.getItem("seasonEnd"));
+if(!seasonEnd){
+  seasonEnd = Date.now() + 7*24*60*60*1000;
+  localStorage.setItem("seasonEnd", seasonEnd);
+}
+
+setInterval(()=>{
+  let diff = seasonEnd - Date.now();
+  if(diff <= 0){
+    points = 0;
+    localStorage.setItem("points",0);
+    seasonEnd = Date.now() + 7*24*60*60*1000;
+    localStorage.setItem("seasonEnd",seasonEnd);
+  }
+  let h = Math.floor(diff/1000/60/60);
+  let m = Math.floor(diff/1000/60)%60;
+  let s = Math.floor(diff/1000)%60;
+  document.getElementById("timer").innerText = `${h}h ${m}m ${s}s`;
+},1000);
+
+// Daily bonus
+function claimBonus(){
+  let last = parseInt(localStorage.getItem("bonus")) || 0;
+  if(Date.now() - last < 86400000){
+    document.getElementById("bonusText").innerText = "Already claimed today.";
+    return;
+  }
+  points += 100;
+  localStorage.setItem("points",points);
+  localStorage.setItem("bonus",Date.now());
+  document.getElementById("points").innerText = points;
+  document.getElementById("bonusText").innerText = "✅ 100 points claimed!";
+}
+
 </script>
 </body>
 </html>

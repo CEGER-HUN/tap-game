@@ -8,6 +8,9 @@ let gameState = {
     boosterActive: false,
     clickCount: 0,
     lastDaily: null,
+    energy: 1000,
+    maxEnergy: 1000,
+    energyRegenRate: 1,
     tasks: [
         { id: 1, description: "100 Tıklama", target: 100, reward: 50, completed: false },
         { id: 2, description: "1000 Puan", target: 1000, reward: 200, completed: false },
@@ -22,11 +25,14 @@ const levelText = document.getElementById('level-text');
 const coin = document.getElementById('main-coin');
 const gameMain = document.getElementById('game-main');
 const coinContainer = document.getElementById('coin-container');
+const energyFill = document.getElementById('energy-fill');
+const energyText = document.getElementById('energy-text');
 
 window.onload = () => {
     loadGame();
     updateUI();
     setInterval(runAutoClickers, 1000);
+    setInterval(regenerateEnergy, 1000);
     animateScore();
 };
 
@@ -41,12 +47,19 @@ function animateScore() {
 }
 
 coin.addEventListener('click', (e) => {
+    // Enerji kontrolü
+    if (gameState.energy < 1) {
+        showNotification('⚡ Enerji Yok! Bekle...', 'error');
+        return;
+    }
+    
     let gain = gameState.clickPower;
     if (gameState.boosterActive) gain *= 2;
     
     gameState.score += gain;
     gameState.xp += Math.ceil(gain / 2);
     gameState.clickCount++;
+    gameState.energy -= 1; // Enerji azalt
 
     // Level up check
     if (gameState.xp >= gameState.xpToNextLevel) {
@@ -72,19 +85,63 @@ coin.addEventListener('click', (e) => {
     updateUI();
 });
 
+// YENİ: Güzel Level Up Bildirimi
 function levelUp() {
+    const oldLevel = gameState.level;
     gameState.level++;
     gameState.xp = 0;
     gameState.xpToNextLevel = Math.floor(gameState.xpToNextLevel * 1.5);
     
+    // Bonus reward
+    const bonus = gameState.level * 50;
+    gameState.score += bonus;
+    
     // Confetti effect
     createConfetti();
     
-    // Show level up notification
-    showNotification(`🎉 Level ${gameState.level}!`, 'success');
+    // Güzel bildirim göster
+    showLevelUpNotification(gameState.level, bonus);
+}
+
+function showLevelUpNotification(level, bonus) {
+    // Overlay oluştur
+    const overlay = document.createElement('div');
+    overlay.className = 'notification-overlay';
+    document.body.appendChild(overlay);
     
-    // Bonus reward
-    gameState.score += gameState.level * 50;
+    // Bildirim oluştur
+    const notification = document.createElement('div');
+    notification.className = 'level-up-notification';
+    notification.innerHTML = `
+        <div class="emoji">🎉</div>
+        <h2>LEVEL ${level}!</h2>
+        <p>Tebrikler! Yeni seviyeye ulaştın</p>
+        <div class="bonus">+${bonus} Bonus Coin 💰</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 3 saniye sonra kapat
+    setTimeout(() => {
+        notification.classList.add('hide');
+        overlay.style.animation = 'fadeOut 0.3s ease';
+        
+        setTimeout(() => {
+            notification.remove();
+            overlay.remove();
+        }, 400);
+    }, 3000);
+    
+    // Tıklayınca kapat
+    overlay.addEventListener('click', () => {
+        notification.classList.add('hide');
+        overlay.style.animation = 'fadeOut 0.3s ease';
+        
+        setTimeout(() => {
+            notification.remove();
+            overlay.remove();
+        }, 400);
+    });
 }
 
 function runAutoClickers() {
@@ -97,11 +154,27 @@ function runAutoClickers() {
     }
 }
 
+// YENİ: Enerji yenileme sistemi
+function regenerateEnergy() {
+    if (gameState.energy < gameState.maxEnergy) {
+        gameState.energy += gameState.energyRegenRate;
+        if (gameState.energy > gameState.maxEnergy) {
+            gameState.energy = gameState.maxEnergy;
+        }
+        updateUI();
+        saveGame();
+    }
+}
+
 function updateUI() {
     // Score updates via animation function
     levelText.innerText = `Level ${gameState.level}`;
     xpText.innerText = `${gameState.xp} / ${gameState.xpToNextLevel} XP`;
     xpFill.style.width = `${(gameState.xp / gameState.xpToNextLevel) * 100}%`;
+    
+    // Enerji güncelle
+    energyText.innerText = `${Math.floor(gameState.energy)} / ${gameState.maxEnergy}`;
+    energyFill.style.width = `${(gameState.energy / gameState.maxEnergy) * 100}%`;
     
     // Update shop prices
     document.getElementById('click-inc-val').innerText = `+${gameState.clickPower}`;

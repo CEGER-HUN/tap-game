@@ -10,7 +10,7 @@ let gameState = {
     lastDaily: null,
     energy: 1000,
     maxEnergy: 1000,
-    energyRegenRate: 1,
+    energyRegenRate: 0.1, // 10 saniyede +1 enerji (1 / 10 = 0.1)
     energyCostPerClick: 1,
     tasks: [
         { id: 1, description: "100 Tıklama", target: 100, reward: 50, completed: false },
@@ -32,10 +32,8 @@ let displayScore = 0;
 
 window.onload = () => {
     loadGame();
-    // İlk yüklemede skoru eşitle ki animasyon 0'dan başlamasın
-    displayScore = gameState.score; 
+    displayScore = gameState.score;
     updateUI();
-    
     setInterval(runAutoClickers, 1000);
     setInterval(regenerateEnergy, 1000);
     setInterval(saveGame, 5000);
@@ -54,11 +52,8 @@ function animateScore() {
 }
 
 coin.addEventListener('click', (e) => {
-    // Enerji Kontrolü
     if (gameState.energy < gameState.energyCostPerClick) {
         showNotification('⚡ Enerji Yok! Bekle...', 'error');
-        coin.classList.add('shake');
-        setTimeout(() => coin.classList.remove('shake'), 500);
         return;
     }
     
@@ -68,27 +63,20 @@ coin.addEventListener('click', (e) => {
     gameState.score += gain;
     gameState.xp += Math.ceil(gain / 2);
     gameState.clickCount++;
-    
-    // Enerjiyi Azalt
     gameState.energy -= gameState.energyCostPerClick;
-    
-    if (gameState.xp >= gameState.xpToNextLevel) {
-        levelUp();
-    }
 
-    // Efektler
+    if (gameState.xp >= gameState.xpToNextLevel) levelUp();
+
     const rect = coinContainer.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-    
-    createFloatingText(clickX, clickY, `+${gain}`);
-    createParticles(clickX, clickY);
+    createFloatingText(e.clientX - rect.left, e.clientY - rect.top, `+${gain}`);
+    createParticles(e.clientX - rect.left, e.clientY - rect.top);
     
     updateUI();
     checkTasks();
 });
 
 function regenerateEnergy() {
+    if (isNaN(gameState.energy)) gameState.energy = 0;
     if (gameState.energy < gameState.maxEnergy) {
         gameState.energy += gameState.energyRegenRate;
         if (gameState.energy > gameState.maxEnergy) gameState.energy = gameState.maxEnergy;
@@ -97,45 +85,30 @@ function regenerateEnergy() {
 }
 
 function updateUI() {
-    // Level & XP
     if (levelText) levelText.innerText = `Level ${gameState.level}`;
     if (xpText) xpText.innerText = `${gameState.xp} / ${gameState.xpToNextLevel} XP`;
     if (xpFill) xpFill.style.width = `${(gameState.xp / gameState.xpToNextLevel) * 100}%`;
     
-    // Enerji UI
-    if (energyText) energyText.innerText = `${Math.floor(gameState.energy)} / ${gameState.maxEnergy}`;
+    const currentEnergy = Math.floor(gameState.energy || 0);
+    if (energyText) energyText.innerText = `${currentEnergy} / ${gameState.maxEnergy}`;
     if (energyFill) {
-        const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
+        const energyPercent = (currentEnergy / gameState.maxEnergy) * 100;
         energyFill.style.width = `${energyPercent}%`;
-        
-        // Renk Değişimi
-        if (energyPercent < 20) energyFill.style.background = '#ff3333';
-        else if (energyPercent < 50) energyFill.style.background = '#ffaa00';
-        else energyFill.style.background = 'linear-gradient(90deg, #00ff88, #00d9ff)';
+        energyFill.style.background = energyPercent < 20 ? '#ff3333' : 'linear-gradient(90deg, #00ff88, #00d9ff)';
     }
     
-    // Market Fiyatları (Elementler varsa güncelle)
-    const clickValEl = document.getElementById('click-inc-val');
-    const autoValEl = document.getElementById('auto-inc-val');
-    const buyClickBtn = document.getElementById('buy-click');
-    const buyAutoBtn = document.getElementById('buy-auto');
-
-    if (clickValEl) clickValEl.innerText = `+${gameState.clickPower}`;
-    if (autoValEl) autoValEl.innerText = gameState.autoClicker;
-    if (buyClickBtn) buyClickBtn.innerText = 50 * gameState.clickPower;
-    if (buyAutoBtn) buyAutoBtn.innerText = 100 * (gameState.autoClicker + 1);
+    if (document.getElementById('buy-click')) document.getElementById('buy-click').innerText = 50 * gameState.clickPower;
+    if (document.getElementById('buy-auto')) document.getElementById('buy-auto').innerText = 100 * (gameState.autoClicker + 1);
 }
 
-// MARKET FONKSİYONLARI (DÜZELTİLDİ)
 function buyClickPower() {
     let cost = 50 * gameState.clickPower;
     if (gameState.score >= cost) {
-        gameState.score -= cost; // Puanı düşür
-        displayScore = gameState.score; // Animasyonu güncelle
+        gameState.score -= cost;
+        displayScore = gameState.score;
         gameState.clickPower++;
-        showNotification('✨ Click Power Yükseltildi!', 'success');
+        showNotification('✨ Güç Arttı!', 'success');
         updateUI();
-        saveGame();
     } else {
         showNotification('❌ Yetersiz Coin!', 'error');
     }
@@ -144,18 +117,43 @@ function buyClickPower() {
 function buyAutoClicker() {
     let cost = 100 * (gameState.autoClicker + 1);
     if (gameState.score >= cost) {
-        gameState.score -= cost; // Puanı düşür
-        displayScore = gameState.score; // Animasyonu güncelle
+        gameState.score -= cost;
+        displayScore = gameState.score;
         gameState.autoClicker++;
-        showNotification('🤖 Auto Clicker Alındı!', 'success');
+        showNotification('🤖 Bot Alındı!', 'success');
         updateUI();
-        saveGame();
     } else {
         showNotification('❌ Yetersiz Coin!', 'error');
     }
 }
 
-// ... (Diğer fonksiyonlar: saveGame, loadGame, createParticles vb. aynı kalabilir)
+function showNotification(msg, type) {
+    const n = document.createElement('div');
+    n.className = `notification ${type}`;
+    n.innerText = msg;
+    n.style.cssText = "position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#a855f7;color:#fff;padding:10px 20px;border-radius:10px;z-index:9999;";
+    document.body.appendChild(n);
+    setTimeout(() => n.remove(), 2000);
+}
+
+function createFloatingText(x, y, text) {
+    const el = document.createElement('div');
+    el.className = 'floating-text';
+    el.innerText = text;
+    el.style.cssText = `position:absolute;left:${x}px;top:${y}px;color:#fff;pointer-events:none;animation:floatUp 0.8s forwards;`;
+    coinContainer.appendChild(el);
+    setTimeout(() => el.remove(), 800);
+}
+
+function createParticles(x, y) {
+    for (let i = 0; i < 6; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:5px;height:5px;background:#ffd700;border-radius:50%;`;
+        coinContainer.appendChild(p);
+        setTimeout(() => p.remove(), 600);
+    }
+}
 
 function saveGame() {
     localStorage.setItem('tapGameSave', JSON.stringify(gameState));
@@ -165,8 +163,33 @@ function loadGame() {
     const saved = localStorage.getItem('tapGameSave');
     if (saved) {
         const loadedState = JSON.parse(saved);
-        // Enerji kontrolü (Eski kayıtlarda yoksa ekle)
-        if (loadedState.energy === undefined) loadedState.energy = 1000;
-        gameState = loadedState;
+        if (loadedState.maxEnergy !== 1000) loadedState.maxEnergy = 1000;
+        gameState = { ...gameState, ...loadedState };
     }
+}
+
+function runAutoClickers() {
+    if (gameState.autoClicker > 0) {
+        gameState.score += gameState.autoClicker;
+        updateUI();
+    }
+}
+
+function levelUp() {
+    gameState.level++;
+    gameState.xp = 0;
+    gameState.xpToNextLevel = Math.floor(gameState.xpToNextLevel * 1.5);
+    showNotification(`🎉 LEVEL ${gameState.level}!`, 'success');
+}
+
+function checkTasks() {
+    gameState.tasks.forEach(t => {
+        if (!t.completed) {
+            if ((t.id === 1 && gameState.clickCount >= t.target) || (t.id === 2 && gameState.score >= t.target)) {
+                t.completed = true;
+                gameState.score += t.reward;
+                showNotification(`✅ Görev: ${t.description}`, 'success');
+            }
+        }
+    });
 }

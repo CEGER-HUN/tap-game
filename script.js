@@ -10,7 +10,8 @@ let gameState = {
     lastDaily: null,
     energy: 1000,
     maxEnergy: 1000,
-    energyRegenRate: 1,
+    energyRegenRate: 1, // Saniyede +1 enerji
+    energyCostPerClick: 1, // Her tıklama -1 enerji
     tasks: [
         { id: 1, description: "100 Tıklama", target: 100, reward: 50, completed: false },
         { id: 2, description: "1000 Puan", target: 1000, reward: 200, completed: false },
@@ -47,9 +48,14 @@ function animateScore() {
 }
 
 coin.addEventListener('click', (e) => {
-    // Enerji kontrolü
-    if (gameState.energy < 1) {
+    // Enerji kontrolü - En az 1 enerji olmalı
+    if (gameState.energy < gameState.energyCostPerClick) {
         showNotification('⚡ Enerji Yok! Bekle...', 'error');
+        // Coin'i titret
+        coin.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+            coin.style.animation = 'float 3s ease-in-out infinite';
+        }, 500);
         return;
     }
     
@@ -59,7 +65,10 @@ coin.addEventListener('click', (e) => {
     gameState.score += gain;
     gameState.xp += Math.ceil(gain / 2);
     gameState.clickCount++;
-    gameState.energy -= 1; // Enerji azalt
+    
+    // Enerji azalt
+    gameState.energy -= gameState.energyCostPerClick;
+    if (gameState.energy < 0) gameState.energy = 0;
 
     // Level up check
     if (gameState.xp >= gameState.xpToNextLevel) {
@@ -174,7 +183,20 @@ function updateUI() {
     
     // Enerji güncelle
     energyText.innerText = `${Math.floor(gameState.energy)} / ${gameState.maxEnergy}`;
-    energyFill.style.width = `${(gameState.energy / gameState.maxEnergy) * 100}%`;
+    const energyPercent = (gameState.energy / gameState.maxEnergy) * 100;
+    energyFill.style.width = `${energyPercent}%`;
+    
+    // Enerji rengini değiştir (az enerji = kırmızı)
+    if (energyPercent < 20) {
+        energyFill.style.background = 'linear-gradient(90deg, #ff3333 0%, #ff6666 100%)';
+        energyFill.style.boxShadow = '0 0 20px rgba(255, 51, 51, 0.5)';
+    } else if (energyPercent < 50) {
+        energyFill.style.background = 'linear-gradient(90deg, #ffaa00 0%, #ffcc00 100%)';
+        energyFill.style.boxShadow = '0 0 20px rgba(255, 170, 0, 0.5)';
+    } else {
+        energyFill.style.background = 'linear-gradient(90deg, #00ff88 0%, #00d9ff 100%)';
+        energyFill.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.5)';
+    }
     
     // Update shop prices
     document.getElementById('click-inc-val').innerText = `+${gameState.clickPower}`;

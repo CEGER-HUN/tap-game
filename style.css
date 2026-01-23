@@ -249,6 +249,12 @@ main {
     50% { transform: translateY(-20px) rotate(5deg); }
 }
 
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
 #main-coin:active {
     transform: scale(0.9) rotate(-5deg) !important;
     filter: drop-shadow(0 5px 20px rgba(255, 215, 0, 0.8)) brightness(1.3);

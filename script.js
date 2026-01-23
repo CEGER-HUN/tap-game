@@ -34,6 +34,7 @@ window.onload = () => {
     updateUI();
     setInterval(runAutoClickers, 1000);
     setInterval(regenerateEnergy, 1000);
+    setInterval(saveGame, 5000); // Her 5 saniyede bir kaydet
     animateScore();
 };
 
@@ -171,7 +172,6 @@ function regenerateEnergy() {
             gameState.energy = gameState.maxEnergy;
         }
         updateUI();
-        saveGame();
     }
 }
 
@@ -298,6 +298,7 @@ function buyClickPower() {
     let cost = 50 * gameState.clickPower;
     if (gameState.score >= cost) {
         gameState.score -= cost;
+        displayScore -= cost; // Görsel skoru da azalt
         gameState.clickPower++;
         showNotification('✨ Click Power Yükseltildi!', 'success');
         createConfetti();
@@ -312,6 +313,7 @@ function buyAutoClicker() {
     let cost = 100 * (gameState.autoClicker + 1);
     if (gameState.score >= cost) {
         gameState.score -= cost;
+        displayScore -= cost; // Görsel skoru da azalt
         gameState.autoClicker++;
         showNotification('🤖 Auto Clicker Satın Alındı!', 'success');
         createConfetti();
@@ -325,6 +327,7 @@ function buyAutoClicker() {
 function buyBooster() {
     if (gameState.score >= 500 && !gameState.boosterActive) {
         gameState.score -= 500;
+        displayScore -= 500; // Görsel skoru da azalt
         gameState.boosterActive = true;
         showNotification('🚀 2x Booster Aktif! (30sn)', 'success');
         
@@ -414,9 +417,19 @@ function saveGame() {
 function loadGame() {
     const saved = localStorage.getItem('tapGameSave');
     if (saved) {
-        gameState = JSON.parse(saved);
+        const loadedState = JSON.parse(saved);
+        // Eski kayıtlar için enerji ekleme
+        if (typeof loadedState.energy === 'undefined') {
+            loadedState.energy = 1000;
+            loadedState.maxEnergy = 1000;
+            loadedState.energyRegenRate = 1;
+            loadedState.energyCostPerClick = 1;
+        }
+        gameState = loadedState;
         displayScore = gameState.score;
     }
+    // İlk yüklemede kaydet
+    saveGame();
 }
 
 // Add missing animation styles dynamically

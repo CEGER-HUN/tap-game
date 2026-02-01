@@ -513,4 +513,105 @@
                             '<span class="card-name">'+card.name+'</span>'+
                             '<span class="card-earn" style="color:#555">'+req.name+' Lv.'+card.unlock.level+' gerekli</span>'+
                         '</div>'+
-         
+                    '</div>'+
+                    '<span style="font-size:0.8rem;color:#444">🔐</span>';
+                scroll.appendChild(el);
+                return;
+            }
+
+            // UPGRADE (click power)
+            if(card.isUpgrade){
+                el.className='card'+(canBuy?' can-buy':' cant-afford');
+                el.onclick=()=>buyCP();
+                el.innerHTML=
+                    '<div class="card-left">'+
+                        '<span class="card-icon">'+card.icon+'</span>'+
+                        '<div class="card-info">'+
+                            '<span class="card-name">'+card.name+'</span>'+
+                            '<span class="card-earn">Şu an: '+gs.clickPower+'x</span>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="card-right">'+
+                        '<span class="card-price">'+cost.toLocaleString()+' 🪙</span>'+
+                        '<span class="card-lvl">Lv.'+lvl+'</span>'+
+                    '</div>';
+                scroll.appendChild(el);
+                return;
+            }
+
+            // NORMAL CARD
+            el.className='card'+(canBuy?' can-buy':' cant-afford');
+            el.onclick=()=>buyCard(card);
+
+            let earnStr;
+            if(lvl===0) earnStr='+'+cardEarnNext(card).toLocaleString()+'/h';
+            else earnStr=cardEarn(card).toLocaleString()+'/h → '+cardEarnNext(card).toLocaleString();
+
+            el.innerHTML=
+                '<div class="card-left">'+
+                    '<span class="card-icon">'+card.icon+'</span>'+
+                    '<div class="card-info">'+
+                        '<span class="card-name">'+card.name+'</span>'+
+                        '<span class="card-earn">'+earnStr+'</span>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="card-right">'+
+                    '<span class="card-price">'+cost.toLocaleString()+' 🪙</span>'+
+                    '<span class="card-lvl">Lv.'+lvl+'</span>'+
+                '</div>';
+            scroll.appendChild(el);
+        });
+    }
+
+    // RENDER UI
+    function renderUI(){
+        document.getElementById('score').innerText=Math.floor(gs.score).toLocaleString();
+
+        let eh=totalEarn();
+        document.getElementById('hourly-income').innerText=eh.toLocaleString();
+        document.getElementById('pending-income').innerText=pendingR().toLocaleString();
+
+        document.getElementById('level-val').innerText=gs.level;
+        document.getElementById('xp-text').innerText=Math.floor(gs.xp)+' / '+gs.xpToNextLevel+' XP';
+        document.getElementById('xp-fill').style.width=(gs.xp/gs.xpToNextLevel*100)+'%';
+
+        document.getElementById('energy-text').innerText=Math.floor(gs.energy)+' / '+gs.maxEnergy;
+        document.getElementById('energy-fill').style.width=(gs.energy/gs.maxEnergy*100)+'%';
+
+        let cp=comboTimer>0?(comboTimer/COMBO_TIME*100):0;
+        document.getElementById('combo-fill').style.width=cp+'%';
+        document.getElementById('combo-text').style.opacity=comboTimer>0?'1':'0';
+        document.getElementById('combo-text').innerText='COMBO X'+Math.floor(combo);
+
+        let cBtn=document.getElementById('collect-btn');
+        let pend=pendingR();
+        if(gs.collectTimer>0){
+            cBtn.className='collect-btn waiting';
+            cBtn.innerText='⏳ '+fmtTime(gs.collectTimer);
+        } else if(pend>0){
+            cBtn.className='collect-btn';
+            cBtn.innerText='💰 '+pend.toLocaleString()+' 🪙 Topla';
+        } else {
+            cBtn.className='collect-btn waiting';
+            cBtn.innerText='⏳ Kart al ister misin';
+        }
+
+        coinEl.className=gs.energy<ENERGY_COST?'coin-disabled':'';
+        renderCards();
+    }
+
+    // START
+    load();
+    offlineCalc();
+    lastLoop=Date.now();
+    renderTabs();
+    renderUI();
+    setInterval(loop,100);
+    setInterval(save,3000);
+
+    document.getElementById('collect-btn').addEventListener('click',collect);
+
+})();
+</script>
+</body>
+</html>

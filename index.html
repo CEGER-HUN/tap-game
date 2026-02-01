@@ -13,39 +13,30 @@
             <div class="stats">
                 <h1 id="score">0</h1>
                 <p>Coins</p>
+                <div class="passive-income-text">Saatlik Kazanç: <span id="hourly-income">0</span> 💰</div>
             </div>
             
             <div class="level-container mini-bar">
-                <div class="level-info">
-                    <span id="level-text">Level 1</span>
-                    <span id="xp-text">0 / 100 XP</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="xp-fill" class="progress-fill"></div>
-                </div>
+                <div class="level-info"><span>Level <span id="level-val">1</span></span><span id="xp-text">0/100 XP</span></div>
+                <div class="progress-bar"><div id="xp-fill" class="progress-fill"></div></div>
             </div>
             
             <div class="energy-container mini-bar">
-                <div class="energy-info">
-                    <span class="energy-label">⚡ Enerji</span>
-                    <span id="energy-text">1000 / 1000</span>
-                </div>
-                <div class="energy-bar">
-                    <div id="energy-fill" class="energy-fill"></div>
-                </div>
+                <div class="energy-info"><span>⚡ Enerji</span><span id="energy-text">1000/1000</span></div>
+                <div class="energy-bar"><div id="energy-fill" class="energy-fill"></div></div>
             </div>
 
             <div class="quick-upgrade-container">
-                <button class="upgrade-btn" onclick="buyClickPower()">
-                    <i class="fas fa-mouse-pointer"></i> Güç: <span id="buy-click">50</span>
-                </button>
-                <button class="upgrade-btn" onclick="buyBooster()">
-                    <i class="fas fa-rocket"></i> 2x Boost: <span id="buy-boost">500</span>
-                </button>
+                <button class="upgrade-btn" onclick="buyClickPower()"><i class="fas fa-mouse-pointer"></i> Güç: <span id="buy-click">50</span></button>
+                <button class="upgrade-btn" onclick="buyPassive()"><i class="fas fa-clock"></i> Kazanç: <span id="buy-passive">100</span></button>
             </div>
         </header>
 
         <main id="game-main">
+            <div class="combo-container">
+                <div id="combo-text">COMBO X1</div>
+                <div class="combo-bar"><div id="combo-fill"></div></div>
+            </div>
             <div id="coin-container">
                 <div id="main-coin">🪙</div>
             </div>
@@ -53,15 +44,12 @@
 
         <nav class="tabs">
             <button onclick="showTab('tasks')"><i class="fas fa-tasks"></i></button>
-            <button onclick="claimDailyBonus()" id="daily-btn"><i class="fas fa-calendar-check"></i></button>
+            <button onclick="claimDailyBonus()"><i class="fas fa-calendar-check"></i></button>
         </nav>
 
         <div id="tasks-modal" class="modal">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Görevler</h2>
-                    <span class="close" onclick="closeModal()">&times;</span>
-                </div>
+                <div class="modal-header"><h2>Görevler</h2><span class="close" onclick="closeModal()">&times;</span></div>
                 <div id="task-list"></div>
             </div>
         </div>

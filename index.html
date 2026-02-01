@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Modern Clicker Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary: #ffd700;
             --secondary: #a855f7;
             --accent: #ec4899;
-            --bg-dark: #0a0a0f;
             --text: #ffffff;
         }
 
@@ -40,778 +38,479 @@
             backdrop-filter: blur(20px);
             display: flex;
             flex-direction: column;
-            padding: 16px 20px;
-            position: relative;
+            padding: 14px 18px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
         }
 
-        /* Header */
+        /* HEADER */
         header { text-align: center; flex-shrink: 0; }
 
         #score {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 900;
             color: var(--primary);
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-            margin-bottom: 0;
             line-height: 1.1;
         }
 
-        .passive-income-text {
-            font-size: 0.8rem;
-            color: #ffd700;
-            margin-top: 2px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+        .sub-label { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* Mini Barlar */
-        .mini-bar {
-            margin-top: 6px;
-            padding: 7px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .progress-bar, .energy-bar {
-            height: 8px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--secondary), var(--accent));
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .energy-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff88, #00d9ff);
-            width: 100%;
-            transition: width 0.3s;
-        }
-
-        .level-info, .energy-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.72rem;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-
-        /* Kartlar - styles moved to bottom-shop section */
-
-        .card {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 9px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .card:active { transform: scale(0.97); }
-
-        .card.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .card.disabled:active { transform: none; }
-
-        .card-left { display: flex; align-items: center; gap: 10px; }
-        .card-icon { font-size: 1.4rem; }
-        .card-info { display: flex; flex-direction: column; text-align: left; }
-        .card-name { font-size: 0.82rem; font-weight: bold; }
-        .card-yield { font-size: 0.68rem; color: #00ff88; }
-
-        .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-
-        .card .buy-btn {
-            background: var(--secondary);
-            border: none;
-            color: white;
-            border-radius: 8px;
-            padding: 5px 10px;
-            font-weight: bold;
+        .income-row {
             font-size: 0.75rem;
-            pointer-events: none;
-        }
-
-        .card.disabled .buy-btn { background: #444; }
-
-        .card-level-badge {
-            font-size: 0.6rem;
-            color: #aaa;
+            color: #ffd700;
+            margin-top: 3px;
+            margin-bottom: 8px;
             font-weight: bold;
         }
 
-        /* Upgrade Btn - moved to bottom shop */
+        .mini-bar {
+            margin-top: 5px;
+            padding: 6px 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
 
-        /* Ana Alan */
+        .bar-track { height: 7px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; }
+        .bar-fill { height:100%; border-radius:10px; width:0%; transition: width 0.3s; }
+        .bar-fill.xp { background: linear-gradient(90deg, var(--secondary), var(--accent)); }
+        .bar-fill.energy { background: linear-gradient(90deg, #00ff88, #00d9ff); width:100%; }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+
+        /* MAIN */
         main {
-            flex: 1;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            position: relative;
-            min-height: 0;
+            padding: 8px 0 4px;
         }
 
-        /* Kombo */
-        .combo-container {
-            width: 140px;
-            text-align: center;
-            margin-bottom: 10px;
-            height: 28px;
-        }
+        .combo-container { width:120px; text-align:center; margin-bottom:4px; height:18px; }
 
-        #combo-text {
-            font-size: 0.95rem;
-            font-weight: 900;
-            color: var(--accent);
-            opacity: 0;
-            margin-bottom: 4px;
-            transition: opacity 0.2s;
-        }
+        #combo-text { font-size:0.78rem; font-weight:900; color:var(--accent); opacity:0; transition:opacity 0.2s; }
 
-        .combo-bar {
-            height: 5px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-        }
+        .combo-bar { height:3px; background:rgba(0,0,0,0.3); border-radius:10px; overflow:hidden; margin-top:2px; }
+        #combo-fill { height:100%; width:0%; background:var(--accent); box-shadow:0 0 6px var(--accent); transition:width 0.1s; }
 
-        #combo-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--accent);
-            box-shadow: 0 0 8px var(--accent);
-            transition: width 0.1s;
-        }
-
-        /* Coin */
-        #coin-container {
-            position: relative;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
+        #coin-container { position:relative; cursor:pointer; touch-action:manipulation; }
 
         #main-coin {
-            font-size: 150px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2));
+            font-size: 100px;
+            filter: drop-shadow(0 0 18px rgba(255,215,0,0.25));
             animation: float 3s infinite ease-in-out;
-            transition: transform 0.05s;
             line-height: 1;
         }
 
-        #coin-container:active #main-coin {
-            transform: scale(0.85) !important;
-            animation: none;
-        }
-
-        .coin-disabled #main-coin {
-            filter: grayscale(1) drop-shadow(0 0 10px rgba(100,100,100,0.3));
-            animation: none;
-        }
+        #coin-container:active #main-coin { transform:scale(0.85) !important; animation:none; }
+        .coin-disabled #main-coin { filter:grayscale(1) drop-shadow(0 0 8px rgba(100,100,100,0.3)); animation:none; }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%,100% { transform:translateY(0); }
+            50% { transform:translateY(-7px); }
         }
 
-        /* Floating Text */
+        .collect-row { margin-top:6px; display:flex; justify-content:center; }
+
+        .collect-btn {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            border:none; color:#1a1a2e; padding:6px 14px;
+            border-radius:9px; font-size:0.74rem; font-weight:900;
+            cursor:pointer; transition:0.15s;
+        }
+        .collect-btn:active { transform:scale(0.93); }
+        .collect-btn.waiting { background:rgba(255,255,255,0.07); color:#aaa; cursor:not-allowed; pointer-events:none; }
+
+        /* FLOATING */
         .floating-text {
-            position: fixed;
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.3rem;
-            pointer-events: none;
-            animation: floatUp 0.8s forwards;
-            z-index: 1000;
-            text-shadow: 0 0 6px rgba(255,215,0,0.5);
+            position:fixed; color:var(--primary); font-weight:bold; font-size:1.2rem;
+            pointer-events:none; animation:floatUp 0.8s forwards; z-index:1000;
+            text-shadow:0 0 6px rgba(255,215,0,0.5);
         }
+        @keyframes floatUp { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-90px)} }
 
-        @keyframes floatUp {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-100px); }
-        }
-
-        /* Level Up Overlay */
-        .levelup-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            animation: fadeIn 0.3s;
-        }
-
-        .levelup-box {
-            background: linear-gradient(135deg, #1a1a2e, #2d1b69);
-            border: 2px solid var(--secondary);
-            border-radius: 20px;
-            padding: 30px 40px;
-            text-align: center;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .levelup-box .lvl-icon { font-size: 3rem; margin-bottom: 8px; }
-        .levelup-box h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 4px; }
-        .levelup-box p { color: #aaa; font-size: 0.85rem; margin-bottom: 16px; }
-        .levelup-box button {
-            background: var(--secondary);
-            border: none;
-            color: white;
-            padding: 10px 30px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        /* Offline Popup */
-        .offline-popup {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 998;
-        }
-
-        .offline-box {
-            background: linear-gradient(135deg, #1a1a2e, #1e2a3a);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 16px;
-            padding: 24px 30px;
-            text-align: center;
-            max-width: 300px;
-            width: 90%;
-        }
-        .offline-box .off-icon { font-size: 2.5rem; margin-bottom: 6px; }
-        .offline-box h3 { color: var(--primary); margin-bottom: 6px; }
-        .offline-box p { color: #aaa; font-size: 0.8rem; margin-bottom: 14px; }
-        .offline-box button {
-            background: var(--secondary);
-            border: none;
-            color: white;
-            padding: 8px 24px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Scrollbar */
-        .cards-container::-webkit-scrollbar { width: 4px; }
-        .cards-container::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
-
-        /* ===== ALT KISIM SHOP ===== */
+        /* BOTTOM SHOP */
         .bottom-shop {
-            flex-shrink: 0;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding-top: 10px;
-            margin-top: 8px;
+            flex:1; display:flex; flex-direction:column; min-height:0;
+            border-top:1px solid rgba(255,255,255,0.08);
+            padding-top:8px; margin-top:6px;
         }
 
-        .shop-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
+        .cat-tabs { display:flex; gap:5px; margin-bottom:6px; flex-shrink:0; }
+
+        .cat-tab {
+            flex:1; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);
+            color:#777; padding:5px 2px; border-radius:8px; font-size:0.65rem;
+            font-weight:bold; cursor:pointer; text-align:center; transition:0.2s; line-height:1.3;
         }
+        .cat-tab.active { background:var(--secondary); border-color:var(--secondary); color:white; }
+        .cat-tab .tab-icon { display:block; font-size:0.9rem; margin-bottom:1px; }
 
-        .shop-tab {
-            flex: 1;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #aaa;
-            padding: 7px 0;
-            border-radius: 10px;
-            font-size: 0.78rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
+        .cards-scroll {
+            flex:1; overflow-y:auto; display:flex; flex-direction:column;
+            gap:5px; padding-right:3px; padding-bottom:4px;
         }
+        .cards-scroll::-webkit-scrollbar { width:3px; }
+        .cards-scroll::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
 
-        .shop-tab.active {
-            background: var(--secondary);
-            border-color: var(--secondary);
-            color: white;
+        /* CARD */
+        .card {
+            background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1);
+            border-radius:10px; padding:8px 10px; display:flex;
+            justify-content:space-between; align-items:center;
+            cursor:pointer; transition:0.15s;
         }
+        .card:active { transform:scale(0.97); }
+        .card.can-buy { border-color:rgba(168,85,247,0.4); }
+        .card.locked { opacity:0.3; cursor:not-allowed; }
+        .card.locked:active { transform:none; }
+        .card.cant-afford { opacity:0.5; cursor:not-allowed; }
+        .card.cant-afford:active { transform:none; }
 
-        .shop-content {
-            max-height: 175px;
-            overflow-y: auto;
+        .card-left { display:flex; align-items:center; gap:8px; }
+        .card-icon { font-size:1.3rem; }
+        .card-info { display:flex; flex-direction:column; text-align:left; }
+        .card-name { font-size:0.78rem; font-weight:bold; }
+        .card-earn { font-size:0.64rem; color:#00ff88; }
+
+        .card-right { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
+
+        .card-price {
+            background:var(--secondary); color:white; border-radius:6px;
+            padding:3px 8px; font-weight:bold; font-size:0.7rem;
         }
+        .card.cant-afford .card-price { background:#444; }
+        .card.locked .card-price { background:#333; color:#555; }
 
-        .shop-content.hidden { display: none; }
+        .card-lvl { font-size:0.58rem; color:#666; font-weight:bold; }
 
-        .cards-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding-right: 4px;
+        /* POPUP */
+        .popup-overlay {
+            position:fixed; inset:0; background:rgba(0,0,0,0.6);
+            display:flex; justify-content:center; align-items:center;
+            z-index:999; animation:fadeIn 0.2s;
         }
-
-        /* Upgrade Card */
-        .upgrade-card {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 10px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.2s;
+        .popup-box {
+            background:linear-gradient(135deg,#1a1a2e,#2d1b69); border:2px solid var(--secondary);
+            border-radius:18px; padding:24px 28px; text-align:center;
+            animation:popIn 0.25s cubic-bezier(0.175,0.885,0.32,1.275); max-width:280px; width:90%;
         }
-
-        .upgrade-card:active { transform: scale(0.97); }
-        .upgrade-card.disabled { opacity: 0.4; cursor: not-allowed; }
-        .upgrade-card.disabled:active { transform: none; }
-
-        .upgrade-left { display: flex; align-items: center; gap: 10px; }
-        .upgrade-icon { font-size: 1.5rem; }
-        .upgrade-info { display: flex; flex-direction: column; text-align: left; }
-        .upgrade-name { font-size: 0.82rem; font-weight: bold; }
-        .upgrade-desc { font-size: 0.68rem; color: #00ff88; }
-
-        .upgrade-price {
-            background: var(--secondary);
-            color: white;
-            border-radius: 8px;
-            padding: 5px 10px;
-            font-weight: bold;
-            font-size: 0.75rem;
+        .popup-box .pop-icon { font-size:2.5rem; margin-bottom:6px; }
+        .popup-box h2 { color:var(--primary); font-size:1.4rem; margin-bottom:4px; }
+        .popup-box p { color:#aaa; font-size:0.76rem; margin-bottom:14px; }
+        .popup-box button {
+            background:var(--secondary); border:none; color:white;
+            padding:8px 24px; border-radius:9px; font-size:0.82rem; font-weight:bold; cursor:pointer;
         }
-
-        .upgrade-card.disabled .upgrade-price { background: #444; }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes popIn { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <header>
-            <h1 id="score">0</h1>
-            <p style="font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 2px;">Coins</p>
-            <div class="passive-income-text">⏱ Saniyede: <span id="per-sec">0</span> &nbsp;|&nbsp; 💰 Saatlik: <span id="hourly-income">0</span></div>
+<div class="game-container">
 
-            <div class="level-container mini-bar">
-                <div class="level-info">
-                    <span>⭐ Level <span id="level-val">1</span></span>
-                    <span id="xp-text">0 / 100 XP</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="xp-fill" class="progress-fill"></div>
-                </div>
-            </div>
+    <header>
+        <h1 id="score">0</h1>
+        <p class="sub-label">Coins</p>
+        <div class="income-row">💰 Saatlik: <span id="hourly-income">0</span> &nbsp;|&nbsp; 3h: <span id="pending-income">0</span></div>
 
-            <div class="energy-container mini-bar">
-                <div class="energy-info">
-                    <span>⚡ Enerji</span>
-                    <span id="energy-text">1000 / 1000</span>
-                </div>
-                <div class="energy-bar">
-                    <div id="energy-fill" class="energy-fill"></div>
-                </div>
-            </div>
+        <div class="mini-bar">
+            <div class="bar-label"><span>⭐ Level <span id="level-val">1</span></span><span id="xp-text">0 / 100 XP</span></div>
+            <div class="bar-track"><div class="bar-fill xp" id="xp-fill"></div></div>
+        </div>
 
-        </header>
+        <div class="mini-bar">
+            <div class="bar-label"><span>⚡ Enerji</span><span id="energy-text">1000 / 1000</span></div>
+            <div class="bar-track"><div class="bar-fill energy" id="energy-fill"></div></div>
+        </div>
+    </header>
 
-        <main>
-            <div class="combo-container">
-                <div id="combo-text">COMBO X1</div>
-                <div class="combo-bar">
-                    <div id="combo-fill"></div>
-                </div>
-            </div>
-            <div id="coin-container">
-                <div id="main-coin">🪙</div>
-            </div>
-        </main>
+    <main>
+        <div class="combo-container">
+            <div id="combo-text">COMBO X1</div>
+            <div class="combo-bar"><div id="combo-fill"></div></div>
+        </div>
+        <div id="coin-container"><div id="main-coin">🪙</div></div>
+        <div class="collect-row">
+            <button class="collect-btn waiting" id="collect-btn">⏳ 3:00:00</button>
+        </div>
+    </main>
 
-        <!-- ALT KISIM: KARTLAR BÖLÜMÜ -->
-        <section class="bottom-shop">
-            <div class="shop-tabs">
-                <button class="shop-tab active" id="tab-cards" onclick="switchTab('cards')">🏪 Kartlar</button>
-                <button class="shop-tab" id="tab-upgrades" onclick="switchTab('upgrades')">💪 Yükseltme</button>
-            </div>
-            <div class="shop-content" id="shop-cards">
-                <div class="cards-container" id="cards-container"></div>
-            </div>
-            <div class="shop-content hidden" id="shop-upgrades">
-                <div class="upgrade-card" id="upgrade-btn">
-                    <div class="upgrade-left">
-                        <span class="upgrade-icon">💪</span>
-                        <div class="upgrade-info">
-                            <span class="upgrade-name">Tıklama Gücü</span>
-                            <span class="upgrade-desc">Şu an: <span id="click-power-val">1</span>x</span>
-                        </div>
-                    </div>
-                    <span class="upgrade-price" id="buy-click">50 🪙</span>
-                </div>
-            </div>
-        </section>
+    <section class="bottom-shop">
+        <div class="cat-tabs" id="cat-tabs"></div>
+        <div class="cards-scroll" id="cards-scroll"></div>
+    </section>
 
-    <script>
-    (function() {
-        // ============ KONFIGÜRASYON ============
-        const CARDS_CONFIG = [
-            { id: 'lemonade',  name: 'Limonata Standı', icon: '🥤', baseCost: 100,   yieldPerSec: 1  },
-            { id: 'store',     name: 'Küçük Market',    icon: '🏪', baseCost: 500,   yieldPerSec: 5  },
-            { id: 'factory',   name: 'Büyük Fabrika',   icon: '🏭', baseCost: 2500,  yieldPerSec: 25 },
-            { id: 'office',    name: 'Ofis Binası',     icon: '🏢', baseCost: 12000, yieldPerSec: 100 },
-            { id: 'bank',      name: 'Banka',           icon: '🏦', baseCost: 60000, yieldPerSec: 400 }
-        ];
+</div>
 
-        const COST_MULTIPLIER = 1.15;        // Her alımda fiyat artış çarpanı
-        const ENERGY_COST_PER_TAP = 1;
-        const ENERGY_REGEN_PER_SEC = 1;      // Saniyede enerji yenileme
-        const COMBO_DECAY_TIME = 2;          // Kombo süresi (sn)
-        const MAX_COMBO = 10;
-        const OFFLINE_MAX_HOURS = 8;         // Max offline kazanç sınırı (saat)
-        const CLICK_POWER_BASE_COST = 50;
+<script>
+(function(){
 
-        // ============ OYUN STATE ============
-        function getDefaultState() {
-            let cards = {};
-            CARDS_CONFIG.forEach(c => {
-                cards[c.id] = { level: 0 };
-            });
-            return {
-                score: 0,
-                level: 1,
-                xp: 0,
-                xpToNextLevel: 100,
-                clickPower: 1,
-                energy: 1000,
-                maxEnergy: 1000,
-                lastUpdate: Date.now(),
-                cards: cards
-            };
-        }
+    const CATEGORIES = [
+        { id:'profesyoneller', name:'Profesyon', icon:'👔' },
+        { id:'sirketler',      name:'Şirketler', icon:'🏢' },
+        { id:'teknoloji',      name:'Teknoloji', icon:'💻' },
+        { id:'yukseltmeler',   name:'Yükseltme', icon:'💪' }
+    ];
 
-        let gameState = getDefaultState();
-        let combo = 1;
-        let comboTimer = 0;       // kalan süresi (saniye cinsinden)
-        let lastLoopTime = Date.now();
+    const CARDS = [
+        // Profesyoneller
+        { id:'freelancer',  cat:'profesyoneller', name:'Freelancer',        icon:'🧑‍💻', baseCost:100,    baseEarn:50,    unlock:null },
+        { id:'danisman',    cat:'profesyoneller', name:'Danışman',          icon:'📊',  baseCost:500,    baseEarn:200,   unlock:{card:'freelancer', level:3} },
+        { id:'muhasebeci',  cat:'profesyoneller', name:'Muhasebeci',        icon:'🧾',  baseCost:2000,   baseEarn:600,   unlock:{card:'danisman',   level:3} },
+        { id:'avukat',      cat:'profesyoneller', name:'Avukat',            icon:'⚖️',  baseCost:8000,   baseEarn:1500,  unlock:{card:'muhasebeci', level:3} },
+        { id:'ceo',         cat:'profesyoneller', name:'CEO',               icon:'🎩',  baseCost:35000,  baseEarn:4000,  unlock:{card:'avukat',     level:3} },
 
-        // ============ STORAGE (localStorage fallback + sessionStorage) ============
-        const SAVE_KEY = 'tapGameSave_v4';
+        // Şirketler
+        { id:'cafe',        cat:'sirketler', name:'Cafe',              icon:'☕',  baseCost:200,    baseEarn:80,    unlock:null },
+        { id:'restoran',    cat:'sirketler', name:'Restoran',          icon:'🍽️', baseCost:1200,   baseEarn:350,   unlock:{card:'cafe',      level:3} },
+        { id:'butik',       cat:'sirketler', name:'Boutique',          icon:'👗',  baseCost:5000,   baseEarn:900,   unlock:{card:'restoran',  level:3} },
+        { id:'otel',        cat:'sirketler', name:'Otel',              icon:'🏨',  baseCost:22000,  baseEarn:2500,  unlock:{card:'butik',     level:3} },
+        { id:'alisveris',   cat:'sirketler', name:'Alışveriş Merkezi', icon:'🛒',  baseCost:100000, baseEarn:8000,  unlock:{card:'otel',      level:3} },
 
-        function saveGame() {
-            gameState.lastUpdate = Date.now();
-            const data = JSON.stringify(gameState);
-            try { localStorage.setItem(SAVE_KEY, data); } catch(e) {}
-            try { sessionStorage.setItem(SAVE_KEY, data); } catch(e) {}
-        }
+        // Teknoloji
+        { id:'app',         cat:'teknoloji', name:'App Geliştirme',    icon:'📱',  baseCost:300,    baseEarn:100,   unlock:null },
+        { id:'saas',        cat:'teknoloji', name:'SaaS Platforma',    icon:'☁️',  baseCost:1800,   baseEarn:450,   unlock:{card:'app',    level:3} },
+        { id:'kripto',      cat:'teknoloji', name:'Kripto Madencilik', icon:'⛏️',  baseCost:7000,   baseEarn:1200,  unlock:{card:'saas',   level:3} },
+        { id:'ai',          cat:'teknoloji', name:'AI Startup',        icon:'🤖',  baseCost:30000,  baseEarn:3500,  unlock:{card:'kripto', level:3} },
+        { id:'uzay',        cat:'teknoloji', name:'Uzay Teknoloji',    icon:'🚀',  baseCost:150000, baseEarn:12000, unlock:{card:'ai',     level:3} },
 
-        function loadGame() {
-            let saved = null;
-            try { saved = localStorage.getItem(SAVE_KEY); } catch(e) {}
-            if (!saved) { try { saved = sessionStorage.getItem(SAVE_KEY); } catch(e) {} }
-            if (saved) {
-                try {
-                    let loaded = JSON.parse(saved);
-                    // Eksik card'ları ekle (yeni card eklendiyse)
-                    CARDS_CONFIG.forEach(c => {
-                        if (!loaded.cards[c.id]) loaded.cards[c.id] = { level: 0 };
-                    });
-                    gameState = loaded;
-                } catch(e) { console.error("Save yükleme hatası"); }
-            }
-        }
+        // Yükseltmeler
+        { id:'clickpower',  cat:'yukseltmeler', name:'Tıklama Gücü', icon:'💪', baseCost:50, baseEarn:0, unlock:null, isUpgrade:true }
+    ];
 
-        // ============ HESAPLAMALAR ============
-        function getCardCost(cardId) {
-            let cfg = CARDS_CONFIG.find(c => c.id === cardId);
-            let lvl = gameState.cards[cardId].level;
-            return Math.floor(cfg.baseCost * Math.pow(COST_MULTIPLIER, lvl));
-        }
+    const COST_MULT   = 1.15;
+    const EARN_MULT   = 1.12;
+    const ENERGY_COST = 1;
+    const ENERGY_REGEN= 1;
+    const COMBO_TIME  = 2;
+    const MAX_COMBO   = 10;
+    const COLLECT_DUR = 3*3600;
 
-        function getClickPowerCost() {
-            return Math.floor(CLICK_POWER_BASE_COST * Math.pow(1.5, gameState.clickPower - 1));
-        }
-
-        function getTotalPassiveIncome() {
-            let total = 0;
-            CARDS_CONFIG.forEach(c => {
-                total += c.yieldPerSec * gameState.cards[c.id].level;
-            });
-            return total;
-        }
-
-        // ============ OFFLINE KAZANÇ ============
-        function calculateOfflineEarnings() {
-            let now = Date.now();
-            let diffSec = Math.floor((now - gameState.lastUpdate) / 1000);
-            let passivePerSec = getTotalPassiveIncome();
-
-            if (diffSec > 5 && passivePerSec > 0) {
-                // Max 8 saat sınırla
-                let cappedSec = Math.min(diffSec, OFFLINE_MAX_HOURS * 3600);
-                let earned = Math.floor(cappedSec * passivePerSec);
-                gameState.score += earned;
-                showOfflinePopup(earned, cappedSec);
-            }
-            gameState.lastUpdate = now;
-        }
-
-        function showOfflinePopup(earned, seconds) {
-            let timeStr = '';
-            let hrs = Math.floor(seconds / 3600);
-            let mins = Math.floor((seconds % 3600) / 60);
-            if (hrs > 0) timeStr += hrs + ' saat ';
-            if (mins > 0) timeStr += mins + ' dak';
-            if (!timeStr) timeStr = seconds + ' sn';
-
-            let popup = document.createElement('div');
-            popup.className = 'offline-popup';
-            popup.innerHTML = `
-                <div class="offline-box">
-                    <div class="off-icon">💤</div>
-                    <h3>Hoş Geldin!</h3>
-                    <p>${timeStr} süresinde <strong style="color:#ffd700">${earned.toLocaleString()}</strong> coin kazandın!</p>
-                    <button onclick="this.parentElement.parentElement.remove()">Harika!</button>
-                </div>`;
-            document.body.appendChild(popup);
-        }
-
-        // ============ LEVEL UP ============
-        function checkLevelUp() {
-            if (gameState.xp >= gameState.xpToNextLevel) {
-                gameState.level++;
-                gameState.xp = 0;
-                gameState.xpToNextLevel = Math.floor(gameState.xpToNextLevel * 1.6);
-                // Bonus: max enerji +50, enerji dol
-                gameState.maxEnergy += 50;
-                gameState.energy = gameState.maxEnergy;
-                // Bonus coin
-                let bonus = gameState.level * 100;
-                gameState.score += bonus;
-                showLevelUpPopup(bonus);
-            }
-        }
-
-        function showLevelUpPopup(bonus) {
-            let popup = document.createElement('div');
-            popup.className = 'levelup-overlay';
-            popup.innerHTML = `
-                <div class="levelup-box">
-                    <div class="lvl-icon">🎉</div>
-                    <h2>Level ${gameState.level}!</h2>
-                    <p>+${bonus.toLocaleString()} coin bonus &amp; enerji doldu!</p>
-                    <button onclick="this.parentElement.parentElement.remove()">Devam →</button>
-                </div>`;
-            document.body.appendChild(popup);
-        }
-
-        // ============ SATINALMA ============
-        function buyCard(cardId) {
-            let cost = getCardCost(cardId);
-            if (gameState.score < cost) return;
-            gameState.score -= cost;
-            gameState.cards[cardId].level++;
-            saveGame();
-            updateUI();
-        }
-
-        function buyClickPower() {
-            let cost = getClickPowerCost();
-            if (gameState.score < cost) return;
-            gameState.score -= cost;
-            gameState.clickPower++;
-            saveGame();
-            updateUI();
-        }
-
-        // ============ TAP (Click / Touch) ============
-        let lastTapTime = 0;
-
-        function handleTap(e) {
-            // touchstart + click double-fire önleme
-            let now = Date.now();
-            if (now - lastTapTime < 300) return;
-            lastTapTime = now;
-
-            e.preventDefault();
-            if (gameState.energy < ENERGY_COST_PER_TAP) return;
-
-            // Kombo
-            comboTimer = COMBO_DECAY_TIME;
-            if (combo < MAX_COMBO) combo += 0.3;
-
-            let gain = Math.floor(gameState.clickPower * combo);
-            gameState.score += gain;
-            gameState.xp += 1;
-            gameState.energy -= ENERGY_COST_PER_TAP;
-
-            checkLevelUp();
-
-            // Floating text pozisyonu
-            let clientX, clientY;
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else if (e.changedTouches && e.changedTouches.length > 0) {
-                clientX = e.changedTouches[0].clientX;
-                clientY = e.changedTouches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-            createFloatingText(clientX, clientY, `+${gain}`);
-            updateUI();
-        }
-
-        const coinContainer = document.getElementById('coin-container');
-        coinContainer.addEventListener('touchstart', handleTap, { passive: false });
-        coinContainer.addEventListener('click', handleTap);
-
-        // ============ FLOATING TEXT ============
-        function createFloatingText(x, y, text) {
-            const el = document.createElement('div');
-            el.className = 'floating-text';
-            el.innerText = text;
-            el.style.left = (x - 15) + 'px';
-            el.style.top = (y - 40) + 'px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 800);
-        }
-
-        // ============ GAME LOOP ============
-        function gameLoop() {
-            let now = Date.now();
-            let delta = (now - lastLoopTime) / 1000; // saniye
-            lastLoopTime = now;
-
-            // Pasif kazanç
-            let passivePerSec = getTotalPassiveIncome();
-            gameState.score += passivePerSec * delta;
-
-            // Enerji yenileme
-            if (gameState.energy < gameState.maxEnergy) {
-                gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + ENERGY_REGEN_PER_SEC * delta);
-            }
-
-            // Kombo countdown
-            if (comboTimer > 0) {
-                comboTimer -= delta;
-                if (comboTimer <= 0) {
-                    comboTimer = 0;
-                    combo = 1;
-                }
-            } else {
-                combo = 1;
-            }
-
-            updateUI();
-        }
-
-        // ============ UI RENDER ============
-        function renderCards() {
-            const container = document.getElementById('cards-container');
-            container.innerHTML = '';
-            CARDS_CONFIG.forEach(cfg => {
-                let cost = getCardCost(cfg.id);
-                let lvl = gameState.cards[cfg.id].level;
-                let canAfford = gameState.score >= cost;
-
-                let card = document.createElement('div');
-                card.className = 'card' + (canAfford ? '' : ' disabled');
-                card.onclick = () => buyCard(cfg.id);
-                card.innerHTML = `
-                    <div class="card-left">
-                        <span class="card-icon">${cfg.icon}</span>
-                        <div class="card-info">
-                            <span class="card-name">${cfg.name}</span>
-                            <span class="card-yield">+${cfg.yieldPerSec}/sn · Lv.${lvl}</span>
-                        </div>
-                    </div>
-                    <div class="card-right">
-                        <span class="buy-btn">${cost.toLocaleString()} 🪙</span>
-                        <span class="card-level-badge">Sahip: ${lvl}</span>
-                    </div>`;
-                container.appendChild(card);
-            });
-        }
-
-        function updateUI() {
-            // Score
-            document.getElementById('score').innerText = Math.floor(gameState.score).toLocaleString();
-
-            // Pasif gelir
-            let perSec = getTotalPassiveIncome();
-            document.getElementById('per-sec').innerText = perSec.toLocaleString();
-            document.getElementById('hourly-income').innerText = (perSec * 3600).toLocaleString();
-
-            // Level / XP
-            document.getElementById('level-val').innerText = gameState.level;
-            document.getElementById('xp-text').innerText = `${Math.floor(gameState.xp)} / ${gameState.xpToNextLevel} XP`;
-            document.getElementById('xp-fill').style.width = (gameState.xp / gameState.xpToNextLevel * 100) + '%';
-
-            // Enerji
-            document.getElementById('energy-text').innerText = `${Math.floor(gameState.energy)} / ${gameState.maxEnergy}`;
-            document.getElementById('energy-fill').style.width = (gameState.energy / gameState.maxEnergy * 100) + '%';
-
-            // Kombo
-            let comboPercent = comboTimer > 0 ? (comboTimer / COMBO_DECAY_TIME * 100) : 0;
-            document.getElementById('combo-fill').style.width = comboPercent + '%';
-            document.getElementById('combo-text').style.opacity = comboTimer > 0 ? '1' : '0';
-            document.getElementById('combo-text').innerText = `COMBO X${Math.floor(combo)}`;
-
-            // Click Power upgrade card
-            let cpCost = getClickPowerCost();
-            let canAffordCP = gameState.score >= cpCost;
-            let upgradeCard = document.getElementById('upgrade-btn');
-            upgradeCard.className = 'upgrade-card' + (canAffordCP ? '' : ' disabled');
-            document.getElementById('click-power-val').innerText = gameState.clickPower;
-            document.getElementById('buy-click').innerText = cpCost.toLocaleString() + ' 🪙';
-
-            // Coin greyscale enerji bitti
-            coinContainer.className = gameState.energy < ENERGY_COST_PER_TAP ? 'coin-disabled' : '';
-
-            // Kartlar
-            renderCards();
-        }
-
-        // ============ BAŞLANGIC ============
-        loadGame();
-        calculateOfflineEarnings();
-        lastLoopTime = Date.now();
-        updateUI();
-        setInterval(gameLoop, 100);
-        setInterval(saveGame, 3000);
-
-        // Upgrade card click
-        document.getElementById('upgrade-btn').addEventListener('click', function() {
-            buyClickPower();
-        });
-
-        // Global scope'a taşı (HTML onclick için)
-        window.switchTab = function(tab) {
-            document.getElementById('tab-cards').className = 'shop-tab' + (tab === 'cards' ? ' active' : '');
-            document.getElementById('tab-upgrades').className = 'shop-tab' + (tab === 'upgrades' ? ' active' : '');
-            document.getElementById('shop-cards').className = 'shop-content' + (tab === 'cards' ? '' : ' hidden');
-            document.getElementById('shop-upgrades').className = 'shop-content' + (tab === 'upgrades' ? '' : ' hidden');
+    // STATE
+    function defaultState() {
+        let cards = {};
+        CARDS.forEach(c => { cards[c.id] = {level:0}; });
+        return {
+            score:0, level:1, xp:0, xpToNextLevel:100,
+            clickPower:1, energy:1000, maxEnergy:1000,
+            lastUpdate:Date.now(), collectTimer:0, cards:cards
         };
+    }
 
-    })();
-    </script>
-</body>
-</html>
+    let gs = defaultState();
+    let combo=1, comboTimer=0, lastLoop=Date.now();
+    let activeCat = 'profesyoneller';
+
+    // SAVE / LOAD
+    const KEY = 'tapGameSave_v5';
+    function save() {
+        gs.lastUpdate = Date.now();
+        let d = JSON.stringify(gs);
+        try{localStorage.setItem(KEY,d);}catch(e){}
+        try{sessionStorage.setItem(KEY,d);}catch(e){}
+    }
+    function load() {
+        let s=null;
+        try{s=localStorage.getItem(KEY);}catch(e){}
+        if(!s) try{s=sessionStorage.getItem(KEY);}catch(e){}
+        if(s){
+            try{
+                let ld=JSON.parse(s);
+                CARDS.forEach(c=>{ if(!ld.cards[c.id]) ld.cards[c.id]={level:0}; });
+                gs=ld;
+            }catch(e){}
+        }
+    }
+
+    // CALC
+    function cardCost(c){ return Math.floor(c.baseCost * Math.pow(COST_MULT, gs.cards[c.id].level)); }
+
+    function cardEarn(c){
+        let l=gs.cards[c.id].level;
+        if(l===0) return 0;
+        return Math.floor(c.baseEarn * Math.pow(EARN_MULT, l-1) * l);
+    }
+
+    function cardEarnNext(c){
+        let l=gs.cards[c.id].level;
+        return Math.floor(c.baseEarn * Math.pow(EARN_MULT, l) * (l+1));
+    }
+
+    function totalEarn(){
+        let t=0;
+        CARDS.forEach(c=>{ if(!c.isUpgrade) t+=cardEarn(c); });
+        return t;
+    }
+
+    function isOpen(c){ return !c.unlock || gs.cards[c.unlock.card].level >= c.unlock.level; }
+
+    function cpCost(){ return Math.floor(50*Math.pow(1.5, gs.clickPower-1)); }
+
+    // OFFLINE
+    function offlineCalc(){
+        let now=Date.now();
+        let diff=Math.floor((now-gs.lastUpdate)/1000);
+        if(gs.collectTimer>0 && diff>0) gs.collectTimer=Math.max(0, gs.collectTimer-diff);
+        gs.lastUpdate=now;
+    }
+
+    // LEVEL UP
+    function checkLvl(){
+        if(gs.xp >= gs.xpToNextLevel){
+            gs.level++;
+            gs.xp=0;
+            gs.xpToNextLevel=Math.floor(gs.xpToNextLevel*1.6);
+            gs.maxEnergy+=50;
+            gs.energy=gs.maxEnergy;
+            let bonus=gs.level*100;
+            gs.score+=bonus;
+            popup('🎉','Level '+gs.level+'!','+'+bonus.toLocaleString()+' coin bonus & enerji doldu!');
+        }
+    }
+
+    // COLLECT
+    function pendingR(){ return Math.floor((totalEarn()/3600)*COLLECT_DUR); }
+
+    function collect(){
+        if(gs.collectTimer>0) return;
+        let r=pendingR();
+        if(r<=0) return;
+        gs.score+=r;
+        gs.collectTimer=COLLECT_DUR;
+        save(); renderUI();
+    }
+
+    // BUY
+    function buyCard(c){
+        if(c.isUpgrade){buyCP();return;}
+        if(!isOpen(c)) return;
+        let cost=cardCost(c);
+        if(gs.score<cost) return;
+        gs.score-=cost;
+        gs.cards[c.id].level++;
+        save(); renderUI();
+    }
+
+    function buyCP(){
+        let cost=cpCost();
+        if(gs.score<cost) return;
+        gs.score-=cost;
+        gs.clickPower++;
+        save(); renderUI();
+    }
+
+    // TAP
+    let lastTap=0;
+    function handleTap(e){
+        let now=Date.now();
+        if(now-lastTap<300) return;
+        lastTap=now;
+        e.preventDefault();
+        if(gs.energy<ENERGY_COST) return;
+
+        comboTimer=COMBO_TIME;
+        if(combo<MAX_COMBO) combo+=0.3;
+
+        let gain=Math.floor(gs.clickPower*combo);
+        gs.score+=gain;
+        gs.xp+=1;
+        gs.energy-=ENERGY_COST;
+        checkLvl();
+
+        let cx,cy;
+        if(e.touches&&e.touches.length){cx=e.touches[0].clientX;cy=e.touches[0].clientY;}
+        else if(e.changedTouches&&e.changedTouches.length){cx=e.changedTouches[0].clientX;cy=e.changedTouches[0].clientY;}
+        else{cx=e.clientX;cy=e.clientY;}
+        ftxt(cx,cy,'+'+gain);
+        renderUI();
+    }
+
+    let coinEl=document.getElementById('coin-container');
+    coinEl.addEventListener('touchstart',handleTap,{passive:false});
+    coinEl.addEventListener('click',handleTap);
+
+    // FLOATING TEXT
+    function ftxt(x,y,t){
+        let el=document.createElement('div');
+        el.className='floating-text';
+        el.innerText=t;
+        el.style.left=(x-12)+'px';
+        el.style.top=(y-35)+'px';
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),800);
+    }
+
+    // POPUP
+    function popup(icon,title,desc){
+        let p=document.createElement('div');
+        p.className='popup-overlay';
+        p.innerHTML='<div class="popup-box"><div class="pop-icon">'+icon+'</div><h2>'+title+'</h2><p>'+desc+'</p><button onclick="this.closest(\'.popup-overlay\').remove()">Devam →</button></div>';
+        document.body.appendChild(p);
+    }
+
+    // GAME LOOP
+    function loop(){
+        let now=Date.now();
+        let dt=(now-lastLoop)/1000;
+        lastLoop=now;
+
+        if(gs.energy<gs.maxEnergy) gs.energy=Math.min(gs.maxEnergy, gs.energy+ENERGY_REGEN*dt);
+        if(gs.collectTimer>0){ gs.collectTimer-=dt; if(gs.collectTimer<0) gs.collectTimer=0; }
+        if(comboTimer>0){ comboTimer-=dt; if(comboTimer<=0){comboTimer=0;combo=1;} } else combo=1;
+
+        renderUI();
+    }
+
+    // FORMAT TIME
+    function fmtTime(s){
+        s=Math.max(0,Math.ceil(s));
+        let h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+        return h+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+    }
+
+    // RENDER TABS
+    function renderTabs(){
+        let el=document.getElementById('cat-tabs');
+        el.innerHTML='';
+        CATEGORIES.forEach(cat=>{
+            let btn=document.createElement('div');
+            btn.className='cat-tab'+(activeCat===cat.id?' active':'');
+            btn.innerHTML='<span class="tab-icon">'+cat.icon+'</span>'+cat.name;
+            btn.onclick=()=>{ activeCat=cat.id; renderTabs(); renderCards(); };
+            el.appendChild(btn);
+        });
+    }
+
+    // RENDER CARDS
+    function renderCards(){
+        let scroll=document.getElementById('cards-scroll');
+        scroll.innerHTML='';
+
+        CARDS.filter(c=>c.cat===activeCat).forEach(card=>{
+            let lvl=gs.cards[card.id].level;
+            let opened=isOpen(card);
+            let cost=cardCost(card);
+            let canBuy=opened && gs.score>=cost;
+            let el=document.createElement('div');
+
+            // LOCKED
+            if(!opened){
+                el.className='card locked';
+                let req=CARDS.find(c=>c.id===card.unlock.card);
+                el.innerHTML=
+                    '<div class="card-left">'+
+                        '<span class="card-icon">🔒</span>'+
+                        '<div class="card-info">'+
+                            '<span class="card-name">'+card.name+'</span>'+
+                            '<span class="card-earn" style="color:#555">'+req.name+' Lv.'+card.unlock.level+' gerekli</span>'+
+                        '</div>'+
+         

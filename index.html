@@ -1,57 +1,463 @@
-<div class="game-container">
-    <header>
-        <div class="stats">
-            <h1 id="score">0</h1>
-            <p>Coins</p>
-            <div class="passive-income-text">Saatlik Kazanç: <span id="hourly-income">0</span> 💰</div>
-        </div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Modern Clicker Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ffd700;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --bg-dark: #0a0a0f;
+            --text: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0f 100%);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header { text-align: center; }
         
-        <div class="level-container mini-bar">
-            <div class="level-info"><span>Level <span id="level-val">1</span></span><span id="xp-text">0/100 XP</span></div>
-            <div class="progress-bar"><div id="xp-fill" class="progress-fill"></div></div>
-        </div>
+        #score {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            margin-bottom: 0;
+        }
+
+        .passive-income-text {
+            font-size: 0.85rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Küçültülmüş Barlar */
+        .mini-bar {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-bar, .energy-bar {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+            width: 100%;
+            transition: width 0.1s;
+        }
+
+        .level-info, .energy-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        /* Kartlar Alanı */
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .card:active { transform: scale(0.98); }
+        .card-info { display: flex; flex-direction: column; text-align: left; }
+        .card-name { font-size: 0.85rem; font-weight: bold; }
+        .card-yield { font-size: 0.7rem; color: #00ff88; }
         
-        <div class="energy-container mini-bar">
-            <div class="energy-info"><span>⚡ Enerji</span><span id="energy-text">1000/1000</span></div>
-            <div class="energy-bar"><div id="energy-fill" class="energy-fill"></div></div>
-        </div>
+        .card button {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
 
-        <div class="quick-upgrade-container">
-            <button class="upgrade-btn" onclick="buyClickPower()">💪 Güç: <span id="buy-click">50</span></button>
-        </div>
+        .quick-upgrade-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
-        <div class="cards-container">
-            <div class="card" onclick="buyCard('lemonade')">
-                <div class="card-info">
-                    <span class="card-name">Limonata Standı</span>
-                    <span class="card-yield">+1/sn</span>
-                </div>
-                <button id="price-lemonade">100</button>
-            </div>
-            <div class="card" onclick="buyCard('store')">
-                <div class="card-info">
-                    <span class="card-name">Küçük Market</span>
-                    <span class="card-yield">+5/sn</span>
-                </div>
-                <button id="price-store">500</button>
-            </div>
-            <div class="card" onclick="buyCard('factory')">
-                <div class="card-info">
-                    <span class="card-name">Büyük Fabrika</span>
-                    <span class="card-yield">+25/sn</span>
-                </div>
-                <button id="price-factory">2500</button>
-            </div>
-        </div>
-    </header>
+        .upgrade-btn {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
 
-    <main id="game-main">
-        <div class="combo-container">
-            <div id="combo-text">COMBO X1</div>
-            <div class="combo-bar"><div id="combo-fill"></div></div>
-        </div>
-        <div id="coin-container">
-            <div id="main-coin">🪙</div>
-        </div>
-    </main>
-</div>
+        /* Ana Alan ve Kombo */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .combo-container {
+            width: 140px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #combo-text {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--accent);
+            opacity: 0;
+            margin-bottom: 5px;
+        }
+
+        .combo-bar {
+            height: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #combo-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        #coin-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        #main-coin {
+            font-size: 180px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2));
+            animation: float 3s infinite ease-in-out;
+            transition: transform 0.05s;
+        }
+
+        #main-coin:active { transform: scale(0.85); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .floating-text {
+            position: absolute;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatUp 0.8s forwards;
+            z-index: 100;
+        }
+
+        @keyframes floatUp {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-120px); }
+        }
+
+        /* Kaydırma çubuğu stili */
+        .cards-container::-webkit-scrollbar { width: 4px; }
+        .cards-container::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <div class="stats">
+                <h1 id="score">0</h1>
+                <p style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 2px;">Coins</p>
+                <div class="passive-income-text">Saatlik Kazanç: <span id="hourly-income">0</span> 💰</div>
+            </div>
+            
+            <div class="level-container mini-bar">
+                <div class="level-info">
+                    <span>Level <span id="level-val">1</span></span>
+                    <span id="xp-text">0 / 100 XP</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="xp-fill" class="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="energy-container mini-bar">
+                <div class="energy-info">
+                    <span>⚡ Enerji</span>
+                    <span id="energy-text">1000 / 1000</span>
+                </div>
+                <div class="energy-bar">
+                    <div id="energy-fill" class="energy-fill"></div>
+                </div>
+            </div>
+
+            <div class="quick-upgrade-container">
+                <button class="upgrade-btn" onclick="buyClickPower()">💪 Güç: <span id="buy-click">50</span></button>
+            </div>
+
+            <div class="cards-container">
+                <div class="card" onclick="buyCard('lemonade')">
+                    <div class="card-info">
+                        <span class="card-name">Limonata Standı</span>
+                        <span class="card-yield">+1/sn</span>
+                    </div>
+                    <button id="price-lemonade">100</button>
+                </div>
+                <div class="card" onclick="buyCard('store')">
+                    <div class="card-info">
+                        <span class="card-name">Küçük Market</span>
+                        <span class="card-yield">+5/sn</span>
+                    </div>
+                    <button id="price-store">500</button>
+                </div>
+                <div class="card" onclick="buyCard('factory')">
+                    <div class="card-info">
+                        <span class="card-name">Büyük Fabrika</span>
+                        <span class="card-yield">+25/sn</span>
+                    </div>
+                    <button id="price-factory">2500</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="combo-container">
+                <div id="combo-text">COMBO X1</div>
+                <div class="combo-bar">
+                    <div id="combo-fill"></div>
+                </div>
+            </div>
+            <div id="coin-container">
+                <div id="main-coin">🪙</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Oyun Durumu
+        let defaultState = {
+            score: 0,
+            level: 1,
+            xp: 0,
+            xpToNextLevel: 100,
+            clickPower: 1,
+            passiveIncome: 0,
+            energy: 1000,
+            maxEnergy: 1000,
+            energyRegenRate: 0.5,
+            lastUpdate: Date.now(),
+            cards: {
+                lemonade: { level: 0, baseCost: 100, yield: 1 },
+                store: { level: 0, baseCost: 500, yield: 5 },
+                factory: { level: 0, baseCost: 2500, yield: 25 }
+            }
+        };
+
+        let gameState = JSON.parse(JSON.stringify(defaultState));
+        let combo = 1;
+        let comboTimer = 0;
+
+        // Başlangıç
+        window.onload = () => {
+            loadGame();
+            calculateOfflineEarnings();
+            setInterval(gameLoop, 100);
+            setInterval(saveGame, 5000);
+            updateUI();
+        };
+
+        function gameLoop() {
+            // Pasif Kazanç (Saniyede bir eklenir)
+            gameState.score += (gameState.passiveIncome / 10);
+            
+            // Enerji Yenileme
+            if (gameState.energy < gameState.maxEnergy) {
+                gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + (gameState.energyRegenRate / 10));
+            }
+
+            // Kombo Sistemi
+            if (comboTimer > 0) {
+                comboTimer -= 1;
+                document.getElementById('combo-fill').style.width = comboTimer + "%";
+                document.getElementById('combo-text').style.opacity = "1";
+            } else {
+                combo = 1;
+                document.getElementById('combo-text').style.opacity = "0";
+            }
+            updateUI();
+        }
+
+        // Tıklama Olayı
+        document.getElementById('coin-container').addEventListener('click', (e) => {
+            if (gameState.energy < 1) return;
+
+            comboTimer = 100;
+            if (combo < 10) combo += 0.05;
+
+            let gain = gameState.clickPower * Math.floor(combo);
+            gameState.score += gain;
+            gameState.xp += 1;
+            gameState.energy -= 1;
+
+            if (gameState.xp >= gameState.xpToNextLevel) {
+                levelUp();
+            }
+
+            createFloatingText(e.clientX, e.clientY, `+${gain}`);
+            updateUI();
+        });
+
+        function buyCard(cardId) {
+            let card = gameState.cards[cardId];
+            let cost = Math.floor(card.baseCost * Math.pow(1.5, card.level));
+
+            if (gameState.score >= cost) {
+                gameState.score -= cost;
+                card.level++;
+                gameState.passiveIncome += card.yield;
+                updateUI();
+                saveGame();
+            }
+        }
+
+        function buyClickPower() {
+            let cost = 50 * gameState.clickPower;
+            if (gameState.score >= cost) {
+                gameState.score -= cost;
+                gameState.clickPower++;
+                updateUI();
+            }
+        }
+
+        function levelUp() {
+            gameState.level++;
+            gameState.xp = 0;
+            gameState.xpToNextLevel = Math.floor(gameState.xpToNextLevel * 1.6);
+            gameState.score += gameState.level * 100;
+        }
+
+        function updateUI() {
+            document.getElementById('score').innerText = Math.floor(gameState.score).toLocaleString();
+            document.getElementById('hourly-income').innerText = Math.floor(gameState.passiveIncome * 3600).toLocaleString();
+            document.getElementById('energy-text').innerText = `${Math.floor(gameState.energy)} / ${gameState.maxEnergy}`;
+            document.getElementById('combo-text').innerText = `COMBO X${Math.floor(combo)}`;
+            document.getElementById('level-val').innerText = gameState.level;
+            document.getElementById('xp-text').innerText = `${Math.floor(gameState.xp)} / ${Math.floor(gameState.xpToNextLevel)} XP`;
+            document.getElementById('buy-click').innerText = (50 * gameState.clickPower).toLocaleString();
+            
+            document.getElementById('xp-fill').style.width = (gameState.xp / gameState.xpToNextLevel * 100) + "%";
+            document.getElementById('energy-fill').style.width = (gameState.energy / gameState.maxEnergy * 100) + "%";
+
+            for (let id in gameState.cards) {
+                let c = gameState.cards[id];
+                let cost = Math.floor(c.baseCost * Math.pow(1.5, c.level));
+                document.getElementById(`price-${id}`).innerText = cost.toLocaleString();
+            }
+        }
+
+        function createFloatingText(x, y, text) {
+            const el = document.createElement('div');
+            el.className = 'floating-text';
+            el.innerText = text;
+            el.style.left = (x - 20) + 'px';
+            el.style.top = (y - 50) + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 800);
+        }
+
+        function saveGame() {
+            gameState.lastUpdate = Date.now();
+            localStorage.setItem('tapGameSave_v3', JSON.stringify(gameState));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('tapGameSave_v3');
+            if (saved) {
+                try {
+                    let loaded = JSON.parse(saved);
+                    gameState = Object.assign(gameState, loaded);
+                } catch(e) { console.error("Yükleme hatası"); }
+            }
+        }
+
+        function calculateOfflineEarnings() {
+            let now = Date.now();
+            let diff = Math.floor((now - gameState.lastUpdate) / 1000);
+            if (diff > 10 && gameState.passiveIncome > 0) {
+                let earned = diff * gameState.passiveIncome;
+                gameState.score += earned;
+                alert(`Sen yokken ${Math.floor(earned)} coin kazandın!`);
+            }
+        }
+    </script>
+</body>
+</html>

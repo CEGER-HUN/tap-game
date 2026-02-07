@@ -10,6 +10,8 @@
             --secondary: #a855f7;
             --accent: #ec4899;
             --text: #ffffff;
+            --gold-gradient: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            --purple-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
         }
 
         * {
@@ -100,6 +102,24 @@
             margin-top: 3px;
             margin-bottom: 8px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .income-row .icon-inline {
+            width: 14px;
+            height: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .income-row .icon-inline svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
         }
 
         .mini-bar {
@@ -128,6 +148,21 @@
             font-weight: bold;
         }
 
+        .bar-label .icon-inline {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+        }
+
+        .bar-label .icon-inline svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
         main {
             flex-shrink: 0;
             display: flex;
@@ -139,7 +174,31 @@
 
         .combo-container { width:120px; text-align:center; margin-bottom:4px; height:18px; }
 
-        #combo-text { font-size:0.78rem; font-weight:900; color:var(--accent); opacity:0; transition:opacity 0.2s; }
+        #combo-text { 
+            font-size:0.78rem; 
+            font-weight:900; 
+            color:var(--accent); 
+            opacity:0; 
+            transition:opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        #combo-text .icon-inline {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #combo-text .icon-inline svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
 
         .combo-bar { height:3px; background:rgba(0,0,0,0.3); border-radius:10px; overflow:hidden; margin-top:2px; }
         #combo-fill { height:100%; width:0%; background:var(--accent); box-shadow:0 0 6px var(--accent); transition:width 0.1s; }
@@ -193,7 +252,6 @@
             background-repeat: no-repeat;
             opacity: 0;
             pointer-events: none;
-            background-image: url('assets/icons/icon-reward.png');
         }
 
         .collect-btn.visible {
@@ -316,10 +374,10 @@
             justify-content: center;
         }
 
-        .nav-btn-icon img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
+        .nav-btn-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
         }
 
         .nav-btn-label {
@@ -379,7 +437,7 @@
             padding: 12px 18px 8px;
             flex-shrink:0;
         }
-        .sheet-title { font-size:1.05rem; font-weight:800; color:#fff; }
+        .sheet-title { font-size:1.05rem; font-weight:800; color:#fff; display: flex; align-items: center; gap: 8px; }
         .sheet-close {
             background:rgba(255,255,255,0.08); border:none; color:#aaa;
             width:28px; height:28px; border-radius:50%;
@@ -410,7 +468,14 @@
             font-weight:700; cursor:pointer; white-space:nowrap;
             transition:0.2s; display:flex; align-items:center; gap:5px;
         }
-        .cat-tab .tab-icon { font-size:0.85rem; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
+        .cat-tab .tab-icon { 
+            width:16px; height:16px; display:flex; align-items:center; justify-content:center; 
+        }
+        .cat-tab .tab-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
         .cat-tab.active {
             background:var(--secondary); border-color:var(--secondary); color:white;
         }
@@ -462,10 +527,9 @@
             justify-content: center;
             margin-bottom: 4px;
         }
-        .card-icon img {
+        .card-icon svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
         }
         .card-name { 
             font-size:0.85rem; 
@@ -497,6 +561,22 @@
             font-weight:700; 
             font-size:0.75rem;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .card-price .icon-inline {
+            width: 12px;
+            height: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-price .icon-inline svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
         }
         .card.cant-afford .card-price { background:#444; }
         .card.locked .card-price { background:#333; color:#555; }
@@ -513,9 +593,14 @@
             color: #666;
         }
         .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px;
             opacity: 0.5;
+        }
+        .empty-state-icon svg {
+            width: 100%;
+            height: 100%;
         }
         .empty-state-text {
             font-size: 0.9rem;
@@ -540,10 +625,9 @@
             align-items: center;
             justify-content: center;
         }
-        .popup-box .pop-icon img {
+        .popup-box .pop-icon svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
         }
         .popup-box h2 { color:var(--primary); font-size:1.4rem; margin-bottom:4px; }
         .popup-box p { color:#aaa; font-size:0.76rem; margin-bottom:14px; }
@@ -643,10 +727,9 @@
             justify-content: center;
         }
 
-        .drawer-item-icon img {
+        .drawer-item-icon svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
         }
 
         .drawer-item-text {
@@ -695,10 +778,9 @@
             overflow: hidden;
         }
 
-        .avatar-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .avatar-container svg {
+            width: 60%;
+            height: 60%;
         }
 
         .avatar-container:active {
@@ -726,6 +808,18 @@
             font-size: 0.85rem;
             margin-top: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .edit-name-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
         }
 
         .stats-grid {
@@ -769,6 +863,11 @@
             gap: 8px;
         }
 
+        .section-title svg {
+            width: 20px;
+            height: 20px;
+        }
+
         .achievement-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -802,10 +901,9 @@
             justify-content: center;
         }
 
-        .achievement-icon img {
+        .achievement-icon svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
         }
 
         .achievement-name {
@@ -866,9 +964,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
             box-shadow: 0 0 20px rgba(255,215,0,0.8);
             z-index: 10;
+        }
+
+        .wheel-center svg {
+            width: 30px;
+            height: 30px;
         }
 
         .wheel-pointer {
@@ -883,22 +985,6 @@
             border-top: 30px solid #ff4444;
             z-index: 11;
             filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
-        }
-
-        .wheel-section {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 50%;
-            left: 50%;
-            transform-origin: 0 0;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #000;
         }
 
         .spin-btn {
@@ -958,10 +1044,9 @@
             overflow: hidden;
         }
 
-        .avatar-option img {
+        .avatar-option svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
         }
 
         .avatar-option:active {
@@ -984,10 +1069,27 @@
             margin-right: 5px;
         }
 
-        .energy-icon img {
+        .energy-icon svg {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+        }
+
+        .locked-icon {
+            width: 40px;
+            height: 40px;
+            opacity: 0.5;
+        }
+
+        .locked-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ana Coin SVG Stil */
+        .main-coin-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(255,215,0,0.5));
         }
     </style>
 </head>
@@ -1002,12 +1104,19 @@
         </button>
         <h1 id="score">0</h1>
         <p class="sub-label">Coins</p>
-        <div class="income-row">💰 Saatlik: <span id="hourly-income">0</span> &nbsp;|&nbsp; 3h: <span id="pending-income">0</span></div>
+        <div class="income-row">
+            <span class="icon-inline">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+            </span>
+            Saatlik: <span id="hourly-income">0</span> &nbsp;|&nbsp; 3h: <span id="pending-income">0</span>
+        </div>
 
         <div class="mini-bar">
             <div class="bar-label">
                 <span>
-                    <span class="energy-icon"><img src="assets/icons/icon-energy.png" alt="Level"></span>
+                    <span class="icon-inline">
+                        <svg viewBox="0 0 24 24"><path d="M5 16c0 3.87 3.13 7 7 7s7-3.13 7-7v-4H5v4zM16.12 4.37l2.1-2.1-.82-.83-2.3 2.31C14.16 3.28 13.12 3 12 3s-2.16.28-3.09.75L6.6 1.44l-.82.83 2.1 2.1C6.14 5.64 5 7.68 5 10v1h14v-1c0-2.32-1.14-4.36-2.88-5.63zM9 9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm6 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                    </span>
                     Level <span id="level-val">1</span>
                 </span>
                 <span id="xp-text">0 / 100 XP</span>
@@ -1018,7 +1127,9 @@
         <div class="mini-bar">
             <div class="bar-label">
                 <span>
-                    <span class="energy-icon"><img src="assets/icons/icon-energy.png" alt="Enerji"></span>
+                    <span class="icon-inline">
+                        <svg viewBox="0 0 24 24"><path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/></svg>
+                    </span>
                     Enerji
                 </span>
                 <span id="energy-text">1000 / 1000</span>
@@ -1030,17 +1141,23 @@
     <main>
         <div class="combo-container">
             <div id="combo-text">
-                <span class="energy-icon"><img src="assets/icons/icon-combo.png" alt="Combo" style="width:16px;height:16px;margin-right:5px;"></span>
+                <span class="icon-inline">
+                    <svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+                </span>
                 COMBO X1
             </div>
             <div class="combo-bar"><div id="combo-fill"></div></div>
         </div>
         <div id="coin-container">
             <button class="collect-btn" id="collect-btn">
-                <div class="collect-btn-amount" id="collect-amount">⏳</div>
+                <div class="collect-btn-amount" id="collect-amount">
+                    <span class="icon-inline" style="width:24px;height:24px;">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+                    </span>
+                </div>
                 <div class="collect-btn-label" id="collect-label">Bekle</div>
             </button>
-            <img id="main-coin" src="assets/icons/icon-reward.png" alt="GO Coin">
+            <img id="main-coin" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='gold' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffd700'/%3E%3Cstop offset='50%25' style='stop-color:%23ffed4e'/%3E%3Cstop offset='100%25' style='stop-color:%23ffd700'/%3E%3C/linearGradient%3E%3ClinearGradient id='goldDark' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23b8860b'/%3E%3Cstop offset='100%25' style='stop-color:%23daa520'/%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='3' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='90' fill='url(%23goldDark)'/%3E%3Ccircle cx='100' cy='100' r='80' fill='url(%23gold)' filter='url(%23glow)'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='%23fff' stroke-width='2' opacity='0.5'/%3E%3Ctext x='100' y='115' font-size='60' text-anchor='middle' fill='%23b8860b' font-weight='bold' font-family='Arial'%3EGO%3C/text%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='%23ffd700' stroke-width='4' opacity='0.8'/%3E%3C/svg%3E" alt="GO Coin">
         </div>
     </main>
 
@@ -1048,23 +1165,33 @@
         <div class="nav-buttons">
             <div class="nav-btn" id="btn-kartlar">
                 <span class="nav-btn-badge" id="kartlar-badge">0</span>
-                <span class="nav-btn-icon">🏪</span>
+                <span class="nav-btn-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                </span>
                 <span class="nav-btn-label">Kartlar</span>
             </div>
             <div class="nav-btn" id="btn-spin">
-                <span class="nav-btn-icon"><img src="assets/icons/icon-spin.png" alt="Çarkıfelek"></span>
+                <span class="nav-btn-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                </span>
                 <span class="nav-btn-label">Çarkıfelek</span>
             </div>
             <div class="nav-btn" id="btn-profil">
-                <span class="nav-btn-icon"><img src="assets/icons/icon-profile.png" alt="Profil"></span>
+                <span class="nav-btn-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </span>
                 <span class="nav-btn-label">Profil</span>
             </div>
             <div class="nav-btn" id="btn-cuzdan">
-                <span class="nav-btn-icon"><img src="assets/icons/icon-wallet.png" alt="Cüzdan"></span>
+                <span class="nav-btn-icon">
+                    <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                </span>
                 <span class="nav-btn-label">Cüzdan</span>
             </div>
             <div class="nav-btn" id="btn-roadmap">
-                <span class="nav-btn-icon"><img src="assets/icons/icon-exchange.png" alt="Takas"></span>
+                <span class="nav-btn-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </span>
                 <span class="nav-btn-label">Takas</span>
             </div>
         </div>
@@ -1076,8 +1203,15 @@
     <div class="sheet" id="sheet-kartlar">
         <div class="sheet-handle"></div>
         <div class="sheet-header">
-            <span class="sheet-title">🏪 Kartlar</span>
-            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+            <span class="sheet-title">
+                <span class="icon-inline" style="width:20px;height:20px;">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                </span>
+                Kartlar
+            </span>
+            <button class="sheet-close" onclick="closeAllSheets()">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+            </button>
         </div>
         <div class="cat-tabs" id="cat-tabs"></div>
         <div class="sheet-content">
@@ -1090,19 +1224,26 @@
         <div class="sheet-handle"></div>
         <div class="sheet-header">
             <span class="sheet-title">
-                <span class="energy-icon" style="margin-right:8px;"><img src="assets/icons/icon-profile.png" alt="Profil" style="width:20px;height:20px;"></span>
+                <span class="icon-inline" style="width:20px;height:20px;">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </span>
                 Profil
             </span>
-            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+            <button class="sheet-close" onclick="closeAllSheets()">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+            </button>
         </div>
         <div class="sheet-content" id="profile-content">
             <div class="profile-hero">
                 <div class="avatar-container" id="avatar-display" onclick="openAvatarSelector()">
-                    <img src="assets/icons/icon-profile.png" alt="Avatar">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/></svg>
                 </div>
                 <div class="profile-name" id="profile-name">Oyuncu</div>
                 <div class="profile-id">ID: #12345</div>
-                <button class="edit-name-btn" onclick="editName()">✏️ İsmi Düzenle</button>
+                <button class="edit-name-btn" onclick="editName()">
+                    <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    İsmi Düzenle
+                </button>
             </div>
 
             <div class="stats-grid">
@@ -1125,7 +1266,10 @@
             </div>
 
             <div class="achievements-section">
-                <div class="section-title">🏅 Başarımlar</div>
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+                    Başarımlar
+                </div>
                 <div class="achievement-grid" id="achievements-grid"></div>
             </div>
         </div>
@@ -1136,10 +1280,14 @@
         <div class="sheet-handle"></div>
         <div class="sheet-header">
             <span class="sheet-title">
-                <span class="energy-icon" style="margin-right:8px;"><img src="assets/icons/icon-spin.png" alt="Çarkıfelek" style="width:20px;height:20px;"></span>
+                <span class="icon-inline" style="width:20px;height:20px;">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                </span>
                 Çarkıfelek
             </span>
-            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+            <button class="sheet-close" onclick="closeAllSheets()">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+            </button>
         </div>
         <div class="sheet-content">
             <div class="wheel-container">
@@ -1147,7 +1295,9 @@
                 <div class="wheel-wrapper">
                     <div class="wheel-pointer"></div>
                     <div class="wheel" id="wheel">
-                        <div class="wheel-center">🎰</div>
+                        <div class="wheel-center">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                        </div>
                     </div>
                 </div>
                 <button class="spin-btn" id="spin-btn" onclick="spinWheel()">ÇEVİR!</button>
@@ -1164,15 +1314,19 @@
         <div class="sheet-handle"></div>
         <div class="sheet-header">
             <span class="sheet-title">
-                <span class="energy-icon" style="margin-right:8px;"><img src="assets/icons/icon-wallet.png" alt="Cüzdan" style="width:20px;height:20px;"></span>
+                <span class="icon-inline" style="width:20px;height:20px;">
+                    <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                </span>
                 Cüzdan
             </span>
-            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+            <button class="sheet-close" onclick="closeAllSheets()">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+            </button>
         </div>
         <div class="sheet-content">
             <div class="empty-state">
                 <div class="empty-state-icon">
-                    <img src="assets/icons/icon-wallet.png" alt="Cüzdan" style="width:60px;height:60px;">
+                    <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                 </div>
                 <div class="empty-state-text">Cüzdan özellikleri yakında eklenecek!</div>
             </div>
@@ -1184,15 +1338,19 @@
         <div class="sheet-handle"></div>
         <div class="sheet-header">
             <span class="sheet-title">
-                <span class="energy-icon" style="margin-right:8px;"><img src="assets/icons/icon-exchange.png" alt="Takas" style="width:20px;height:20px;"></span>
+                <span class="icon-inline" style="width:20px;height:20px;">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </span>
                 Takas
             </span>
-            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+            <button class="sheet-close" onclick="closeAllSheets()">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+            </button>
         </div>
         <div class="sheet-content">
             <div class="empty-state">
                 <div class="empty-state-icon">
-                    <img src="assets/icons/icon-exchange.png" alt="Takas" style="width:60px;height:60px;">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                 </div>
                 <div class="empty-state-text">Takas özellikleri yakında eklenecek!</div>
             </div>
@@ -1205,44 +1363,44 @@
 (function(){
 
     const CATEGORIES = [
-        { id:'profesyoneller', name:'Profesyon', icon:'👔' },
-        { id:'sirketler',      name:'Şirketler', icon:'🏢' },
-        { id:'teknoloji',      name:'Teknoloji', icon:'💻' },
-        { id:'yukseltmeler',   name:'2x Boost', icon:'⚡' }
+        { id:'profesyoneller', name:'Profesyon', icon:'briefcase' },
+        { id:'sirketler',      name:'Şirketler', icon:'building' },
+        { id:'teknoloji',      name:'Teknoloji', icon:'laptop' },
+        { id:'yukseltmeler',   name:'2x Boost', icon:'zap' }
     ];
 
     const CARDS = [
-        { id:'freelancer',  cat:'profesyoneller', name:'Freelancer',        icon:'🧑‍💻', baseCost:100,    baseEarn:50,    unlock:null },
-        { id:'danisman',    cat:'profesyoneller', name:'Danışman',          icon:'📊',  baseCost:500,    baseEarn:200,   unlock:{card:'freelancer', level:3} },
-        { id:'muhasebeci',  cat:'profesyoneller', name:'Muhasebeci',        icon:'🧾',  baseCost:2000,   baseEarn:600,   unlock:{card:'danisman',   level:3} },
-        { id:'avukat',      cat:'profesyoneller', name:'Avukat',            icon:'⚖️',  baseCost:8000,   baseEarn:1500,  unlock:{card:'muhasebeci', level:3} },
-        { id:'ceo',         cat:'profesyoneller', name:'CEO',               icon:'🎩',  baseCost:35000,  baseEarn:4000,  unlock:{card:'avukat',     level:3} },
-        { id:'cafe',        cat:'sirketler', name:'Cafe',              icon:'☕',  baseCost:200,    baseEarn:80,    unlock:null },
-        { id:'restoran',    cat:'sirketler', name:'Restoran',          icon:'🍽️', baseCost:1200,   baseEarn:350,   unlock:{card:'cafe',      level:3} },
-        { id:'butik',       cat:'sirketler', name:'Boutique',          icon:'👗',  baseCost:5000,   baseEarn:900,   unlock:{card:'restoran',  level:3} },
-        { id:'otel',        cat:'sirketler', name:'Otel',              icon:'🏨',  baseCost:22000,  baseEarn:2500,  unlock:{card:'butik',     level:3} },
-        { id:'alisveris',   cat:'sirketler', name:'Alışveriş Merkezi', icon:'🛒',  baseCost:100000, baseEarn:8000,  unlock:{card:'otel',      level:3} },
-        { id:'app',         cat:'teknoloji', name:'App Geliştirme',    icon:'📱',  baseCost:300,    baseEarn:100,   unlock:null },
-        { id:'saas',        cat:'teknoloji', name:'SaaS Platforma',    icon:'☁️',  baseCost:1800,   baseEarn:450,   unlock:{card:'app',    level:3} },
-        { id:'kripto',      cat:'teknoloji', name:'Kripto Madencilik', icon:'⛏️',  baseCost:7000,   baseEarn:1200,  unlock:{card:'saas',   level:3} },
-        { id:'ai',          cat:'teknoloji', name:'AI Startup',        icon:'🤖',  baseCost:30000,  baseEarn:3500,  unlock:{card:'kripto', level:3} },
-        { id:'uzay',        cat:'teknoloji', name:'Uzay Teknoloji',    icon:'🚀',  baseCost:150000, baseEarn:12000, unlock:{card:'ai',     level:3} },
-        { id:'clickpower',  cat:'yukseltmeler', name:'Tıklama Gücü', icon:'💪', baseCost:50, baseEarn:0, unlock:null, isUpgrade:true }
+        { id:'freelancer',  cat:'profesyoneller', name:'Freelancer',        icon:'laptop', baseCost:100,    baseEarn:50,    unlock:null },
+        { id:'danisman',    cat:'profesyoneller', name:'Danışman',          icon:'briefcase',  baseCost:500,    baseEarn:200,   unlock:{card:'freelancer', level:3} },
+        { id:'muhasebeci',  cat:'profesyoneller', name:'Muhasebeci',        icon:'calculator',  baseCost:2000,   baseEarn:600,   unlock:{card:'danisman',   level:3} },
+        { id:'avukat',      cat:'profesyoneller', name:'Avukat',            icon:'scale',  baseCost:8000,   baseEarn:1500,  unlock:{card:'muhasebeci', level:3} },
+        { id:'ceo',         cat:'profesyoneller', name:'CEO',               icon:'crown',  baseCost:35000,  baseEarn:4000,  unlock:{card:'avukat',     level:3} },
+        { id:'cafe',        cat:'sirketler', name:'Cafe',              icon:'coffee',  baseCost:200,    baseEarn:80,    unlock:null },
+        { id:'restoran',    cat:'sirketler', name:'Restoran',          icon:'utensils', baseCost:1200,   baseEarn:350,   unlock:{card:'cafe',      level:3} },
+        { id:'butik',       cat:'sirketler', name:'Boutique',          icon:'shopping-bag',  baseCost:5000,   baseEarn:900,   unlock:{card:'restoran',  level:3} },
+        { id:'otel',        cat:'sirketler', name:'Otel',              icon:'hotel',  baseCost:22000,  baseEarn:2500,  unlock:{card:'butik',     level:3} },
+        { id:'alisveris',   cat:'sirketler', name:'Alışveriş Merkezi', icon:'shopping-cart',  baseCost:100000, baseEarn:8000,  unlock:{card:'otel',      level:3} },
+        { id:'app',         cat:'teknoloji', name:'App Geliştirme',    icon:'smartphone',  baseCost:300,    baseEarn:100,   unlock:null },
+        { id:'saas',        cat:'teknoloji', name:'SaaS Platforma',    icon:'cloud',  baseCost:1800,   baseEarn:450,   unlock:{card:'app',    level:3} },
+        { id:'kripto',      cat:'teknoloji', name:'Kripto Madencilik', icon:'pickaxe',  baseCost:7000,   baseEarn:1200,  unlock:{card:'saas',   level:3} },
+        { id:'ai',          cat:'teknoloji', name:'AI Startup',        icon:'bot',  baseCost:30000,  baseEarn:3500,  unlock:{card:'kripto', level:3} },
+        { id:'uzay',        cat:'teknoloji', name:'Uzay Teknoloji',    icon:'rocket',  baseCost:150000, baseEarn:12000, unlock:{card:'ai',     level:3} },
+        { id:'clickpower',  cat:'yukseltmeler', name:'Tıklama Gücü', icon:'zap', baseCost:50, baseEarn:0, unlock:null, isUpgrade:true }
     ];
 
     const ACHIEVEMENTS = [
-        { id:'first_coin', name:'İlk Coin', desc:'İlk coini kazan', icon:'🪙', requirement:1, check:(gs)=>gs.score>=1 },
-        { id:'coin_1k', name:'1K Coin', desc:'1000 coin kazan', icon:'💰', requirement:1000, check:(gs)=>gs.score>=1000 },
-        { id:'coin_10k', name:'10K Coin', desc:'10000 coin kazan', icon:'💎', requirement:10000, check:(gs)=>gs.score>=10000 },
-        { id:'level_5', name:'Level 5', desc:'Level 5\'e ulaş', icon:'⭐', requirement:5, check:(gs)=>gs.level>=5 },
-        { id:'level_10', name:'Level 10', desc:'Level 10\'a ulaş', icon:'🌟', requirement:10, check:(gs)=>gs.level>=10 },
-        { id:'first_card', name:'İlk Kart', desc:'İlk kartı al', icon:'🏪', requirement:1, check:(gs)=>gs.totalClicks>=1 },
-        { id:'clicks_100', name:'100 Tıklama', desc:'100 kez tıkla', icon:'👆', requirement:100, check:(gs)=>gs.totalClicks>=100 },
-        { id:'clicks_1000', name:'1K Tıklama', desc:'1000 kez tıkla', icon:'🖱️', requirement:1000, check:(gs)=>gs.totalClicks>=1000 },
-        { id:'combo_10', name:'Combo Master', desc:'X10 combo yap', icon:'🔥', requirement:10, check:(gs)=>gs.maxCombo>=10 }
+        { id:'first_coin', name:'İlk Coin', desc:'İlk coini kazan', icon:'coin', requirement:1, check:(gs)=>gs.score>=1 },
+        { id:'coin_1k', name:'1K Coin', desc:'1000 coin kazan', icon:'coins', requirement:1000, check:(gs)=>gs.score>=1000 },
+        { id:'coin_10k', name:'10K Coin', desc:'10000 coin kazan', icon:'gem', requirement:10000, check:(gs)=>gs.score>=10000 },
+        { id:'level_5', name:'Level 5', desc:'Level 5\'e ulaş', icon:'star', requirement:5, check:(gs)=>gs.level>=5 },
+        { id:'level_10', name:'Level 10', desc:'Level 10\'a ulaş', icon:'trophy', requirement:10, check:(gs)=>gs.level>=10 },
+        { id:'first_card', name:'İlk Kart', desc:'İlk kartı al', icon:'store', requirement:1, check:(gs)=>gs.totalClicks>=1 },
+        { id:'clicks_100', name:'100 Tıklama', desc:'100 kez tıkla', icon:'mouse', requirement:100, check:(gs)=>gs.totalClicks>=100 },
+        { id:'clicks_1000', name:'1K Tıklama', desc:'1000 kez tıkla', icon:'mouse-pointer', requirement:1000, check:(gs)=>gs.totalClicks>=1000 },
+        { id:'combo_10', name:'Combo Master', desc:'X10 combo yap', icon:'flame', requirement:10, check:(gs)=>gs.maxCombo>=10 }
     ];
 
-    const AVATARS = ['assets/icons/icon-profile.png', 'assets/icons/icon-wallet.png', 'assets/icons/icon-spin.png', 'assets/icons/icon-exchange.png', 'assets/icons/icon-energy.png', 'assets/icons/icon-combo.png', 'assets/icons/icon-reward.png', 'assets/icons/icon-settings.png'];
+    const AVATARS = ['user', 'wallet', 'spin', 'globe', 'zap', 'flame', 'coin', 'settings'];
 
     const WHEEL_PRIZES = [
         { label:'100', value:100, color:'#ff6b6b' },
@@ -1254,6 +1412,43 @@
         { label:'75', value:75, color:'#ffd3b6' },
         { label:'5K', value:5000, color:'#ffaaa5' }
     ];
+
+    // SVG Icon Helpers
+    const ICONS = {
+        coin: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>',
+        coins: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12.31 11.14c-1.99-.22-3.28-.92-3.28-1.74 0-.84.79-1.37 2.08-1.37 1.18 0 1.97.53 2.25 1.31h1.75c-.27-1.46-1.45-2.57-3.37-2.83V4h-1.5v2.51c-1.81.31-3.16 1.41-3.16 2.96 0 1.91 1.68 2.67 4.01 2.97 2.25.28 3.28.99 3.28 1.87 0 .62-.48 1.36-2.08 1.36-1.42 0-2.36-.6-2.66-1.5H7.48c.32 1.64 1.59 2.77 3.53 3.04V20h1.5v-2.51c1.86-.26 3.32-1.28 3.32-3.06 0-2.21-1.91-2.94-4.02-3.29z"/></svg>',
+        gem: '<svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/><path d="M17.5 9l-5.5 9-5.5-9h11z" opacity=".3"/><path d="M6.5 9H2l10 13L22 9h-4.5L12 18 6.5 9z" opacity=".6"/></svg>',
+        star: '<svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>',
+        trophy: '<svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>',
+        store: '<svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>',
+        mouse: '<svg viewBox="0 0 24 24"><path d="M13 9h-2V7h2v2zm0 4h-2v-2h2v2zm0 4h-2v-2h2v2zm-1-13C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>',
+        'mouse-pointer': '<svg viewBox="0 0 24 24"><path d="M13.64 21.97c.49.35 1.18.25 1.54-.23L21 13.5V3h-9.5L2.23 8.82c-.48.36-.58 1.05-.23 1.54l3.5 4.9c.35.49 1.05.58 1.54.23l2.88-2.05 3.02 4.26-2.05 2.88c-.35.49-.25 1.18.23 1.54l4.9 3.5z"/></svg>',
+        flame: '<svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>',
+        briefcase: '<svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>',
+        building: '<svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10z"/></svg>',
+        laptop: '<svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5z"/></svg>',
+        zap: '<svg viewBox="0 0 24 24"><path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/></svg>',
+        calculator: '<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 2h2v2h-2V5zm0 4h2v2h-2V9zm0 4h2v2h-2v-2zM5 15h4v4H5v-4zm6 0h2v2h-2v-2zm0-4h2v2h-2V9zm0-4h2v2h-2V5zm6 8h2v2h-2v-2zm0-4h2v2h-2V9zm0-4h2v2h-2V5z"/></svg>',
+        scale: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>',
+        crown: '<svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>',
+        coffee: '<svg viewBox="0 0 24 24"><path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.93 0 3.5-1.57 3.5-3.5S20.43 3 18.5 3zM16 8.99c0 2.2-1.8 3.99-3.99 3.99-2.2 0-4-1.8-4-4V5h8v3.99zm2.5-1.99h-1.5v-2h1.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5zM2 19h20v2H2z"/></svg>',
+        utensils: '<svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>',
+        'shopping-bag': '<svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z"/></svg>',
+        hotel: '<svg viewBox="0 0 24 24"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>',
+        'shopping-cart': '<svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>',
+        smartphone: '<svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>',
+        cloud: '<svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>',
+        pickaxe: '<svg viewBox="0 0 24 24"><path d="M14.5 13.5L3 2 2 3l11.5 11.5L9 19l1 1 4.5-4.5L19 22l1-1-4.5-4.5 4.5-4.5-1-1-4.5 4.5z"/></svg>',
+        bot: '<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72v.78h3c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V8.5c0-1.1.9-2 2-2h3v-.78c-.6-.34-1-.98-1-1.72a2 2 0 0 1 2-2M7 8.5v10h10v-10H7z"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></svg>',
+        rocket: '<svg viewBox="0 0 24 24"><path d="M12 2.5s-4 4.5-4 10.5c0 2.5 1.5 4 4 4s4-1.5 4-4c0-6-4-10.5-4-10.5zM9 18c0 1.66 1.34 3 3 3s3-1.34 3-3v-1H9v1z"/></svg>',
+        user: '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>',
+        wallet: '<svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>',
+        spin: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>',
+        globe: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',
+        settings: '<svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L5.09 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>',
+        lock: '<svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>',
+        wait: '<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>'
+    };
 
     const COST_MULT   = 1.15;
     const EARN_MULT   = 1.12;
@@ -1272,7 +1467,7 @@
             score:0, level:1, xp:0, xpToNextLevel:100,
             clickPower:1, energy:1000, maxEnergy:1000,
             lastUpdate:Date.now(), collectTimer:0, cards:cards,
-            playerName: 'Oyuncu', avatar: 'assets/icons/icon-profile.png',
+            playerName: 'Oyuncu', avatar: 'user',
             totalClicks: 0, totalEarned: 0, maxCombo: 1,
             spinCount: 3, lastSpinReset: Date.now(),
             unlockedAchievements: []
@@ -1285,7 +1480,7 @@
     let activeSheet = null;
     let isSpinning = false;
 
-    const KEY = 'tapGameSave_v12';
+    const KEY = 'tapGameSave_v13';
     function save() {
         gs.lastUpdate = Date.now();
         let d = JSON.stringify(gs);
@@ -1299,7 +1494,7 @@
                 let ld=JSON.parse(s);
                 CARDS.forEach(c=>{ if(!ld.cards[c.id]) ld.cards[c.id]={level:0}; });
                 if(!ld.playerName) ld.playerName = 'Oyuncu';
-                if(!ld.avatar) ld.avatar = 'assets/icons/icon-profile.png';
+                if(!ld.avatar) ld.avatar = 'user';
                 if(!ld.totalClicks) ld.totalClicks = 0;
                 if(!ld.totalEarned) ld.totalEarned = 0;
                 if(!ld.maxCombo) ld.maxCombo = 1;
@@ -1334,7 +1529,6 @@
         let diff=Math.floor((now-gs.lastUpdate)/1000);
         if(gs.collectTimer>0 && diff>0) gs.collectTimer=Math.max(0, gs.collectTimer-diff);
         
-        // Spin reset check (24 saat)
         let spinDiff = now - gs.lastSpinReset;
         if(spinDiff >= 24*3600*1000) {
             gs.spinCount = 3;
@@ -1353,7 +1547,7 @@
             gs.energy=gs.maxEnergy;
             let bonus=gs.level*100;
             gs.score+=bonus;
-            popup('assets/icons/icon-reward.png','Level '+gs.level+'!','+'+bonus.toLocaleString()+' coin bonus & enerji doldu!');
+            popup('coin','Level '+gs.level+'!','+'+bonus.toLocaleString()+' coin bonus & enerji doldu!');
             checkAchievements();
         }
     }
@@ -1362,7 +1556,7 @@
         ACHIEVEMENTS.forEach(ach => {
             if(!gs.unlockedAchievements.includes(ach.id) && ach.check(gs)) {
                 gs.unlockedAchievements.push(ach.id);
-                popup('assets/icons/icon-reward.png', 'Başarım Açıldı!', ach.name + ': ' + ach.desc);
+                popup('trophy', 'Başarım Açıldı!', ach.name + ': ' + ach.desc);
             }
         });
     }
@@ -1376,7 +1570,7 @@
         gs.score+=r;
         gs.totalEarned+=r;
         gs.collectTimer=COLLECT_DUR;
-        popup('assets/icons/icon-reward.png','Toplandı!','+'+r.toLocaleString()+' coin kazandın!');
+        popup('coin','Toplandı!','+'+r.toLocaleString()+' coin kazandın!');
         checkAchievements();
         save(); renderUI();
     }
@@ -1445,10 +1639,11 @@
         setTimeout(()=>el.remove(),800);
     }
 
-    function popup(icon,title,desc){
+    function popup(iconKey,title,desc){
+        let iconSvg = ICONS[iconKey] || ICONS['coin'];
         let p=document.createElement('div');
         p.className='popup-overlay';
-        p.innerHTML='<div class="popup-box"><div class="pop-icon"><img src="'+icon+'" alt="Popup Icon"></div><h2>'+title+'</h2><p>'+desc+'</p><button onclick="this.closest(\'.popup-overlay\').remove()">Devam →</button></div>';
+        p.innerHTML='<div class="popup-box"><div class="pop-icon">'+iconSvg+'</div><h2>'+title+'</h2><p>'+desc+'</p><button onclick="this.closest(\'.popup-overlay\').remove()">Devam →</button></div>';
         document.body.appendChild(p);
     }
 
@@ -1484,7 +1679,7 @@
         CATEGORIES.forEach(cat=>{
             let btn=document.createElement('div');
             btn.className='cat-tab'+(activeCat===cat.id?' active':'');
-            btn.innerHTML='<span class="tab-icon">'+cat.icon+'</span>'+cat.name;
+            btn.innerHTML='<span class="tab-icon">'+ICONS[cat.icon]+'</span>'+cat.name;
             btn.onclick=()=>{ activeCat=cat.id; renderTabs(); renderCards(); };
             el.appendChild(btn);
         });
@@ -1506,12 +1701,12 @@
                 let req=CARDS.find(c=>c.id===card.unlock.card);
                 el.innerHTML=
                     '<div class="card-top">'+
-                        '<div class="card-icon"><img src="assets/icons/icon-settings.png" alt="Locked"></div>'+
+                        '<div class="card-icon locked-icon">'+ICONS['lock']+'</div>'+
                         '<span class="card-name">'+card.name+'</span>'+
                         '<span class="card-earn" style="color:#555;font-size:0.65rem">'+req.name+' Lv.'+card.unlock.level+'</span>'+
                     '</div>'+
                     '<div class="card-bottom">'+
-                        '<span style="font-size:1.2rem;color:#444">🔐</span>'+
+                        '<span class="locked-icon" style="width:30px;height:30px;">'+ICONS['lock']+'</span>'+
                     '</div>';
                 scroll.appendChild(el);
                 return;
@@ -1522,12 +1717,12 @@
                 el.onclick=()=>buyCP();
                 el.innerHTML=
                     '<div class="card-top">'+
-                        '<div class="card-icon"><img src="assets/icons/icon-energy.png" alt="'+card.name+'"></div>'+
+                        '<div class="card-icon">'+ICONS[card.icon]+'</div>'+
                         '<span class="card-name">'+card.name+'</span>'+
                         '<span class="card-earn">Şu an: '+gs.clickPower+'x</span>'+
                     '</div>'+
                     '<div class="card-bottom">'+
-                        '<span class="card-price">'+cost.toLocaleString()+' 🪙</span>'+
+                        '<span class="card-price"><span class="icon-inline">'+ICONS['coin']+'</span>'+cost.toLocaleString()+'</span>'+
                         '<span class="card-lvl">Lv.'+lvl+'</span>'+
                     '</div>';
                 scroll.appendChild(el);
@@ -1543,12 +1738,12 @@
 
             el.innerHTML=
                 '<div class="card-top">'+
-                    '<div class="card-icon"><img src="assets/icons/icon-'+card.id+'.png" alt="'+card.name+'" onerror="this.onerror=null; this.src=\'assets/icons/icon-reward.png\'"></div>'+
+                    '<div class="card-icon">'+ICONS[card.icon]+'</div>'+
                     '<span class="card-name">'+card.name+'</span>'+
                     '<span class="card-earn">'+earnStr+'</span>'+
                 '</div>'+
                 '<div class="card-bottom">'+
-                    '<span class="card-price">'+cost.toLocaleString()+' 🪙</span>'+
+                    '<span class="card-price"><span class="icon-inline">'+ICONS['coin']+'</span>'+cost.toLocaleString()+'</span>'+
                     '<span class="card-lvl">Lv.'+lvl+'</span>'+
                 '</div>';
             scroll.appendChild(el);
@@ -1556,7 +1751,7 @@
     }
 
     function renderProfile() {
-        document.getElementById('avatar-display').innerHTML = '<img src="' + gs.avatar + '" alt="Avatar" onerror="this.onerror=null; this.src=\'assets/icons/icon-profile.png\'">';
+        document.getElementById('avatar-display').innerHTML = ICONS[gs.avatar] || ICONS['user'];
         document.getElementById('profile-name').textContent = gs.playerName;
         document.getElementById('stat-coins').textContent = Math.floor(gs.totalEarned).toLocaleString();
         document.getElementById('stat-level').textContent = gs.level;
@@ -1577,7 +1772,7 @@
             let div = document.createElement('div');
             div.className = 'achievement ' + (unlocked ? 'unlocked' : 'locked');
             div.innerHTML = `
-                <div class="achievement-icon"><img src="assets/icons/icon-reward.png" alt="${ach.name}" onerror="this.onerror=null; this.src='assets/icons/icon-reward.png'"></div>
+                <div class="achievement-icon">${ICONS[ach.icon]}</div>
                 <div class="achievement-name">${ach.name}</div>
                 <div class="achievement-desc">${ach.desc}</div>
             `;
@@ -1628,7 +1823,7 @@
         setTimeout(() => {
             gs.score += prize.value;
             gs.totalEarned += prize.value;
-            popup('assets/icons/icon-reward.png', 'Kazandın!', `+${prize.value.toLocaleString()} Coin!`);
+            popup('coin', 'Kazandın!', `+${prize.value.toLocaleString()} Coin!`);
             checkAchievements();
             save();
             
@@ -1652,7 +1847,7 @@
     window.openAvatarSelector = function() {
         let html = '<h3 style="margin-bottom: 15px;">Avatar Seç</h3><div class="avatar-grid">';
         AVATARS.forEach(av => {
-            html += `<div class="avatar-option${av===gs.avatar?' selected':''}" onclick="selectAvatar('${av}')"><img src="${av}" alt="Avatar" onerror="this.onerror=null; this.src='assets/icons/icon-profile.png'"></div>`;
+            html += `<div class="avatar-option${av===gs.avatar?' selected':''}" onclick="selectAvatar('${av}')">${ICONS[av]}</div>`;
         });
         html += '</div>';
         
@@ -1665,7 +1860,7 @@
     window.selectAvatar = function(avatar) {
         gs.avatar = avatar;
         save();
-        document.getElementById('avatar-display').innerHTML = `<img src="${avatar}" alt="Avatar" onerror="this.onerror=null; this.src='assets/icons/icon-profile.png'">`;
+        document.getElementById('avatar-display').innerHTML = ICONS[avatar];
         document.querySelectorAll('.avatar-option').forEach(el => {
             el.classList.remove('selected');
         });
@@ -1689,7 +1884,7 @@
         let cp=comboTimer>0?(comboTimer/COMBO_TIME*100):0;
         document.getElementById('combo-fill').style.width=cp+'%';
         document.getElementById('combo-text').style.opacity=(combo>1)?'1':'0';
-        document.getElementById('combo-text').innerHTML='<span class="energy-icon"><img src="assets/icons/icon-combo.png" alt="Combo" style="width:16px;height:16px;margin-right:5px;"></span>COMBO X'+Math.floor(combo);
+        document.getElementById('combo-text').innerHTML='<span class="icon-inline" style="width:16px;height:16px;">'+ICONS['flame']+'</span>COMBO X'+Math.floor(combo);
 
         let cBtn=document.getElementById('collect-btn');
         let cAmount=document.getElementById('collect-amount');
@@ -1698,11 +1893,11 @@
         
         if(gs.collectTimer>0){
             cBtn.className='collect-btn waiting';
-            cAmount.innerText='⏳';
+            cAmount.innerHTML='<span class="icon-inline" style="width:24px;height:24px;">'+ICONS['wait']+'</span>';
             cLabel.innerText=fmtTime(gs.collectTimer);
         } else if(pend>0){
             cBtn.className='collect-btn visible has-coins';
-            cAmount.innerText=pend.toLocaleString();
+            cAmount.innerHTML='<span class="icon-inline" style="width:24px;height:24px;">'+ICONS['coin']+'</span>';
             cLabel.innerText='TOPLA';
         } else {
             cBtn.className='collect-btn';
@@ -1769,7 +1964,9 @@
     </div>
     <div class="drawer-content">
         <div class="drawer-item" onclick="closeDrawer(); alert('Profil özelliği yakında!')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-profile.png" alt="Profilim"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">Profilim</div>
                 <div class="drawer-item-desc">Hesap bilgileri</div>
@@ -1777,7 +1974,9 @@
         </div>
 
         <div class="drawer-item" onclick="closeDrawer(); alert('Ayarlar özelliği yakında!')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-settings.png" alt="Ayarlar"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L5.09 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">Ayarlar</div>
                 <div class="drawer-item-desc">Oyun tercihleri</div>
@@ -1785,7 +1984,9 @@
         </div>
 
         <div class="drawer-item" onclick="closeDrawer(); alert('İstatistikler özelliği yakında!')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-reward.png" alt="İstatistikler"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">İstatistikler</div>
                 <div class="drawer-item-desc">Detaylı veriler</div>
@@ -1795,7 +1996,9 @@
         <div class="drawer-divider"></div>
 
         <div class="drawer-item" onclick="closeDrawer(); alert('Liderlik tablosu yakında!')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-reward.png" alt="Liderlik"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">Liderlik Tablosu</div>
                 <div class="drawer-item-desc">En iyi oyuncular</div>
@@ -1803,7 +2006,9 @@
         </div>
 
         <div class="drawer-item" onclick="closeDrawer(); alert('Arkadaşlar özelliği yakında!')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-profile.png" alt="Arkadaşlar"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">Arkadaşlar</div>
                 <div class="drawer-item-desc">Davet et & kazan</div>
@@ -1813,7 +2018,9 @@
         <div class="drawer-divider"></div>
 
         <div class="drawer-item" onclick="closeDrawer(); alert('Yardım sayfası yakında!')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-settings.png" alt="Yardım"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">Yardım</div>
                 <div class="drawer-item-desc">Nasıl oynanır?</div>
@@ -1821,7 +2028,9 @@
         </div>
 
         <div class="drawer-item" onclick="closeDrawer(); alert('GO Coin v1.0.0')">
-            <span class="drawer-item-icon"><img src="assets/icons/icon-settings.png" alt="Hakkında"></span>
+            <span class="drawer-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+            </span>
             <div class="drawer-item-text">
                 <div class="drawer-item-title">Hakkında</div>
                 <div class="drawer-item-desc">Versiyon 1.0.0</div>

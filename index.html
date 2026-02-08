@@ -2,1405 +2,1734 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Clicker Game</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GO Coin Game</title>
     <style>
+        :root {
+            --primary: #ffd700;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --text: #ffffff;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            overflow-x: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 20px;
-            padding-bottom: 100px;
-        }
-
-        .header {
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0f 100%);
+            color: var(--text);
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 20px;
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 90%);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .clicker-area {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .coin-button {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            border: none;
-            font-size: 80px;
-            cursor: pointer;
-            transition: transform 0.1s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
             overflow: hidden;
         }
 
-        .coin-button:active {
-            transform: scale(0.95);
-        }
-
-        .coin-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .energy-bar {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .energy-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .progress-bar {
+        .game-container {
             width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            max-width: 450px;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00f260 0%, #0575e6 100%);
-            transition: width 0.3s;
-            border-radius: 10px;
+        header { 
+            text-align: center; 
+            flex-shrink: 0; 
+            position: relative;
         }
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
+        .menu-btn {
+            position: absolute;
             left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            padding: 15px;
-            display: flex;
-            justify-content: space-around;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .nav-item {
+            top: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            width: 45px;
+            height: 45px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 5px;
             cursor: pointer;
-            transition: transform 0.2s;
-            padding: 5px;
-            /* 🎨 İkonları biraz yukarı taşı */
-            transform: translateY(-8px);
+            transition: 0.3s;
         }
 
-        .nav-item:active {
-            transform: translateY(-8px) scale(0.95);
+        .menu-btn:active {
+            background: rgba(255,255,255,0.2);
+            transform: scale(0.95);
         }
 
-        /* 🎨 Alt menü ikonlarını büyüt */
-        .nav-item img {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
+        .menu-btn span {
+            width: 24px;
+            height: 3px;
+            background: #fff;
+            border-radius: 2px;
+            transition: 0.3s;
         }
 
-        .nav-item.active {
-            color: #FFD700;
+        .menu-btn:hover span {
+            background: var(--primary);
         }
 
-        .nav-label {
-            font-size: 12px;
+        #score {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            line-height: 1.1;
         }
 
-        .screen {
-            display: none;
+        .sub-label { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 2px; }
+
+        .income-row {
+            font-size: 0.75rem;
+            color: #ffd700;
+            margin-top: 3px;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
-        .screen.active {
-            display: block;
+        .mini-bar {
+            margin-top: 5px;
+            padding: 6px 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .bar-track { 
+            height: 14px;
+            background: rgba(0,0,0,0.3); 
+            border-radius: 10px; 
+            overflow: hidden; 
+        }
+        .bar-fill { height:100%; border-radius:10px; width:0%; transition: width 0.3s; }
+        .bar-fill.xp { background: linear-gradient(90deg, var(--secondary), var(--accent)); }
+        .bar-fill.energy { background: linear-gradient(90deg, #00ff88, #00d9ff); width:100%; }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+
+        main {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 0 4px;
+            position: relative;
+        }
+
+        .combo-container { width:120px; text-align:center; margin-bottom:4px; height:18px; }
+
+        #combo-text { font-size:0.78rem; font-weight:900; color:var(--accent); opacity:0; transition:opacity 0.2s; }
+
+        .combo-bar { height:3px; background:rgba(0,0,0,0.3); border-radius:10px; overflow:hidden; margin-top:2px; }
+        #combo-fill { height:100%; width:0%; background:var(--accent); box-shadow:0 0 6px var(--accent); transition:width 0.1s; }
+
+        #coin-container { 
+            position: relative; 
+            cursor: pointer; 
+            touch-action: manipulation;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #main-coin {
+            width: 200px;
+            height: 200px;
+            filter: drop-shadow(0 0 25px rgba(255,215,0,0.4));
+            animation: float 3s infinite ease-in-out;
+            position: relative;
+            z-index: 3;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .collect-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 240px;
+            height: 240px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.3s;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            pointer-events: none;
+            background-image: url('https://i.imgur.com/pkVQDj2.png');
+        }
+
+        .collect-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .collect-btn.has-coins {
+            animation: collectPulse 2s infinite;
+        }
+
+        .collect-btn-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 15px rgba(255, 215, 0, 1), 
+                0 0 25px rgba(255, 215, 0, 0.8),
+                0 3px 8px rgba(0,0,0,1),
+                0 0 3px rgba(255, 255, 255, 0.5);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+        }
+
+        .collect-btn-label {
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: #fff;
+            opacity: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.9), 
+                0 3px 6px rgba(0,0,0,1),
+                0 0 3px rgba(255, 255, 255, 0.5);
+        }
+
+        .collect-btn.waiting {
+            cursor: default;
+            animation: none;
+            opacity: 0;
+        }
+
+        .collect-btn.waiting .collect-btn-amount,
+        .collect-btn.waiting .collect-btn-label {
+            color: #888;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            filter: none;
+        }
+
+        .collect-btn:active:not(.waiting) { 
+            transform: translate(-50%, -50%) scale(0.92); 
+        }
+
+        @keyframes collectPulse {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                filter: drop-shadow(0 0 35px rgba(255, 215, 0, 1)) drop-shadow(0 0 50px rgba(255, 165, 0, 0.6));
+                transform: translate(-50%, -50%) scale(1.08);
+            }
+        }
+
+        #coin-container:active #main-coin { transform:scale(0.85) !important; animation:none; }
+        .coin-disabled #main-coin { filter:grayscale(1) drop-shadow(0 0 8px rgba(100,100,100,0.3)); animation:none; }
+
+        @keyframes float {
+            0%,100% { transform:translateY(0); }
+            50% { transform:translateY(-7px); }
         }
 
         .floating-text {
-            position: absolute;
-            font-size: 24px;
-            font-weight: bold;
-            pointer-events: none;
-            animation: float-up 1s ease-out forwards;
-            color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position:fixed; color:var(--primary); font-weight:bold; font-size:1.2rem;
+            pointer-events:none; animation:floatUp 0.8s forwards; z-index:1000;
+            text-shadow:0 0 6px rgba(255,215,0,0.5);
+        }
+        @keyframes floatUp { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-90px)} }
+
+        .bottom-nav {
+            flex-shrink:0;
+            margin-top: auto;
+            padding-top: 10px;
         }
 
-        @keyframes float-up {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px);
-            }
-        }
-
-        .boost-grid {
+        .nav-buttons {
             display: grid;
-            gap: 15px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            width: 100%;
         }
 
-        .boost-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
+        .nav-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 10px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: 0.15s;
+            position: relative;
         }
 
-        .boost-card:active {
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-btn-icon {
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        .nav-btn-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-btn-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.55rem;
+            font-weight: 800;
+            padding: 2px 4px;
+            border-radius: 8px;
+            min-width: 14px;
+            text-align: center;
+        }
+
+        .sheet-overlay {
+            position:fixed; inset:0;
+            background:rgba(0,0,0,0.55);
+            z-index:500;
+            opacity:0; pointer-events:none;
+            transition: opacity 0.25s;
+        }
+        .sheet-overlay.open { opacity:1; pointer-events:auto; }
+
+        .sheet {
+            position:fixed;
+            bottom:0; left:50%; transform:translateX(-50%) translateY(100%);
+            width:100%; max-width:450px;
+            background: #12121f;
+            border-radius: 22px 22px 0 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            height: 75vh;
+            display:flex; flex-direction:column;
+            z-index:501;
+            transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+            overflow:hidden;
+        }
+        .sheet.open { transform:translateX(-50%) translateY(0); }
+
+        .sheet-handle {
+            width:40px; height:4px; background:rgba(255,255,255,0.2);
+            border-radius:3px; margin:10px auto 0;
+            flex-shrink:0;
+        }
+
+        .sheet-header {
+            display:flex; align-items:center; justify-content:space-between;
+            padding: 12px 18px 8px;
+            flex-shrink:0;
+        }
+        .sheet-title { font-size:1.05rem; font-weight:800; color:#fff; }
+        .sheet-close {
+            background:rgba(255,255,255,0.08); border:none; color:#aaa;
+            width:28px; height:28px; border-radius:50%;
+            font-size:1rem; cursor:pointer; display:flex;
+            align-items:center; justify-content:center;
+        }
+        .sheet-close:active { background:rgba(255,255,255,0.15); }
+
+        .sheet-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 18px 24px;
+        }
+        .sheet-content::-webkit-scrollbar { width:3px; }
+        .sheet-content::-webkit-scrollbar-thumb { background:rgba(168,85,247,0.4); border-radius:10px; }
+
+        .cat-tabs {
+            display:flex; gap:6px; padding:0 18px;
+            flex-shrink:0; margin-bottom:10px;
+            overflow-x:auto; -webkit-overflow-scrolling:touch;
+        }
+        .cat-tabs::-webkit-scrollbar { display:none; }
+
+        .cat-tab {
+            flex-shrink:0;
+            background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+            color:#777; padding:7px 14px; border-radius:20px; font-size:0.72rem;
+            font-weight:700; cursor:pointer; white-space:nowrap;
+            transition:0.2s; display:flex; align-items:center; gap:5px;
+        }
+        .cat-tab .tab-icon { font-size:0.85rem; }
+        .cat-tab.active {
+            background:var(--secondary); border-color:var(--secondary); color:white;
+        }
+
+        .cards-scroll {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .card {
+            background:rgba(255,255,255,0.06); 
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:14px; 
+            padding:12px;
+            display:flex;
+            flex-direction: column;
+            align-items:center;
+            text-align: center;
+            cursor:pointer; 
+            transition:0.15s;
+            min-height: 140px;
+            justify-content: space-between;
+        }
+        .card:active { transform:scale(0.95); }
+        .card.can-buy { 
+            border-color:rgba(168,85,247,0.5); 
+            background:rgba(168,85,247,0.08);
+            box-shadow: 0 0 15px rgba(168,85,247,0.2);
+        }
+        .card.locked { opacity:0.3; cursor:not-allowed; }
+        .card.locked:active { transform:none; }
+        .card.cant-afford { opacity:0.5; cursor:not-allowed; }
+        .card.cant-afford:active { transform:none; }
+
+        .card-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .card-icon { 
+            font-size:2.5rem;
+            margin-bottom: 4px;
+        }
+        .card-name { 
+            font-size:0.85rem; 
+            font-weight:700; 
+            color:#fff; 
+            letter-spacing:0.2px;
+            line-height: 1.2;
+        }
+        .card-earn { 
+            font-size:0.68rem; 
+            color:#00ff88; 
+            font-weight:600;
+            margin-top: 2px;
+        }
+
+        .card-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .card-price {
+            background:var(--secondary); 
+            color:white; 
+            border-radius:8px;
+            padding:6px 12px; 
+            font-weight:700; 
+            font-size:0.75rem;
+            width: 100%;
+        }
+        .card.cant-afford .card-price { background:#444; }
+        .card.locked .card-price { background:#333; color:#555; }
+
+        .card-lvl { 
+            font-size:0.64rem; 
+            color:#666; 
+            font-weight:600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        .empty-state-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .popup-overlay {
+            position:fixed; inset:0; background:rgba(0,0,0,0.6);
+            display:flex; justify-content:center; align-items:center;
+            z-index:999; animation:fadeIn 0.2s;
+        }
+        .popup-box {
+            background:linear-gradient(135deg,#1a1a2e,#2d1b69); border:2px solid var(--secondary);
+            border-radius:18px; padding:24px 28px; text-align:center;
+            animation:popIn 0.25s cubic-bezier(0.175,0.885,0.32,1.275); max-width:280px; width:90%;
+        }
+        .popup-box .pop-icon { font-size:2.5rem; margin-bottom:6px; }
+        .popup-box h2 { color:var(--primary); font-size:1.4rem; margin-bottom:4px; }
+        .popup-box p { color:#aaa; font-size:0.76rem; margin-bottom:14px; }
+        .popup-box button {
+            background:var(--secondary); border:none; color:white;
+            padding:8px 24px; border-radius:9px; font-size:0.82rem; font-weight:bold; cursor:pointer;
+        }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes popIn { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+
+        /* Yan Menü */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .drawer-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .drawer {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            max-width: 80%;
+            background: #12121f;
+            z-index: 601;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            padding: 20px;
+            background: rgba(255,215,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .drawer-header h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .drawer-header p {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .drawer-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .drawer-item {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: 0.2s;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .drawer-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .drawer-item:active {
             transform: scale(0.98);
         }
 
-        .boost-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+        .drawer-item-icon {
+            font-size: 1.5rem;
+            width: 35px;
+            text-align: center;
         }
 
-        .boost-title {
-            font-size: 18px;
-            font-weight: bold;
+        .drawer-item-text {
+            flex: 1;
         }
 
-        .boost-level {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 12px;
+        .drawer-item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
         }
 
-        .boost-description {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 10px;
+        .drawer-item-desc {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 2px;
         }
 
-        .boost-cost {
-            font-size: 16px;
-            font-weight: bold;
-            color: #FFD700;
+        .drawer-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 10px 0;
         }
 
-        .task-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .task-card {
-            background: rgba(255, 255, 255, 0.1);
+        /* Profil Sayfası */
+        .profile-hero {
+            text-align: center;
             padding: 20px;
+            background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(236,72,153,0.2));
             border-radius: 15px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .task-info {
-            flex: 1;
-        }
-
-        .task-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .task-reward {
-            font-size: 14px;
-            color: #FFD700;
-        }
-
-        .task-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .task-button:disabled {
-            background: rgba(255, 255, 255, 0.2);
-            cursor: not-allowed;
-        }
-
-        .leaderboard-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .leaderboard-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .rank {
-            font-size: 24px;
-            font-weight: bold;
-            width: 40px;
-            text-align: center;
-        }
-
-        .rank.gold {
-            color: #FFD700;
-        }
-
-        .rank.silver {
-            color: #C0C0C0;
-        }
-
-        .rank.bronze {
-            color: #CD7F32;
-        }
-
-        .leader-info {
-            flex: 1;
-        }
-
-        .leader-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .leader-coins {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 90%;
-            text-align: center;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .modal-text {
-            font-size: 16px;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
-        .modal-button {
-            background: white;
-            color: #764ba2;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .daily-reward {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .reward-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .loading-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
+        .avatar-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+            border: 4px solid var(--primary);
+            font-size: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .avatar-container:active {
+            transform: scale(0.95);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .profile-id {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .edit-name-btn {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .achievements-section {
+            margin-top: 20px;
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin-bottom: 20px;
+            color: #fff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .achievement {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .achievement.unlocked {
+            background: rgba(168,85,247,0.1);
+            border-color: var(--secondary);
+        }
+
+        .achievement.locked {
+            opacity: 0.4;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 0.7rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .achievement-desc {
+            font-size: 0.65rem;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        /* Spin Wheel */
+        .wheel-container {
+            padding: 20px;
             text-align: center;
         }
 
-        .referral-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            margin-bottom: 20px;
-        }
-
-        .referral-link {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            word-break: break-all;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .copy-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .referral-list {
-            display: grid;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .referral-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* 🎨 KARTLAR BÖLÜMÜ */
-        .cards-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-        }
-
-        .tab-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-
-        .tab-button.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .cards-grid {
-            display: grid;
-            gap: 15px;
-        }
-
-        .card-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        /* 🎨 Kart görsellerini düzenle */
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .card-details {
-            flex: 1;
-        }
-
-        .card-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .card-profit {
-            font-size: 14px;
-            color: #FFD700;
-            margin-bottom: 5px;
-        }
-
-        .card-cost {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .buy-card-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .buy-card-button:disabled {
-            background: rgba(255, 255, 255, 0.2);
-            cursor: not-allowed;
-        }
-
-        /* 🎨 ÇARK (SPIN) BÖLÜMÜ */
-        .spin-container {
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* 🎨 Boş çark görseli */
-        .wheel-image {
+        .wheel-wrapper {
+            position: relative;
             width: 300px;
             height: 300px;
-            margin: 30px auto;
-            display: block;
+            margin: 20px auto;
         }
 
-        .spin-button {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white;
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid var(--primary);
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            background: conic-gradient(
+                from 0deg,
+                #ff6b6b 0deg 45deg,
+                #4ecdc4 45deg 90deg,
+                #ffe66d 90deg 135deg,
+                #a8e6cf 135deg 180deg,
+                #ff8b94 180deg 225deg,
+                #c7ceea 225deg 270deg,
+                #ffd3b6 270deg 315deg,
+                #ffaaa5 315deg 360deg
+            );
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(255,215,0,0.8);
+            z-index: 10;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff4444;
+            z-index: 11;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+        }
+
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, var(--primary), #ffed4e);
+            color: #1a1a2e;
             border: none;
             padding: 15px 40px;
-            border-radius: 15px;
-            font-size: 18px;
+            border-radius: 30px;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
             margin-top: 20px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
         }
 
-        .spin-button:disabled {
-            background: rgba(255, 255, 255, 0.2);
+        .spin-btn:active {
+            transform: scale(0.95);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
         .spin-info {
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: 0.8;
+            margin-top: 15px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .spin-timer {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Avatar Seçici */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .avatar-option {
+            font-size: 2.5rem;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .avatar-option:active {
+            transform: scale(0.9);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary);
+            background: rgba(255,215,0,0.1);
         }
     </style>
 </head>
 <body>
-    <!-- Yükleme Ekranı -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-    </div>
+<div class="game-container">
 
-    <div class="container">
-        <!-- Ana Ekran -->
-        <div class="screen active" id="home-screen">
-            <div class="header">
-                <div class="user-info">
-                    <div class="avatar">👤</div>
-                    <div>
-                        <div id="username">Kullanıcı</div>
-                        <div class="level-badge" id="level-display">Seviye 1</div>
-                    </div>
-                </div>
-            </div>
+    <header>
+        <button class="menu-btn" id="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 id="score">0</h1>
+        <p class="sub-label">Coins</p>
+        <div class="income-row">💰 Saatlik: <span id="hourly-income">0</span> &nbsp;|&nbsp; 3h: <span id="pending-income">0</span></div>
 
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-label">Toplam Coin</div>
-                    <div class="stat-value" id="coin-count">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Saatlik Kazanç</div>
-                    <div class="stat-value" id="profit-per-hour">0</div>
-                </div>
-            </div>
-
-            <div class="clicker-area">
-                <button class="coin-button" id="coin-button">💰</button>
-            </div>
-
-            <div class="energy-bar">
-                <div class="energy-info">
-                    <span>⚡ Enerji</span>
-                    <span id="energy-display">1000/1000</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="energy-fill"></div>
-                </div>
-            </div>
+        <div class="mini-bar">
+            <div class="bar-label"><span>⭐ Level <span id="level-val">1</span></span><span id="xp-text">0 / 100 XP</span></div>
+            <div class="bar-track"><div class="bar-fill xp" id="xp-fill"></div></div>
         </div>
 
-        <!-- Kartlar Ekranı -->
-        <div class="screen" id="cards-screen">
-            <div class="section-title">Kartlar</div>
-            
-            <!-- 🎨 Kartlar Sekmeleri -->
-            <div class="cards-tabs">
-                <button class="tab-button active" onclick="showCardCategory('profession')">Profesyon</button>
-                <button class="tab-button" onclick="showCardCategory('companies')">Şirketler</button>
-                <button class="tab-button" onclick="showCardCategory('technology')">Teknoloji</button>
-            </div>
-
-            <!-- 🎨 PROFESYON KARTLARI (6 ADET) -->
-            <div class="cards-grid" id="profession-cards">
-                <div class="card-item">
-                    <!-- 🎨 Profesyon görseli -->
-                    <img src="./assets/icons/card_profession.png" alt="Profesyon" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Profesyon</div>
-                        <div class="card-profit">+100 / saat</div>
-                        <div class="card-cost">Maliyet: 500</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('profession', 0)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Freelancer görseli -->
-                    <img src="./assets/icons/card_freelancer.png" alt="Freelancer" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Freelancer</div>
-                        <div class="card-profit">+250 / saat</div>
-                        <div class="card-cost">Maliyet: 1,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('profession', 1)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Consultant görseli -->
-                    <img src="./assets/icons/card_consultant.png" alt="Danışman" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Danışman</div>
-                        <div class="card-profit">+500 / saat</div>
-                        <div class="card-cost">Maliyet: 2,500</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('profession', 2)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Accountant görseli -->
-                    <img src="./assets/icons/card_accountant.png" alt="Muhasebeci" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Muhasebeci</div>
-                        <div class="card-profit">+1,000 / saat</div>
-                        <div class="card-cost">Maliyet: 5,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('profession', 3)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Lawyer görseli -->
-                    <img src="./assets/icons/card_lawyer.png" alt="Avukat" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Avukat</div>
-                        <div class="card-profit">+2,000 / saat</div>
-                        <div class="card-cost">Maliyet: 10,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('profession', 4)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 CEO görseli -->
-                    <img src="./assets/icons/card_ceo.png" alt="CEO" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">CEO</div>
-                        <div class="card-profit">+5,000 / saat</div>
-                        <div class="card-cost">Maliyet: 25,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('profession', 5)">Satın Al</button>
-                </div>
-            </div>
-
-            <!-- 🎨 ŞİRKETLER KARTLARI (5 ADET) -->
-            <div class="cards-grid" id="companies-cards" style="display: none;">
-                <div class="card-item">
-                    <!-- 🎨 Cafe görseli -->
-                    <img src="./assets/icons/card_cafe.png" alt="Kafe" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Kafe</div>
-                        <div class="card-profit">+300 / saat</div>
-                        <div class="card-cost">Maliyet: 1,500</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('companies', 0)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Restaurant görseli -->
-                    <img src="./assets/icons/card_restaurant.png" alt="Restoran" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Restoran</div>
-                        <div class="card-profit">+750 / saat</div>
-                        <div class="card-cost">Maliyet: 4,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('companies', 1)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Boutique görseli -->
-                    <img src="./assets/icons/card_boutique.png" alt="Butik" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Butik</div>
-                        <div class="card-profit">+1,500 / saat</div>
-                        <div class="card-cost">Maliyet: 8,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('companies', 2)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Hotel görseli -->
-                    <img src="./assets/icons/card_hotel.png" alt="Otel" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Otel</div>
-                        <div class="card-profit">+3,000 / saat</div>
-                        <div class="card-cost">Maliyet: 15,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('companies', 3)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Mall görseli -->
-                    <img src="./assets/icons/card_mall.png" alt="AVM" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">AVM</div>
-                        <div class="card-profit">+7,500 / saat</div>
-                        <div class="card-cost">Maliyet: 35,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('companies', 4)">Satın Al</button>
-                </div>
-            </div>
-
-            <!-- 🎨 TEKNOLOJİ KARTLARI (5 ADET) -->
-            <div class="cards-grid" id="technology-cards" style="display: none;">
-                <div class="card-item">
-                    <!-- 🎨 App Development görseli -->
-                    <img src="./assets/icons/card_app_dev.png" alt="Uygulama Geliştirme" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Uygulama Geliştirme</div>
-                        <div class="card-profit">+2,000 / saat</div>
-                        <div class="card-cost">Maliyet: 10,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('technology', 0)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Technician görseli -->
-                    <img src="./assets/icons/card_technician.png" alt="Teknisyen" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Teknisyen</div>
-                        <div class="card-profit">+4,000 / saat</div>
-                        <div class="card-cost">Maliyet: 20,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('technology', 1)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Crypto Mining görseli -->
-                    <img src="./assets/icons/card_crypto_mining.png" alt="Kripto Madenciliği" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Kripto Madenciliği</div>
-                        <div class="card-profit">+8,000 / saat</div>
-                        <div class="card-cost">Maliyet: 40,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('technology', 2)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 AI Startup görseli -->
-                    <img src="./assets/icons/card_ai_startup.png" alt="AI Startup" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">AI Startup</div>
-                        <div class="card-profit">+15,000 / saat</div>
-                        <div class="card-cost">Maliyet: 75,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('technology', 3)">Satın Al</button>
-                </div>
-
-                <div class="card-item">
-                    <!-- 🎨 Space Tech görseli -->
-                    <img src="./assets/icons/card_space_tech.png" alt="Uzay Teknolojisi" class="card-icon">
-                    <div class="card-details">
-                        <div class="card-name">Uzay Teknolojisi</div>
-                        <div class="card-profit">+30,000 / saat</div>
-                        <div class="card-cost">Maliyet: 150,000</div>
-                    </div>
-                    <button class="buy-card-button" onclick="buyCard('technology', 4)">Satın Al</button>
-                </div>
-            </div>
+        <div class="mini-bar">
+            <div class="bar-label"><span>⚡ Enerji</span><span id="energy-text">1000 / 1000</span></div>
+            <div class="bar-track"><div class="bar-fill energy" id="energy-fill"></div></div>
         </div>
+    </header>
 
-        <!-- Çark Ekranı -->
-        <div class="screen" id="spin-screen">
-            <div class="section-title">Çarkı Çevir</div>
-            <div class="spin-container">
-                <!-- 🎨 Boş çark görseli -->
-                <img src="./assets/icons/wheel_empty.png" alt="Çark" class="wheel-image" id="wheel">
-                
-                <button class="spin-button" id="spin-button" onclick="spinWheel()">
-                    Çevir (100 Coin)
-                </button>
-                
-                <div class="spin-info">
-                    <p>Her çevirme 100 coin harcar</p>
-                    <p id="spin-result"></p>
-                </div>
-            </div>
+    <main>
+        <div class="combo-container">
+            <div id="combo-text">COMBO X1</div>
+            <div class="combo-bar"><div id="combo-fill"></div></div>
         </div>
-
-        <!-- Boost Ekranı -->
-        <div class="screen" id="boost-screen">
-            <div class="section-title">Güçlendirmeler</div>
-            <div class="boost-grid" id="boost-list"></div>
+        <div id="coin-container">
+            <button class="collect-btn" id="collect-btn">
+                <div class="collect-btn-amount" id="collect-amount">⏳</div>
+                <div class="collect-btn-label" id="collect-label">Bekle</div>
+            </button>
+            <img id="main-coin" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3CradialGradient id='g1' cx='30%25' cy='30%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffd700'/%3E%3Cstop offset='100%25' style='stop-color:%23cc8800'/%3E%3C/radialGradient%3E%3CradialGradient id='g2'%3E%3Cstop offset='0%25' style='stop-color:%23ffeb3b'/%3E%3Cstop offset='100%25' style='stop-color:%23f57f17'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='90' fill='url(%23g1)' stroke='%23cc8800' stroke-width='3'/%3E%3Ccircle cx='100' cy='100' r='75' fill='none' stroke='%23ffeb3b' stroke-width='2' opacity='0.6'/%3E%3Ccircle cx='100' cy='100' r='60' fill='url(%23g2)'/%3E%3Ctext x='100' y='110' font-size='50' font-weight='bold' fill='%23fff' text-anchor='middle' font-family='Arial, sans-serif'%3EGO%3C/text%3E%3Ctext x='100' y='140' font-size='20' font-weight='bold' fill='%23fff' text-anchor='middle' font-family='Arial, sans-serif'%3ECOIN%3C/text%3E%3C/svg%3E" alt="GO Coin">
         </div>
+    </main>
 
-        <!-- Görevler Ekranı -->
-        <div class="screen" id="tasks-screen">
-            <div class="section-title">Görevler</div>
-            <div class="task-list" id="task-list"></div>
-        </div>
-
-        <!-- Arkadaşlar Ekranı -->
-        <div class="screen" id="friends-screen">
-            <div class="section-title">Arkadaşlarını Davet Et</div>
-            <div class="referral-info">
-                <p>Her arkadaşın için 1000 coin kazan!</p>
-                <div class="referral-link" id="referral-link">Yükleniyor...</div>
-                <button class="copy-button" onclick="copyReferralLink()">Linki Kopyala</button>
-            </div>
-            <div class="section-title" style="margin-top: 30px;">Davet Ettiklerin</div>
-            <div class="referral-list" id="referral-list"></div>
-        </div>
-
-        <!-- Liderlik Tablosu Ekranı -->
-        <div class="screen" id="leaderboard-screen">
-            <div class="section-title">Liderlik Tablosu</div>
-            <div class="leaderboard-list" id="leaderboard-list"></div>
-        </div>
-    </div>
-
-    <!-- Alt Navigasyon -->
     <div class="bottom-nav">
-        <!-- 🎨 Alt menü ikonları - görseller eklendi ve büyütüldü -->
-        <div class="nav-item active" onclick="switchScreen('home')">
-            <img src="./assets/icons/icon_cards.png" alt="Ana Sayfa">
-            <span class="nav-label">Ana Sayfa</span>
-        </div>
-        <div class="nav-item" onclick="switchScreen('cards')">
-            <img src="./assets/icons/icon_cards.png" alt="Kartlar">
-            <span class="nav-label">Kartlar</span>
-        </div>
-        <div class="nav-item" onclick="switchScreen('spin')">
-            <img src="./assets/icons/icon_spin.png" alt="Çark">
-            <span class="nav-label">Çark</span>
-        </div>
-        <div class="nav-item" onclick="switchScreen('boost')">
-            <img src="./assets/icons/icon_wallet.png" alt="Boost">
-            <span class="nav-label">Boost</span>
-        </div>
-        <div class="nav-item" onclick="switchScreen('tasks')">
-            <img src="./assets/icons/icon_trade.png" alt="Görevler">
-            <span class="nav-label">Görevler</span>
-        </div>
-    </div>
-
-    <!-- Günlük Ödül Modal -->
-    <div class="modal" id="daily-reward-modal">
-        <div class="modal-content">
-            <div class="daily-reward">
-                <div class="reward-icon">🎁</div>
-                <div class="modal-title">Günlük Ödül!</div>
-                <div class="modal-text" id="daily-reward-text"></div>
-                <button class="modal-button" onclick="closeDailyReward()">Harika!</button>
+        <div class="nav-buttons">
+            <div class="nav-btn" id="btn-kartlar">
+                <span class="nav-btn-badge" id="kartlar-badge">0</span>
+                <span class="nav-btn-icon">🏪</span>
+                <span class="nav-btn-label">Kartlar</span>
+            </div>
+            <div class="nav-btn" id="btn-spin">
+                <span class="nav-btn-icon">🎡</span>
+                <span class="nav-btn-label">Çarkıfelek</span>
+            </div>
+            <div class="nav-btn" id="btn-profil">
+                <span class="nav-btn-icon">👤</span>
+                <span class="nav-btn-label">Profil</span>
+            </div>
+            <div class="nav-btn" id="btn-cuzdan">
+                <span class="nav-btn-icon">💰</span>
+                <span class="nav-btn-label">Cüzdan</span>
+            </div>
+            <div class="nav-btn" id="btn-roadmap">
+                <span class="nav-btn-icon">🔃</span>
+                <span class="nav-btn-label">Takas</span>
             </div>
         </div>
     </div>
 
-    <script>
-        // Telegram Web App başlatma
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+    <div class="sheet-overlay" id="sheet-overlay"></div>
 
-        // Kullanıcı verileri
-        let userData = {
-            user_id: null,
-            username: 'Kullanıcı',
-            coins: 0,
-            energy: 1000,
-            max_energy: 1000,
-            energy_recharge_rate: 1,
-            tap_power: 1,
-            level: 1,
-            profit_per_hour: 0,
-            last_energy_update: Date.now(),
-            last_daily_reward: 0,
-            tasks_completed: [],
-            boosts: {
-                multitap: 0,
-                energy_limit: 0,
-                recharging_speed: 0
-            },
-            referrals: [],
-            referral_code: null
-        };
+    <!-- Kartlar Sheet -->
+    <div class="sheet" id="sheet-kartlar">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <span class="sheet-title">🏪 Kartlar</span>
+            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+        </div>
+        <div class="cat-tabs" id="cat-tabs"></div>
+        <div class="sheet-content">
+            <div class="cards-scroll" id="cards-scroll"></div>
+        </div>
+    </div>
 
-        // Sunucu URL'i - GitHub Pages'de çalışmayacak, sadece localStorage kullanacağız
-        const API_URL = 'YOUR_BACKEND_URL_HERE'; // Buraya backend URL'inizi ekleyin
+    <!-- Profil Sheet -->
+    <div class="sheet" id="sheet-profil">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <span class="sheet-title">👤 Profil</span>
+            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+        </div>
+        <div class="sheet-content" id="profile-content">
+            <div class="profile-hero">
+                <div class="avatar-container" id="avatar-display" onclick="openAvatarSelector()">😊</div>
+                <div class="profile-name" id="profile-name">Oyuncu</div>
+                <div class="profile-id">ID: #12345</div>
+                <button class="edit-name-btn" onclick="editName()">✏️ İsmi Düzenle</button>
+            </div>
 
-        // Başlangıç
-        document.addEventListener('DOMContentLoaded', async () => {
-            initializeTelegram();
-            await loadUserData();
-            initializeGame();
-            hideLoading();
-        });
-
-        function initializeTelegram() {
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                userData.user_id = tg.initDataUnsafe.user.id;
-                userData.username = tg.initDataUnsafe.user.first_name || 'Kullanıcı';
-            } else {
-                // Test için rastgele ID
-                userData.user_id = Math.floor(Math.random() * 1000000);
-            }
-            
-            updateDisplay();
-        }
-
-        async function loadUserData() {
-            try {
-                // LocalStorage'dan veri yükle
-                const savedData = localStorage.getItem(`user_${userData.user_id}`);
-                if (savedData) {
-                    const parsed = JSON.parse(savedData);
-                    Object.assign(userData, parsed);
-                    
-                    // Enerji yenileme
-                    updateEnergy();
-                    
-                    // Günlük ödül kontrolü
-                    checkDailyReward();
-                }
-            } catch (error) {
-                console.error('Veri yükleme hatası:', error);
-            }
-        }
-
-        function saveUserData() {
-            try {
-                localStorage.setItem(`user_${userData.user_id}`, JSON.stringify(userData));
-            } catch (error) {
-                console.error('Veri kaydetme hatası:', error);
-            }
-        }
-
-        function initializeGame() {
-            // Coin butonuna tıklama
-            document.getElementById('coin-button').addEventListener('click', handleCoinClick);
-            
-            // Enerji yenileme interval
-            setInterval(updateEnergy, 1000);
-            
-            // Saatlik kazanç interval
-            setInterval(addHourlyProfit, 3600000); // Her saat
-            
-            // Boost listesi
-            renderBoosts();
-            
-            // Görev listesi
-            renderTasks();
-            
-            // Referral kodu oluştur
-            if (!userData.referral_code) {
-                userData.referral_code = generateReferralCode();
-                saveUserData();
-            }
-            updateReferralLink();
-            
-            // Referral listesi
-            renderReferrals();
-        }
-
-        function handleCoinClick(e) {
-            if (userData.energy < userData.tap_power) {
-                return;
-            }
-
-            // Coin ekle
-            userData.coins += userData.tap_power;
-            userData.energy -= userData.tap_power;
-
-            // Animasyon
-            createFloatingText(`+${userData.tap_power}`, e.clientX, e.clientY);
-
-            // Güncelle
-            updateDisplay();
-            saveUserData();
-
-            // Haptic feedback
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        function createFloatingText(text, x, y) {
-            const element = document.createElement('div');
-            element.className = 'floating-text';
-            element.textContent = text;
-            element.style.left = x + 'px';
-            element.style.top = y + 'px';
-            document.body.appendChild(element);
-
-            setTimeout(() => {
-                element.remove();
-            }, 1000);
-        }
-
-        function updateEnergy() {
-            const now = Date.now();
-            const timePassed = (now - userData.last_energy_update) / 1000; // saniye
-            const energyToAdd = timePassed * userData.energy_recharge_rate;
-
-            userData.energy = Math.min(userData.max_energy, userData.energy + energyToAdd);
-            userData.last_energy_update = now;
-
-            updateDisplay();
-        }
-
-        function updateDisplay() {
-            document.getElementById('username').textContent = userData.username;
-            document.getElementById('level-display').textContent = `Seviye ${userData.level}`;
-            document.getElementById('coin-count').textContent = formatNumber(Math.floor(userData.coins));
-            document.getElementById('profit-per-hour').textContent = formatNumber(userData.profit_per_hour);
-            document.getElementById('energy-display').textContent = `${Math.floor(userData.energy)}/${userData.max_energy}`;
-            
-            const energyPercent = (userData.energy / userData.max_energy) * 100;
-            document.getElementById('energy-fill').style.width = energyPercent + '%';
-        }
-
-        function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1) + 'M';
-            } else if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'K';
-            }
-            return num.toString();
-        }
-
-        function switchScreen(screenName) {
-            // Tüm ekranları gizle
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-
-            // Nav itemları güncelle
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Seçili ekranı göster
-            const screenMap = {
-                'home': 'home-screen',
-                'cards': 'cards-screen',
-                'spin': 'spin-screen',
-                'boost': 'boost-screen',
-                'tasks': 'tasks-screen',
-                'friends': 'friends-screen',
-                'leaderboard': 'leaderboard-screen'
-            };
-
-            document.getElementById(screenMap[screenName]).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        function renderBoosts() {
-            const boostList = document.getElementById('boost-list');
-            const boosts = [
-                {
-                    id: 'multitap',
-                    title: 'Multitap',
-                    description: 'Her tıklamada daha fazla coin kazan',
-                    baseCost: 1000,
-                    icon: '👆'
-                },
-                {
-                    id: 'energy_limit',
-                    title: 'Enerji Limiti',
-                    description: 'Maksimum enerji kapasiteni artır',
-                    baseCost: 1000,
-                    icon: '⚡'
-                },
-                {
-                    id: 'recharging_speed',
-                    title: 'Şarj Hızı',
-                    description: 'Enerji yenileme hızını artır',
-                    baseCost: 1000,
-                    icon: '⚡'
-                }
-            ];
-
-            boostList.innerHTML = boosts.map(boost => {
-                const level = userData.boosts[boost.id];
-                const cost = boost.baseCost * Math.pow(2, level);
-                
-                return `
-                    <div class="boost-card" onclick="buyBoost('${boost.id}')">
-                        <div class="boost-header">
-                            <div>
-                                <span style="font-size: 30px;">${boost.icon}</span>
-                                <span class="boost-title">${boost.title}</span>
-                            </div>
-                            <div class="boost-level">Seviye ${level}</div>
-                        </div>
-                        <div class="boost-description">${boost.description}</div>
-                        <div class="boost-cost">💰 ${formatNumber(cost)}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function buyBoost(boostId) {
-            const baseCost = 1000;
-            const level = userData.boosts[boostId];
-            const cost = baseCost * Math.pow(2, level);
-
-            if (userData.coins < cost) {
-                alert('Yetersiz coin!');
-                return;
-            }
-
-            userData.coins -= cost;
-            userData.boosts[boostId]++;
-
-            // Boost etkilerini uygula
-            if (boostId === 'multitap') {
-                userData.tap_power = userData.boosts.multitap + 1;
-            } else if (boostId === 'energy_limit') {
-                userData.max_energy = 1000 + (userData.boosts.energy_limit * 500);
-            } else if (boostId === 'recharging_speed') {
-                userData.energy_recharge_rate = 1 + userData.boosts.recharging_speed;
-            }
-
-            saveUserData();
-            updateDisplay();
-            renderBoosts();
-
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
-        }
-
-        function renderTasks() {
-            const taskList = document.getElementById('task-list');
-            const tasks = [
-                { id: 'join_channel', title: 'Telegram Kanalına Katıl', reward: 5000, link: 'https://t.me/YOUR_CHANNEL' },
-                { id: 'invite_3', title: '3 Arkadaş Davet Et', reward: 10000 },
-                { id: 'reach_level_5', title: 'Seviye 5\'e Ulaş', reward: 15000 }
-            ];
-
-            taskList.innerHTML = tasks.map(task => {
-                const completed = userData.tasks_completed.includes(task.id);
-                
-                return `
-                    <div class="task-card">
-                        <div class="task-info">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-reward">+${formatNumber(task.reward)} coin</div>
-                        </div>
-                        <button class="task-button" 
-                                ${completed ? 'disabled' : ''} 
-                                onclick="completeTask('${task.id}', ${task.reward}, '${task.link || ''}')">
-                            ${completed ? 'Tamamlandı' : 'Başla'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function completeTask(taskId, reward, link) {
-            if (link) {
-                window.open(link, '_blank');
-            }
-
-            // Basit kontrol - gerçekte backend'de doğrulanmalı
-            setTimeout(() => {
-                if (!userData.tasks_completed.includes(taskId)) {
-                    userData.tasks_completed.push(taskId);
-                    userData.coins += reward;
-                    saveUserData();
-                    updateDisplay();
-                    renderTasks();
-                    
-                    if (tg.HapticFeedback) {
-                        tg.HapticFeedback.notificationOccurred('success');
-                    }
-                }
-            }, 2000);
-        }
-
-        function checkDailyReward() {
-            const now = Date.now();
-            const oneDayMs = 24 * 60 * 60 * 1000;
-
-            if (now - userData.last_daily_reward > oneDayMs) {
-                const reward = 1000 * userData.level;
-                userData.coins += reward;
-                userData.last_daily_reward = now;
-                saveUserData();
-                updateDisplay();
-
-                document.getElementById('daily-reward-text').textContent = `${formatNumber(reward)} coin kazandın!`;
-                document.getElementById('daily-reward-modal').classList.add('active');
-            }
-        }
-
-        function closeDailyReward() {
-            document.getElementById('daily-reward-modal').classList.remove('active');
-        }
-
-        function generateReferralCode() {
-            return 'REF' + Math.random().toString(36).substr(2, 9).toUpperCase();
-        }
-
-        function updateReferralLink() {
-            const botUsername = 'YOUR_BOT_USERNAME'; // Buraya bot username'inizi ekleyin
-            const link = `https://t.me/${botUsername}?start=${userData.referral_code}`;
-            document.getElementById('referral-link').textContent = link;
-        }
-
-        function copyReferralLink() {
-            const link = document.getElementById('referral-link').textContent;
-            navigator.clipboard.writeText(link);
-            
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
-            
-            alert('Link kopyalandı!');
-        }
-
-        function renderReferrals() {
-            const referralList = document.getElementById('referral-list');
-            
-            if (userData.referrals.length === 0) {
-                referralList.innerHTML = '<div style="text-align: center; opacity: 0.5;">Henüz davet ettiğin arkadaş yok</div>';
-                return;
-            }
-
-            referralList.innerHTML = userData.referrals.map(referral => `
-                <div class="referral-item">
-                    <div>
-                        <div style="font-weight: bold;">${referral.username}</div>
-                        <div style="font-size: 12px; opacity: 0.7;">${formatNumber(referral.coins)} coin</div>
-                    </div>
-                    <div style="color: #4CAF50; font-weight: bold;">+1000</div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-coins">0</div>
+                    <div class="stat-label">Toplam Coin</div>
                 </div>
-            `).join('');
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-level">1</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-clicks">0</div>
+                    <div class="stat-label">Toplam Tıklama</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-cards">0</div>
+                    <div class="stat-label">Satın Alınan Kart</div>
+                </div>
+            </div>
+
+            <div class="achievements-section">
+                <div class="section-title">🏅 Başarımlar</div>
+                <div class="achievement-grid" id="achievements-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spin Wheel Sheet -->
+    <div class="sheet" id="sheet-spin">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <span class="sheet-title">🎡 Çarkıfelek</span>
+            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+        </div>
+        <div class="sheet-content">
+            <div class="wheel-container">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">Şansını Dene!</h3>
+                <div class="wheel-wrapper">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="wheel">
+                        <div class="wheel-center">🎰</div>
+                    </div>
+                </div>
+                <button class="spin-btn" id="spin-btn" onclick="spinWheel()">ÇEVİR!</button>
+                <div class="spin-info">
+                    <div>Kalan Spin: <span class="spin-timer" id="spin-count">3</span></div>
+                    <div id="spin-timer-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cüzdan Sheet -->
+    <div class="sheet" id="sheet-cuzdan">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <span class="sheet-title">💰 Cüzdan</span>
+            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+        </div>
+        <div class="sheet-content">
+            <div class="empty-state">
+                <div class="empty-state-icon">💰</div>
+                <div class="empty-state-text">Cüzdan özellikleri yakında eklenecek!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Takas Sheet -->
+    <div class="sheet" id="sheet-roadmap">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <span class="sheet-title">🔃 Takas</span>
+            <button class="sheet-close" onclick="closeAllSheets()">✕</button>
+        </div>
+        <div class="sheet-content">
+            <div class="empty-state">
+                <div class="empty-state-icon">🔃</div>
+                <div class="empty-state-text">Takas özellikleri yakında eklenecek!</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function(){
+
+    const CATEGORIES = [
+        { id:'profesyoneller', name:'Profesyon', icon:'👔' },
+        { id:'sirketler',      name:'Şirketler', icon:'🏢' },
+        { id:'teknoloji',      name:'Teknoloji', icon:'💻' },
+        { id:'yukseltmeler',   name:'2x Boost', icon:'⚡' }
+    ];
+
+    const CARDS = [
+        { id:'freelancer',  cat:'profesyoneller', name:'Freelancer',        icon:'🧑‍💻', baseCost:100,    baseEarn:50,    unlock:null },
+        { id:'danisman',    cat:'profesyoneller', name:'Danışman',          icon:'📊',  baseCost:500,    baseEarn:200,   unlock:{card:'freelancer', level:3} },
+        { id:'muhasebeci',  cat:'profesyoneller', name:'Muhasebeci',        icon:'🧾',  baseCost:2000,   baseEarn:600,   unlock:{card:'danisman',   level:3} },
+        { id:'avukat',      cat:'profesyoneller', name:'Avukat',            icon:'⚖️',  baseCost:8000,   baseEarn:1500,  unlock:{card:'muhasebeci', level:3} },
+        { id:'ceo',         cat:'profesyoneller', name:'CEO',               icon:'🎩',  baseCost:35000,  baseEarn:4000,  unlock:{card:'avukat',     level:3} },
+        { id:'cafe',        cat:'sirketler', name:'Cafe',              icon:'☕',  baseCost:200,    baseEarn:80,    unlock:null },
+        { id:'restoran',    cat:'sirketler', name:'Restoran',          icon:'🍽️', baseCost:1200,   baseEarn:350,   unlock:{card:'cafe',      level:3} },
+        { id:'butik',       cat:'sirketler', name:'Boutique',          icon:'👗',  baseCost:5000,   baseEarn:900,   unlock:{card:'restoran',  level:3} },
+        { id:'otel',        cat:'sirketler', name:'Otel',              icon:'🏨',  baseCost:22000,  baseEarn:2500,  unlock:{card:'butik',     level:3} },
+        { id:'alisveris',   cat:'sirketler', name:'Alışveriş Merkezi', icon:'🛒',  baseCost:100000, baseEarn:8000,  unlock:{card:'otel',      level:3} },
+        { id:'app',         cat:'teknoloji', name:'App Geliştirme',    icon:'📱',  baseCost:300,    baseEarn:100,   unlock:null },
+        { id:'saas',        cat:'teknoloji', name:'SaaS Platforma',    icon:'☁️',  baseCost:1800,   baseEarn:450,   unlock:{card:'app',    level:3} },
+        { id:'kripto',      cat:'teknoloji', name:'Kripto Madencilik', icon:'⛏️',  baseCost:7000,   baseEarn:1200,  unlock:{card:'saas',   level:3} },
+        { id:'ai',          cat:'teknoloji', name:'AI Startup',        icon:'🤖',  baseCost:30000,  baseEarn:3500,  unlock:{card:'kripto', level:3} },
+        { id:'uzay',        cat:'teknoloji', name:'Uzay Teknoloji',    icon:'🚀',  baseCost:150000, baseEarn:12000, unlock:{card:'ai',     level:3} },
+        { id:'clickpower',  cat:'yukseltmeler', name:'Tıklama Gücü', icon:'💪', baseCost:50, baseEarn:0, unlock:null, isUpgrade:true }
+    ];
+
+    const ACHIEVEMENTS = [
+        { id:'first_coin', name:'İlk Coin', desc:'İlk coini kazan', icon:'🪙', requirement:1, check:(gs)=>gs.score>=1 },
+        { id:'coin_1k', name:'1K Coin', desc:'1000 coin kazan', icon:'💰', requirement:1000, check:(gs)=>gs.score>=1000 },
+        { id:'coin_10k', name:'10K Coin', desc:'10000 coin kazan', icon:'💎', requirement:10000, check:(gs)=>gs.score>=10000 },
+        { id:'level_5', name:'Level 5', desc:'Level 5\'e ulaş', icon:'⭐', requirement:5, check:(gs)=>gs.level>=5 },
+        { id:'level_10', name:'Level 10', desc:'Level 10\'a ulaş', icon:'🌟', requirement:10, check:(gs)=>gs.level>=10 },
+        { id:'first_card', name:'İlk Kart', desc:'İlk kartı al', icon:'🏪', requirement:1, check:(gs)=>gs.totalClicks>=1 },
+        { id:'clicks_100', name:'100 Tıklama', desc:'100 kez tıkla', icon:'👆', requirement:100, check:(gs)=>gs.totalClicks>=100 },
+        { id:'clicks_1000', name:'1K Tıklama', desc:'1000 kez tıkla', icon:'🖱️', requirement:1000, check:(gs)=>gs.totalClicks>=1000 },
+        { id:'combo_10', name:'Combo Master', desc:'X10 combo yap', icon:'🔥', requirement:10, check:(gs)=>gs.maxCombo>=10 }
+    ];
+
+    const AVATARS = ['😊','😎','🤠','🥳','🤖','👽','🐱','🐶','🦁','🐼','🦄','🐉'];
+
+    const WHEEL_PRIZES = [
+        { label:'100', value:100, color:'#ff6b6b' },
+        { label:'500', value:500, color:'#4ecdc4' },
+        { label:'1K', value:1000, color:'#ffe66d' },
+        { label:'50', value:50, color:'#a8e6cf' },
+        { label:'250', value:250, color:'#ff8b94' },
+        { label:'2K', value:2000, color:'#c7ceea' },
+        { label:'75', value:75, color:'#ffd3b6' },
+        { label:'5K', value:5000, color:'#ffaaa5' }
+    ];
+
+    const COST_MULT   = 1.15;
+    const EARN_MULT   = 1.12;
+    const ENERGY_COST = 1;
+    const ENERGY_REGEN= 1;
+    const COMBO_TIME  = 1.5;
+    const MAX_COMBO   = 50;
+    const COMBO_GAIN  = 0.08;
+    const COMBO_DECAY = 0.5;
+    const COLLECT_DUR = 10;
+
+    function defaultState() {
+        let cards = {};
+        CARDS.forEach(c => { cards[c.id] = {level:0}; });
+        return {
+            score:0, level:1, xp:0, xpToNextLevel:100,
+            clickPower:1, energy:1000, maxEnergy:1000,
+            lastUpdate:Date.now(), collectTimer:0, cards:cards,
+            playerName: 'Oyuncu', avatar: '😊',
+            totalClicks: 0, totalEarned: 0, maxCombo: 1,
+            spinCount: 3, lastSpinReset: Date.now(),
+            unlockedAchievements: []
+        };
+    }
+
+    let gs = defaultState();
+    let combo=1, comboTimer=0, lastLoop=Date.now();
+    let activeCat = 'profesyoneller';
+    let activeSheet = null;
+    let isSpinning = false;
+
+    const KEY = 'tapGameSave_v11';
+    function save() {
+        gs.lastUpdate = Date.now();
+        let d = JSON.stringify(gs);
+        try{localStorage.setItem(KEY,d);}catch(e){}
+    }
+    function load() {
+        let s=null;
+        try{s=localStorage.getItem(KEY);}catch(e){}
+        if(s){
+            try{
+                let ld=JSON.parse(s);
+                CARDS.forEach(c=>{ if(!ld.cards[c.id]) ld.cards[c.id]={level:0}; });
+                if(!ld.playerName) ld.playerName = 'Oyuncu';
+                if(!ld.avatar) ld.avatar = '😊';
+                if(!ld.totalClicks) ld.totalClicks = 0;
+                if(!ld.totalEarned) ld.totalEarned = 0;
+                if(!ld.maxCombo) ld.maxCombo = 1;
+                if(!ld.spinCount) ld.spinCount = 3;
+                if(!ld.lastSpinReset) ld.lastSpinReset = Date.now();
+                if(!ld.unlockedAchievements) ld.unlockedAchievements = [];
+                gs=ld;
+            }catch(e){}
+        }
+    }
+
+    function cardCost(c){ return Math.floor(c.baseCost * Math.pow(COST_MULT, gs.cards[c.id].level)); }
+    function cardEarn(c){
+        let l=gs.cards[c.id].level;
+        if(l===0) return 0;
+        return Math.floor(c.baseEarn * Math.pow(EARN_MULT, l-1) * l);
+    }
+    function cardEarnNext(c){
+        let l=gs.cards[c.id].level;
+        return Math.floor(c.baseEarn * Math.pow(EARN_MULT, l) * (l+1));
+    }
+    function totalEarn(){
+        let t=0;
+        CARDS.forEach(c=>{ if(!c.isUpgrade) t+=cardEarn(c); });
+        return t;
+    }
+    function isOpen(c){ return !c.unlock || gs.cards[c.unlock.card].level >= c.unlock.level; }
+    function cpCost(){ return Math.floor(50*Math.pow(1.5, gs.clickPower-1)); }
+
+    function offlineCalc(){
+        let now=Date.now();
+        let diff=Math.floor((now-gs.lastUpdate)/1000);
+        if(gs.collectTimer>0 && diff>0) gs.collectTimer=Math.max(0, gs.collectTimer-diff);
+        
+        // Spin reset check (24 saat)
+        let spinDiff = now - gs.lastSpinReset;
+        if(spinDiff >= 24*3600*1000) {
+            gs.spinCount = 3;
+            gs.lastSpinReset = now;
+        }
+        
+        gs.lastUpdate=now;
+    }
+
+    function checkLvl(){
+        if(gs.xp >= gs.xpToNextLevel){
+            gs.level++;
+            gs.xp=0;
+            gs.xpToNextLevel=Math.floor(gs.xpToNextLevel*1.6);
+            gs.maxEnergy+=50;
+            gs.energy=gs.maxEnergy;
+            let bonus=gs.level*100;
+            gs.score+=bonus;
+            popup('🎉','Level '+gs.level+'!','+'+bonus.toLocaleString()+' coin bonus & enerji doldu!');
+            checkAchievements();
+        }
+    }
+
+    function checkAchievements() {
+        ACHIEVEMENTS.forEach(ach => {
+            if(!gs.unlockedAchievements.includes(ach.id) && ach.check(gs)) {
+                gs.unlockedAchievements.push(ach.id);
+                popup('🏅', 'Başarım Açıldı!', ach.name + ': ' + ach.desc);
+            }
+        });
+    }
+
+    function pendingR(){ return Math.floor((totalEarn()/3600)*COLLECT_DUR); }
+
+    function collect(){
+        if(gs.collectTimer>0) return;
+        let r=pendingR();
+        if(r<=0) return;
+        gs.score+=r;
+        gs.totalEarned+=r;
+        gs.collectTimer=COLLECT_DUR;
+        popup('💰','Toplandı!','+'+r.toLocaleString()+' coin kazandın!');
+        checkAchievements();
+        save(); renderUI();
+    }
+
+    function buyCard(c){
+        if(c.isUpgrade){buyCP();return;}
+        if(!isOpen(c)) return;
+        let cost=cardCost(c);
+        if(gs.score<cost) return;
+        gs.score-=cost;
+        gs.cards[c.id].level++;
+        checkAchievements();
+        save(); renderUI();
+    }
+
+    function buyCP(){
+        let cost=cpCost();
+        if(gs.score<cost) return;
+        gs.score-=cost;
+        gs.clickPower++;
+        save(); renderUI();
+    }
+
+    let lastTap=0;
+    function handleTap(e){
+        let now=Date.now();
+        if(now-lastTap<100) return;
+        lastTap=now;
+        e.preventDefault();
+        if(gs.energy<ENERGY_COST) return;
+
+        comboTimer=COMBO_TIME;
+        if(combo<MAX_COMBO) {
+            combo += COMBO_GAIN;
+        }
+        if(combo > gs.maxCombo) gs.maxCombo = combo;
+
+        let gain=Math.floor(gs.clickPower*combo);
+        gs.score+=gain;
+        gs.totalEarned+=gain;
+        gs.xp+=1;
+        gs.energy-=ENERGY_COST;
+        gs.totalClicks++;
+        checkLvl();
+        checkAchievements();
+
+        let cx,cy;
+        if(e.touches&&e.touches.length){cx=e.touches[0].clientX;cy=e.touches[0].clientY;}
+        else if(e.changedTouches&&e.changedTouches.length){cx=e.changedTouches[0].clientX;cy=e.changedTouches[0].clientY;}
+        else{cx=e.clientX;cy=e.clientY;}
+        ftxt(cx,cy,'+'+gain);
+        renderUI();
+    }
+
+    let coinEl=document.getElementById('coin-container');
+    coinEl.addEventListener('touchstart',handleTap,{passive:false});
+    coinEl.addEventListener('click',handleTap);
+
+    function ftxt(x,y,t){
+        let el=document.createElement('div');
+        el.className='floating-text';
+        el.innerText=t;
+        el.style.left=(x-12)+'px';
+        el.style.top=(y-35)+'px';
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),800);
+    }
+
+    function popup(icon,title,desc){
+        let p=document.createElement('div');
+        p.className='popup-overlay';
+        p.innerHTML='<div class="popup-box"><div class="pop-icon">'+icon+'</div><h2>'+title+'</h2><p>'+desc+'</p><button onclick="this.closest(\'.popup-overlay\').remove()">Devam →</button></div>';
+        document.body.appendChild(p);
+    }
+
+    function loop(){
+        let now=Date.now();
+        let dt=(now-lastLoop)/1000;
+        lastLoop=now;
+
+        if(gs.energy<gs.maxEnergy) gs.energy=Math.min(gs.maxEnergy, gs.energy+ENERGY_REGEN*dt);
+        if(gs.collectTimer>0){ gs.collectTimer-=dt; if(gs.collectTimer<0) gs.collectTimer=0; }
+        
+        if(comboTimer>0){ 
+            comboTimer-=dt; 
+            if(comboTimer<=0){
+                comboTimer=0;
+                combo = Math.max(1, combo * COMBO_DECAY);
+            } 
         }
 
-        function addHourlyProfit() {
-            userData.coins += userData.profit_per_hour;
-            saveUserData();
-            updateDisplay();
-        }
+        updateSpinTimer();
+        renderUI();
+    }
 
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
+    function fmtTime(s){
+        s=Math.max(0,Math.ceil(s));
+        let h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+        return h+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+    }
 
-        // 🎨 Kart kategorisi değiştirme fonksiyonu
-        function showCardCategory(category) {
-            // Tüm kart gridlerini gizle
-            document.getElementById('profession-cards').style.display = 'none';
-            document.getElementById('companies-cards').style.display = 'none';
-            document.getElementById('technology-cards').style.display = 'none';
-            
-            // Tüm tab buttonlardan active sınıfını kaldır
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Seçili kategoriyi göster
-            document.getElementById(category + '-cards').style.display = 'grid';
-            
-            // İlgili tab buttona active ekle
-            event.target.classList.add('active');
-        }
+    function renderTabs(){
+        let el=document.getElementById('cat-tabs');
+        el.innerHTML='';
+        CATEGORIES.forEach(cat=>{
+            let btn=document.createElement('div');
+            btn.className='cat-tab'+(activeCat===cat.id?' active':'');
+            btn.innerHTML='<span class="tab-icon">'+cat.icon+'</span>'+cat.name;
+            btn.onclick=()=>{ activeCat=cat.id; renderTabs(); renderCards(); };
+            el.appendChild(btn);
+        });
+    }
 
-        // 🎨 Kart satın alma fonksiyonu (placeholder - oyun mantığına dokunmadım)
-        function buyCard(category, index) {
-            alert('Kart satın alma özelliği yakında eklenecek!');
-        }
+    function renderCards(){
+        let scroll=document.getElementById('cards-scroll');
+        scroll.innerHTML='';
 
-        // 🎨 Çark çevirme fonksiyonu (placeholder - oyun mantığına dokunmadım)
-        function spinWheel() {
-            if (userData.coins < 100) {
-                alert('Yetersiz coin!');
+        CARDS.filter(c=>c.cat===activeCat).forEach(card=>{
+            let lvl=gs.cards[card.id].level;
+            let opened=isOpen(card);
+            let cost=cardCost(card);
+            let canBuy=opened && gs.score>=cost;
+            let el=document.createElement('div');
+
+            if(!opened){
+                el.className='card locked';
+                let req=CARDS.find(c=>c.id===card.unlock.card);
+                el.innerHTML=
+                    '<div class="card-top">'+
+                        '<span class="card-icon">🔒</span>'+
+                        '<span class="card-name">'+card.name+'</span>'+
+                        '<span class="card-earn" style="color:#555;font-size:0.65rem">'+req.name+' Lv.'+card.unlock.level+'</span>'+
+                    '</div>'+
+                    '<div class="card-bottom">'+
+                        '<span style="font-size:1.2rem;color:#444">🔐</span>'+
+                    '</div>';
+                scroll.appendChild(el);
                 return;
             }
-            
-            userData.coins -= 100;
-            saveUserData();
-            updateDisplay();
-            
-            // Basit ödül sistemi
-            const rewards = [50, 100, 150, 200, 500, 1000];
-            const reward = rewards[Math.floor(Math.random() * rewards.length)];
-            
-            userData.coins += reward;
-            saveUserData();
-            updateDisplay();
-            
-            document.getElementById('spin-result').textContent = `🎉 ${reward} coin kazandın!`;
-            
-            setTimeout(() => {
-                document.getElementById('spin-result').textContent = '';
-            }, 3000);
+
+            if(card.isUpgrade){
+                el.className='card'+(canBuy?' can-buy':' cant-afford');
+                el.onclick=()=>buyCP();
+                el.innerHTML=
+                    '<div class="card-top">'+
+                        '<span class="card-icon">'+card.icon+'</span>'+
+                        '<span class="card-name">'+card.name+'</span>'+
+                        '<span class="card-earn">Şu an: '+gs.clickPower+'x</span>'+
+                    '</div>'+
+                    '<div class="card-bottom">'+
+                        '<span class="card-price">'+cost.toLocaleString()+' 🪙</span>'+
+                        '<span class="card-lvl">Lv.'+lvl+'</span>'+
+                    '</div>';
+                scroll.appendChild(el);
+                return;
+            }
+
+            el.className='card'+(canBuy?' can-buy':' cant-afford');
+            el.onclick=()=>buyCard(card);
+
+            let earnStr;
+            if(lvl===0) earnStr='+'+cardEarnNext(card).toLocaleString()+'/h';
+            else earnStr=cardEarn(card).toLocaleString()+'/h';
+
+            el.innerHTML=
+                '<div class="card-top">'+
+                    '<span class="card-icon">'+card.icon+'</span>'+
+                    '<span class="card-name">'+card.name+'</span>'+
+                    '<span class="card-earn">'+earnStr+'</span>'+
+                '</div>'+
+                '<div class="card-bottom">'+
+                    '<span class="card-price">'+cost.toLocaleString()+' 🪙</span>'+
+                    '<span class="card-lvl">Lv.'+lvl+'</span>'+
+                '</div>';
+            scroll.appendChild(el);
+        });
+    }
+
+    function renderProfile() {
+        document.getElementById('avatar-display').textContent = gs.avatar;
+        document.getElementById('profile-name').textContent = gs.playerName;
+        document.getElementById('stat-coins').textContent = Math.floor(gs.totalEarned).toLocaleString();
+        document.getElementById('stat-level').textContent = gs.level;
+        document.getElementById('stat-clicks').textContent = gs.totalClicks.toLocaleString();
+        
+        let cardCount = 0;
+        CARDS.forEach(c => { if(!c.isUpgrade && gs.cards[c.id].level > 0) cardCount++; });
+        document.getElementById('stat-cards').textContent = cardCount;
+
+        renderAchievements();
+    }
+
+    function renderAchievements() {
+        let grid = document.getElementById('achievements-grid');
+        grid.innerHTML = '';
+        ACHIEVEMENTS.forEach(ach => {
+            let unlocked = gs.unlockedAchievements.includes(ach.id);
+            let div = document.createElement('div');
+            div.className = 'achievement ' + (unlocked ? 'unlocked' : 'locked');
+            div.innerHTML = `
+                <div class="achievement-icon">${ach.icon}</div>
+                <div class="achievement-name">${ach.name}</div>
+                <div class="achievement-desc">${ach.desc}</div>
+            `;
+            grid.appendChild(div);
+        });
+    }
+
+    function updateSpinTimer() {
+        let now = Date.now();
+        let diff = now - gs.lastSpinReset;
+        let remaining = 24*3600*1000 - diff;
+        
+        if(remaining <= 0) {
+            gs.spinCount = 3;
+            gs.lastSpinReset = now;
+            save();
         }
-    </script>
+        
+        document.getElementById('spin-count').textContent = gs.spinCount;
+        
+        if(gs.spinCount === 0) {
+            let hours = Math.floor(remaining / 3600000);
+            let mins = Math.floor((remaining % 3600000) / 60000);
+            document.getElementById('spin-timer-text').textContent = 
+                `Yeni spin: ${hours}s ${mins}d`;
+        } else {
+            document.getElementById('spin-timer-text').textContent = '';
+        }
+    }
+
+    window.spinWheel = function() {
+        if(isSpinning || gs.spinCount <= 0) return;
+        
+        isSpinning = true;
+        gs.spinCount--;
+        
+        let btn = document.getElementById('spin-btn');
+        btn.disabled = true;
+        btn.textContent = 'ÇEVİRİLİYOR...';
+        
+        let prizeIndex = Math.floor(Math.random() * WHEEL_PRIZES.length);
+        let prize = WHEEL_PRIZES[prizeIndex];
+        let rotation = 360 * 5 + (360 / WHEEL_PRIZES.length) * prizeIndex;
+        
+        let wheel = document.getElementById('wheel');
+        wheel.style.transform = `rotate(${rotation}deg)`;
+        
+        setTimeout(() => {
+            gs.score += prize.value;
+            gs.totalEarned += prize.value;
+            popup('🎉', 'Kazandın!', `+${prize.value.toLocaleString()} Coin!`);
+            checkAchievements();
+            save();
+            
+            btn.disabled = false;
+            btn.textContent = 'ÇEVİR!';
+            isSpinning = false;
+            wheel.style.transform = 'rotate(0deg)';
+            renderUI();
+        }, 4000);
+    };
+
+    window.editName = function() {
+        let newName = prompt('Yeni isminizi girin:', gs.playerName);
+        if(newName && newName.trim()) {
+            gs.playerName = newName.trim();
+            save();
+            renderProfile();
+        }
+    };
+
+    window.openAvatarSelector = function() {
+        let html = '<h3 style="margin-bottom: 15px;">Avatar Seç</h3><div class="avatar-grid">';
+        AVATARS.forEach(av => {
+            html += `<div class="avatar-option${av===gs.avatar?' selected':''}" onclick="selectAvatar('${av}')">${av}</div>`;
+        });
+        html += '</div>';
+        
+        let p = document.createElement('div');
+        p.className = 'popup-overlay';
+        p.innerHTML = `<div class="popup-box">${html}<button onclick="this.closest('.popup-overlay').remove()">Tamam</button></div>`;
+        document.body.appendChild(p);
+    };
+
+    window.selectAvatar = function(avatar) {
+        gs.avatar = avatar;
+        save();
+        document.getElementById('avatar-display').textContent = avatar;
+        document.querySelectorAll('.avatar-option').forEach(el => {
+            el.classList.remove('selected');
+        });
+        event.target.classList.add('selected');
+    };
+
+    function renderUI(){
+        document.getElementById('score').innerText=Math.floor(gs.score).toLocaleString();
+
+        let eh=totalEarn();
+        document.getElementById('hourly-income').innerText=eh.toLocaleString();
+        document.getElementById('pending-income').innerText=pendingR().toLocaleString();
+
+        document.getElementById('level-val').innerText=gs.level;
+        document.getElementById('xp-text').innerText=Math.floor(gs.xp)+' / '+gs.xpToNextLevel+' XP';
+        document.getElementById('xp-fill').style.width=(gs.xp/gs.xpToNextLevel*100)+'%';
+
+        document.getElementById('energy-text').innerText=Math.floor(gs.energy)+' / '+gs.maxEnergy;
+        document.getElementById('energy-fill').style.width=(gs.energy/gs.maxEnergy*100)+'%';
+
+        let cp=comboTimer>0?(comboTimer/COMBO_TIME*100):0;
+        document.getElementById('combo-fill').style.width=cp+'%';
+        document.getElementById('combo-text').style.opacity=(combo>1)?'1':'0';
+        document.getElementById('combo-text').innerText='COMBO X'+Math.floor(combo);
+
+        let cBtn=document.getElementById('collect-btn');
+        let cAmount=document.getElementById('collect-amount');
+        let cLabel=document.getElementById('collect-label');
+        let pend=pendingR();
+        
+        if(gs.collectTimer>0){
+            cBtn.className='collect-btn waiting';
+            cAmount.innerText='⏳';
+            cLabel.innerText=fmtTime(gs.collectTimer);
+        } else if(pend>0){
+            cBtn.className='collect-btn visible has-coins';
+            cAmount.innerText=pend.toLocaleString();
+            cLabel.innerText='TOPLA';
+        } else {
+            cBtn.className='collect-btn';
+            cAmount.innerText='';
+            cLabel.innerText='';
+        }
+
+        coinEl.className=gs.energy<ENERGY_COST?'coin-disabled':'';
+
+        let ownedCount = 0;
+        CARDS.forEach(c=>{ if(!c.isUpgrade && gs.cards[c.id].level>0) ownedCount++; });
+        document.getElementById('kartlar-badge').innerText = ownedCount;
+
+        if(activeSheet === 'kartlar') renderCards();
+        if(activeSheet === 'profil') renderProfile();
+    }
+
+    window.closeAllSheets = function(){
+        activeSheet = null;
+        document.getElementById('sheet-overlay').classList.remove('open');
+        document.querySelectorAll('.sheet').forEach(s => s.classList.remove('open'));
+    }
+
+    function openSheet(sheetName){
+        closeAllSheets();
+        activeSheet = sheetName;
+        document.getElementById('sheet-overlay').classList.add('open');
+        document.getElementById('sheet-'+sheetName).classList.add('open');
+        
+        if(sheetName === 'kartlar'){
+            renderTabs();
+            renderCards();
+        } else if(sheetName === 'profil') {
+            renderProfile();
+        }
+    }
+
+    document.getElementById('btn-kartlar').addEventListener('click', () => openSheet('kartlar'));
+    document.getElementById('btn-spin').addEventListener('click', () => openSheet('spin'));
+    document.getElementById('btn-profil').addEventListener('click', () => openSheet('profil'));
+    document.getElementById('btn-cuzdan').addEventListener('click', () => openSheet('cuzdan'));
+    document.getElementById('btn-roadmap').addEventListener('click', () => openSheet('roadmap'));
+    
+    document.getElementById('sheet-overlay').addEventListener('click', closeAllSheets);
+
+    load();
+    offlineCalc();
+    lastLoop=Date.now();
+    renderUI();
+    setInterval(loop,500);
+    setInterval(save,3000);
+
+    document.getElementById('collect-btn').addEventListener('click', collect);
+
+})();
+</script>
+
+<!-- Yan Menü -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="drawer">
+    <div class="drawer-header">
+        <h2>☰ Menü</h2>
+        <p>GO Coin Game</p>
+    </div>
+    <div class="drawer-content">
+        <div class="drawer-item" onclick="closeDrawer(); alert('Profil özelliği yakında!')">
+            <span class="drawer-item-icon">👤</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">Profilim</div>
+                <div class="drawer-item-desc">Hesap bilgileri</div>
+            </div>
+        </div>
+
+        <div class="drawer-item" onclick="closeDrawer(); alert('Ayarlar özelliği yakında!')">
+            <span class="drawer-item-icon">⚙️</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">Ayarlar</div>
+                <div class="drawer-item-desc">Oyun tercihleri</div>
+            </div>
+        </div>
+
+        <div class="drawer-item" onclick="closeDrawer(); alert('İstatistikler özelliği yakında!')">
+            <span class="drawer-item-icon">📊</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">İstatistikler</div>
+                <div class="drawer-item-desc">Detaylı veriler</div>
+            </div>
+        </div>
+
+        <div class="drawer-divider"></div>
+
+        <div class="drawer-item" onclick="closeDrawer(); alert('Liderlik tablosu yakında!')">
+            <span class="drawer-item-icon">🏆</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">Liderlik Tablosu</div>
+                <div class="drawer-item-desc">En iyi oyuncular</div>
+            </div>
+        </div>
+
+        <div class="drawer-item" onclick="closeDrawer(); alert('Arkadaşlar özelliği yakında!')">
+            <span class="drawer-item-icon">👥</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">Arkadaşlar</div>
+                <div class="drawer-item-desc">Davet et & kazan</div>
+            </div>
+        </div>
+
+        <div class="drawer-divider"></div>
+
+        <div class="drawer-item" onclick="closeDrawer(); alert('Yardım sayfası yakında!')">
+            <span class="drawer-item-icon">❓</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">Yardım</div>
+                <div class="drawer-item-desc">Nasıl oynanır?</div>
+            </div>
+        </div>
+
+        <div class="drawer-item" onclick="closeDrawer(); alert('GO Coin v1.0.0')">
+            <span class="drawer-item-icon">ℹ️</span>
+            <div class="drawer-item-text">
+                <div class="drawer-item-title">Hakkında</div>
+                <div class="drawer-item-desc">Versiyon 1.0.0</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global fonksiyonlar
+function closeDrawer() {
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('menu-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('drawer-overlay').classList.add('open');
+        document.getElementById('drawer').classList.add('open');
+    });
+
+    document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+});
+</script>
+
 </body>
-</html
+</html>

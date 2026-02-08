@@ -767,7 +767,8 @@
             <div class="clicker-area">
                 <div class="combo-display">COMBO X<span id="combo-multiplier">1</span></div>
                 <button class="coin-button" id="coin-button">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3CradialGradient id='g1' cx='30%25' cy='30%25'%3E%3Cstop offset='0%25' style='stop-color:%23ffd700'/%3E%3Cstop offset='100%25' style='stop-color:%23cc8800'/%3E%3C/radialGradient%3E%3CradialGradient id='g2'%3E%3Cstop offset='0%25' style='stop-color:%23ffeb3b'/%3E%3Cstop offset='100%25' style='stop-color:%23f57f17'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='90' fill='url(%23g1)' stroke='%23cc8800' stroke-width='3'/%3E%3Ccircle cx='100' cy='100' r='75' fill='none' stroke='%23ffeb3b' stroke-width='2' opacity='0.6'/%3E%3Ccircle cx='100' cy='100' r='60' fill='url(%23g2)'/%3E%3Ctext x='100' y='110' font-size='50' font-weight='bold' fill='%23fff' text-anchor='middle' font-family='Arial, sans-serif'%3EGO%3C/text%3E%3Ctext x='100' y='140' font-size='20' font-weight='bold' fill='%23fff' text-anchor='middle' font-family='Arial, sans-serif'%3ECOIN%3C/text%3E%3C/svg%3E" alt="GO Coin">
+                    <!-- 🎨 Yeni coin butonu görseli -->
+                    <img src="./assets/icons/1000010731-removebg-preview.png" alt="Neontap Coin">
                 </button>
                 <div class="tap-counter" id="tap-counter">0</div>
             </div>
@@ -953,20 +954,40 @@
             </div>
         </div>
 
-        <!-- Çark Ekranı -->
-        <div class="screen" id="spin-screen">
-            <div class="modal-title" style="margin: 20px 0;">🎡 Çarkıfelek</div>
-            <div class="spin-container">
-                <h3>Şansını Dene!</h3>
-                <img src="./assets/icons/wheel_empty.png" alt="Çark" class="wheel-image" id="wheel">
+        <!-- Neontap Madenciliği Ekranı -->
+        <div class="screen" id="mining-screen">
+            <div class="modal-title" style="margin: 20px 0;">⛏️ Neontap Madenciliği</div>
+            
+            <div style="text-align: center; padding: 20px;">
+                <div class="modal-icon" style="font-size: 80px; margin: 20px 0;">⛏️</div>
                 
-                <button class="spin-button" id="spin-button" onclick="spinWheel()">
-                    🎰 ÇEVİR!
+                <div style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; margin: 20px 0; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                    <h3 style="margin-bottom: 15px;">Madencilik Durumu</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255, 215, 0, 0.3);">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Madencilik Gücü</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #FFD700;" id="mining-power">0 MH/s</div>
+                        </div>
+                        <div style="background: rgba(0, 255, 150, 0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(0, 255, 150, 0.3);">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Kazanılan Coin</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #00ff96;" id="mining-earned">0</div>
+                        </div>
+                        <div style="background: rgba(100, 150, 255, 0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(100, 150, 255, 0.3);">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Madencilik Süresi</div>
+                            <div style="font-size: 24px; font-weight: bold; color: #6496ff;" id="mining-time">00:00:00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="mining-toggle-btn" class="spin-button" style="width: 100%; margin-top: 20px;" onclick="toggleMining()">
+                    🚀 Madenciliği Başlat
                 </button>
-                
-                <div class="spin-info">
-                    <p>Kalan Spin: <span id="spin-count">3</span></p>
-                    <p id="spin-result"></p>
+
+                <div style="margin-top: 30px; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+                    <h4 style="margin-bottom: 10px;">💡 Nasıl Çalışır?</h4>
+                    <p style="font-size: 14px; opacity: 0.8; line-height: 1.6;">
+                        Neontap Madenciliği ile otomatik coin kazanabilirsiniz. Madenciliği başlattığınızda, her saniye madencilik gücünüze göre coin kazanırsınız. Madencilik gücünüzü kartlar satın alarak artırabilirsiniz!
+                    </p>
                 </div>
             </div>
         </div>
@@ -1029,11 +1050,9 @@
             </div>
             <span class="nav-label">Kartlar</span>
         </div>
-        <div class="nav-item" data-screen="spin">
-            <div class="nav-icon">
-                <img src="./assets/icons/icon_spin.png" alt="Çarkıfelek">
-            </div>
-            <span class="nav-label">Çarkıfelek</span>
+        <div class="nav-item" data-screen="mining">
+            <div class="nav-icon">⛏️</div>
+            <span class="nav-label">Madencilik</span>
         </div>
         <div class="nav-item" data-screen="wallet">
             <div class="nav-icon">
@@ -1071,7 +1090,6 @@
             profit_per_hour: 0,
             total_taps: 0,
             cards_bought: 0,
-            spin_count: 3,
             combo_multiplier: 1,
             combo_timeout: null,
             last_energy_update: Date.now()
@@ -1231,7 +1249,7 @@
             const screenMap = {
                 'home': 'home-screen',
                 'cards': 'cards-screen',
-                'spin': 'spin-screen',
+                'mining': 'mining-screen',
                 'profile': 'profile-screen',
                 'wallet': 'wallet-screen',
                 'trade': 'trade-screen'
@@ -1276,32 +1294,72 @@
             alert(`Kart satın alındı! Saatlik kazancın +${profit} arttı!`);
         }
 
-        function spinWheel() {
-            if (gameData.spin_count <= 0) {
-                alert('Spin hakkın kalmadı!');
-                return;
+        // Madencilik sistemi
+        let miningActive = false;
+        let miningStartTime = null;
+        let miningInterval = null;
+        let miningPower = 0; // MH/s
+        let miningEarned = 0;
+
+        function toggleMining() {
+            if (!miningActive) {
+                // Madenciliği başlat
+                miningActive = true;
+                miningStartTime = Date.now();
+                miningPower = Math.max(1, Math.floor(gameData.profit_per_hour / 100)); // Saatlik kazanca göre madencilik gücü
+                
+                document.getElementById('mining-toggle-btn').textContent = '⏸️ Madenciliği Durdur';
+                document.getElementById('mining-toggle-btn').style.background = 'linear-gradient(135deg, #ff4444 0%, #cc0000 100%)';
+                
+                // Her saniye madencilik kazancı
+                miningInterval = setInterval(() => {
+                    const coinsPerSecond = miningPower;
+                    gameData.coins += coinsPerSecond;
+                    miningEarned += coinsPerSecond;
+                    
+                    updateMiningDisplay();
+                    updateDisplay();
+                    saveGameData();
+                }, 1000);
+
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+            } else {
+                // Madenciliği durdur
+                stopMining();
             }
-
-            gameData.spin_count--;
-            document.getElementById('spin-count').textContent = gameData.spin_count;
-
-            const rewards = [100, 250, 500, 1000, 2500, 5000];
-            const reward = rewards[Math.floor(Math.random() * rewards.length)];
-
-            gameData.coins += reward;
-            saveGameData();
-            updateDisplay();
-
-            document.getElementById('spin-result').textContent = `🎉 ${reward} coin kazandın!`;
-            
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
-
-            setTimeout(() => {
-                document.getElementById('spin-result').textContent = '';
-            }, 3000);
         }
+
+        function stopMining() {
+            miningActive = false;
+            clearInterval(miningInterval);
+            miningInterval = null;
+            
+            document.getElementById('mining-toggle-btn').textContent = '🚀 Madenciliği Başlat';
+            document.getElementById('mining-toggle-btn').style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+        }
+
+        function updateMiningDisplay() {
+            if (!miningActive) return;
+
+            const elapsed = Date.now() - miningStartTime;
+            const hours = Math.floor(elapsed / 3600000);
+            const minutes = Math.floor((elapsed % 3600000) / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+
+            document.getElementById('mining-power').textContent = `${miningPower} MH/s`;
+            document.getElementById('mining-earned').textContent = formatNumber(miningEarned);
+            document.getElementById('mining-time').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Madencilik display'i her saniye güncelle
+        setInterval(() => {
+            if (miningActive) {
+                updateMiningDisplay();
+            }
+        }, 1000);
     </script>
 </body>
 </html>

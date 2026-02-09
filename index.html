@@ -740,6 +740,60 @@
             cursor: not-allowed;
         }
 
+        /* 🔃 Takas Butonu */
+        .trade-button {
+            background: linear-gradient(135deg, #00ff96 0%, #00cc77 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 255, 150, 0.3);
+            transition: all 0.3s;
+        }
+
+        .trade-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 150, 0.4);
+        }
+
+        .trade-button:active {
+            transform: translateY(0);
+        }
+
+        .trade-button:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* 🪂 Airdrop Detayları Butonu */
+        .airdrop-details-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+        }
+
+        .airdrop-details-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .airdrop-details-btn:active {
+            transform: translateY(0);
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -1210,17 +1264,187 @@
         </div>
 
         <!-- Cüzdan Ekranı -->
-        <div class="screen" id="wallet-screen">
-            <div class="modal-title" style="margin: 20px 0;">💰 Cüzdan</div>
-            <div class="modal-icon">💰</div>
-            <p style="text-align: center; opacity: 0.7;">Cüzdan özellikleri yakında eklenecek!</p>
+        <!-- 🪂 Airdrop Ekranı -->
+        <div class="screen" id="airdrop-screen">
+            <div class="modal-title" style="margin: 20px 0;">🪂 Airdrop</div>
+            
+            <div style="padding: 20px;">
+                <!-- Token Bakiyesi Kartı -->
+                <div style="background: linear-gradient(135deg, rgba(0, 255, 150, 0.2) 0%, rgba(0, 200, 120, 0.1) 100%); border: 2px solid rgba(0, 255, 150, 0.4); border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0, 255, 150, 0.2);">
+                    <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">💎 Toplam NeonTap Token</div>
+                    <div style="font-size: 48px; font-weight: bold; color: #00ff96; text-shadow: 0 0 20px rgba(0, 255, 150, 0.5);" id="airdrop-token-balance">0</div>
+                    <div style="font-size: 13px; opacity: 0.7; margin-top: 8px;">Airdrop için biriktirilen tokenler</div>
+                </div>
+
+                <!-- Sezon Bilgisi -->
+                <div style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div style="font-size: 16px; font-weight: bold;">🏆 Sezon 1</div>
+                        <div style="background: rgba(0, 255, 150, 0.2); padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: #00ff96;">
+                            🟢 Aktif
+                        </div>
+                    </div>
+                    
+                    <!-- Sezon Puanı -->
+                    <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Sezon Puanın</div>
+                                <div style="font-size: 28px; font-weight: bold; color: #FFD700;" id="airdrop-season-points">0</div>
+                            </div>
+                            <div style="font-size: 50px; opacity: 0.3;">⭐</div>
+                        </div>
+                    </div>
+
+                    <!-- Sezon Puanı Kazanma Yolları -->
+                    <div style="font-size: 13px; opacity: 0.8; line-height: 1.6;">
+                        <div style="margin-bottom: 8px;">📊 <strong>Puan Kazanma:</strong></div>
+                        <div style="padding-left: 20px;">
+                            • Her 1,000 NeonTap Token = 1 Puan<br>
+                            • Kartlar ile ek puanlar<br>
+                            • Özel görevler
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Airdrop Uygunluk Durumu -->
+                <div style="background: linear-gradient(135deg, rgba(100, 150, 255, 0.2) 0%, rgba(80, 120, 200, 0.1) 100%); border: 2px solid rgba(100, 150, 255, 0.4); border-radius: 15px; padding: 20px; margin-bottom: 20px;">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">🎯 Airdrop Durumu</div>
+                        <div id="airdrop-eligibility-status" style="display: inline-block; background: rgba(0, 255, 150, 0.3); padding: 8px 20px; border-radius: 20px; font-weight: bold; color: #00ff96;">
+                            ✅ Uygunsun!
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; text-align: center; opacity: 0.8; line-height: 1.5;">
+                        Token biriktirmeye devam et ve airdrop ödüllerini bekle!
+                    </div>
+                </div>
+
+                <!-- Airdrop Detayları Butonu -->
+                <button class="airdrop-details-btn" onclick="showAirdropDetails()">
+                    📋 Airdrop Detayları
+                </button>
+
+                <!-- Bilgilendirme -->
+                <div style="margin-top: 25px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 15px;">
+                    <div style="display: flex; gap: 10px; align-items: start;">
+                        <div style="font-size: 20px;">💡</div>
+                        <div style="font-size: 13px; opacity: 0.8; line-height: 1.6;">
+                            <strong>Airdrop Hakkında:</strong><br>
+                            NeonTap Token'larınızı biriktirerek büyük airdrop ödüllerine hak kazanabilirsiniz. Sezon sonunda toplam puanınıza göre ödüller dağıtılacak. Token ne kadar çok olursa, ödülün de o kadar büyük!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İstatistikler -->
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 15px; opacity: 0.7;">
+                        📊 Airdrop İstatistikleri
+                    </div>
+                    <div style="display: grid; gap: 10px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
+                            <span style="opacity: 0.8;">Toplam Oyuncu:</span>
+                            <span style="font-weight: bold;">Yakında</span>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
+                            <span style="opacity: 0.8;">Sezon Bitiş:</span>
+                            <span style="font-weight: bold; color: #FFD700;">30 Gün</span>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
+                            <span style="opacity: 0.8;">Senin Sıralaman:</span>
+                            <span style="font-weight: bold; color: #00ff96;">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Takas Ekranı -->
+        <!-- 🔃 Takas Ekranı - AKTİF -->
         <div class="screen" id="trade-screen">
             <div class="modal-title" style="margin: 20px 0;">🔃 Takas</div>
-            <div class="modal-icon">🔃</div>
-            <p style="text-align: center; opacity: 0.7;">Takas özellikleri yakında eklenecek!</p>
+            
+            <div style="padding: 20px;">
+                <!-- Bakiye Kartları -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                    <!-- GO Coin Kartı -->
+                    <div style="background: rgba(255, 215, 0, 0.1); border: 2px solid rgba(255, 215, 0, 0.3); border-radius: 15px; padding: 20px; text-align: center;">
+                        <!-- 🎨 GO Coin Görseli -->
+                        <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px;">
+                        <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">GO Coin</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #FFD700;" id="trade-gocoin-balance">0</div>
+                    </div>
+                    
+                    <!-- NeonTap Token Kartı -->
+                    <div style="background: rgba(0, 255, 150, 0.1); border: 2px solid rgba(0, 255, 150, 0.3); border-radius: 15px; padding: 20px; text-align: center;">
+                        <!-- 🎨 NeonTap Token Görseli -->
+                        <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px;">
+                        <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">NeonTap Token</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #00ff96;" id="trade-neontap-balance">0</div>
+                    </div>
+                </div>
+
+                <!-- Takas Bilgi Kartı -->
+                <div style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 20px;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">💱 Takas Oranı</div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                            <!-- 🎨 Sol taraf - GO Coin -->
+                            <div style="background: rgba(255, 215, 0, 0.2); padding: 15px 25px; border-radius: 10px;">
+                                <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 40px; height: 40px; object-fit: contain; margin-bottom: 8px;">
+                                <div style="font-size: 24px; font-weight: bold; color: #FFD700;">50,000</div>
+                                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">GO Coin</div>
+                            </div>
+                            <div style="font-size: 30px;">→</div>
+                            <!-- 🎨 Sağ taraf - NeonTap Token -->
+                            <div style="background: rgba(0, 255, 150, 0.2); padding: 15px 25px; border-radius: 10px;">
+                                <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 40px; height: 40px; object-fit: contain; margin-bottom: 8px;">
+                                <div style="font-size: 24px; font-weight: bold; color: #00ff96;">1,000</div>
+                                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">NeonTap Token</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Takas Et Butonu -->
+                    <button id="trade-button" class="trade-button" onclick="executeTrade()">
+                        🔄 Takas Et
+                    </button>
+
+                    <!-- Durum Mesajı -->
+                    <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px; min-height: 20px;"></div>
+                </div>
+
+                <!-- Uyarı Bilgisi -->
+                <div style="background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.3); border-radius: 10px; padding: 15px;">
+                    <div style="display: flex; gap: 10px; align-items: start;">
+                        <div style="font-size: 20px;">⚠️</div>
+                        <div style="font-size: 13px; opacity: 0.9; line-height: 1.5;">
+                            <strong>Önemli:</strong> Bu takas tek yönlüdür ve geri alınamaz. GO Coin'leriniz NeonTap Token'a dönüştürüldükten sonra geri çevrilemez.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Takas Geçmişi (opsiyonel - gelecekte eklenebilir) -->
+                <div style="margin-top: 30px;">
+                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; opacity: 0.7;">
+                        📊 İstatistikler
+                    </div>
+                    <div style="display: grid; gap: 10px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
+                            <span style="opacity: 0.8;">Toplam Takas:</span>
+                            <span style="font-weight: bold;" id="total-trades">0</span>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
+                            <span style="opacity: 0.8;">Takas Edilen GO Coin:</span>
+                            <span style="font-weight: bold; color: #FFD700;" id="total-traded-gocoin">0</span>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
+                            <span style="opacity: 0.8;">Kazanılan NeonTap Token:</span>
+                            <span style="font-weight: bold; color: #00ff96;" id="total-earned-neontap">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1244,11 +1468,9 @@
             </div>
             <span class="nav-label">Madencilik</span>
         </div>
-        <div class="nav-item" data-screen="wallet">
-            <div class="nav-icon">
-                <img src="./assets/icons/icon_wallet.png" alt="Cüzdan">
-            </div>
-            <span class="nav-label">Cüzdan</span>
+        <div class="nav-item" data-screen="airdrop">
+            <div class="nav-icon">🪂</div>
+            <span class="nav-label">Airdrop</span>
         </div>
         <div class="nav-item" data-screen="trade">
             <div class="nav-icon">
@@ -1282,7 +1504,12 @@
             cards_bought: 0,
             combo_multiplier: 1,
             combo_timeout: null,
-            last_energy_update: Date.now()
+            last_energy_update: Date.now(),
+            // 🔃 Takas sistemi değişkenleri
+            neonTapToken: 0,
+            totalTrades: 0,
+            totalTradedGoCoin: 0,
+            totalEarnedNeonTap: 0
         };
 
         // Başlangıç
@@ -1416,6 +1643,12 @@
             document.getElementById('profile-level').textContent = gameData.level;
             document.getElementById('profile-taps').textContent = formatNumber(gameData.total_taps);
             document.getElementById('profile-cards').textContent = gameData.cards_bought;
+
+            // 🔃 Takas ekranı güncelle
+            updateTradeDisplay();
+
+            // 🪂 Airdrop ekranı güncelle
+            updateAirdropDisplay();
         }
 
         function formatNumber(num) {
@@ -1441,7 +1674,7 @@
                 'cards': 'cards-screen',
                 'mining': 'mining-screen',
                 'profile': 'profile-screen',
-                'wallet': 'wallet-screen',
+                'airdrop': 'airdrop-screen',
                 'trade': 'trade-screen'
             };
 
@@ -1548,6 +1781,167 @@
             document.getElementById('total-mining-power').textContent = `${formatNumber(totalMiningPower)} MH/s`;
             document.getElementById('mining-per-second').textContent = `${formatNumber(perSecond)} coin/s`;
         }
+
+        // 🔃 ===== TAKAS SİSTEMİ =====
+        
+        // Takas işlem durumu (spam tıklama engelleme için)
+        let isTrading = false;
+
+        // Takas sabitleri
+        const TRADE_RATE = {
+            GO_COIN_REQUIRED: 50000,    // Takas için gereken GO Coin miktarı
+            NEONTAP_REWARD: 1000        // Karşılığında alınacak NeonTap Token
+        };
+
+        /**
+         * 🔃 Takas ekranı görüntüsünü günceller
+         * Bakiyeleri ve istatistikleri günceller
+         */
+        function updateTradeDisplay() {
+            // Bakiyeleri güncelle
+            document.getElementById('trade-gocoin-balance').textContent = formatNumber(Math.floor(gameData.coins));
+            document.getElementById('trade-neontap-balance').textContent = formatNumber(Math.floor(gameData.neonTapToken));
+            
+            // İstatistikleri güncelle
+            document.getElementById('total-trades').textContent = formatNumber(gameData.totalTrades);
+            document.getElementById('total-traded-gocoin').textContent = formatNumber(gameData.totalTradedGoCoin);
+            document.getElementById('total-earned-neontap').textContent = formatNumber(gameData.totalEarnedNeonTap);
+        }
+
+        /**
+         * 🔄 Takas işlemini gerçekleştirir
+         * 50,000 GO Coin → 1,000 NeonTap Token
+         */
+        function executeTrade() {
+            // 🛡️ Spam tıklama koruması
+            if (isTrading) {
+                showTradeStatus('⏳ İşlem devam ediyor, lütfen bekleyin...', 'warning');
+                return;
+            }
+
+            // ✅ Yeterli bakiye kontrolü
+            if (gameData.coins < TRADE_RATE.GO_COIN_REQUIRED) {
+                const needed = TRADE_RATE.GO_COIN_REQUIRED - gameData.coins;
+                showTradeStatus(`❌ Yetersiz GO Coin! ${formatNumber(needed)} daha gerekli.`, 'error');
+                
+                // Haptic feedback (hata)
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('error');
+                }
+                return;
+            }
+
+            // 🔒 İşlemi kilitle
+            isTrading = true;
+            const tradeButton = document.getElementById('trade-button');
+            tradeButton.disabled = true;
+            tradeButton.textContent = '⏳ İşlem yapılıyor...';
+
+            // ⏱️ Kısa bir gecikme ekle (kullanıcı deneyimi için)
+            setTimeout(() => {
+                // 💱 Takas işlemini gerçekleştir
+                gameData.coins -= TRADE_RATE.GO_COIN_REQUIRED;
+                gameData.neonTapToken += TRADE_RATE.NEONTAP_REWARD;
+                
+                // 📊 İstatistikleri güncelle
+                gameData.totalTrades++;
+                gameData.totalTradedGoCoin += TRADE_RATE.GO_COIN_REQUIRED;
+                gameData.totalEarnedNeonTap += TRADE_RATE.NEONTAP_REWARD;
+
+                // 💾 Kaydet
+                saveGameData();
+                
+                // 🎨 Görüntüyü güncelle
+                updateDisplay();
+
+                // ✅ Başarı mesajı göster
+                showTradeStatus(`✅ Başarılı! ${formatNumber(TRADE_RATE.NEONTAP_REWARD)} NeonTap Token kazandınız!`, 'success');
+
+                // 📳 Haptic feedback (başarı)
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('success');
+                }
+
+                // 🔓 Kilidi aç
+                isTrading = false;
+                tradeButton.disabled = false;
+                tradeButton.textContent = '🔄 Takas Et';
+
+            }, 500); // 500ms gecikme
+        }
+
+        /**
+         * 📢 Takas durum mesajını gösterir
+         * @param {string} message - Gösterilecek mesaj
+         * @param {string} type - Mesaj tipi: 'success', 'error', 'warning'
+         */
+        function showTradeStatus(message, type) {
+            const statusElement = document.getElementById('trade-status');
+            
+            // Renk belirleme
+            let color = '#ffffff';
+            if (type === 'success') color = '#00ff96';
+            if (type === 'error') color = '#ff5555';
+            if (type === 'warning') color = '#ffaa00';
+            
+            statusElement.textContent = message;
+            statusElement.style.color = color;
+            statusElement.style.fontWeight = 'bold';
+
+            // 3 saniye sonra mesajı temizle
+            setTimeout(() => {
+                statusElement.textContent = '';
+            }, 3000);
+        }
+
+        // 🔃 ===== TAKAS SİSTEMİ SONU =====
+
+        // 🪂 ===== AIRDROP SİSTEMİ =====
+
+        /**
+         * 🪂 Airdrop ekranı görüntüsünü günceller
+         * NeonTap Token bakiyesi ve sezon puanını gösterir
+         */
+        function updateAirdropDisplay() {
+            // Token bakiyesini güncelle
+            const tokenBalance = Math.floor(gameData.neonTapToken);
+            document.getElementById('airdrop-token-balance').textContent = formatNumber(tokenBalance);
+            
+            // Sezon puanını hesapla (Her 1,000 token = 1 puan)
+            const seasonPoints = Math.floor(tokenBalance / 1000);
+            document.getElementById('airdrop-season-points').textContent = formatNumber(seasonPoints);
+            
+            // Uygunluk durumunu güncelle
+            const eligibilityElement = document.getElementById('airdrop-eligibility-status');
+            if (tokenBalance >= 1000) {
+                eligibilityElement.innerHTML = '✅ Uygunsun!';
+                eligibilityElement.style.background = 'rgba(0, 255, 150, 0.3)';
+                eligibilityElement.style.color = '#00ff96';
+            } else {
+                eligibilityElement.innerHTML = '⏳ Devam Ediyor...';
+                eligibilityElement.style.background = 'rgba(255, 170, 0, 0.3)';
+                eligibilityElement.style.color = '#ffaa00';
+            }
+        }
+
+        /**
+         * 📋 Airdrop detayları modalını gösterir (şimdilik placeholder)
+         */
+        function showAirdropDetails() {
+            alert('🪂 Airdrop Detayları\n\n' +
+                  '🎯 Sezon 1 Airdrop bilgileri yakında açıklanacak!\n\n' +
+                  '📊 Şu anki durumun:\n' +
+                  `• NeonTap Token: ${formatNumber(Math.floor(gameData.neonTapToken))}\n` +
+                  `• Sezon Puanı: ${formatNumber(Math.floor(gameData.neonTapToken / 1000))}\n\n` +
+                  '💡 Token biriktirmeye devam et ve büyük ödüllere hak kazan!');
+            
+            // Haptic feedback
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+        }
+
+        // 🪂 ===== AIRDROP SİSTEMİ SONU =====
     </script>
 </body>
 </html>

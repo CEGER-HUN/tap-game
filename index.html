@@ -15,7 +15,14 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Arial', sans-serif;
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            /* 🎨 Arka plan görseli eklendi */
+            background-image: url('./assets/icons/file_000000000d8c720aaa95b6e1a1b811b8.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* Gradient overlay (opsiyonel - görselin üzerine hafif karartma) */
+            background-color: #1a1a2e;
             color: white;
             overflow-x: hidden;
             user-select: none;
@@ -153,6 +160,21 @@
             padding: 20px;
             padding-bottom: 100px;
             min-height: 100vh;
+            /* 🎨 Arka planda içerik okunabilir olsun diye hafif karartma overlay */
+            position: relative;
+        }
+        
+        /* 🎨 Tüm ekranlar için hafif karartma overlay (opsiyonel) */
+        .container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.7); /* Hafif karartma */
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Üst Bilgi Kartı */

@@ -15,13 +15,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Arial', sans-serif;
-            /* 🎨 Arka plan görseli eklendi */
-            background-image: url('./assets/icons/file_000000000d8c720aaa95b6e1a1b811b8.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            /* Gradient overlay (opsiyonel - görselin üzerine hafif karartma) */
+            /* 🎨 Genel arka plan kaldırıldı - her ekrana özel arka plan eklenecek */
             background-color: #1a1a2e;
             color: white;
             overflow-x: hidden;
@@ -395,6 +389,69 @@
 
         .screen.active {
             display: block;
+        }
+
+        /* 🎨 Ekran Bazlı Arka Plan Görselleri */
+        
+        /* Ana Sayfa Arka Planı */
+        #home-screen::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('./assets/icons/IMG_20260212_212121.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+
+        /* Airdrop Arka Planı */
+        #airdrop-screen::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('./assets/icons/IMG_20260212_212059.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+
+        /* Diğer Ekranlar İçin Genel Arka Plan */
+        #cards-screen::before,
+        #mining-screen::before,
+        #trade-screen::before,
+        #profile-screen::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('./assets/icons/file_000000000d8c720aaa95b6e1a1b811b8.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+
+        /* Tüm ekranlar için karartma overlay */
+        .screen::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.65);
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Modal */
@@ -1474,7 +1531,8 @@
     <div class="bottom-nav">
         <div class="nav-item active" data-screen="home">
             <div class="nav-icon">
-                <img src="./assets/icons/icon_cards.png" alt="Ana Sayfa">
+                <!-- 🎨 Ana Sayfa ikonu görseli -->
+                <img src="./assets/icons/IMG_20260212_212121.png" alt="Ana Sayfa">
             </div>
             <span class="nav-label">Ana Sayfa</span>
         </div>
@@ -1491,7 +1549,10 @@
             <span class="nav-label">Madencilik</span>
         </div>
         <div class="nav-item" data-screen="airdrop">
-            <div class="nav-icon">🪂</div>
+            <div class="nav-icon">
+                <!-- 🎨 Airdrop ikonu görseli -->
+                <img src="./assets/icons/IMG_20260212_212059.png" alt="Airdrop">
+            </div>
             <span class="nav-label">Airdrop</span>
         </div>
         <div class="nav-item" data-screen="trade">

@@ -391,41 +391,13 @@
             display: block;
         }
 
-        /* 🎨 Ekran Bazlı Arka Plan Görselleri */
+        /* 🎨 TÜM EKRANLAR İÇİN AYNI ARKA PLAN */
         
-        /* Ana Sayfa Arka Planı */
-        #home-screen::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('./assets/icons/IMG_20260212_212121.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -2;
-        }
-
-        /* Airdrop Arka Planı */
-        #airdrop-screen::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('./assets/icons/IMG_20260212_212059.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -2;
-        }
-
-        /* Diğer Ekranlar İçin Genel Arka Plan */
+        /* Ana Sayfa, Kartlar, Madencilik, Airdrop, Takas - Hepsi Aynı Arka Plan */
+        #home-screen::before,
         #cards-screen::before,
         #mining-screen::before,
+        #airdrop-screen::before,
         #trade-screen::before,
         #profile-screen::before {
             content: '';

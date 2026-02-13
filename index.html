@@ -333,8 +333,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 52, 96, 0.95);
-            backdrop-filter: blur(20px);
+            /* 🎨 Siyah arka plan (#0d0d0f) */
+            background: #0d0d0f;
+            /* 🎨 Blur efekti */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 10px 0;
             display: flex;
             justify-content: space-around;
@@ -349,7 +352,7 @@
             align-items: center;
             gap: 5px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
             padding: 10px 15px;
             border-radius: 10px;
         }
@@ -358,13 +361,16 @@
             transform: scale(0.95);
         }
 
+        /* 🎨 Aktif sekme - mavi neon glow efekti */
         .nav-item.active {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 200, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
         }
 
         .nav-icon {
-            width: 32px;
-            height: 32px;
+            /* 🎨 İkonları %25 büyüt (32px -> 40px) */
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -511,9 +517,11 @@
             border-color: transparent;
         }
 
+        /* 🎨 2 Sütunlu Grid Düzeni */
         .cards-grid {
             display: grid;
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
 
         .card-item {
@@ -523,13 +531,15 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
-            gap: 15px;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            /* 🎨 Eşit yükseklik için */
+            min-height: 280px;
         }
 
         .card-icon {
-            width: 60px;
-            height: 60px;
+            width: 100%;
+            height: 100px;
             border-radius: 10px;
             object-fit: cover;
             flex-shrink: 0;
@@ -538,15 +548,19 @@
 
         .card-details {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card-name {
             font-weight: bold;
             margin-bottom: 5px;
+            font-size: 14px;
         }
 
         .card-profit {
-            font-size: 14px;
+            font-size: 13px;
             color: #FFD700;
             margin-bottom: 5px;
         }
@@ -560,11 +574,13 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
             white-space: nowrap;
+            font-size: 13px;
+            width: 100%;
         }
 
         .buy-card-button:disabled {
@@ -890,20 +906,6 @@
                 </div>
             </div>
             <div class="menu-item">
-                <div class="menu-item-icon">⚙️</div>
-                <div class="menu-item-text">
-                    <div class="menu-item-title">Ayarlar</div>
-                    <div class="menu-item-desc">Oyun tercihleri</div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-item-icon">📊</div>
-                <div class="menu-item-text">
-                    <div class="menu-item-title">İstatistikler</div>
-                    <div class="menu-item-desc">Detaylı veriler</div>
-                </div>
-            </div>
-            <div class="menu-item">
                 <div class="menu-item-icon">🏆</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Liderlik Tablosu</div>
@@ -915,20 +917,6 @@
                 <div class="menu-item-text">
                     <div class="menu-item-title">Arkadaşlar</div>
                     <div class="menu-item-desc">Davet et & kazan</div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-item-icon">❓</div>
-                <div class="menu-item-text">
-                    <div class="menu-item-title">Yardım</div>
-                    <div class="menu-item-desc">Nasıl oynanır?</div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="menu-item-icon">ℹ️</div>
-                <div class="menu-item-text">
-                    <div class="menu-item-title">Hakkında</div>
-                    <div class="menu-item-desc">Versiyon 1.0.0</div>
                 </div>
             </div>
         </div>
@@ -978,7 +966,7 @@
 
         <!-- Kartlar Ekranı -->
         <div class="screen" id="cards-screen">
-            <div class="modal-title" style="margin: 20px 0;">🏪 Kartlar</div>
+            <div class="modal-title" style="margin: 20px 0;">Kartlar</div>
             
             <div class="cards-tabs">
                 <button class="tab-button active" onclick="showCardCategory('profession')">Profesyon</button>
@@ -1158,7 +1146,7 @@
 
         <!-- Madencilik Kartları Ekranı -->
         <div class="screen" id="mining-screen">
-            <div class="modal-title" style="margin: 20px 0;">⛏️ Madencilik Kartları</div>
+            <div class="modal-title" style="margin: 20px 0;">Madencilik Kartları</div>
             
             <div style="padding: 20px;">
                 <!-- Madencilik Bilgi Kartı -->
@@ -1315,9 +1303,9 @@
         </div>
 
         <!-- Cüzdan Ekranı -->
-        <!-- 🪂 Airdrop Ekranı -->
+        <!-- Airdrop Ekranı -->
         <div class="screen" id="airdrop-screen">
-            <div class="modal-title" style="margin: 20px 0;">🪂 Airdrop</div>
+            <div class="modal-title" style="margin: 20px 0;">Airdrop</div>
             
             <div style="padding: 20px;">
                 <!-- Token Bakiyesi Kartı -->
@@ -1411,9 +1399,9 @@
         </div>
 
         <!-- Takas Ekranı -->
-        <!-- 🔃 Takas Ekranı - AKTİF -->
+        <!-- Takas Ekranı - AKTİF -->
         <div class="screen" id="trade-screen">
-            <div class="modal-title" style="margin: 20px 0;">🔃 Takas</div>
+            <div class="modal-title" style="margin: 20px 0;">Takas</div>
             
             <div style="padding: 20px;">
                 <!-- Bakiye Kartları -->

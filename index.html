@@ -1512,12 +1512,13 @@
                         type="number" 
                         class="swap-input" 
                         id="swap-from-input"
-                        placeholder="Minimum 50,000"
+                        placeholder="0"
                         min="50000"
                         step="1000"
                         oninput="calculateSwapAmount()"
                     >
-                    <div style="font-size: 11px; opacity: 0.5; margin-top: 8px;">Minimum: 50,000 GO Coin</div>
+                    <div style="font-size: 12px; opacity: 0.6; margin-top: 8px;">Minimum: 50,000 GO</div>
+                    <div id="swap-error-msg" style="font-size: 12px; color: #ff5555; margin-top: 6px; display: none;">Minimum 50,000 GO gerekli</div>
                 </div>
 
                 <!-- Tek Yönlü Ok İşareti -->
@@ -1944,15 +1945,36 @@
 
         /**
          * 💱 Kullanıcının girdiği miktara göre alınacak NeonTap Token'ı hesaplar
+         * Aynı zamanda minimum kontrol ve buton durumunu yönetir
          */
         function calculateSwapAmount() {
             const inputValue = parseFloat(document.getElementById('swap-from-input').value) || 0;
+            const confirmBtn = document.getElementById('swap-confirm-btn');
+            const errorMsg = document.getElementById('swap-error-msg');
             
             // Oran: 50,000 GO Coin = 1,000 NeonTap Token
             // Formül: (inputValue / 50,000) * 1,000
             const neonTapAmount = (inputValue / TRADE_RATE.GO_COIN_REQUIRED) * TRADE_RATE.NEONTAP_REWARD;
             
             document.getElementById('swap-to-display').value = Math.floor(neonTapAmount);
+
+            // Minimum kontrol ve buton durumu
+            if (inputValue > 0 && inputValue < TRADE_RATE.GO_COIN_REQUIRED) {
+                // 50,000'den az girildi
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                errorMsg.style.display = 'block';
+            } else if (inputValue >= TRADE_RATE.GO_COIN_REQUIRED) {
+                // 50,000 ve üzeri
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+                errorMsg.style.display = 'none';
+            } else {
+                // Input boş
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                errorMsg.style.display = 'none';
+            }
         }
 
         /**

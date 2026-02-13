@@ -1512,18 +1512,17 @@
                         type="number" 
                         class="swap-input" 
                         id="swap-from-input"
-                        placeholder="0.00"
-                        value="50000"
-                        readonly
+                        placeholder="Minimum 50,000"
+                        min="50000"
+                        step="1000"
+                        oninput="calculateSwapAmount()"
                     >
+                    <div style="font-size: 11px; opacity: 0.5; margin-top: 8px;">Minimum: 50,000 GO Coin</div>
                 </div>
 
-                <!-- Swap Toggle Button -->
-                <div class="swap-toggle" onclick="return false;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 16V4M7 4L3 8M7 4L11 8"></path>
-                        <path d="M17 8V20M17 20L21 16M17 20L13 16"></path>
-                    </svg>
+                <!-- Tek Yönlü Ok İşareti -->
+                <div style="text-align: center; margin: 16px 0; font-size: 32px; opacity: 0.5; font-weight: 300;">
+                    ↓
                 </div>
 
                 <!-- TO Card -->
@@ -1541,8 +1540,7 @@
                         type="text" 
                         class="swap-input" 
                         id="swap-to-display"
-                        placeholder="0.00"
-                        value="1000"
+                        placeholder="0"
                         readonly
                     >
                 </div>
@@ -1551,7 +1549,7 @@
                 <div class="swap-info">
                     <div style="display: flex; justify-content: space-between; padding: 8px 0;">
                         <span>Oran</span>
-                        <span style="font-weight: 600;">1 GO = 0.02 NEON</span>
+                        <span style="font-weight: 600;">50,000 GO = 1,000 NEON</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding: 8px 0;">
                         <span>Fee</span>
@@ -1564,22 +1562,12 @@
                 </div>
 
                 <!-- Swap Confirm Button -->
-                <button class="swap-confirm" onclick="executeTrade()">
+                <button class="swap-confirm" id="swap-confirm-btn" onclick="executeTradeWithInput()">
                     Takası Onayla
                 </button>
 
                 <!-- Status Message -->
                 <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px; min-height: 20px;"></div>
-
-                <!-- Warning Box -->
-                <div style="background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.3); border-radius: 12px; padding: 12px; margin-top: 20px;">
-                    <div style="display: flex; gap: 8px; align-items: start;">
-                        <div style="font-size: 16px; margin-top: 2px;">⚠️</div>
-                        <div style="font-size: 12px; opacity: 0.9; line-height: 1.5;">
-                            <strong>Dikkat:</strong> Bu takas geri alınamaz. GO Coin'leriniz NeonTap Token'a dönüştürüldükten sonra geri çevrilemez.
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Stats Section -->
                 <div style="margin-top: 25px;">
@@ -1950,9 +1938,22 @@
 
         // Takas sabitleri
         const TRADE_RATE = {
-            GO_COIN_REQUIRED: 50000,    // Takas için gereken GO Coin miktarı
-            NEONTAP_REWARD: 1000        // Karşılığında alınacak NeonTap Token
+            GO_COIN_REQUIRED: 50000,    // Minimum takas miktarı
+            NEONTAP_REWARD: 1000        // 50,000 GO Coin karşılığında alınacak NeonTap Token
         };
+
+        /**
+         * 💱 Kullanıcının girdiği miktara göre alınacak NeonTap Token'ı hesaplar
+         */
+        function calculateSwapAmount() {
+            const inputValue = parseFloat(document.getElementById('swap-from-input').value) || 0;
+            
+            // Oran: 50,000 GO Coin = 1,000 NeonTap Token
+            // Formül: (inputValue / 50,000) * 1,000
+            const neonTapAmount = (inputValue / TRADE_RATE.GO_COIN_REQUIRED) * TRADE_RATE.NEONTAP_REWARD;
+            
+            document.getElementById('swap-to-display').value = Math.floor(neonTapAmount);
+        }
 
         /**
          * 🔃 Takas ekranı görüntüsünü günceller
@@ -1969,19 +1970,32 @@
         }
 
         /**
-         * 🔄 Takas işlemini gerçekleştirir
-         * 50,000 GO Coin → 1,000 NeonTap Token
+         * 🔄 Input'tan gelen miktar ile takas işlemini gerçekleştirir
          */
-        function executeTrade() {
+        function executeTradeWithInput() {
             // 🛡️ Spam tıklama koruması
             if (isTrading) {
                 showTradeStatus('⏳ İşlem devam ediyor, lütfen bekleyin...', 'warning');
                 return;
             }
 
+            // Kullanıcının girdiği miktarı al
+            const tradeAmount = parseFloat(document.getElementById('swap-from-input').value) || 0;
+
+            // ✅ Minimum miktar kontrolü
+            if (tradeAmount < TRADE_RATE.GO_COIN_REQUIRED) {
+                showTradeStatus(`❌ Minimum ${formatNumber(TRADE_RATE.GO_COIN_REQUIRED)} GO Coin gerekli!`, 'error');
+                
+                // Haptic feedback (hata)
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.notificationOccurred('error');
+                }
+                return;
+            }
+
             // ✅ Yeterli bakiye kontrolü
-            if (gameData.coins < TRADE_RATE.GO_COIN_REQUIRED) {
-                const needed = TRADE_RATE.GO_COIN_REQUIRED - gameData.coins;
+            if (gameData.coins < tradeAmount) {
+                const needed = tradeAmount - gameData.coins;
                 showTradeStatus(`❌ Yetersiz GO Coin! ${formatNumber(needed)} daha gerekli.`, 'error');
                 
                 // Haptic feedback (hata)
@@ -1993,20 +2007,23 @@
 
             // 🔒 İşlemi kilitle
             isTrading = true;
-            const tradeButton = document.getElementById('trade-button');
+            const tradeButton = document.getElementById('swap-confirm-btn');
             tradeButton.disabled = true;
             tradeButton.textContent = '⏳ İşlem yapılıyor...';
 
             // ⏱️ Kısa bir gecikme ekle (kullanıcı deneyimi için)
             setTimeout(() => {
+                // Alınacak NeonTap Token miktarını hesapla
+                const neonTapReward = (tradeAmount / TRADE_RATE.GO_COIN_REQUIRED) * TRADE_RATE.NEONTAP_REWARD;
+
                 // 💱 Takas işlemini gerçekleştir
-                gameData.coins -= TRADE_RATE.GO_COIN_REQUIRED;
-                gameData.neonTapToken += TRADE_RATE.NEONTAP_REWARD;
+                gameData.coins -= tradeAmount;
+                gameData.neonTapToken += neonTapReward;
                 
                 // 📊 İstatistikleri güncelle
                 gameData.totalTrades++;
-                gameData.totalTradedGoCoin += TRADE_RATE.GO_COIN_REQUIRED;
-                gameData.totalEarnedNeonTap += TRADE_RATE.NEONTAP_REWARD;
+                gameData.totalTradedGoCoin += tradeAmount;
+                gameData.totalEarnedNeonTap += neonTapReward;
 
                 // 💾 Kaydet
                 saveGameData();
@@ -2014,8 +2031,12 @@
                 // 🎨 Görüntüyü güncelle
                 updateDisplay();
 
+                // Input'u temizle
+                document.getElementById('swap-from-input').value = '';
+                document.getElementById('swap-to-display').value = '0';
+
                 // ✅ Başarı mesajı göster
-                showTradeStatus(`✅ Başarılı! ${formatNumber(TRADE_RATE.NEONTAP_REWARD)} NeonTap Token kazandınız!`, 'success');
+                showTradeStatus(`✅ Başarılı! ${formatNumber(Math.floor(neonTapReward))} NeonTap Token kazandınız!`, 'success');
 
                 // 📳 Haptic feedback (başarı)
                 if (tg && tg.HapticFeedback) {
@@ -2025,7 +2046,7 @@
                 // 🔓 Kilidi aç
                 isTrading = false;
                 tradeButton.disabled = false;
-                tradeButton.textContent = '🔄 Takas Et';
+                tradeButton.textContent = 'Takası Onayla';
 
             }, 500); // 500ms gecikme
         }

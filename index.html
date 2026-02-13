@@ -837,6 +837,98 @@
             box-shadow: none;
         }
 
+        /* 💎 Profesyonel Swap Panel Stilleri */
+        
+        .swap-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 16px;
+        }
+
+        .swap-input {
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffffff;
+            outline: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .swap-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .swap-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 12px auto;
+            background: linear-gradient(145deg, #00ffcc, #0077ff);
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            color: white;
+        }
+
+        .swap-toggle:hover {
+            transform: rotate(180deg);
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.8);
+        }
+
+        .swap-toggle:active {
+            transform: rotate(180deg) scale(0.95);
+        }
+
+        .swap-info {
+            opacity: 0.7;
+            font-size: 13px;
+            margin-top: 16px;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .swap-confirm {
+            background: linear-gradient(135deg, #00ffcc, #00cc66);
+            border-radius: 16px;
+            font-weight: 600;
+            padding: 16px;
+            box-shadow: 0 0 25px rgba(0, 255, 150, 0.6);
+            transition: all 0.2s;
+            border: none;
+            color: #000000;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .swap-confirm:hover {
+            box-shadow: 0 0 35px rgba(0, 255, 150, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .swap-confirm:active {
+            transform: scale(0.96);
+        }
+
+        .swap-confirm:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.4);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
         /* 🪂 Airdrop Detayları Butonu */
         .airdrop-details-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1403,83 +1495,109 @@
         <div class="screen" id="trade-screen">
             <div class="modal-title" style="margin: 20px 0;">Takas</div>
             
-            <div style="padding: 20px;">
-                <!-- Bakiye Kartları -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
-                    <!-- GO Coin Kartı -->
-                    <div style="background: rgba(255, 215, 0, 0.1); border: 2px solid rgba(255, 215, 0, 0.3); border-radius: 15px; padding: 20px; text-align: center;">
-                        <!-- 🎨 GO Coin Görseli -->
-                        <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px;">
-                        <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">GO Coin</div>
-                        <div style="font-size: 28px; font-weight: bold; color: #FFD700;" id="trade-gocoin-balance">0</div>
-                    </div>
-                    
-                    <!-- NeonTap Token Kartı -->
-                    <div style="background: rgba(0, 255, 150, 0.1); border: 2px solid rgba(0, 255, 150, 0.3); border-radius: 15px; padding: 20px; text-align: center;">
-                        <!-- 🎨 NeonTap Token Görseli -->
-                        <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px;">
-                        <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">NeonTap Token</div>
-                        <div style="font-size: 28px; font-weight: bold; color: #00ff96;" id="trade-neontap-balance">0</div>
-                    </div>
-                </div>
-
-                <!-- Takas Bilgi Kartı -->
-                <div style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 20px;">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">💱 Takas Oranı</div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
-                            <!-- 🎨 Sol taraf - GO Coin -->
-                            <div style="background: rgba(255, 215, 0, 0.2); padding: 15px 25px; border-radius: 10px;">
-                                <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 40px; height: 40px; object-fit: contain; margin-bottom: 8px;">
-                                <div style="font-size: 24px; font-weight: bold; color: #FFD700;">50,000</div>
-                                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">GO Coin</div>
-                            </div>
-                            <div style="font-size: 30px;">→</div>
-                            <!-- 🎨 Sağ taraf - NeonTap Token -->
-                            <div style="background: rgba(0, 255, 150, 0.2); padding: 15px 25px; border-radius: 10px;">
-                                <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 40px; height: 40px; object-fit: contain; margin-bottom: 8px;">
-                                <div style="font-size: 24px; font-weight: bold; color: #00ff96;">1,000</div>
-                                <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">NeonTap Token</div>
+            <div style="padding: 20px; max-width: 420px; margin: 0 auto;">
+                
+                <!-- FROM Card -->
+                <div class="swap-card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 32px; height: 32px; object-fit: contain;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 15px;">GO Coin</div>
+                                <div style="font-size: 12px; opacity: 0.6;">Bakiye: <span id="swap-from-balance">0</span></div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Takas Et Butonu -->
-                    <button id="trade-button" class="trade-button" onclick="executeTrade()">
-                        🔄 Takas Et
-                    </button>
-
-                    <!-- Durum Mesajı -->
-                    <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px; min-height: 20px;"></div>
+                    <input 
+                        type="number" 
+                        class="swap-input" 
+                        id="swap-from-input"
+                        placeholder="0.00"
+                        value="50000"
+                        readonly
+                    >
                 </div>
 
-                <!-- Uyarı Bilgisi -->
-                <div style="background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.3); border-radius: 10px; padding: 15px;">
-                    <div style="display: flex; gap: 10px; align-items: start;">
-                        <div style="font-size: 20px;">⚠️</div>
-                        <div style="font-size: 13px; opacity: 0.9; line-height: 1.5;">
-                            <strong>Önemli:</strong> Bu takas tek yönlüdür ve geri alınamaz. GO Coin'leriniz NeonTap Token'a dönüştürüldükten sonra geri çevrilemez.
+                <!-- Swap Toggle Button -->
+                <div class="swap-toggle" onclick="return false;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 16V4M7 4L3 8M7 4L11 8"></path>
+                        <path d="M17 8V20M17 20L21 16M17 20L13 16"></path>
+                    </svg>
+                </div>
+
+                <!-- TO Card -->
+                <div class="swap-card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 32px; height: 32px; object-fit: contain;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 15px;">NeonTap Token</div>
+                                <div style="font-size: 12px; opacity: 0.6;">Alınacak Miktar</div>
+                            </div>
+                        </div>
+                    </div>
+                    <input 
+                        type="text" 
+                        class="swap-input" 
+                        id="swap-to-display"
+                        placeholder="0.00"
+                        value="1000"
+                        readonly
+                    >
+                </div>
+
+                <!-- Swap Info Panel -->
+                <div class="swap-info">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span>Oran</span>
+                        <span style="font-weight: 600;">1 GO = 0.02 NEON</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span>Fee</span>
+                        <span style="font-weight: 600; color: #00ff96;">0%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span>Likidite</span>
+                        <span style="font-weight: 600; color: #00ffcc;">Yüksek</span>
+                    </div>
+                </div>
+
+                <!-- Swap Confirm Button -->
+                <button class="swap-confirm" onclick="executeTrade()">
+                    Takası Onayla
+                </button>
+
+                <!-- Status Message -->
+                <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px; min-height: 20px;"></div>
+
+                <!-- Warning Box -->
+                <div style="background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.3); border-radius: 12px; padding: 12px; margin-top: 20px;">
+                    <div style="display: flex; gap: 8px; align-items: start;">
+                        <div style="font-size: 16px; margin-top: 2px;">⚠️</div>
+                        <div style="font-size: 12px; opacity: 0.9; line-height: 1.5;">
+                            <strong>Dikkat:</strong> Bu takas geri alınamaz. GO Coin'leriniz NeonTap Token'a dönüştürüldükten sonra geri çevrilemez.
                         </div>
                     </div>
                 </div>
 
-                <!-- Takas Geçmişi (opsiyonel - gelecekte eklenebilir) -->
-                <div style="margin-top: 30px;">
-                    <div style="font-size: 16px; font-weight: bold; margin-bottom: 15px; text-align: center; opacity: 0.7;">
-                        📊 İstatistikler
+                <!-- Stats Section -->
+                <div style="margin-top: 25px;">
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px; opacity: 0.7;">
+                        İstatistikler
                     </div>
-                    <div style="display: grid; gap: 10px;">
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
-                            <span style="opacity: 0.8;">Toplam Takas:</span>
-                            <span style="font-weight: bold;" id="total-trades">0</span>
+                    <div style="display: grid; gap: 8px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                            <span style="opacity: 0.7;">Toplam Takas:</span>
+                            <span style="font-weight: 600;" id="total-trades">0</span>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
-                            <span style="opacity: 0.8;">Takas Edilen GO Coin:</span>
-                            <span style="font-weight: bold; color: #FFD700;" id="total-traded-gocoin">0</span>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                            <span style="opacity: 0.7;">Takas Edilen GO Coin:</span>
+                            <span style="font-weight: 600; color: #FFD700;" id="total-traded-gocoin">0</span>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between;">
-                            <span style="opacity: 0.8;">Kazanılan NeonTap Token:</span>
-                            <span style="font-weight: bold; color: #00ff96;" id="total-earned-neontap">0</span>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                            <span style="opacity: 0.7;">Kazanılan NeonTap:</span>
+                            <span style="font-weight: 600; color: #00ff96;" id="total-earned-neontap">0</span>
                         </div>
                     </div>
                 </div>
@@ -1842,8 +1960,7 @@
          */
         function updateTradeDisplay() {
             // Bakiyeleri güncelle
-            document.getElementById('trade-gocoin-balance').textContent = formatNumber(Math.floor(gameData.coins));
-            document.getElementById('trade-neontap-balance').textContent = formatNumber(Math.floor(gameData.neonTapToken));
+            document.getElementById('swap-from-balance').textContent = formatNumber(Math.floor(gameData.coins));
             
             // İstatistikleri güncelle
             document.getElementById('total-trades').textContent = formatNumber(gameData.totalTrades);

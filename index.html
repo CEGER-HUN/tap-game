@@ -845,7 +845,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 16px;
+            padding: 14px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             margin-bottom: 16px;
         }
@@ -853,8 +853,8 @@
         .swap-input {
             background: transparent;
             border: none;
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 26px;
+            font-weight: 700;
             color: #ffffff;
             outline: none;
             width: 100%;
@@ -863,7 +863,8 @@
         }
 
         .swap-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.25);
+            font-weight: 600;
         }
 
         .swap-toggle {
@@ -891,11 +892,12 @@
         }
 
         .swap-info {
-            opacity: 0.7;
-            font-size: 13px;
-            margin-top: 16px;
-            margin-bottom: 20px;
+            font-size: 12px;
+            margin-top: 12px;
+            margin-bottom: 16px;
             padding: 0 4px;
+            text-align: center;
+            opacity: 0.7;
         }
 
         .swap-confirm {
@@ -1499,67 +1501,67 @@
                 
                 <!-- FROM Card -->
                 <div class="swap-card">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 32px; height: 32px; object-fit: contain;">
+                            <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 28px; height: 28px; object-fit: contain;">
                             <div>
-                                <div style="font-weight: 600; font-size: 15px;">GO Coin</div>
+                                <div style="font-weight: 600; font-size: 18px;">GO Coin</div>
                                 <div style="font-size: 12px; opacity: 0.6;">Bakiye: <span id="swap-from-balance">0</span></div>
                             </div>
                         </div>
                     </div>
-                    <input 
-                        type="number" 
-                        class="swap-input" 
-                        id="swap-from-input"
-                        placeholder="0"
-                        min="50000"
-                        step="1000"
-                        oninput="calculateSwapAmount()"
-                    >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input 
+                            type="number" 
+                            class="swap-input" 
+                            id="swap-from-input"
+                            placeholder="0"
+                            min="50000"
+                            step="1000"
+                            oninput="calculateSwapAmount()"
+                            style="flex: 1;"
+                        >
+                        <div style="font-size: 16px; font-weight: 600; opacity: 0.5;">GO</div>
+                    </div>
                     <div style="font-size: 12px; opacity: 0.6; margin-top: 8px;">Minimum: 50,000 GO</div>
                     <div id="swap-error-msg" style="font-size: 12px; color: #ff5555; margin-top: 6px; display: none;">Minimum 50,000 GO gerekli</div>
                 </div>
 
-                <!-- Tek Yönlü Ok İşareti -->
-                <div style="text-align: center; margin: 16px 0; font-size: 32px; opacity: 0.5; font-weight: 300;">
-                    ↓
+                <!-- Swap Toggle Button -->
+                <div class="swap-toggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M7 16V4M7 4L3 8M7 4L11 8"></path>
+                        <path d="M17 8V20M17 20L21 16M17 20L13 16"></path>
+                    </svg>
                 </div>
 
                 <!-- TO Card -->
                 <div class="swap-card">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 32px; height: 32px; object-fit: contain;">
+                            <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 28px; height: 28px; object-fit: contain;">
                             <div>
-                                <div style="font-weight: 600; font-size: 15px;">NeonTap Token</div>
+                                <div style="font-weight: 600; font-size: 18px;">NeonTap Token</div>
                                 <div style="font-size: 12px; opacity: 0.6;">Alınacak Miktar</div>
                             </div>
                         </div>
                     </div>
-                    <input 
-                        type="text" 
-                        class="swap-input" 
-                        id="swap-to-display"
-                        placeholder="0"
-                        readonly
-                    >
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input 
+                            type="text" 
+                            class="swap-input" 
+                            id="swap-to-display"
+                            placeholder="0"
+                            readonly
+                            style="flex: 1;"
+                        >
+                        <div style="font-size: 16px; font-weight: 600; opacity: 0.5;">NEON</div>
+                    </div>
                 </div>
 
                 <!-- Swap Info Panel -->
                 <div class="swap-info">
-                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
-                        <span>Oran</span>
-                        <span style="font-weight: 600;">50,000 GO = 1,000 NEON</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
-                        <span>Fee</span>
-                        <span style="font-weight: 600; color: #00ff96;">0%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
-                        <span>Likidite</span>
-                        <span style="font-weight: 600; color: #00ffcc;">Yüksek</span>
-                    </div>
+                    1 GO = 0.02 NEON • Fee 0% • Likidite: Yüksek
                 </div>
 
                 <!-- Swap Confirm Button -->

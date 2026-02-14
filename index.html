@@ -997,6 +997,16 @@
             opacity: 0.5;
         }
 
+        .airdrop-info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -1461,6 +1471,20 @@
                 <button class="airdrop-claim-btn" disabled>
                     Ödül Talep Et
                 </button>
+
+                <!-- Bilgilendirme Kartı -->
+                <div class="airdrop-info-card">
+                    <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px; opacity: 0.9;">
+                        Airdrop Bilgilendirme
+                    </div>
+                    <div style="font-size: 14px; line-height: 1.6; opacity: 0.85;">
+                        NeonTap Coin'leriniz takas, görevler ve madencilik aktiviteleri sonucunda otomatik olarak biriktirilir.
+                        <br><br>
+                        Token resmi olarak listelendiğinde ve airdrop süreci başlatıldığında, biriktirdiğiniz NeonTap Coin'leri talep edebileceksiniz.
+                        <br><br>
+                        Duyurular uygulama içerisinden paylaşılacaktır.
+                    </div>
+                </div>
 
             </div>
         </div>

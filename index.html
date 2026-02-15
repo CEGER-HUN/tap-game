@@ -1816,45 +1816,70 @@
 
         // Başlangıç
         document.addEventListener('DOMContentLoaded', () => {
-            initializeGame();
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-            }, 1000);
+            try {
+                initializeGame();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                // Hata olsa bile oyunu başlat
+                gameData.user_id = Math.floor(Math.random() * 1000000);
+                updateDisplay();
+            } finally {
+                // Her durumda loading'i kapat
+                setTimeout(() => {
+                    const loadingElement = document.getElementById('loading');
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
+                }, 500);
+            }
         });
 
         function initializeGame() {
-            // Telegram kullanıcı bilgileri
-            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                gameData.user_id = tg.initDataUnsafe.user.id;
-                gameData.username = tg.initDataUnsafe.user.first_name || 'Oyuncu';
-            } else {
-                gameData.user_id = Math.floor(Math.random() * 1000000);
-            }
+            try {
+                // Telegram kullanıcı bilgileri
+                if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                    gameData.user_id = tg.initDataUnsafe.user.id;
+                    gameData.username = tg.initDataUnsafe.user.first_name || 'Oyuncu';
+                } else {
+                    gameData.user_id = Math.floor(Math.random() * 1000000);
+                }
 
-            // LocalStorage'dan yükle
-            loadGameData();
-            loadMiningData(); // ⛏️ Mining data yükle
+                // LocalStorage'dan yükle
+                loadGameData();
+                
+                // Mining data'yı yükle (varsa)
+                if (typeof loadMiningData === 'function') {
+                    loadMiningData();
+                }
 
-            // Event listener'lar
-            document.getElementById('coin-button').addEventListener('click', handleCoinClick);
-            
-            // Menü toggle
-            document.getElementById('menuToggle').addEventListener('click', toggleMenu);
-            document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
+                // Event listener'lar
+                const coinButton = document.getElementById('coin-button');
+                if (coinButton) {
+                    coinButton.addEventListener('click', handleCoinClick);
+                }
+                
+                // Menü toggle
+                const menuToggle = document.getElementById('menuToggle');
+                const menuOverlay = document.getElementById('menuOverlay');
+                if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+                if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
 
-            // Bottom nav
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const screen = this.getAttribute('data-screen');
-                    switchScreen(screen);
+                // Bottom nav
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const screen = this.getAttribute('data-screen');
+                        switchScreen(screen);
+                    });
                 });
-            });
 
-            // Interval'ler
-            setInterval(updateEnergy, 1000);
-            setInterval(updateDisplay, 100);
+                // Interval'ler
+                setInterval(updateEnergy, 1000);
+                setInterval(updateDisplay, 100);
 
-            updateDisplay();
+                updateDisplay();
+            } catch (error) {
+                console.error('Game initialization error:', error);
+            }
         }
 
         function loadGameData() {

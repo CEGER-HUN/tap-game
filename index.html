@@ -1808,6 +1808,30 @@
 
         console.log('🎮 Game script started');
 
+        // 🔧 MANUEL TEST FONKSİYONU
+        window.testNav = function() {
+            console.log('=== NAVIGATION TEST ===');
+            console.log('Screens found:', document.querySelectorAll('.screen').length);
+            console.log('Nav items found:', document.querySelectorAll('.nav-item').length);
+            
+            document.querySelectorAll('.screen').forEach((s, i) => {
+                console.log(`Screen ${i}: id="${s.id}", active="${s.classList.contains('active')}"`);
+            });
+            
+            document.querySelectorAll('.nav-item').forEach((n, i) => {
+                console.log(`Nav ${i}: data-screen="${n.getAttribute('data-screen')}", active="${n.classList.contains('active')}"`);
+            });
+            
+            console.log('Testing switchScreen(\'cards\')...');
+            if (typeof window.switchScreen === 'function') {
+                window.switchScreen('cards');
+            } else {
+                console.error('switchScreen is not a function!');
+            }
+        };
+        
+        console.log('💡 Run window.testNav() in console to test navigation');
+
         // Telegram Web App
         let tg = window.Telegram?.WebApp;
         if (tg) {
@@ -2124,6 +2148,9 @@
                 console.error('❌ switchScreen error:', error);
             }
         }
+        
+        // Global olarak erişilebilir yap
+        window.switchScreen = switchScreen;
 
         function openProfile() {
             toggleMenu();

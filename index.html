@@ -1783,37 +1783,27 @@
     </div>
 
     <script>
-        // 🎯 GLOBAL switchScreen - En önce tanımla
+        // 🎯 Navigation Fix - switchScreen'i hemen tanımla
         window.switchScreen = function(screenName) {
             console.log('🔄 Switching to:', screenName);
-            try {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                
-                const screenMap = {
-                    'home': 'home-screen',
-                    'cards': 'cards-screen',
-                    'mining': 'mining-screen',
-                    'profile': 'profile-screen',
-                    'airdrop': 'airdrop-screen',
-                    'trade': 'trade-screen'
-                };
-                
-                const targetScreenId = screenMap[screenName];
-                const targetScreen = document.getElementById(targetScreenId);
-                if (targetScreen) {
-                    targetScreen.classList.add('active');
-                    console.log('✅ Activated:', targetScreenId);
-                }
-                
-                const navItem = document.querySelector(`[data-screen="${screenName}"]`);
-                if (navItem) navItem.classList.add('active');
-            } catch (error) {
-                console.error('❌ switchScreen error:', error);
-            }
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            const screenMap = {
+                'home': 'home-screen',
+                'cards': 'cards-screen',
+                'mining': 'mining-screen',
+                'profile': 'profile-screen',
+                'airdrop': 'airdrop-screen',
+                'trade': 'trade-screen'
+            };
+            
+            const targetScreen = document.getElementById(screenMap[screenName]);
+            if (targetScreen) targetScreen.classList.add('active');
+            
+            const navItem = document.querySelector(`[data-screen="${screenName}"]`);
+            if (navItem) navItem.classList.add('active');
         };
-        
-        console.log('✅ switchScreen ready');
     
         // 🚨 ACİL: Loading ekranını hemen kapat
         (function() {
@@ -2140,8 +2130,9 @@
             document.getElementById('menuOverlay').classList.toggle('active');
         }
 
-        // switchScreen global olarak script başında tanımlandı
-        
+
+        // switchScreen zaten script başında global tanımlandı
+
         function openProfile() {
             toggleMenu();
             switchScreen('profile');

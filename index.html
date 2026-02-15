@@ -15,7 +15,6 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Arial', sans-serif;
-            /* 🎨 Genel arka plan kaldırıldı - her ekrana özel arka plan eklenecek */
             background-color: #1a1a2e;
             color: white;
             overflow-x: hidden;
@@ -154,21 +153,7 @@
             padding: 20px;
             padding-bottom: 100px;
             min-height: 100vh;
-            /* 🎨 Arka planda içerik okunabilir olsun diye hafif karartma overlay */
             position: relative;
-        }
-        
-        /* 🎨 Tüm ekranlar için hafif karartma overlay (opsiyonel) */
-        .container::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(26, 26, 46, 0.7); /* Hafif karartma */
-            z-index: -1;
-            pointer-events: none;
         }
 
         /* Üst Bilgi Kartı */
@@ -333,9 +318,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            /* 🎨 Siyah arka plan (#0d0d0f) */
             background: #0d0d0f;
-            /* 🎨 Blur efekti */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 10px 0;
@@ -361,20 +344,17 @@
             transform: scale(0.95);
         }
 
-        /* 🎨 Aktif sekme - mavi neon glow efekti */
         .nav-item.active {
             background: rgba(0, 200, 255, 0.1);
             box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
         }
 
         .nav-icon {
-            /* 🎨 İkonları %25 büyüt (32px -> 40px) */
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
         }
 
         .nav-icon img {
@@ -395,41 +375,6 @@
 
         .screen.active {
             display: block;
-        }
-
-        /* 🎨 TÜM EKRANLAR İÇİN AYNI ARKA PLAN */
-        
-        /* Ana Sayfa, Kartlar, Madencilik, Airdrop, Takas - Hepsi Aynı Arka Plan */
-        #home-screen::before,
-        #cards-screen::before,
-        #mining-screen::before,
-        #airdrop-screen::before,
-        #trade-screen::before,
-        #profile-screen::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('./assets/icons/file_000000000d8c720aaa95b6e1a1b811b8.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -2;
-        }
-
-        /* Tüm ekranlar için karartma overlay */
-        .screen::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(26, 26, 46, 0.65);
-            z-index: -1;
-            pointer-events: none;
         }
 
         /* Modal */
@@ -485,12 +430,6 @@
             text-align: center;
         }
 
-        .modal-icon {
-            font-size: 60px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         /* Kartlar Ekranı */
         .cards-tabs {
             display: flex;
@@ -517,7 +456,6 @@
             border-color: transparent;
         }
 
-        /* 🎨 2 Sütunlu Grid Düzeni */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -533,7 +471,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            /* 🎨 Eşit yükseklik için */
             min-height: 280px;
         }
 
@@ -645,71 +582,6 @@
             opacity: 0.7;
         }
 
-        /* Çark Ekranı */
-        .spin-container {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .wheel-image {
-            width: 300px;
-            height: 300px;
-            margin: 30px auto;
-            display: block;
-        }
-
-        .spin-button {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .spin-button:disabled {
-            background: rgba(255, 255, 255, 0.2);
-            cursor: not-allowed;
-        }
-
-        .spin-info {
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        /* Loading */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .loading-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #FFD700;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* Madencilik Kartları Grid */
         .mining-cards-grid {
             display: grid;
@@ -735,7 +607,6 @@
             transform: scale(0.98);
         }
 
-        /* Kart Renkleri */
         .mining-card-green {
             border-color: rgba(0, 255, 100, 0.5);
             box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
@@ -761,7 +632,6 @@
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
-        /* Durum Badge */
         .mining-status-badge {
             position: absolute;
             top: 8px;
@@ -851,7 +721,6 @@
             object-fit: contain;
         }
 
-        /* Countdown Timer */
         .mining-countdown {
             background: rgba(0, 0, 0, 0.3);
             padding: 8px;
@@ -883,17 +752,11 @@
             transition: all 0.2s;
         }
 
-        .buy-mining-card-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
         .buy-mining-card-btn:disabled {
             background: rgba(255, 255, 255, 0.2);
             cursor: not-allowed;
         }
 
-        /* Claim Butonu */
         .claim-mining-btn {
             background: linear-gradient(135deg, #00ffcc, #00cc66);
             color: #000000;
@@ -907,55 +770,43 @@
             box-shadow: 0 0 20px rgba(0, 255, 150, 0.4);
         }
 
-        .claim-mining-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 255, 150, 0.6);
+        /* Airdrop Ekranı */
+        .airdrop-balance-card {
+            background: rgba(0, 255, 150, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 150, 0.3);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 30px rgba(0, 255, 150, 0.15);
         }
 
-        .claim-mining-btn:active {
-            transform: scale(0.96);
-        };
-            font-size: 13px;
-            width: 100%;
-        }
-
-        .buy-mining-card-btn:disabled {
-            background: rgba(255, 255, 255, 0.2);
-            cursor: not-allowed;
-        }
-
-        /* 🔃 Takas Butonu */
-        .trade-button {
-            background: linear-gradient(135deg, #00ff96 0%, #00cc77 100%);
-            color: white;
+        .airdrop-claim-btn {
+            background: linear-gradient(135deg, #00ffcc, #00cc66);
+            border-radius: 16px;
+            font-weight: 600;
+            padding: 16px;
             border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
+            color: #000000;
             width: 100%;
-            box-shadow: 0 5px 15px rgba(0, 255, 150, 0.3);
-            transition: all 0.3s;
-        }
-
-        .trade-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 255, 150, 0.4);
-        }
-
-        .trade-button:active {
-            transform: translateY(0);
-        }
-
-        .trade-button:disabled {
-            background: rgba(255, 255, 255, 0.2);
+            font-size: 16px;
             cursor: not-allowed;
-            box-shadow: none;
+            font-family: inherit;
+            opacity: 0.5;
         }
 
-        /* 💎 Profesyonel Swap Panel Stilleri */
-        
+        .airdrop-info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        /* Takas Ekranı */
         .swap-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -1004,10 +855,6 @@
             box-shadow: 0 0 30px rgba(0, 255, 200, 0.8);
         }
 
-        .swap-toggle:active {
-            transform: rotate(180deg) scale(0.95);
-        }
-
         .swap-info {
             font-size: 12px;
             margin-top: 12px;
@@ -1032,110 +879,32 @@
             font-family: inherit;
         }
 
-        .swap-confirm:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 150, 0.8);
-            transform: translateY(-2px);
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
         }
 
-        .swap-confirm:active {
-            transform: scale(0.96);
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #FFD700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
         }
 
-        .swap-confirm:disabled {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.4);
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        /* 🪂 Airdrop Detayları Butonu */
-        .airdrop-details-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            width: 100%;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s;
-        }
-
-        .airdrop-details-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .airdrop-details-btn:active {
-            transform: translateY(0);
-        }
-
-        /* 💎 Profesyonel Airdrop Kartları */
-        
-        .airdrop-balance-card {
-            background: rgba(0, 255, 150, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 150, 0.3);
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: 0 0 30px rgba(0, 255, 150, 0.15);
-        }
-
-        .airdrop-season-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 16px;
-        }
-
-        .airdrop-claim-btn {
-            background: linear-gradient(135deg, #00ffcc, #00cc66);
-            border-radius: 16px;
-            font-weight: 600;
-            padding: 16px;
-            border: none;
-            color: #000000;
-            width: 100%;
-            font-size: 16px;
-            cursor: not-allowed;
-            font-family: inherit;
-            opacity: 0.5;
-            box-shadow: none;
-        }
-
-        .airdrop-claim-btn:disabled {
-            opacity: 0.5;
-        }
-
-        .airdrop-info-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 20px;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -1168,14 +937,14 @@
                     <div class="menu-item-desc">Hesap bilgileri</div>
                 </div>
             </div>
-            <div class="menu-item">
+            <div class="menu-item" onclick="alert('Liderlik tablosu yakında!')">
                 <div class="menu-item-icon">🏆</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Liderlik Tablosu</div>
                     <div class="menu-item-desc">En iyi oyuncular</div>
                 </div>
             </div>
-            <div class="menu-item">
+            <div class="menu-item" onclick="alert('Arkadaşlar özelliği yakında!')">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Arkadaşlar</div>
@@ -1213,15 +982,14 @@
                     <span id="energy-display">1000 / 1000</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="energy-fill"></div>
+                    <div class="progress-fill" id="energy-fill" style="width: 100%;"></div>
                 </div>
             </div>
 
             <div class="clicker-area">
                 <div class="combo-display">COMBO X<span id="combo-multiplier">1</span></div>
                 <button class="coin-button" id="coin-button">
-                    <!-- 🎨 Yeni coin butonu görseli -->
-                    <img src="./assets/icons/1000010731-removebg-preview.png" alt="Neontap Coin">
+                    <img src="assets/icons/1000010731-removebg-preview.png" alt="Neontap Coin">
                 </button>
                 <div class="tap-counter" id="tap-counter">0</div>
             </div>
@@ -1240,7 +1008,7 @@
             <!-- Profesyon Kartları -->
             <div class="cards-grid" id="profession-cards">
                 <div class="card-item">
-                    <img src="./assets/icons/card_profession.png" alt="Profesyon" class="card-icon">
+                    <img src="assets/icons/card_profession.png" alt="Profesyon" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Profesyon</div>
                         <div class="card-profit">+100 / saat</div>
@@ -1248,9 +1016,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('profession', 0, 500, 100)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_freelancer.png" alt="Freelancer" class="card-icon">
+                    <img src="assets/icons/card_freelancer.png" alt="Freelancer" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Freelancer</div>
                         <div class="card-profit">+250 / saat</div>
@@ -1258,9 +1025,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('profession', 1, 1000, 250)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_consultant.png" alt="Danışman" class="card-icon">
+                    <img src="assets/icons/card_consultant.png" alt="Danışman" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Danışman</div>
                         <div class="card-profit">+500 / saat</div>
@@ -1268,9 +1034,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('profession', 2, 2500, 500)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_accountant.png" alt="Muhasebeci" class="card-icon">
+                    <img src="assets/icons/card_accountant.png" alt="Muhasebeci" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Muhasebeci</div>
                         <div class="card-profit">+1,000 / saat</div>
@@ -1278,9 +1043,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('profession', 3, 5000, 1000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_lawyer.png" alt="Avukat" class="card-icon">
+                    <img src="assets/icons/card_lawyer.png" alt="Avukat" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Avukat</div>
                         <div class="card-profit">+2,000 / saat</div>
@@ -1288,9 +1052,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('profession', 4, 10000, 2000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_ceo.png" alt="CEO" class="card-icon">
+                    <img src="assets/icons/card_ceo.png" alt="CEO" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">CEO</div>
                         <div class="card-profit">+5,000 / saat</div>
@@ -1303,7 +1066,7 @@
             <!-- Şirketler Kartları -->
             <div class="cards-grid" id="companies-cards" style="display: none;">
                 <div class="card-item">
-                    <img src="./assets/icons/card_cafe.png" alt="Kafe" class="card-icon">
+                    <img src="assets/icons/card_cafe.png" alt="Kafe" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Kafe</div>
                         <div class="card-profit">+300 / saat</div>
@@ -1311,9 +1074,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('companies', 0, 1500, 300)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_restaurant.png" alt="Restoran" class="card-icon">
+                    <img src="assets/icons/card_restaurant.png" alt="Restoran" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Restoran</div>
                         <div class="card-profit">+750 / saat</div>
@@ -1321,9 +1083,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('companies', 1, 4000, 750)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_boutique.png" alt="Butik" class="card-icon">
+                    <img src="assets/icons/card_boutique.png" alt="Butik" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Butik</div>
                         <div class="card-profit">+1,500 / saat</div>
@@ -1331,9 +1092,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('companies', 2, 8000, 1500)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_hotel.png" alt="Otel" class="card-icon">
+                    <img src="assets/icons/card_hotel.png" alt="Otel" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Otel</div>
                         <div class="card-profit">+3,000 / saat</div>
@@ -1341,9 +1101,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('companies', 3, 15000, 3000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_mall.png" alt="AVM" class="card-icon">
+                    <img src="assets/icons/card_mall.png" alt="AVM" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">AVM</div>
                         <div class="card-profit">+7,500 / saat</div>
@@ -1356,7 +1115,7 @@
             <!-- Teknoloji Kartları -->
             <div class="cards-grid" id="technology-cards" style="display: none;">
                 <div class="card-item">
-                    <img src="./assets/icons/card_app_dev.png" alt="Uygulama Geliştirme" class="card-icon">
+                    <img src="assets/icons/card_app_dev.png" alt="Uygulama Geliştirme" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Uygulama Geliştirme</div>
                         <div class="card-profit">+2,000 / saat</div>
@@ -1364,9 +1123,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('technology', 0, 10000, 2000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_technician.png" alt="Teknisyen" class="card-icon">
+                    <img src="assets/icons/card_technician.png" alt="Teknisyen" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Teknisyen</div>
                         <div class="card-profit">+4,000 / saat</div>
@@ -1374,9 +1132,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('technology', 1, 20000, 4000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_crypto_mining.png" alt="Kripto Madenciliği" class="card-icon">
+                    <img src="assets/icons/card_crypto_mining.png" alt="Kripto Madenciliği" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Kripto Madenciliği</div>
                         <div class="card-profit">+8,000 / saat</div>
@@ -1384,9 +1141,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('technology', 2, 40000, 8000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_ai_startup.png" alt="AI Startup" class="card-icon">
+                    <img src="assets/icons/card_ai_startup.png" alt="AI Startup" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">AI Startup</div>
                         <div class="card-profit">+15,000 / saat</div>
@@ -1394,9 +1150,8 @@
                     </div>
                     <button class="buy-card-button" onclick="buyCard('technology', 3, 75000, 15000)">Satın Al</button>
                 </div>
-
                 <div class="card-item">
-                    <img src="./assets/icons/card_space_tech.png" alt="Uzay Teknolojisi" class="card-icon">
+                    <img src="assets/icons/card_space_tech.png" alt="Uzay Teknolojisi" class="card-icon">
                     <div class="card-details">
                         <div class="card-name">Uzay Teknolojisi</div>
                         <div class="card-profit">+30,000 / saat</div>
@@ -1429,144 +1184,131 @@
                 <!-- Madencilik Kartları Grid (2x5) -->
                 <div class="mining-cards-grid">
                     <!-- YEŞİL KARTLAR (1. Sıra) -->
-                    <!-- Eco Miner Rig -->
                     <div class="mining-card mining-card-green" id="mining-card-eco1">
-                        <!-- Durum Badge -->
-                        <div class="mining-status-badge mining-status-stopped" id="status-badge-eco1">
-                            Durduruldu
-                        </div>
-                        
-                        <img src="./assets/icons/eco_miner_rig.png" alt="Eco Miner Rig" class="mining-card-image">
-                        
+                        <div class="mining-status-badge mining-status-stopped" id="status-badge-eco1">Durduruldu</div>
+                        <img src="assets/icons/eco_miner_rig.png" alt="Eco Miner Rig" class="mining-card-image">
                         <div class="mining-card-details">
                             <div class="mining-card-name">Eco Miner Rig</div>
-                            <div class="mining-info-row">
-                                <span class="mining-label">Mining Power:</span>
-                                <span class="mining-value">10 MH</span>
-                            </div>
-                            <div class="mining-info-row">
-                                <span class="mining-label">Saatlik Üretim:</span>
-                                <span class="mining-value mining-green">+0.625 NEON/saat</span>
-                            </div>
-                            <div class="mining-info-row">
-                                <span class="mining-label">24 Saatlik Maks:</span>
-                                <span class="mining-value mining-gold">15 NEON</span>
-                            </div>
-                            <div class="mining-info-row mining-price-row">
-                                <span class="mining-label">Fiyat:</span>
-                                <span class="mining-price-value">
-                                    <img src="./assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 0.5 TON
-                                </span>
-                            </div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">10 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+0.625 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">15 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 0.5 TON</span></div>
                         </div>
-                        
-                        <!-- Countdown Timer -->
-                        <div class="mining-countdown" id="countdown-eco1" style="display: none;">
-                            <span class="countdown-label">Kalan Süre:</span>
-                            <span class="countdown-time" id="countdown-time-eco1">00:00:00</span>
-                        </div>
-                        
-                        <!-- Butonlar -->
-                        <button class="buy-mining-card-btn" id="buy-btn-eco1" onclick="buyMiningCard('eco1', 0.5, 10)">
-                            Satın Al
-                        </button>
-                        <button class="claim-mining-btn" id="claim-btn-eco1" onclick="claimMiningReward('eco1')" style="display: none;">
-                            Ödülü Claim Et
-                        </button>
+                        <div class="mining-countdown" id="countdown-eco1" style="display: none;"><span class="countdown-label">Kalan Süre:</span><span class="countdown-time">00:00:00</span></div>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('eco1')">Satın Al</button>
+                        <button class="claim-mining-btn" onclick="claimMiningReward('eco1')" style="display: none;">Ödülü Claim Et</button>
                     </div>
 
                     <div class="mining-card mining-card-green">
-                        <img src="./assets/icons/eco_miner_rig2.png" alt="Eco Miner Rig 2" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/eco_miner_rig2.png" alt="Eco Miner Rig 2" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Eco Miner Rig+</div>
-                            <div class="mining-card-power">⚡ 25 MH/s</div>
-                            <div class="mining-card-price">💎 1 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">25 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+1.56 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">37.5 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 1 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('eco2', 1, 25)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('eco2')">Satın Al</button>
                     </div>
 
                     <!-- BEYAZ KARTLAR (2. Sıra) -->
                     <div class="mining-card mining-card-white">
-                        <img src="./assets/icons/basic_mining_unit.png" alt="Basic Mining Unit" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/basic_mining_unit.png" alt="Basic Mining Unit" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Basic Mining Unit</div>
-                            <div class="mining-card-power">⚡ 50 MH/s</div>
-                            <div class="mining-card-price">💎 2 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">50 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+3.125 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">75 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 2 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('basic1', 2, 50)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('basic1')">Satın Al</button>
                     </div>
 
                     <div class="mining-card mining-card-white">
-                        <img src="./assets/icons/basic_mining_unit2.png" alt="Basic Mining Unit 2" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/basic_mining_unit2.png" alt="Basic Mining Unit 2" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Basic Mining Unit+</div>
-                            <div class="mining-card-power">⚡ 100 MH/s</div>
-                            <div class="mining-card-price">💎 4 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">100 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+6.25 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">150 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 4 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('basic2', 4, 100)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('basic2')">Satın Al</button>
                     </div>
 
                     <!-- MAVİ KARTLAR (3. Sıra) -->
                     <div class="mining-card mining-card-blue">
-                        <img src="./assets/icons/blue_core_miner.png" alt="Blue Core Miner" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/blue_core_miner.png" alt="Blue Core Miner" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Blue Core Miner</div>
-                            <div class="mining-card-power">⚡ 250 MH/s</div>
-                            <div class="mining-card-price">💎 8 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">250 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+15.625 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">375 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 8 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('blue1', 8, 250)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('blue1')">Satın Al</button>
                     </div>
 
                     <div class="mining-card mining-card-blue">
-                        <img src="./assets/icons/blue_core_miner2.png" alt="Blue Core Miner 2" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/blue_core_miner2.png" alt="Blue Core Miner 2" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Blue Core Miner+</div>
-                            <div class="mining-card-power">⚡ 500 MH/s</div>
-                            <div class="mining-card-price">💎 15 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">500 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+31.25 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">750 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 15 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('blue2', 15, 500)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('blue2')">Satın Al</button>
                     </div>
 
                     <!-- KIRMIZI KARTLAR (4. Sıra) -->
                     <div class="mining-card mining-card-red">
-                        <img src="./assets/icons/turbo_flame_miner.png" alt="Turbo Flame Miner" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/turbo_flame_miner.png" alt="Turbo Flame Miner" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Turbo Flame Miner</div>
-                            <div class="mining-card-power">⚡ 1,000 MH/s</div>
-                            <div class="mining-card-price">💎 30 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">1000 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+62.5 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">1500 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 30 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('turbo1', 30, 1000)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('turbo1')">Satın Al</button>
                     </div>
 
                     <div class="mining-card mining-card-red">
-                        <img src="./assets/icons/turbo_flame_miner2.png" alt="Turbo Flame Miner 2" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/turbo_flame_miner2.png" alt="Turbo Flame Miner 2" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Turbo Flame Miner+</div>
-                            <div class="mining-card-power">⚡ 2,500 MH/s</div>
-                            <div class="mining-card-price">💎 60 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">2500 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+156.25 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">3750 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 60 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('turbo2', 60, 2500)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('turbo2')">Satın Al</button>
                     </div>
 
                     <!-- SARI KARTLAR (5. Sıra) -->
                     <div class="mining-card mining-card-gold">
-                        <img src="./assets/icons/golden_hash_machine.png" alt="Golden Hash Machine" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/golden_hash_machine.png" alt="Golden Hash Machine" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Golden Hash Machine</div>
-                            <div class="mining-card-power">⚡ 5,000 MH/s</div>
-                            <div class="mining-card-price">💎 100 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">5000 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+312.5 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">7500 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 100 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('golden1', 100, 5000)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('golden1')">Satın Al</button>
                     </div>
 
                     <div class="mining-card mining-card-gold">
-                        <img src="./assets/icons/golden_hash_machine2.png" alt="Golden Hash Machine 2" class="mining-card-image">
-                        <div class="mining-card-info">
+                        <img src="assets/icons/golden_hash_machine2.png" alt="Golden Hash Machine 2" class="mining-card-image">
+                        <div class="mining-card-details">
                             <div class="mining-card-name">Golden Hash Machine+</div>
-                            <div class="mining-card-power">⚡ 10,000 MH/s</div>
-                            <div class="mining-card-price">💎 200 TON</div>
+                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">10000 MH</span></div>
+                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+625 NEON</span></div>
+                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">15000 NEON</span></div>
+                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 200 TON</span></div>
                         </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('golden2', 200, 10000)">Satın Al</button>
+                        <button class="buy-mining-card-btn" onclick="buyMiningCard('golden2')">Satın Al</button>
                     </div>
                 </div>
             </div>
@@ -1601,31 +1343,24 @@
             </div>
         </div>
 
-        <!-- Cüzdan Ekranı -->
         <!-- Airdrop Ekranı -->
         <div class="screen" id="airdrop-screen">
             <div class="modal-title" style="margin: 20px 0;">Airdrop</div>
             
             <div style="padding: 20px; max-width: 420px; margin: 0 auto;">
-                
-                <!-- Toplam NeonTap Token Kartı -->
                 <div class="airdrop-balance-card">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap" style="width: 40px; height: 40px; object-fit: contain;">
+                        <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" style="width: 40px; height: 40px; object-fit: contain;">
                         <div style="font-size: 18px; font-weight: 600; opacity: 0.9;">Toplam NeonTap</div>
                     </div>
-                    <div style="font-size: 42px; font-weight: 700; color: #00ff96; margin-bottom: 12px; text-shadow: 0 0 20px rgba(0, 255, 150, 0.4);" id="airdrop-token-balance">0</div>
+                    <div style="font-size: 42px; font-weight: 700; color: #00ff96; margin-bottom: 12px;" id="airdrop-token-balance">0</div>
                     <div style="font-size: 13px; opacity: 0.6; line-height: 1.5;">
                         Takas, görevler ve madencilikten kazanılan NeonTap Coinler
                     </div>
                 </div>
 
-                <!-- Claim Butonu (Pasif) -->
-                <button class="airdrop-claim-btn" disabled>
-                    Ödül Talep Et
-                </button>
+                <button class="airdrop-claim-btn" disabled>Ödül Talep Et</button>
 
-                <!-- Bilgilendirme Kartı -->
                 <div class="airdrop-info-card">
                     <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px; opacity: 0.9;">
                         Airdrop Bilgilendirme
@@ -1634,26 +1369,20 @@
                         NeonTap Coin'leriniz takas, görevler ve madencilik aktiviteleri sonucunda otomatik olarak biriktirilir.
                         <br><br>
                         Token resmi olarak listelendiğinde ve airdrop süreci başlatıldığında, biriktirdiğiniz NeonTap Coin'leri talep edebileceksiniz.
-                        <br><br>
-                        Duyurular uygulama içerisinden paylaşılacaktır.
                     </div>
                 </div>
-
             </div>
         </div>
 
         <!-- Takas Ekranı -->
-        <!-- Takas Ekranı - AKTİF -->
         <div class="screen" id="trade-screen">
             <div class="modal-title" style="margin: 20px 0;">Takas</div>
             
             <div style="padding: 20px; max-width: 420px; margin: 0 auto;">
-                
-                <!-- FROM Card -->
                 <div class="swap-card">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="./assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 28px; height: 28px; object-fit: contain;">
+                            <img src="assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 28px; height: 28px; object-fit: contain;">
                             <div>
                                 <div style="font-weight: 600; font-size: 18px;">GO Coin</div>
                                 <div style="font-size: 12px; opacity: 0.6;">Bakiye: <span id="swap-from-balance">0</span></div>
@@ -1661,23 +1390,13 @@
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <input 
-                            type="number" 
-                            class="swap-input" 
-                            id="swap-from-input"
-                            placeholder="0"
-                            min="50000"
-                            step="1000"
-                            oninput="calculateSwapAmount()"
-                            style="flex: 1;"
-                        >
+                        <input type="number" class="swap-input" id="swap-from-input" placeholder="0" min="50000" step="1000" oninput="calculateSwapAmount()">
                         <div style="font-size: 16px; font-weight: 600; opacity: 0.5;">GO</div>
                     </div>
                     <div style="font-size: 12px; opacity: 0.6; margin-top: 8px;">Minimum: 50,000 GO</div>
                     <div id="swap-error-msg" style="font-size: 12px; color: #ff5555; margin-top: 6px; display: none;">Minimum 50,000 GO gerekli</div>
                 </div>
 
-                <!-- Swap Toggle Button -->
                 <div class="swap-toggle">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M7 16V4M7 4L3 8M7 4L11 8"></path>
@@ -1685,11 +1404,10 @@
                     </svg>
                 </div>
 
-                <!-- TO Card -->
                 <div class="swap-card">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="./assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 28px; height: 28px; object-fit: contain;">
+                            <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 28px; height: 28px; object-fit: contain;">
                             <div>
                                 <div style="font-weight: 600; font-size: 18px;">NeonTap Token</div>
                                 <div style="font-size: 12px; opacity: 0.6;">Alınacak Miktar</div>
@@ -1697,48 +1415,28 @@
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <input 
-                            type="text" 
-                            class="swap-input" 
-                            id="swap-to-display"
-                            placeholder="0"
-                            readonly
-                            style="flex: 1;"
-                        >
+                        <input type="text" class="swap-input" id="swap-to-display" placeholder="0" readonly>
                         <div style="font-size: 16px; font-weight: 600; opacity: 0.5;">NEON</div>
                     </div>
                 </div>
 
-                <!-- Swap Info Panel -->
-                <div class="swap-info">
-                    1 GO = 0.02 NEON • Fee 0% • Likidite: Yüksek
-                </div>
+                <div class="swap-info">1 GO = 0.02 NEON • Fee 0% • Likidite: Yüksek</div>
 
-                <!-- Swap Confirm Button -->
-                <button class="swap-confirm" id="swap-confirm-btn" onclick="executeTradeWithInput()">
-                    Takası Onayla
-                </button>
+                <button class="swap-confirm" id="swap-confirm-btn" onclick="executeTradeWithInput()">Takası Onayla</button>
 
-                <!-- Status Message -->
-                <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px; min-height: 20px;"></div>
+                <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px;"></div>
 
-                <!-- Stats Section -->
                 <div style="margin-top: 25px;">
-                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px; opacity: 0.7;">
-                        İstatistikler
-                    </div>
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px; opacity: 0.7;">İstatistikler</div>
                     <div style="display: grid; gap: 8px;">
                         <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
-                            <span style="opacity: 0.7;">Toplam Takas:</span>
-                            <span style="font-weight: 600;" id="total-trades">0</span>
+                            <span>Toplam Takas:</span> <span id="total-trades">0</span>
                         </div>
                         <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
-                            <span style="opacity: 0.7;">Takas Edilen GO Coin:</span>
-                            <span style="font-weight: 600; color: #FFD700;" id="total-traded-gocoin">0</span>
+                            <span>Takas Edilen GO Coin:</span> <span style="color: #FFD700;" id="total-traded-gocoin">0</span>
                         </div>
                         <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
-                            <span style="opacity: 0.7;">Kazanılan NeonTap:</span>
-                            <span style="font-weight: 600; color: #00ff96;" id="total-earned-neontap">0</span>
+                            <span>Kazanılan NeonTap:</span> <span style="color: #00ff96;" id="total-earned-neontap">0</span>
                         </div>
                     </div>
                 </div>
@@ -1749,43 +1447,30 @@
     <!-- Alt Navigasyon -->
     <div class="bottom-nav">
         <div class="nav-item active" data-screen="home" onclick="switchScreen('home')">
-            <div class="nav-icon">
-                <!-- 🎨 Ana Sayfa ikonu görseli -->
-                <img src="./assets/icons/IMG_20260212_212121.png" alt="Ana Sayfa">
-            </div>
+            <div class="nav-icon"><img src="assets/icons/IMG_20260212_212121.png" alt="Ana Sayfa"></div>
             <span class="nav-label">Ana Sayfa</span>
         </div>
         <div class="nav-item" data-screen="cards" onclick="switchScreen('cards')">
-            <div class="nav-icon">
-                <img src="./assets/icons/icon_cards.png" alt="Kartlar">
-            </div>
+            <div class="nav-icon"><img src="assets/icons/icon_cards.png" alt="Kartlar"></div>
             <span class="nav-label">Kartlar</span>
         </div>
         <div class="nav-item" data-screen="mining" onclick="switchScreen('mining')">
-            <div class="nav-icon">
-                <img src="./assets/icons/mining_hub_icon.png" alt="Madencilik">
-            </div>
+            <div class="nav-icon"><img src="assets/icons/mining_hub_icon.png" alt="Madencilik"></div>
             <span class="nav-label">Madencilik</span>
         </div>
         <div class="nav-item" data-screen="airdrop" onclick="switchScreen('airdrop')">
-            <div class="nav-icon">
-                <!-- 🎨 Airdrop ikonu görseli -->
-                <img src="./assets/icons/IMG_20260212_212059.png" alt="Airdrop">
-            </div>
+            <div class="nav-icon"><img src="assets/icons/IMG_20260212_212059.png" alt="Airdrop"></div>
             <span class="nav-label">Airdrop</span>
         </div>
         <div class="nav-item" data-screen="trade" onclick="switchScreen('trade')">
-            <div class="nav-icon">
-                <img src="./assets/icons/icon_trade.png" alt="Takas">
-            </div>
+            <div class="nav-icon"><img src="assets/icons/icon_trade.png" alt="Takas"></div>
             <span class="nav-label">Takas</span>
         </div>
     </div>
 
     <script>
-        // 🎯 Navigation Fix - switchScreen'i hemen tanımla
+        // 🎯 Navigation
         window.switchScreen = function(screenName) {
-            console.log('🔄 Switching to:', screenName);
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
@@ -1804,65 +1489,17 @@
             const navItem = document.querySelector(`[data-screen="${screenName}"]`);
             if (navItem) navItem.classList.add('active');
         };
-    
-        // 🚨 ACİL: Loading ekranını hemen kapat
-        (function() {
-            const hideLoading = function() {
-                const loading = document.getElementById('loading');
-                if (loading) {
-                    loading.style.display = 'none';
-                    console.log('Loading screen hidden');
-                }
-            };
-            
-            // Hemen çalıştır
-            hideLoading();
-            
-            // 100ms sonra tekrar dene
-            setTimeout(hideLoading, 100);
-            
-            // window.load'da tekrar dene
-            window.addEventListener('load', hideLoading);
-            
-            // DOMContentLoaded'da tekrar dene
-            document.addEventListener('DOMContentLoaded', hideLoading);
-        })();
 
-        console.log('🎮 Game script started');
-
-        // 🔧 MANUEL TEST FONKSİYONU
-        window.testNav = function() {
-            console.log('=== NAVIGATION TEST ===');
-            console.log('Screens found:', document.querySelectorAll('.screen').length);
-            console.log('Nav items found:', document.querySelectorAll('.nav-item').length);
-            
-            document.querySelectorAll('.screen').forEach((s, i) => {
-                console.log(`Screen ${i}: id="${s.id}", active="${s.classList.contains('active')}"`);
-            });
-            
-            document.querySelectorAll('.nav-item').forEach((n, i) => {
-                console.log(`Nav ${i}: data-screen="${n.getAttribute('data-screen')}", active="${n.classList.contains('active')}"`);
-            });
-            
-            console.log('Testing switchScreen(\'cards\')...');
-            if (typeof window.switchScreen === 'function') {
-                window.switchScreen('cards');
-            } else {
-                console.error('switchScreen is not a function!');
-            }
-        };
-        
-        console.log('💡 Run window.testNav() in console to test navigation');
+        // 🚫 Loading ekranını kapat
+        document.getElementById('loading').style.display = 'none';
 
         // Telegram Web App
         let tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.expand();
-        }
+        if (tg) tg.expand();
 
         // Oyun Verileri
         let gameData = {
-            user_id: null,
+            user_id: Math.floor(Math.random() * 1000000),
             username: 'Oyuncu',
             coins: 0,
             energy: 1000,
@@ -1878,125 +1515,52 @@
             combo_multiplier: 1,
             combo_timeout: null,
             last_energy_update: Date.now(),
-            // 🔃 Takas sistemi değişkenleri
             neonTapToken: 0,
             totalTrades: 0,
             totalTradedGoCoin: 0,
             totalEarnedNeonTap: 0
         };
 
-        // Başlangıç
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                initializeGame();
-            } catch (error) {
-                console.error('Initialization error:', error);
-                // Hata olsa bile oyunu başlat
-                gameData.user_id = Math.floor(Math.random() * 1000000);
-                updateDisplay();
-            } finally {
-                // Her durumda loading'i kapat
-                setTimeout(() => {
-                    const loadingElement = document.getElementById('loading');
-                    if (loadingElement) {
-                        loadingElement.style.display = 'none';
-                    }
-                }, 500);
-            }
-        });
+        // Mining kartları
+        let miningCards = {
+            eco1: { owned: false, power: 10, price: 0.5, startTime: null, isRunning: false, accumulated: 0 },
+            eco2: { owned: false, power: 25, price: 1, startTime: null, isRunning: false, accumulated: 0 },
+            basic1: { owned: false, power: 50, price: 2, startTime: null, isRunning: false, accumulated: 0 },
+            basic2: { owned: false, power: 100, price: 4, startTime: null, isRunning: false, accumulated: 0 },
+            blue1: { owned: false, power: 250, price: 8, startTime: null, isRunning: false, accumulated: 0 },
+            blue2: { owned: false, power: 500, price: 15, startTime: null, isRunning: false, accumulated: 0 },
+            turbo1: { owned: false, power: 1000, price: 30, startTime: null, isRunning: false, accumulated: 0 },
+            turbo2: { owned: false, power: 2500, price: 60, startTime: null, isRunning: false, accumulated: 0 },
+            golden1: { owned: false, power: 5000, price: 100, startTime: null, isRunning: false, accumulated: 0 },
+            golden2: { owned: false, power: 10000, price: 200, startTime: null, isRunning: false, accumulated: 0 }
+        };
 
-        function initializeGame() {
-            console.log('🎮 initializeGame started');
-            try {
-                // Telegram kullanıcı bilgileri
-                console.log('📱 Checking Telegram...');
-                if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                    gameData.user_id = tg.initDataUnsafe.user.id;
-                    gameData.username = tg.initDataUnsafe.user.first_name || 'Oyuncu';
-                    console.log('✅ Telegram user:', gameData.username);
-                } else {
-                    gameData.user_id = Math.floor(Math.random() * 1000000);
-                    console.log('⚠️ No Telegram, using random ID:', gameData.user_id);
-                }
-
-                // LocalStorage'dan yükle
-                console.log('💾 Loading game data...');
-                loadGameData();
-                console.log('✅ Game data loaded');
-                
-                // Mining data'yı yükle (varsa)
-                console.log('⛏️ Loading mining data...');
-                if (typeof loadMiningData === 'function') {
-                    loadMiningData();
-                    console.log('✅ Mining data loaded');
-                }
-
-                // Event listener'lar
-                console.log('🎯 Adding event listeners...');
-                const coinButton = document.getElementById('coin-button');
-                if (coinButton) {
-                    coinButton.addEventListener('click', handleCoinClick);
-                    console.log('✅ Coin button listener added');
-                } else {
-                    console.error('❌ Coin button not found!');
-                }
-                
-                // Menü toggle
-                const menuToggle = document.getElementById('menuToggle');
-                const menuOverlay = document.getElementById('menuOverlay');
-                if (menuToggle) {
-                    menuToggle.addEventListener('click', toggleMenu);
-                    console.log('✅ Menu toggle listener added');
-                }
-                if (menuOverlay) {
-                    menuOverlay.addEventListener('click', toggleMenu);
-                    console.log('✅ Menu overlay listener added');
-                }
-
-                // Bottom nav
-                console.log('🔽 Setting up bottom nav...');
-                const navItems = document.querySelectorAll('.nav-item');
-                console.log('Found nav items:', navItems.length);
-                navItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        const screen = this.getAttribute('data-screen');
-                        console.log('📱 Switching to screen:', screen);
-                        switchScreen(screen);
-                    });
-                });
-                console.log('✅ Bottom nav listeners added');
-
-                // Interval'ler
-                console.log('⏰ Starting intervals...');
-                setInterval(updateEnergy, 1000);
-                setInterval(updateDisplay, 100);
-                console.log('✅ Intervals started');
-
-                console.log('🎨 Initial display update...');
-                updateDisplay();
-                console.log('✅ Display updated');
-                
-                console.log('🎉 Game initialized successfully!');
-            } catch (error) {
-                console.error('❌ Game initialization error:', error);
-                console.error('Error stack:', error.stack);
-            }
-        }
-
+        // Load game data
         function loadGameData() {
             const saved = localStorage.getItem(`game_${gameData.user_id}`);
             if (saved) {
                 const data = JSON.parse(saved);
                 Object.assign(gameData, data);
-                updateEnergy();
+            }
+            
+            const miningSaved = localStorage.getItem(`mining_${gameData.user_id}`);
+            if (miningSaved) {
+                const data = JSON.parse(miningSaved);
+                Object.assign(miningCards, data);
             }
         }
 
+        // Save game data
         function saveGameData() {
             localStorage.setItem(`game_${gameData.user_id}`, JSON.stringify(gameData));
+            localStorage.setItem(`mining_${gameData.user_id}`, JSON.stringify(miningCards));
         }
 
-        function handleCoinClick(e) {
+        // Load data
+        loadGameData();
+
+        // Coin click handler
+        document.getElementById('coin-button').addEventListener('click', function(e) {
             if (gameData.energy < gameData.tap_power) return;
 
             const earnedCoins = gameData.tap_power * gameData.combo_multiplier;
@@ -2005,14 +1569,14 @@
             gameData.total_taps++;
             gameData.xp += 1;
 
-            // Level up kontrolü
+            // Level up
             if (gameData.xp >= gameData.xp_to_next_level) {
                 gameData.level++;
                 gameData.xp = 0;
                 gameData.xp_to_next_level = Math.floor(gameData.xp_to_next_level * 1.5);
             }
 
-            // Combo sistemi
+            // Combo
             gameData.combo_multiplier = Math.min(gameData.combo_multiplier + 0.1, 5);
             clearTimeout(gameData.combo_timeout);
             gameData.combo_timeout = setTimeout(() => {
@@ -2020,109 +1584,79 @@
                 updateDisplay();
             }, 2000);
 
-            // Animasyon
-            createFloatingText(`+${earnedCoins}`, e.clientX, e.clientY);
+            // Floating text
+            const element = document.createElement('div');
+            element.className = 'floating-text';
+            element.textContent = `+${earnedCoins}`;
+            element.style.left = e.clientX + 'px';
+            element.style.top = e.clientY + 'px';
+            document.body.appendChild(element);
+            setTimeout(() => element.remove(), 1000);
 
             // Haptic feedback
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
 
             updateDisplay();
             saveGameData();
-        }
+        });
 
-        function createFloatingText(text, x, y) {
-            const element = document.createElement('div');
-            element.className = 'floating-text';
-            element.textContent = text;
-            element.style.left = x + 'px';
-            element.style.top = y + 'px';
-            document.body.appendChild(element);
-
-            setTimeout(() => element.remove(), 1000);
-        }
-
-        function updateEnergy() {
+        // Energy update
+        setInterval(() => {
             const now = Date.now();
             const timePassed = (now - gameData.last_energy_update) / 1000;
             const energyToAdd = timePassed * gameData.energy_recharge_rate;
 
             gameData.energy = Math.min(gameData.max_energy, gameData.energy + energyToAdd);
             gameData.last_energy_update = now;
-        }
+            
+            updateDisplay();
+        }, 1000);
 
+        // Display update
         function updateDisplay() {
-            try {
-                // Ana ekran coinleri
-                const coinCount = document.getElementById('coin-count');
-                if (coinCount) coinCount.textContent = formatNumber(Math.floor(gameData.coins));
-                
-                const profitHour = document.getElementById('profit-per-hour');
-                if (profitHour) profitHour.textContent = formatNumber(gameData.profit_per_hour);
-                
-                const profit3h = document.getElementById('profit-3h');
-                if (profit3h) profit3h.textContent = formatNumber(gameData.profit_per_hour * 3);
-                
-                const levelText = document.getElementById('level-text');
-                if (levelText) levelText.textContent = `Level ${gameData.level}`;
-                
-                const xpText = document.getElementById('xp-text');
-                if (xpText) xpText.textContent = Math.floor(gameData.xp);
-                
-                const energyDisplay = document.getElementById('energy-display');
-                if (energyDisplay) energyDisplay.textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
-                
-                const tapCounter = document.getElementById('tap-counter');
-                if (tapCounter) tapCounter.textContent = gameData.total_taps;
-                
-                const comboMultiplier = document.getElementById('combo-multiplier');
-                if (comboMultiplier) comboMultiplier.textContent = gameData.combo_multiplier.toFixed(1);
-
-                const energyFill = document.getElementById('energy-fill');
-                if (energyFill) {
-                    const energyPercent = (gameData.energy / gameData.max_energy) * 100;
-                    energyFill.style.width = energyPercent + '%';
-                }
-
-                // Profil güncelle
-                const profileName = document.getElementById('profile-name');
-                if (profileName) profileName.textContent = gameData.username;
-                
-                const profileId = document.getElementById('profile-id');
-                if (profileId) profileId.textContent = gameData.user_id;
-                
-                const profileCoins = document.getElementById('profile-coins');
-                if (profileCoins) profileCoins.textContent = formatNumber(Math.floor(gameData.coins));
-                
-                const profileLevel = document.getElementById('profile-level');
-                if (profileLevel) profileLevel.textContent = gameData.level;
-                
-                const profileTaps = document.getElementById('profile-taps');
-                if (profileTaps) profileTaps.textContent = formatNumber(gameData.total_taps);
-                
-                const profileCards = document.getElementById('profile-cards');
-                if (profileCards) profileCards.textContent = gameData.cards_bought;
-
-                // Takas ekranı güncelle
-                if (typeof updateTradeDisplay === 'function') {
-                    updateTradeDisplay();
-                }
-
-                // Airdrop ekranı güncelle
-                if (typeof updateAirdropDisplay === 'function') {
-                    updateAirdropDisplay();
-                }
-            } catch (error) {
-                console.error('updateDisplay error:', error);
-            }
+            document.getElementById('coin-count').textContent = formatNumber(Math.floor(gameData.coins));
+            document.getElementById('profit-per-hour').textContent = formatNumber(gameData.profit_per_hour);
+            document.getElementById('profit-3h').textContent = formatNumber(gameData.profit_per_hour * 3);
+            document.getElementById('level-text').textContent = `Level ${gameData.level}`;
+            document.getElementById('xp-text').textContent = Math.floor(gameData.xp);
+            document.getElementById('energy-display').textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
+            document.getElementById('tap-counter').textContent = gameData.total_taps;
+            document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
+            document.getElementById('energy-fill').style.width = (gameData.energy / gameData.max_energy * 100) + '%';
+            
+            // Profile
+            document.getElementById('profile-name').textContent = gameData.username;
+            document.getElementById('profile-id').textContent = gameData.user_id;
+            document.getElementById('profile-coins').textContent = formatNumber(Math.floor(gameData.coins));
+            document.getElementById('profile-level').textContent = gameData.level;
+            document.getElementById('profile-taps').textContent = formatNumber(gameData.total_taps);
+            document.getElementById('profile-cards').textContent = gameData.cards_bought;
+            
+            // Trade
+            document.getElementById('swap-from-balance').textContent = formatNumber(Math.floor(gameData.coins));
+            document.getElementById('total-trades').textContent = formatNumber(gameData.totalTrades);
+            document.getElementById('total-traded-gocoin').textContent = formatNumber(gameData.totalTradedGoCoin);
+            document.getElementById('total-earned-neontap').textContent = formatNumber(gameData.totalEarnedNeonTap);
+            
+            // Airdrop
+            document.getElementById('airdrop-token-balance').textContent = formatNumber(gameData.neonTapToken);
+            
+            // Mining
+            let totalPower = 0;
+            Object.values(miningCards).forEach(card => { if (card.owned) totalPower += card.power; });
+            document.getElementById('total-mining-power').textContent = formatNumber(totalPower) + ' MH/s';
+            document.getElementById('mining-per-second').textContent = formatNumber(totalPower / 10) + ' coin/s';
         }
 
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num.toLocaleString();
+            return num.toString();
         }
+
+        // Menu toggle
+        document.getElementById('menuToggle').addEventListener('click', toggleMenu);
+        document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
 
         function toggleMenu() {
             document.getElementById('menuToggle').classList.toggle('active');
@@ -2130,15 +1664,13 @@
             document.getElementById('menuOverlay').classList.toggle('active');
         }
 
-
-        // switchScreen zaten script başında global tanımlandı
-
         function openProfile() {
             toggleMenu();
             switchScreen('profile');
         }
 
-        function showCardCategory(category) {
+        // Kart kategorileri
+        window.showCardCategory = function(category) {
             document.getElementById('profession-cards').style.display = 'none';
             document.getElementById('companies-cards').style.display = 'none';
             document.getElementById('technology-cards').style.display = 'none';
@@ -2147,9 +1679,10 @@
             event.target.classList.add('active');
             
             document.getElementById(category + '-cards').style.display = 'grid';
-        }
+        };
 
-        function buyCard(category, index, cost, profit) {
+        // Kart satın al
+        window.buyCard = function(category, index, cost, profit) {
             if (gameData.coins < cost) {
                 alert('Yetersiz coin!');
                 return;
@@ -2159,554 +1692,99 @@
             gameData.profit_per_hour += profit;
             gameData.cards_bought++;
 
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
             saveGameData();
             updateDisplay();
             alert(`Kart satın alındı! Saatlik kazancın +${profit} arttı!`);
-        }
-
-        // Madencilik Kartları Sistemi
-        // ⛏️ ===== MADENCİLİK SİSTEMİ =====
-        
-        // Mining kartları yapısı - Her kartın kendi state'i var
-        let miningCards = {
-            eco1: { 
-                owned: false, 
-                power: 100,  // 100 MH
-                price: 0.5,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            eco2: { 
-                owned: false, 
-                power: 250,  // 250 MH
-                price: 1,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            basic1: { 
-                owned: false, 
-                power: 500,  // 500 MH
-                price: 2,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            basic2: { 
-                owned: false, 
-                power: 1000,  // 1000 MH
-                price: 4,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            blue1: { 
-                owned: false, 
-                power: 2000,  // 2000 MH
-                price: 8,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            blue2: { 
-                owned: false, 
-                power: 3500,  // 3500 MH
-                price: 15,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            turbo1: { 
-                owned: false, 
-                power: 5000,  // 5000 MH
-                price: 30,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            turbo2: { 
-                owned: false, 
-                power: 7000,  // 7000 MH
-                price: 60,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            golden1: { 
-                owned: false, 
-                power: 8500,  // 8500 MH
-                price: 100,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            },
-            golden2: { 
-                owned: false, 
-                power: 10000,  // 10000 MH
-                price: 200,
-                startTime: null,
-                lastClaim: null,
-                accumulated: 0,
-                isRunning: false
-            }
         };
 
-        // Mining constants
-        const MINING_CONFIG = {
-            CYCLE_DURATION: 24 * 60 * 60 * 1000, // 24 saat (milisaniye)
-            EARNINGS_MULTIPLIER: 1.5, // MH × 1.5 formülü
-            UPDATE_INTERVAL: 1000 // 1 saniye
-        };
-
-        let miningUpdateInterval = null;
-
-        /**
-         * ⛏️ Madencilik kartı satın alma
-         */
-        function buyMiningCard(cardId, tonPrice, miningPower) {
+        // Mining kart satın al
+        window.buyMiningCard = function(cardId) {
             const card = miningCards[cardId];
-            
-            // Zaten sahipse uyarı
             if (card.owned) {
-                showMiningStatus('Bu kartı zaten satın aldınız!', 'warning');
+                alert('Bu kartı zaten satın aldınız!');
                 return;
             }
 
-            // Coin kontrolü (1 TON = 1000 coin simülasyonu)
-            const coinEquivalent = tonPrice * 1000;
+            const coinEquivalent = card.price * 1000;
             
             if (gameData.coins < coinEquivalent) {
-                showMiningStatus(`Yetersiz coin! ${formatNumber(coinEquivalent)} coin gerekli.`, 'error');
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('error');
-                }
+                alert(`Yetersiz coin! ${formatNumber(coinEquivalent)} coin gerekli.`);
                 return;
             }
 
-            // Satın alma
             gameData.coins -= coinEquivalent;
             card.owned = true;
             card.startTime = Date.now();
-            card.lastClaim = Date.now();
             card.isRunning = true;
             card.accumulated = 0;
 
-            // Mining update başlat
-            if (!miningUpdateInterval) {
-                startMiningSystem();
-            }
-
-            saveMiningData();
             saveGameData();
-            updateMiningDisplay();
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
-
-            showMiningStatus(`${cardId} satın alındı! Madencilik başladı.`, 'success');
-        }
-
-        /**
-         * 💰 24 saatlik kazancı hesapla
-         */
-        function calculate24HourEarnings(miningPower) {
-            return miningPower * MINING_CONFIG.EARNINGS_MULTIPLIER;
-        }
-
-        /**
-         * ⏱️ Saatlik kazancı hesapla
-         */
-        function calculateHourlyEarnings(miningPower) {
-            return calculate24HourEarnings(miningPower) / 24;
-        }
-
-        /**
-         * 🔄 Mining sistemini başlat
-         */
-        function startMiningSystem() {
-            if (miningUpdateInterval) return;
-
-            miningUpdateInterval = setInterval(() => {
-                updateAllMiningCards();
-            }, MINING_CONFIG.UPDATE_INTERVAL);
-        }
-
-        /**
-         * 📊 Tüm mining kartlarını güncelle
-         */
-        function updateAllMiningCards() {
-            const now = Date.now();
-            let needsUpdate = false;
-
-            Object.keys(miningCards).forEach(cardId => {
-                const card = miningCards[cardId];
-                
-                if (card.owned && card.isRunning) {
-                    const elapsed = now - card.startTime;
-                    
-                    // 24 saat doldu mu?
-                    if (elapsed >= MINING_CONFIG.CYCLE_DURATION) {
-                        // Kartı durdur
-                        card.isRunning = false;
-                        card.accumulated = calculate24HourEarnings(card.power);
-                        needsUpdate = true;
-                    } else {
-                        // Hala çalışıyor, birikeni hesapla
-                        const hoursPassed = elapsed / (60 * 60 * 1000);
-                        card.accumulated = calculateHourlyEarnings(card.power) * hoursPassed;
-                    }
-                }
-            });
-
-            if (needsUpdate) {
-                saveMiningData();
-            }
-
-            updateMiningDisplay();
-        }
-
-        /**
-         * 🎁 Mining ödülünü claim et
-         */
-        function claimMiningReward(cardId) {
-            const card = miningCards[cardId];
-            
-            if (!card.owned || card.isRunning) {
-                return;
-            }
-
-            // Ödülü ekle
-            const reward = Math.floor(card.accumulated);
-            gameData.neonTapToken += reward;
-            
-            // Kartı resetle ve yeniden başlat
-            card.startTime = Date.now();
-            card.lastClaim = Date.now();
-            card.isRunning = true;
-            card.accumulated = 0;
-
-            saveMiningData();
-            saveGameData();
-            updateMiningDisplay();
-            updateDisplay(); // Ana ekranı da güncelle
-
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
-
-            showMiningStatus(`${formatNumber(reward)} NeonTap Token kazandınız!`, 'success');
-        }
-
-        /**
-         * ⏰ Kalan süreyi formatla (HH:MM:SS)
-         */
-        function formatTimeRemaining(cardId) {
-            const card = miningCards[cardId];
-            
-            if (!card.owned || !card.isRunning) {
-                return '00:00:00';
-            }
-
-            const elapsed = Date.now() - card.startTime;
-            const remaining = Math.max(0, MINING_CONFIG.CYCLE_DURATION - elapsed);
-            
-            const hours = Math.floor(remaining / (60 * 60 * 1000));
-            const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
-            const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
-            
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        /**
-         * 💾 Mining data kaydet
-         */
-        function saveMiningData() {
-            if (!gameData.user_id) return;
-            localStorage.setItem(`mining_${gameData.user_id}`, JSON.stringify(miningCards));
-        }
-
-        /**
-         * 📂 Mining data yükle
-         */
-        function loadMiningData() {
-            if (!gameData.user_id) return;
-            
-            const saved = localStorage.getItem(`mining_${gameData.user_id}`);
-            if (saved) {
-                const loadedData = JSON.parse(saved);
-                Object.keys(loadedData).forEach(cardId => {
-                    if (miningCards[cardId]) {
-                        Object.assign(miningCards[cardId], loadedData[cardId]);
-                    }
-                });
-            }
-
-            // Yükleme sonrası mining sistemini başlat
-            const hasAnyCard = Object.values(miningCards).some(card => card.owned);
-            if (hasAnyCard && !miningUpdateInterval) {
-                startMiningSystem();
-            }
-        }
-
-        /**
-         * 📊 Mining display güncelle
-         */
-        function updateMiningDisplay() {
-            // Toplam güç hesapla
-            let totalPower = 0;
-            Object.values(miningCards).forEach(card => {
-                if (card.owned) {
-                    totalPower += card.power;
-                }
-            });
-
-            document.getElementById('total-mining-power').textContent = `${formatNumber(totalPower)} MH/s`;
-            
-            // Toplam saatlik kazanç
-            const totalHourly = calculateHourlyEarnings(totalPower);
-            document.getElementById('mining-per-hour').textContent = `${formatNumber(Math.floor(totalHourly))} NEON/saat`;
-        }
-
-        /**
-         * 📢 Mining durum mesajı
-         */
-        function showMiningStatus(message, type) {
-            // Basit alert (ileride toast notification yapılabilir)
-            if (type === 'error') {
-                alert('❌ ' + message);
-            } else if (type === 'success') {
-                alert('✅ ' + message);
-            } else {
-                alert('⚠️ ' + message);
-            }
-        }
-
-        // ⛏️ ===== MADENCİLİK SİSTEMİ SONU =====
-                    gameData.coins += coinsPerSecond;
-                    updateDisplay();
-                    saveGameData();
-                }
-            }, 1000);
-        }
-
-        function updateMiningDisplay() {
-            const perSecond = totalMiningPower;
-            document.getElementById('total-mining-power').textContent = `${formatNumber(totalMiningPower)} MH/s`;
-            document.getElementById('mining-per-second').textContent = `${formatNumber(perSecond)} coin/s`;
-        }
-
-        // 🔃 ===== TAKAS SİSTEMİ =====
-        
-        // Takas işlem durumu (spam tıklama engelleme için)
-        let isTrading = false;
-
-        // Takas sabitleri
-        const TRADE_RATE = {
-            GO_COIN_REQUIRED: 50000,    // Minimum takas miktarı
-            NEONTAP_REWARD: 1000        // 50,000 GO Coin karşılığında alınacak NeonTap Token
+            updateDisplay();
+            alert(`${cardId} satın alındı! Madencilik başladı.`);
         };
 
-        /**
-         * 💱 Kullanıcının girdiği miktara göre alınacak NeonTap Token'ı hesaplar
-         * Aynı zamanda minimum kontrol ve buton durumunu yönetir
-         */
-        function calculateSwapAmount() {
+        // Takas hesaplama
+        window.calculateSwapAmount = function() {
             const inputValue = parseFloat(document.getElementById('swap-from-input').value) || 0;
             const confirmBtn = document.getElementById('swap-confirm-btn');
             const errorMsg = document.getElementById('swap-error-msg');
             
-            // Oran: 50,000 GO Coin = 1,000 NeonTap Token
-            // Formül: (inputValue / 50,000) * 1,000
-            const neonTapAmount = (inputValue / TRADE_RATE.GO_COIN_REQUIRED) * TRADE_RATE.NEONTAP_REWARD;
+            const neonTapAmount = (inputValue / 50000) * 1000;
             
             document.getElementById('swap-to-display').value = Math.floor(neonTapAmount);
 
-            // Minimum kontrol ve buton durumu
-            if (inputValue > 0 && inputValue < TRADE_RATE.GO_COIN_REQUIRED) {
-                // 50,000'den az girildi
+            if (inputValue > 0 && inputValue < 50000) {
                 confirmBtn.disabled = true;
                 confirmBtn.style.opacity = '0.5';
                 errorMsg.style.display = 'block';
-            } else if (inputValue >= TRADE_RATE.GO_COIN_REQUIRED) {
-                // 50,000 ve üzeri
+            } else if (inputValue >= 50000) {
                 confirmBtn.disabled = false;
                 confirmBtn.style.opacity = '1';
                 errorMsg.style.display = 'none';
             } else {
-                // Input boş
                 confirmBtn.disabled = true;
                 confirmBtn.style.opacity = '0.5';
                 errorMsg.style.display = 'none';
             }
-        }
+        };
 
-        /**
-         * 🔃 Takas ekranı görüntüsünü günceller
-         * Bakiyeleri ve istatistikleri günceller
-         */
-        function updateTradeDisplay() {
-            // Bakiyeleri güncelle
-            document.getElementById('swap-from-balance').textContent = formatNumber(Math.floor(gameData.coins));
-            
-            // İstatistikleri güncelle
-            document.getElementById('total-trades').textContent = formatNumber(gameData.totalTrades);
-            document.getElementById('total-traded-gocoin').textContent = formatNumber(gameData.totalTradedGoCoin);
-            document.getElementById('total-earned-neontap').textContent = formatNumber(gameData.totalEarnedNeonTap);
-        }
-
-        /**
-         * 🔄 Input'tan gelen miktar ile takas işlemini gerçekleştirir
-         */
-        function executeTradeWithInput() {
-            // 🛡️ Spam tıklama koruması
-            if (isTrading) {
-                showTradeStatus('⏳ İşlem devam ediyor, lütfen bekleyin...', 'warning');
-                return;
-            }
-
-            // Kullanıcının girdiği miktarı al
+        // Takas işlemi
+        window.executeTradeWithInput = function() {
             const tradeAmount = parseFloat(document.getElementById('swap-from-input').value) || 0;
 
-            // ✅ Minimum miktar kontrolü
-            if (tradeAmount < TRADE_RATE.GO_COIN_REQUIRED) {
-                showTradeStatus(`❌ Minimum ${formatNumber(TRADE_RATE.GO_COIN_REQUIRED)} GO Coin gerekli!`, 'error');
-                
-                // Haptic feedback (hata)
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('error');
-                }
+            if (tradeAmount < 50000) {
+                alert('Minimum 50,000 GO Coin gerekli!');
                 return;
             }
 
-            // ✅ Yeterli bakiye kontrolü
             if (gameData.coins < tradeAmount) {
-                const needed = tradeAmount - gameData.coins;
-                showTradeStatus(`❌ Yetersiz GO Coin! ${formatNumber(needed)} daha gerekli.`, 'error');
-                
-                // Haptic feedback (hata)
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('error');
-                }
+                alert('Yetersiz GO Coin!');
                 return;
             }
 
-            // 🔒 İşlemi kilitle
-            isTrading = true;
-            const tradeButton = document.getElementById('swap-confirm-btn');
-            tradeButton.disabled = true;
-            tradeButton.textContent = '⏳ İşlem yapılıyor...';
+            const neonTapReward = (tradeAmount / 50000) * 1000;
 
-            // ⏱️ Kısa bir gecikme ekle (kullanıcı deneyimi için)
-            setTimeout(() => {
-                // Alınacak NeonTap Token miktarını hesapla
-                const neonTapReward = (tradeAmount / TRADE_RATE.GO_COIN_REQUIRED) * TRADE_RATE.NEONTAP_REWARD;
+            gameData.coins -= tradeAmount;
+            gameData.neonTapToken += neonTapReward;
+            gameData.totalTrades++;
+            gameData.totalTradedGoCoin += tradeAmount;
+            gameData.totalEarnedNeonTap += neonTapReward;
 
-                // 💱 Takas işlemini gerçekleştir
-                gameData.coins -= tradeAmount;
-                gameData.neonTapToken += neonTapReward;
-                
-                // 📊 İstatistikleri güncelle
-                gameData.totalTrades++;
-                gameData.totalTradedGoCoin += tradeAmount;
-                gameData.totalEarnedNeonTap += neonTapReward;
+            saveGameData();
+            updateDisplay();
 
-                // 💾 Kaydet
-                saveGameData();
-                
-                // 🎨 Görüntüyü güncelle
-                updateDisplay();
-
-                // Input'u temizle
-                document.getElementById('swap-from-input').value = '';
-                document.getElementById('swap-to-display').value = '0';
-
-                // ✅ Başarı mesajı göster
-                showTradeStatus(`✅ Başarılı! ${formatNumber(Math.floor(neonTapReward))} NeonTap Token kazandınız!`, 'success');
-
-                // 📳 Haptic feedback (başarı)
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.notificationOccurred('success');
-                }
-
-                // 🔓 Kilidi aç
-                isTrading = false;
-                tradeButton.disabled = false;
-                tradeButton.textContent = 'Takası Onayla';
-
-            }, 500); // 500ms gecikme
-        }
-
-        /**
-         * 📢 Takas durum mesajını gösterir
-         * @param {string} message - Gösterilecek mesaj
-         * @param {string} type - Mesaj tipi: 'success', 'error', 'warning'
-         */
-        function showTradeStatus(message, type) {
-            const statusElement = document.getElementById('trade-status');
+            document.getElementById('swap-from-input').value = '';
+            document.getElementById('swap-to-display').value = '0';
             
-            // Renk belirleme
-            let color = '#ffffff';
-            if (type === 'success') color = '#00ff96';
-            if (type === 'error') color = '#ff5555';
-            if (type === 'warning') color = '#ffaa00';
-            
-            statusElement.textContent = message;
-            statusElement.style.color = color;
-            statusElement.style.fontWeight = 'bold';
+            alert(`Başarılı! ${Math.floor(neonTapReward)} NeonTap Token kazandınız!`);
 
-            // 3 saniye sonra mesajı temizle
-            setTimeout(() => {
-                statusElement.textContent = '';
-            }, 3000);
-        }
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        };
 
-        // 🔃 ===== TAKAS SİSTEMİ SONU =====
-
-        // 🪂 ===== AIRDROP SİSTEMİ =====
-
-        /**
-         * 🪂 Airdrop ekranı görüntüsünü günceller
-         * Sadece NeonTap Token bakiyesini gösterir
-         */
-        function updateAirdropDisplay() {
-            // Token bakiyesini güncelle
-            const tokenBalance = Math.floor(gameData.neonTapToken);
-            document.getElementById('airdrop-token-balance').textContent = formatNumber(tokenBalance);
-        }
-
-        /**
-         * 📋 Airdrop detayları modalını gösterir (şimdilik placeholder)
-         */
-        function showAirdropDetails() {
-            alert('🪂 Airdrop Detayları\n\n' +
-                  '🎯 Sezon 1 Airdrop bilgileri yakında açıklanacak!\n\n' +
-                  '📊 Şu anki durumun:\n' +
-                  `• NeonTap Token: ${formatNumber(Math.floor(gameData.neonTapToken))}\n` +
-                  `• Sezon Puanı: ${formatNumber(Math.floor(gameData.neonTapToken / 1000))}\n\n` +
-                  '💡 Token biriktirmeye devam et ve büyük ödüllere hak kazan!');
-            
-            // Haptic feedback
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
-        }
-
-        // 🪂 ===== AIRDROP SİSTEMİ SONU =====
+        // İlk güncelleme
+        updateDisplay();
     </script>
 </body>
 </html>

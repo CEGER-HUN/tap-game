@@ -240,60 +240,6 @@
             border-radius: 10px;
         }
 
-        /* Prestige Bar */
-        .prestige-bar {
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 15px;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .prestige-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .prestige-label {
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
-        .prestige-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #FFD700;
-        }
-
-        .prestige-bonus {
-            font-size: 12px;
-            color: #00ff96;
-        }
-
-        .prestige-button {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #1a1a2e;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .prestige-button:active {
-            transform: scale(0.95);
-        }
-
-        .prestige-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
         /* Coin Button */
         .clicker-area {
             text-align: center;
@@ -431,116 +377,57 @@
             display: block;
         }
 
-        /* Modal Sistemi */
-        .modal-overlay {
+        /* Modal */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 9999;
-            display: none;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
         }
 
-        .modal-overlay.active {
+        .modal.active {
             display: flex;
         }
 
-        .modal-container {
-            background: linear-gradient(135deg, #1e3a5f, #0f2540);
-            border-radius: 24px;
-            padding: 24px;
-            max-width: 320px;
-            width: 90%;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            animation: modalPop 0.3s ease-out;
+        .modal-content {
+            background: linear-gradient(180deg, #1e3a5f 0%, #0f2540 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 12px;
-            color: #FFD700;
-        }
-
-        .modal-message {
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 24px;
-            opacity: 0.9;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .modal-button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .modal-button.confirm {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #1a1a2e;
-        }
-
-        .modal-button.cancel {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .modal-button:active {
-            transform: scale(0.95);
-        }
-
-        @keyframes modalPop {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Toast Bildirimi */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #00ff96, #00cc66);
-            color: #1a1a2e;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 14px;
-            z-index: 10000;
-            box-shadow: 0 5px 20px rgba(0, 255, 150, 0.3);
-            animation: toastSlide 0.3s ease-out;
-        }
-
-        @keyframes toastSlide {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         /* Kartlar Ekranı */
@@ -577,41 +464,20 @@
 
         .card-item {
             background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
             border-radius: 15px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
             gap: 10px;
+            min-height: 280px;
             position: relative;
-            transition: all 0.3s;
-            padding: 12px;
         }
 
         .card-item.locked {
             opacity: 0.6;
-            filter: grayscale(0.7);
-        }
-
-        .card-item.can-unlock {
-            animation: glowPulse 2s infinite;
-            border-color: #00ff96;
-            box-shadow: 0 0 20px rgba(0, 255, 150, 0.3);
-        }
-
-        .card-item.just-unlocked {
-            animation: unlockPop 0.5s ease-out;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { border-color: rgba(0, 255, 150, 0.5); }
-            50% { border-color: rgba(0, 255, 150, 1); }
-        }
-
-        @keyframes unlockPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); border-color: #00ff96; }
-            100% { transform: scale(1); }
+            filter: grayscale(0.5);
         }
 
         .card-lock-overlay {
@@ -627,7 +493,7 @@
             align-items: center;
             justify-content: center;
             z-index: 2;
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(2px);
         }
 
         .lock-icon {
@@ -639,97 +505,67 @@
             font-size: 11px;
             text-align: center;
             padding: 0 10px;
-            opacity: 0.9;
         }
 
         .card-icon {
             width: 100%;
-            height: 70px;
-            object-fit: contain;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 5px;
         }
 
         .card-details {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 4px;
-        }
-
-        .card-header {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
         }
 
         .card-name {
             font-weight: bold;
-            font-size: 13px;
-        }
-
-        .card-level {
-            background: rgba(255, 215, 0, 0.2);
-            padding: 3px 6px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: bold;
-            color: #FFD700;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
 
         .card-profit {
-            font-size: 11px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 13px;
+            color: #FFD700;
+            margin-bottom: 5px;
         }
 
-        .profit-amount {
-            color: #00ff96;
-            font-weight: bold;
-        }
-
-        .profit-next {
+        .card-level-badge {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
             font-size: 10px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .profit-next span {
-            color: #00ff96;
+            display: inline-block;
         }
 
         .card-cost {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 6px;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
+            font-size: 12px;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .buy-card-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+            font-size: 13px;
+            width: 100%;
         }
 
-        .card-cost:active {
-            transform: scale(0.95);
-        }
-
-        .card-cost:disabled {
-            opacity: 0.5;
+        .buy-card-button:disabled {
+            background: rgba(255, 255, 255, 0.2);
             cursor: not-allowed;
-        }
-
-        .upgrade-glow {
-            animation: upgradeFlash 0.3s ease-out;
-        }
-
-        @keyframes upgradeFlash {
-            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
-            50% { box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.7); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
         }
 
         /* Profil Ekranı */
@@ -988,41 +824,6 @@
             box-shadow: 0 0 20px rgba(255, 170, 0, 0.4);
         }
 
-        .mining-stats-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .mining-stat-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .mining-stat-label {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .mining-stat-value {
-            font-size: 22px;
-            font-weight: bold;
-            color: #FFD700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .neontap-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-left: 4px;
-        }
-
         /* Airdrop Ekranı */
         .airdrop-balance-card {
             background: rgba(0, 255, 150, 0.05);
@@ -1132,6 +933,48 @@
             font-family: inherit;
         }
 
+        /* Madencilik Üst Bilgi Kartı */
+        .mining-stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mining-stat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mining-stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .mining-stat-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mining-stat-value img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .neontap-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 4px;
+        }
+
         /* Loading */
         .loading {
             position: fixed;
@@ -1167,20 +1010,6 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Modal Sistemi -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-container">
-            <div class="modal-title" id="modalTitle">İşlem Başarısız</div>
-            <div class="modal-message" id="modalMessage">Yeterli NeonTap bakiyeniz yok.</div>
-            <div class="modal-buttons" id="modalButtons">
-                <button class="modal-button confirm" id="modalConfirm">Tamam</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Bildirimi -->
-    <div id="toast" style="display: none;"></div>
-
     <!-- Hamburger Menü Toggle -->
     <div class="menu-toggle" id="menuToggle">
         <span></span>
@@ -1204,20 +1033,29 @@
                     <div class="menu-item-desc">Hesap bilgileri</div>
                 </div>
             </div>
-            <div class="menu-item" onclick="showModal('Bilgi', 'Liderlik tablosu yakında!', false)">
+            <div class="menu-item" onclick="showModal('Bilgi', 'Liderlik tablosu yakında!')">
                 <div class="menu-item-icon">🏆</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Liderlik Tablosu</div>
                     <div class="menu-item-desc">En iyi oyuncular</div>
                 </div>
             </div>
-            <div class="menu-item" onclick="showModal('Bilgi', 'Arkadaşlar özelliği yakında!', false)">
+            <div class="menu-item" onclick="showModal('Bilgi', 'Arkadaşlar özelliği yakında!')">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Arkadaşlar</div>
                     <div class="menu-item-desc">Davet et & kazan</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">✕</div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div id="modalMessage"></div>
         </div>
     </div>
 
@@ -1228,16 +1066,6 @@
             <div class="top-info">
                 <div class="coin-display" id="coin-count">0</div>
                 <div class="coin-label">Coins</div>
-            </div>
-
-            <!-- Prestige Bar -->
-            <div class="prestige-bar">
-                <div class="prestige-info">
-                    <span class="prestige-label">PRESTİJ PUANI</span>
-                    <span class="prestige-value" id="prestige-points">0</span>
-                    <span class="prestige-bonus" id="prestige-bonus">+0% bonus</span>
-                </div>
-                <button class="prestige-button" id="prestigeButton" onclick="showPrestigeModal()">✨ Prestige</button>
             </div>
 
             <div class="stat-cards">
@@ -1282,10 +1110,20 @@
                 <button class="tab-button" onclick="showCardCategory('technology')">Teknoloji</button>
             </div>
 
-            <!-- Kartlar Container - Dinamik doldurulacak -->
-            <div class="cards-grid" id="profession-cards"></div>
-            <div class="cards-grid" id="companies-cards" style="display: none;"></div>
-            <div class="cards-grid" id="technology-cards" style="display: none;"></div>
+            <!-- Profesyon Kartları -->
+            <div class="cards-grid" id="profession-cards">
+                <!-- Kartlar JavaScript ile dinamik doldurulacak -->
+            </div>
+
+            <!-- Şirketler Kartları -->
+            <div class="cards-grid" id="companies-cards" style="display: none;">
+                <!-- Kartlar JavaScript ile dinamik doldurulacak -->
+            </div>
+
+            <!-- Teknoloji Kartları -->
+            <div class="cards-grid" id="technology-cards" style="display: none;">
+                <!-- Kartlar JavaScript ile dinamik doldurulacak -->
+            </div>
         </div>
 
         <!-- Madencilik Kartları Ekranı -->
@@ -1305,8 +1143,10 @@
                     </div>
                 </div>
 
-                <!-- Madencilik Kartları Grid - Dinamik doldurulacak -->
-                <div class="mining-cards-grid" id="mining-cards-container"></div>
+                <!-- Madencilik Kartları Grid -->
+                <div class="mining-cards-grid" id="mining-cards-container">
+                    <!-- Kartlar JavaScript ile dinamik olarak doldurulacak -->
+                </div>
             </div>
         </div>
 
@@ -1498,19 +1338,29 @@
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
 
-        // 📦 Kart Verileri
+        // 📦 Kart Verileri (Mevcut kartlar korundu, sadece level ve unlock eklendi)
         const CARDS = [
-            // Profesyon Kategorisi
-            { id: 'profesyon', category: 'profession', name: 'Profesyon', baseIncome: 100, basePrice: 500, icon: 'card_profession.png', unlockRequirement: null, level: 0 },
-            { id: 'freelancer', category: 'profession', name: 'Freelancer', baseIncome: 250, basePrice: 1000, icon: 'card_freelancer.png', unlockRequirement: { cardId: 'profesyon', level: 5 }, level: 0 },
-            { id: 'danisman', category: 'profession', name: 'Danışman', baseIncome: 500, basePrice: 2500, icon: 'card_consultant.png', unlockRequirement: { cardId: 'profesyon', level: 10 }, level: 0 },
-            { id: 'muhasebeci', category: 'profession', name: 'Muhasebeci', baseIncome: 1000, basePrice: 5000, icon: 'card_accountant.png', unlockRequirement: { cardId: 'freelancer', level: 10 }, level: 0 },
+            // Profesyon Kategorisi (6 kart)
+            { id: 'profesyon', category: 'profession', name: 'Profesyon', baseIncome: 100, basePrice: 500, icon: 'card_profession.png', level: 0, unlockRequirement: null },
+            { id: 'freelancer', category: 'profession', name: 'Freelancer', baseIncome: 250, basePrice: 1000, icon: 'card_freelancer.png', level: 0, unlockRequirement: { cardId: 'profesyon', level: 5 } },
+            { id: 'danisman', category: 'profession', name: 'Danışman', baseIncome: 500, basePrice: 2500, icon: 'card_consultant.png', level: 0, unlockRequirement: { cardId: 'profesyon', level: 10 } },
+            { id: 'muhasebeci', category: 'profession', name: 'Muhasebeci', baseIncome: 1000, basePrice: 5000, icon: 'card_accountant.png', level: 0, unlockRequirement: { cardId: 'freelancer', level: 10 } },
+            { id: 'avukat', category: 'profession', name: 'Avukat', baseIncome: 2000, basePrice: 10000, icon: 'card_lawyer.png', level: 0, unlockRequirement: { cardId: 'muhasebeci', level: 15 } },
+            { id: 'ceo', category: 'profession', name: 'CEO', baseIncome: 5000, basePrice: 25000, icon: 'card_ceo.png', level: 0, unlockRequirement: { cardId: 'avukat', level: 20 } },
             
-            // Şirketler Kategorisi
-            { id: 'yazilim', category: 'companies', name: 'Yazılım Şirketi', baseIncome: 2000, basePrice: 10000, icon: 'card_app_dev.png', unlockRequirement: { cardId: 'danisman', level: 15 }, level: 0 },
-            { id: 'startup', category: 'companies', name: 'Startup CEO', baseIncome: 4000, basePrice: 20000, icon: 'card_technician.png', unlockRequirement: { cardId: 'muhasebeci', level: 20 }, level: 0 },
-            { id: 'holding', category: 'companies', name: 'Holding Sahibi', baseIncome: 8000, basePrice: 40000, icon: 'card_ceo.png', unlockRequirement: { cardId: 'yazilim', level: 25 }, level: 0 },
-            { id: 'global', category: 'companies', name: 'Global Patron', baseIncome: 16000, basePrice: 80000, icon: 'card_ai_startup.png', unlockRequirement: { cardId: 'startup', level: 30 }, level: 0 }
+            // Şirketler Kategorisi (5 kart)
+            { id: 'kafe', category: 'companies', name: 'Kafe', baseIncome: 300, basePrice: 1500, icon: 'card_cafe.png', level: 0, unlockRequirement: { cardId: 'ceo', level: 5 } },
+            { id: 'restoran', category: 'companies', name: 'Restoran', baseIncome: 750, basePrice: 4000, icon: 'card_restaurant.png', level: 0, unlockRequirement: { cardId: 'kafe', level: 10 } },
+            { id: 'butik', category: 'companies', name: 'Butik', baseIncome: 1500, basePrice: 8000, icon: 'card_boutique.png', level: 0, unlockRequirement: { cardId: 'restoran', level: 15 } },
+            { id: 'otel', category: 'companies', name: 'Otel', baseIncome: 3000, basePrice: 15000, icon: 'card_hotel.png', level: 0, unlockRequirement: { cardId: 'butik', level: 20 } },
+            { id: 'avm', category: 'companies', name: 'AVM', baseIncome: 7500, basePrice: 35000, icon: 'card_mall.png', level: 0, unlockRequirement: { cardId: 'otel', level: 25 } },
+            
+            // Teknoloji Kategorisi (5 kart)
+            { id: 'app', category: 'technology', name: 'Uygulama Geliştirme', baseIncome: 2000, basePrice: 10000, icon: 'card_app_dev.png', level: 0, unlockRequirement: { cardId: 'avm', level: 10 } },
+            { id: 'teknisyen', category: 'technology', name: 'Teknisyen', baseIncome: 4000, basePrice: 20000, icon: 'card_technician.png', level: 0, unlockRequirement: { cardId: 'app', level: 15 } },
+            { id: 'kripto', category: 'technology', name: 'Kripto Madenciliği', baseIncome: 8000, basePrice: 40000, icon: 'card_crypto_mining.png', level: 0, unlockRequirement: { cardId: 'teknisyen', level: 20 } },
+            { id: 'ai', category: 'technology', name: 'AI Startup', baseIncome: 15000, basePrice: 75000, icon: 'card_ai_startup.png', level: 0, unlockRequirement: { cardId: 'kripto', level: 25 } },
+            { id: 'uzay', category: 'technology', name: 'Uzay Teknolojisi', baseIncome: 30000, basePrice: 150000, icon: 'card_space_tech.png', level: 0, unlockRequirement: { cardId: 'ai', level: 30 } }
         ];
 
         // Oyun Verileri
@@ -1535,12 +1385,12 @@
             totalTradedGoCoin: 0,
             totalEarnedNeonTap: 0,
             prestigePoints: 0,
-            cards: {} // Kart level'ları için
+            cardLevels: {} // Kart level'ları için
         };
 
-        // Kartları başlangıç değerleriyle ata
+        // Kart level'larını başlat
         CARDS.forEach(card => {
-            gameData.cards[card.id] = card.level;
+            gameData.cardLevels[card.id] = 0;
         });
 
         // Mining kartları
@@ -1562,34 +1412,6 @@
             HOURLY_MULTIPLIER: 0.0625
         };
 
-        // Load game data
-        function loadGameData() {
-            const saved = localStorage.getItem(`game_${gameData.user_id}`);
-            if (saved) {
-                const data = JSON.parse(saved);
-                Object.assign(gameData, data);
-                
-                // Kart level'larını yükle
-                CARDS.forEach(card => {
-                    if (data.cards && data.cards[card.id] !== undefined) {
-                        gameData.cards[card.id] = data.cards[card.id];
-                    }
-                });
-            }
-            
-            const miningSaved = localStorage.getItem(`mining_${gameData.user_id}`);
-            if (miningSaved) {
-                const savedCards = JSON.parse(miningSaved);
-                miningCards = savedCards;
-            }
-        }
-
-        // Save game data
-        function saveGameData() {
-            localStorage.setItem(`game_${gameData.user_id}`, JSON.stringify(gameData));
-            localStorage.setItem(`mining_${gameData.user_id}`, JSON.stringify(miningCards));
-        }
-
         // 📊 GELİR HESAPLAMA FONKSİYONLARI
         function calculateCardIncome(card, level) {
             if (level === 0) return 0;
@@ -1606,20 +1428,20 @@
         }
 
         function calculateNextLevelIncome(card, level) {
-            return calculateCardIncome(card, level + 1);
+            return calculateCardIncome(card, level + 1) - calculateCardIncome(card, level);
         }
 
         function calculateTotalIncome() {
             let total = 0;
             CARDS.forEach(card => {
-                total += calculateCardIncome(card, gameData.cards[card.id]);
+                total += calculateCardIncome(card, gameData.cardLevels[card.id]);
             });
             // Prestige bonusu ekle
             total = total * (1 + gameData.prestigePoints * 0.1);
             return total;
         }
 
-        function calculateCardUpgradeCost(card, currentLevel) {
+        function calculateUpgradeCost(card, currentLevel) {
             const nextLevel = currentLevel + 1;
             const base = card.basePrice;
             
@@ -1630,47 +1452,15 @@
             }
         }
 
-        function formatNumber(num) {
-            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num.toString();
-        }
-
-        function formatNumberFull(num) {
-            return num.toLocaleString('tr-TR');
-        }
-
-        // 🔓 UNLOCK KONTROL FONKSİYONLARI
+        // 🔓 UNLOCK KONTROL
         function isCardUnlocked(card) {
             if (!card.unlockRequirement) return true;
             
             const req = card.unlockRequirement;
-            return gameData.cards[req.cardId] >= req.level;
+            return gameData.cardLevels[req.cardId] >= req.level;
         }
 
-        function checkAndUnlockCards() {
-            CARDS.forEach(card => {
-                if (!isCardUnlocked(card) && gameData.cards[card.id] === 0) {
-                    const req = card.unlockRequirement;
-                    if (gameData.cards[req.cardId] >= req.level) {
-                        // Kart yeni açıldı
-                        showToast(`🎉 Yeni Kart Açıldı: ${card.name}!`);
-                        
-                        // Animasyon için kartı işaretle
-                        setTimeout(() => {
-                            const cardElement = document.getElementById(`card-${card.id}`);
-                            if (cardElement) {
-                                cardElement.classList.add('just-unlocked');
-                                setTimeout(() => cardElement.classList.remove('just-unlocked'), 500);
-                            }
-                        }, 100);
-                    }
-                }
-            });
-        }
-
-        // 🃏 KART RENDER FONKSİYONLARI
+        // 🃏 KART RENDER
         function renderAllCards() {
             renderCategory('profession', 'profession-cards');
             renderCategory('companies', 'companies-cards');
@@ -1684,32 +1474,31 @@
             const categoryCards = CARDS.filter(c => c.category === category);
             
             container.innerHTML = categoryCards.map(card => {
-                const level = gameData.cards[card.id];
+                const level = gameData.cardLevels[card.id];
                 const unlocked = isCardUnlocked(card);
                 const income = calculateCardIncome(card, level);
-                const nextIncome = calculateNextLevelIncome(card, level);
-                const upgradeCost = level > 0 ? calculateCardUpgradeCost(card, level) : calculateCardUpgradeCost(card, 0);
-                const canAfford = gameData.coins >= upgradeCost && level > 0;
+                const nextIncomeIncrease = level > 0 ? calculateNextLevelIncome(card, level) : 0;
+                const upgradeCost = level === 0 ? calculateUpgradeCost(card, 0) : calculateUpgradeCost(card, level);
+                const canAfford = gameData.coins >= upgradeCost;
                 
                 let buttonText = level === 0 ? 'Satın Al' : 'Yükselt';
-                let buttonDisabled = level === 0 ? gameData.coins < upgradeCost : !canAfford;
-                
-                if (!unlocked && level === 0) {
-                    // Kilitli kart
+                let buttonDisabled = !canAfford;
+
+                // Kilitli kart kontrolü
+                if (!unlocked) {
                     const req = card.unlockRequirement;
                     const reqCard = CARDS.find(c => c.id === req.cardId);
+                    
                     return `
-                        <div class="card-item locked" id="card-${card.id}">
+                        <div class="card-item locked">
                             <div class="card-lock-overlay">
                                 <div class="lock-icon">🔒</div>
                                 <div class="lock-text">${reqCard.name} Lv.${req.level} gerekli</div>
                             </div>
                             <img src="assets/icons/${card.icon}" alt="${card.name}" class="card-icon">
                             <div class="card-details">
-                                <div class="card-header">
-                                    <span class="card-name">${card.name}</span>
-                                    <span class="card-level">Lv.0</span>
-                                </div>
+                                <div class="card-name">${card.name}</div>
+                                <div class="card-profit">Kilitli</div>
                             </div>
                         </div>
                     `;
@@ -1717,23 +1506,13 @@
 
                 // Açık kart
                 return `
-                    <div class="card-item ${level > 0 && !unlocked ? 'can-unlock' : ''}" id="card-${card.id}">
+                    <div class="card-item">
                         <img src="assets/icons/${card.icon}" alt="${card.name}" class="card-icon">
                         <div class="card-details">
-                            <div class="card-header">
-                                <span class="card-name">${card.name}</span>
-                                <span class="card-level">Lv.${level}</span>
-                            </div>
-                            <div class="card-profit">
-                                <span>💰 Kazanç</span>
-                                <span class="profit-amount">${formatNumber(income)}/s</span>
-                            </div>
-                            ${level > 0 ? `
-                                <div class="profit-next">
-                                    Sonraki: +${formatNumber(nextIncome - income)}/s
-                                </div>
-                            ` : ''}
-                            <button class="card-cost" onclick="upgradeCard('${card.id}')" ${buttonDisabled ? 'disabled' : ''}>
+                            <div class="card-name">${card.name} <span class="card-level-badge">Lv.${level}</span></div>
+                            <div class="card-profit">💰 ${formatNumber(income)}/s</div>
+                            ${level > 0 ? `<div class="card-cost">Sonraki: +${formatNumber(nextIncomeIncrease)}/s</div>` : ''}
+                            <button class="buy-card-button" onclick="upgradeCard('${card.id}')" ${buttonDisabled ? 'disabled' : ''}>
                                 ${buttonText} • ${formatNumberFull(upgradeCost)}
                             </button>
                         </div>
@@ -1742,48 +1521,73 @@
             }).join('');
         }
 
-        // 💳 KART YÜKSELTME FONKSİYONU
+        // 💳 KART YÜKSELTME
         window.upgradeCard = function(cardId) {
             const card = CARDS.find(c => c.id === cardId);
             if (!card) return;
             
-            const currentLevel = gameData.cards[cardId];
+            const currentLevel = gameData.cardLevels[cardId];
             const upgradeCost = currentLevel === 0 ? 
-                calculateCardUpgradeCost(card, 0) : 
-                calculateCardUpgradeCost(card, currentLevel);
+                calculateUpgradeCost(card, 0) : 
+                calculateUpgradeCost(card, currentLevel);
             
             if (gameData.coins < upgradeCost) {
-                showModal('İşlem Başarısız', 'Yeterli coin bakiyeniz yok.', false);
+                showModal('Yetersiz Bakiye', 'Bu işlem için yeterli coininiz yok.');
                 return;
             }
             
             // Yükselt
             gameData.coins -= upgradeCost;
-            gameData.cards[cardId] = currentLevel + 1;
+            gameData.cardLevels[cardId] = currentLevel + 1;
             
             if (currentLevel === 0) {
                 gameData.cards_bought++;
-                showToast(`✅ ${card.name} satın alındı!`);
+                showModal('Başarılı', `${card.name} satın alındı!`);
             } else {
-                showToast(`⬆️ ${card.name} Level ${currentLevel + 1} oldu!`);
+                showModal('Başarılı', `${card.name} Level ${currentLevel + 1} oldu!`);
             }
             
-            // Animasyon
-            const cardElement = document.getElementById(`card-${cardId}`);
-            if (cardElement) {
-                cardElement.classList.add('upgrade-glow');
-                setTimeout(() => cardElement.classList.remove('upgrade-glow'), 300);
-            }
-            
-            // Yeni kartları kontrol et
-            checkAndUnlockCards();
-            
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
             saveGameData();
             renderAllCards();
             updateDisplay();
         };
 
-        // 🎯 Coin click handler
+        // Load game data
+        function loadGameData() {
+            const saved = localStorage.getItem(`game_${gameData.user_id}`);
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.assign(gameData, data);
+                
+                // Kart level'larını yükle
+                if (data.cardLevels) {
+                    CARDS.forEach(card => {
+                        if (data.cardLevels[card.id] !== undefined) {
+                            gameData.cardLevels[card.id] = data.cardLevels[card.id];
+                        }
+                    });
+                }
+            }
+            
+            const miningSaved = localStorage.getItem(`mining_${gameData.user_id}`);
+            if (miningSaved) {
+                const savedCards = JSON.parse(miningSaved);
+                miningCards = savedCards;
+            }
+        }
+
+        // Save game data
+        function saveGameData() {
+            localStorage.setItem(`game_${gameData.user_id}`, JSON.stringify(gameData));
+            localStorage.setItem(`mining_${gameData.user_id}`, JSON.stringify(miningCards));
+        }
+
+        // Load data
+        loadGameData();
+
+        // Coin click handler
         document.getElementById('coin-button').addEventListener('click', function(e) {
             if (gameData.energy < gameData.tap_power) return;
 
@@ -1941,111 +1745,7 @@
             }).join('');
         }
 
-        // Mining kart satın al
-        window.buyMiningCard = function(cardId) {
-            const card = miningCards.find(c => c.id === cardId);
-            if (card.owned) {
-                showModal('İşlem Başarısız', 'Bu kartı zaten satın aldınız!', false);
-                return;
-            }
-
-            const coinEquivalent = card.price * 1000;
-            
-            if (gameData.coins < coinEquivalent) {
-                showModal('İşlem Başarısız', `Yetersiz coin! ${formatNumberFull(coinEquivalent)} coin gerekli.`, false);
-                return;
-            }
-
-            gameData.coins -= coinEquivalent;
-            card.owned = true;
-            card.isRunning = true;
-            card.isClaimReady = false;
-            card.startTime = Date.now();
-            card.accumulated = 0;
-
-            saveGameData();
-            updateDisplay();
-            updateMiningCards();
-            showToast(`✅ ${card.name} satın alındı! Madencilik başladı.`);
-        };
-
-        // Mining ödülü claim et
-        window.claimMiningReward = function(cardId) {
-            const card = miningCards.find(c => c.id === cardId);
-            if (!card || !card.isClaimReady) return;
-
-            const reward = Math.floor(card.accumulated);
-            gameData.neonTapToken += reward;
-
-            card.isRunning = true;
-            card.isClaimReady = false;
-            card.startTime = Date.now();
-            card.accumulated = 0;
-
-            saveGameData();
-            updateDisplay();
-            updateMiningCards();
-            showToast(`💰 ${reward} NeonTap Token kazandınız!`);
-
-            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-        };
-
-        // 💎 PRESTİJ SİSTEMİ
-        function canPrestige() {
-            const totalIncome = calculateTotalIncome();
-            return totalIncome >= 1000000; // 1,000,000 saatlik kazanç
-        }
-
-        window.showPrestigeModal = function() {
-            if (!canPrestige()) {
-                const totalIncome = calculateTotalIncome();
-                const needed = 1000000 - totalIncome;
-                showModal('Prestije Hazır Değil', `1,000,000/saat kazanç gerekli. Mevcut: ${formatNumber(totalIncome)}/s (${formatNumber(needed)} daha)`, false);
-                return;
-            }
-
-            // Onay modalı
-            const modal = document.getElementById('modalOverlay');
-            document.getElementById('modalTitle').textContent = '✨ Prestige Yap?';
-            document.getElementById('modalMessage').innerHTML = `
-                Tüm kartlar sıfırlanacak.<br>
-                <span style="color:#00ff96">+1 Prestige Puanı (%10 bonus)</span> kazanacaksınız.<br><br>
-                Devam etmek istiyor musunuz?
-            `;
-            
-            const buttons = document.getElementById('modalButtons');
-            buttons.innerHTML = `
-                <button class="modal-button cancel" onclick="closeModal()">Vazgeç</button>
-                <button class="modal-button confirm" onclick="executePrestige()">Prestige Yap</button>
-            `;
-            
-            modal.classList.add('active');
-        };
-
-        window.executePrestige = function() {
-            // Tüm kartları sıfırla
-            CARDS.forEach(card => {
-                gameData.cards[card.id] = 0;
-            });
-            
-            // Coinleri sıfırla
-            gameData.coins = 0;
-            
-            // Prestige puanını artır
-            gameData.prestigePoints++;
-            
-            closeModal();
-            showToast(`✨ Prestige ${gameData.prestigePoints}! %${gameData.prestigePoints * 10} kalıcı bonus kazandınız!`);
-            
-            // Kartları yeniden render et
-            renderAllCards();
-            updateDisplay();
-            saveGameData();
-            
-            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-        };
-
-        // 🖼️ DISPLAY GÜNCELLEME
+        // Display update
         function updateDisplay() {
             const totalIncome = calculateTotalIncome();
             
@@ -2058,11 +1758,6 @@
             document.getElementById('tap-counter').textContent = gameData.total_taps;
             document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
             document.getElementById('energy-fill').style.width = (gameData.energy / gameData.max_energy * 100) + '%';
-            
-            // Prestige
-            document.getElementById('prestige-points').textContent = gameData.prestigePoints;
-            document.getElementById('prestige-bonus').textContent = `+${gameData.prestigePoints * 10}% bonus`;
-            document.getElementById('prestigeButton').disabled = !canPrestige();
             
             // Profile
             document.getElementById('profile-name').textContent = gameData.username;
@@ -2095,34 +1790,27 @@
             `;
         }
 
-        // 🪟 MODAL SİSTEMİ
-        function showModal(title, message, showConfirm = true) {
-            const modal = document.getElementById('modalOverlay');
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalMessage').innerHTML = message;
-            
-            const buttons = document.getElementById('modalButtons');
-            if (showConfirm) {
-                buttons.innerHTML = `<button class="modal-button confirm" onclick="closeModal()">Tamam</button>`;
-            }
-            
-            modal.classList.add('active');
+        function formatNumber(num) {
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
         }
 
-        window.closeModal = function() {
-            document.getElementById('modalOverlay').classList.remove('active');
+        function formatNumberFull(num) {
+            return num.toLocaleString('tr-TR');
+        }
+
+        // Modal
+        window.showModal = function(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modal').classList.add('active');
         };
 
-        // 🍞 TOAST SİSTEMİ
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
-        }
+        window.closeModal = function() {
+            document.getElementById('modal').classList.remove('active');
+        };
 
         // Menu toggle
         document.getElementById('menuToggle').addEventListener('click', toggleMenu);
@@ -2146,6 +1834,55 @@
             event.target.classList.add('active');
             
             document.getElementById(category + '-cards').style.display = 'grid';
+        };
+
+        // Mining kart satın al
+        window.buyMiningCard = function(cardId) {
+            const card = miningCards.find(c => c.id === cardId);
+            if (card.owned) {
+                showModal('Uyarı', 'Bu kartı zaten satın aldınız!');
+                return;
+            }
+
+            const coinEquivalent = card.price * 1000;
+            
+            if (gameData.coins < coinEquivalent) {
+                showModal('Yetersiz Bakiye', `Yetersiz coin! ${formatNumberFull(coinEquivalent)} coin gerekli.`);
+                return;
+            }
+
+            gameData.coins -= coinEquivalent;
+            card.owned = true;
+            card.isRunning = true;
+            card.isClaimReady = false;
+            card.startTime = Date.now();
+            card.accumulated = 0;
+
+            saveGameData();
+            updateDisplay();
+            updateMiningCards();
+            showModal('Başarılı', `${card.name} satın alındı! Madencilik başladı.`);
+        };
+
+        // Mining ödülü claim et
+        window.claimMiningReward = function(cardId) {
+            const card = miningCards.find(c => c.id === cardId);
+            if (!card || !card.isClaimReady) return;
+
+            const reward = Math.floor(card.accumulated);
+            gameData.neonTapToken += reward;
+
+            card.isRunning = true;
+            card.isClaimReady = false;
+            card.startTime = Date.now();
+            card.accumulated = 0;
+
+            saveGameData();
+            updateDisplay();
+            updateMiningCards();
+
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            showModal('Başarılı', `${reward} NeonTap Token kazandınız!`);
         };
 
         // Takas hesaplama
@@ -2178,12 +1915,12 @@
             const tradeAmount = parseFloat(document.getElementById('swap-from-input').value) || 0;
 
             if (tradeAmount < 50000) {
-                showModal('İşlem Başarısız', 'Minimum 50,000 GO Coin gerekli!', false);
+                showModal('Uyarı', 'Minimum 50,000 GO Coin gerekli!');
                 return;
             }
 
             if (gameData.coins < tradeAmount) {
-                showModal('İşlem Başarısız', 'Yetersiz GO Coin!', false);
+                showModal('Yetersiz Bakiye', 'Yetersiz GO Coin!');
                 return;
             }
 
@@ -2199,21 +1936,20 @@
             updateDisplay();
 
             document.getElementById('swap-from-input').value = '';
-            document.getElementById('swap-to-display').value = '';
+            document.getElementById('swap-to-display').value = '0';
             
-            showToast(`✅ ${Math.floor(neonTapReward)} NeonTap Token kazandınız!`);
+            showModal('Başarılı', `${Math.floor(neonTapReward)} NeonTap Token kazandınız!`);
 
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };
 
-        // İlk yükleme
-        loadGameData();
+        // İlk güncelleme
         renderAllCards();
         updateMiningCards();
         updateDisplay();
 
         // Modal arka plana tıklayınca kapat
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        document.getElementById('modal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
     </script>

@@ -1748,33 +1748,33 @@
 
     <!-- Alt Navigasyon -->
     <div class="bottom-nav">
-        <div class="nav-item active" data-screen="home">
+        <div class="nav-item active" data-screen="home" onclick="switchScreen('home')">
             <div class="nav-icon">
                 <!-- 🎨 Ana Sayfa ikonu görseli -->
                 <img src="./assets/icons/IMG_20260212_212121.png" alt="Ana Sayfa">
             </div>
             <span class="nav-label">Ana Sayfa</span>
         </div>
-        <div class="nav-item" data-screen="cards">
+        <div class="nav-item" data-screen="cards" onclick="switchScreen('cards')">
             <div class="nav-icon">
                 <img src="./assets/icons/icon_cards.png" alt="Kartlar">
             </div>
             <span class="nav-label">Kartlar</span>
         </div>
-        <div class="nav-item" data-screen="mining">
+        <div class="nav-item" data-screen="mining" onclick="switchScreen('mining')">
             <div class="nav-icon">
                 <img src="./assets/icons/mining_hub_icon.png" alt="Madencilik">
             </div>
             <span class="nav-label">Madencilik</span>
         </div>
-        <div class="nav-item" data-screen="airdrop">
+        <div class="nav-item" data-screen="airdrop" onclick="switchScreen('airdrop')">
             <div class="nav-icon">
                 <!-- 🎨 Airdrop ikonu görseli -->
                 <img src="./assets/icons/IMG_20260212_212059.png" alt="Airdrop">
             </div>
             <span class="nav-label">Airdrop</span>
         </div>
-        <div class="nav-item" data-screen="trade">
+        <div class="nav-item" data-screen="trade" onclick="switchScreen('trade')">
             <div class="nav-icon">
                 <img src="./assets/icons/icon_trade.png" alt="Takas">
             </div>
@@ -1860,50 +1860,80 @@
         });
 
         function initializeGame() {
+            console.log('🎮 initializeGame started');
             try {
                 // Telegram kullanıcı bilgileri
+                console.log('📱 Checking Telegram...');
                 if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
                     gameData.user_id = tg.initDataUnsafe.user.id;
                     gameData.username = tg.initDataUnsafe.user.first_name || 'Oyuncu';
+                    console.log('✅ Telegram user:', gameData.username);
                 } else {
                     gameData.user_id = Math.floor(Math.random() * 1000000);
+                    console.log('⚠️ No Telegram, using random ID:', gameData.user_id);
                 }
 
                 // LocalStorage'dan yükle
+                console.log('💾 Loading game data...');
                 loadGameData();
+                console.log('✅ Game data loaded');
                 
                 // Mining data'yı yükle (varsa)
+                console.log('⛏️ Loading mining data...');
                 if (typeof loadMiningData === 'function') {
                     loadMiningData();
+                    console.log('✅ Mining data loaded');
                 }
 
                 // Event listener'lar
+                console.log('🎯 Adding event listeners...');
                 const coinButton = document.getElementById('coin-button');
                 if (coinButton) {
                     coinButton.addEventListener('click', handleCoinClick);
+                    console.log('✅ Coin button listener added');
+                } else {
+                    console.error('❌ Coin button not found!');
                 }
                 
                 // Menü toggle
                 const menuToggle = document.getElementById('menuToggle');
                 const menuOverlay = document.getElementById('menuOverlay');
-                if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
-                if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
+                if (menuToggle) {
+                    menuToggle.addEventListener('click', toggleMenu);
+                    console.log('✅ Menu toggle listener added');
+                }
+                if (menuOverlay) {
+                    menuOverlay.addEventListener('click', toggleMenu);
+                    console.log('✅ Menu overlay listener added');
+                }
 
                 // Bottom nav
-                document.querySelectorAll('.nav-item').forEach(item => {
+                console.log('🔽 Setting up bottom nav...');
+                const navItems = document.querySelectorAll('.nav-item');
+                console.log('Found nav items:', navItems.length);
+                navItems.forEach(item => {
                     item.addEventListener('click', function() {
                         const screen = this.getAttribute('data-screen');
+                        console.log('📱 Switching to screen:', screen);
                         switchScreen(screen);
                     });
                 });
+                console.log('✅ Bottom nav listeners added');
 
                 // Interval'ler
+                console.log('⏰ Starting intervals...');
                 setInterval(updateEnergy, 1000);
                 setInterval(updateDisplay, 100);
+                console.log('✅ Intervals started');
 
+                console.log('🎨 Initial display update...');
                 updateDisplay();
+                console.log('✅ Display updated');
+                
+                console.log('🎉 Game initialized successfully!');
             } catch (error) {
-                console.error('Game initialization error:', error);
+                console.error('❌ Game initialization error:', error);
+                console.error('Error stack:', error.stack);
             }
         }
 
@@ -1977,31 +2007,69 @@
         }
 
         function updateDisplay() {
-            document.getElementById('coin-count').textContent = formatNumber(Math.floor(gameData.coins));
-            document.getElementById('profit-per-hour').textContent = formatNumber(gameData.profit_per_hour);
-            document.getElementById('profit-3h').textContent = formatNumber(gameData.profit_per_hour * 3);
-            document.getElementById('level-text').textContent = `Level ${gameData.level}`;
-            document.getElementById('xp-text').textContent = Math.floor(gameData.xp);
-            document.getElementById('energy-display').textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
-            document.getElementById('tap-counter').textContent = gameData.total_taps;
-            document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
+            try {
+                // Ana ekran coinleri
+                const coinCount = document.getElementById('coin-count');
+                if (coinCount) coinCount.textContent = formatNumber(Math.floor(gameData.coins));
+                
+                const profitHour = document.getElementById('profit-per-hour');
+                if (profitHour) profitHour.textContent = formatNumber(gameData.profit_per_hour);
+                
+                const profit3h = document.getElementById('profit-3h');
+                if (profit3h) profit3h.textContent = formatNumber(gameData.profit_per_hour * 3);
+                
+                const levelText = document.getElementById('level-text');
+                if (levelText) levelText.textContent = `Level ${gameData.level}`;
+                
+                const xpText = document.getElementById('xp-text');
+                if (xpText) xpText.textContent = Math.floor(gameData.xp);
+                
+                const energyDisplay = document.getElementById('energy-display');
+                if (energyDisplay) energyDisplay.textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
+                
+                const tapCounter = document.getElementById('tap-counter');
+                if (tapCounter) tapCounter.textContent = gameData.total_taps;
+                
+                const comboMultiplier = document.getElementById('combo-multiplier');
+                if (comboMultiplier) comboMultiplier.textContent = gameData.combo_multiplier.toFixed(1);
 
-            const energyPercent = (gameData.energy / gameData.max_energy) * 100;
-            document.getElementById('energy-fill').style.width = energyPercent + '%';
+                const energyFill = document.getElementById('energy-fill');
+                if (energyFill) {
+                    const energyPercent = (gameData.energy / gameData.max_energy) * 100;
+                    energyFill.style.width = energyPercent + '%';
+                }
 
-            // Profil güncelle
-            document.getElementById('profile-name').textContent = gameData.username;
-            document.getElementById('profile-id').textContent = gameData.user_id;
-            document.getElementById('profile-coins').textContent = formatNumber(Math.floor(gameData.coins));
-            document.getElementById('profile-level').textContent = gameData.level;
-            document.getElementById('profile-taps').textContent = formatNumber(gameData.total_taps);
-            document.getElementById('profile-cards').textContent = gameData.cards_bought;
+                // Profil güncelle
+                const profileName = document.getElementById('profile-name');
+                if (profileName) profileName.textContent = gameData.username;
+                
+                const profileId = document.getElementById('profile-id');
+                if (profileId) profileId.textContent = gameData.user_id;
+                
+                const profileCoins = document.getElementById('profile-coins');
+                if (profileCoins) profileCoins.textContent = formatNumber(Math.floor(gameData.coins));
+                
+                const profileLevel = document.getElementById('profile-level');
+                if (profileLevel) profileLevel.textContent = gameData.level;
+                
+                const profileTaps = document.getElementById('profile-taps');
+                if (profileTaps) profileTaps.textContent = formatNumber(gameData.total_taps);
+                
+                const profileCards = document.getElementById('profile-cards');
+                if (profileCards) profileCards.textContent = gameData.cards_bought;
 
-            // 🔃 Takas ekranı güncelle
-            updateTradeDisplay();
+                // Takas ekranı güncelle
+                if (typeof updateTradeDisplay === 'function') {
+                    updateTradeDisplay();
+                }
 
-            // 🪂 Airdrop ekranı güncelle
-            updateAirdropDisplay();
+                // Airdrop ekranı güncelle
+                if (typeof updateAirdropDisplay === 'function') {
+                    updateAirdropDisplay();
+                }
+            } catch (error) {
+                console.error('updateDisplay error:', error);
+            }
         }
 
         function formatNumber(num) {
@@ -2017,22 +2085,44 @@
         }
 
         function switchScreen(screenName) {
-            // Tüm ekranları gizle
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            console.log('🔄 Switching to screen:', screenName);
+            
+            try {
+                // Tüm ekranları gizle
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-            // Seçili ekranı göster
-            const screenMap = {
-                'home': 'home-screen',
-                'cards': 'cards-screen',
-                'mining': 'mining-screen',
-                'profile': 'profile-screen',
-                'airdrop': 'airdrop-screen',
-                'trade': 'trade-screen'
-            };
+                // Seçili ekranı göster
+                const screenMap = {
+                    'home': 'home-screen',
+                    'cards': 'cards-screen',
+                    'mining': 'mining-screen',
+                    'profile': 'profile-screen',
+                    'airdrop': 'airdrop-screen',
+                    'trade': 'trade-screen'
+                };
 
-            document.getElementById(screenMap[screenName]).classList.add('active');
-            document.querySelector(`[data-screen="${screenName}"]`).classList.add('active');
+                const targetScreenId = screenMap[screenName];
+                console.log('Target screen ID:', targetScreenId);
+                
+                const targetScreen = document.getElementById(targetScreenId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                    console.log('✅ Screen activated:', targetScreenId);
+                } else {
+                    console.error('❌ Screen not found:', targetScreenId);
+                }
+                
+                const navItem = document.querySelector(`[data-screen="${screenName}"]`);
+                if (navItem) {
+                    navItem.classList.add('active');
+                    console.log('✅ Nav item activated');
+                } else {
+                    console.error('❌ Nav item not found for:', screenName);
+                }
+            } catch (error) {
+                console.error('❌ switchScreen error:', error);
+            }
         }
 
         function openProfile() {

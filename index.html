@@ -643,16 +643,16 @@
             z-index: 1;
         }
 
-        .mining-status-running {
+        .mining-status-active {
             background: rgba(0, 255, 150, 0.3);
             color: #00ff96;
             border: 1px solid rgba(0, 255, 150, 0.5);
         }
 
-        .mining-status-stopped {
-            background: rgba(255, 80, 80, 0.3);
-            color: #ff5050;
-            border: 1px solid rgba(255, 80, 80, 0.5);
+        .mining-status-ready {
+            background: rgba(255, 165, 0, 0.3);
+            color: #ffaa00;
+            border: 1px solid rgba(255, 165, 0, 0.5);
         }
 
         .mining-card-image {
@@ -691,6 +691,9 @@
 
         .mining-value {
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .mining-green {
@@ -719,6 +722,14 @@
             width: 20px;
             height: 20px;
             object-fit: contain;
+        }
+
+        .neon-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            vertical-align: middle;
+            display: inline-block;
         }
 
         .mining-countdown {
@@ -758,7 +769,7 @@
         }
 
         .claim-mining-btn {
-            background: linear-gradient(135deg, #00ffcc, #00cc66);
+            background: linear-gradient(135deg, #ffaa00, #ff8800);
             color: #000000;
             border: none;
             padding: 10px 15px;
@@ -767,7 +778,7 @@
             font-weight: 600;
             font-size: 13px;
             transition: all 0.2s;
-            box-shadow: 0 0 20px rgba(0, 255, 150, 0.4);
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.4);
         }
 
         /* Airdrop Ekranı */
@@ -877,6 +888,48 @@
             font-size: 16px;
             cursor: pointer;
             font-family: inherit;
+        }
+
+        /* Madencilik Üst Bilgi Kartı */
+        .mining-stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mining-stat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mining-stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .mining-stat-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mining-stat-value img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .neontap-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 4px;
         }
 
         /* Loading */
@@ -1167,149 +1220,21 @@
             <div class="modal-title" style="margin: 20px 0;">Madencilik Kartları</div>
             
             <div style="padding: 20px;">
-                <!-- Madencilik Bilgi Kartı -->
-                <div style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px; margin-bottom: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="font-size: 12px; opacity: 0.7;">Toplam Madencilik Gücü</div>
-                            <div style="font-size: 20px; font-weight: bold; color: #FFD700;" id="total-mining-power">0 MH/s</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 12px; opacity: 0.7;">Saniyede Kazanç</div>
-                            <div style="font-size: 20px; font-weight: bold; color: #00ff96;" id="mining-per-second">0 coin/s</div>
-                        </div>
+                <!-- Madencilik Bilgi Kartı - GÜNCELLENDİ -->
+                <div class="mining-stats-card">
+                    <div class="mining-stat-item">
+                        <span class="mining-stat-label">Saatlik Kazanç</span>
+                        <span class="mining-stat-value" id="mining-hourly-earning">
+                            0
+                            <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="neon-icon">
+                            <span class="neontap-text">NEONTAP</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- Madencilik Kartları Grid (2x5) -->
-                <div class="mining-cards-grid">
-                    <!-- YEŞİL KARTLAR (1. Sıra) -->
-                    <div class="mining-card mining-card-green" id="mining-card-eco1">
-                        <div class="mining-status-badge mining-status-stopped" id="status-badge-eco1">Durduruldu</div>
-                        <img src="assets/icons/eco_miner_rig.png" alt="Eco Miner Rig" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Eco Miner Rig</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">10 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+0.625 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">15 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 0.5 TON</span></div>
-                        </div>
-                        <div class="mining-countdown" id="countdown-eco1" style="display: none;"><span class="countdown-label">Kalan Süre:</span><span class="countdown-time">00:00:00</span></div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('eco1')">Satın Al</button>
-                        <button class="claim-mining-btn" onclick="claimMiningReward('eco1')" style="display: none;">Ödülü Claim Et</button>
-                    </div>
-
-                    <div class="mining-card mining-card-green">
-                        <img src="assets/icons/eco_miner_rig2.png" alt="Eco Miner Rig 2" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Eco Miner Rig+</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">25 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+1.56 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">37.5 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 1 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('eco2')">Satın Al</button>
-                    </div>
-
-                    <!-- BEYAZ KARTLAR (2. Sıra) -->
-                    <div class="mining-card mining-card-white">
-                        <img src="assets/icons/basic_mining_unit.png" alt="Basic Mining Unit" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Basic Mining Unit</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">50 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+3.125 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">75 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 2 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('basic1')">Satın Al</button>
-                    </div>
-
-                    <div class="mining-card mining-card-white">
-                        <img src="assets/icons/basic_mining_unit2.png" alt="Basic Mining Unit 2" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Basic Mining Unit+</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">100 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+6.25 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">150 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 4 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('basic2')">Satın Al</button>
-                    </div>
-
-                    <!-- MAVİ KARTLAR (3. Sıra) -->
-                    <div class="mining-card mining-card-blue">
-                        <img src="assets/icons/blue_core_miner.png" alt="Blue Core Miner" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Blue Core Miner</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">250 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+15.625 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">375 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 8 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('blue1')">Satın Al</button>
-                    </div>
-
-                    <div class="mining-card mining-card-blue">
-                        <img src="assets/icons/blue_core_miner2.png" alt="Blue Core Miner 2" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Blue Core Miner+</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">500 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+31.25 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">750 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 15 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('blue2')">Satın Al</button>
-                    </div>
-
-                    <!-- KIRMIZI KARTLAR (4. Sıra) -->
-                    <div class="mining-card mining-card-red">
-                        <img src="assets/icons/turbo_flame_miner.png" alt="Turbo Flame Miner" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Turbo Flame Miner</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">1000 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+62.5 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">1500 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 30 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('turbo1')">Satın Al</button>
-                    </div>
-
-                    <div class="mining-card mining-card-red">
-                        <img src="assets/icons/turbo_flame_miner2.png" alt="Turbo Flame Miner 2" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Turbo Flame Miner+</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">2500 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+156.25 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">3750 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 60 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('turbo2')">Satın Al</button>
-                    </div>
-
-                    <!-- SARI KARTLAR (5. Sıra) -->
-                    <div class="mining-card mining-card-gold">
-                        <img src="assets/icons/golden_hash_machine.png" alt="Golden Hash Machine" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Golden Hash Machine</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">5000 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+312.5 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">7500 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 100 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('golden1')">Satın Al</button>
-                    </div>
-
-                    <div class="mining-card mining-card-gold">
-                        <img src="assets/icons/golden_hash_machine2.png" alt="Golden Hash Machine 2" class="mining-card-image">
-                        <div class="mining-card-details">
-                            <div class="mining-card-name">Golden Hash Machine+</div>
-                            <div class="mining-info-row"><span class="mining-label">Mining Power:</span><span class="mining-value">10000 MH</span></div>
-                            <div class="mining-info-row"><span class="mining-label">Saatlik Üretim:</span><span class="mining-value mining-green">+625 NEON</span></div>
-                            <div class="mining-info-row"><span class="mining-label">24 Saatlik Maks:</span><span class="mining-value mining-gold">15000 NEON</span></div>
-                            <div class="mining-info-row mining-price-row"><span class="mining-label">Fiyat:</span><span class="mining-price-value"><img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> 200 TON</span></div>
-                        </div>
-                        <button class="buy-mining-card-btn" onclick="buyMiningCard('golden2')">Satın Al</button>
-                    </div>
+                <!-- Madencilik Kartları Grid -->
+                <div class="mining-cards-grid" id="mining-cards-container">
+                    <!-- Kartlar JavaScript ile dinamik olarak doldurulacak -->
                 </div>
             </div>
         </div>
@@ -1521,18 +1446,23 @@
             totalEarnedNeonTap: 0
         };
 
-        // Mining kartları
-        let miningCards = {
-            eco1: { owned: false, power: 10, price: 0.5, startTime: null, isRunning: false, accumulated: 0 },
-            eco2: { owned: false, power: 25, price: 1, startTime: null, isRunning: false, accumulated: 0 },
-            basic1: { owned: false, power: 50, price: 2, startTime: null, isRunning: false, accumulated: 0 },
-            basic2: { owned: false, power: 100, price: 4, startTime: null, isRunning: false, accumulated: 0 },
-            blue1: { owned: false, power: 250, price: 8, startTime: null, isRunning: false, accumulated: 0 },
-            blue2: { owned: false, power: 500, price: 15, startTime: null, isRunning: false, accumulated: 0 },
-            turbo1: { owned: false, power: 1000, price: 30, startTime: null, isRunning: false, accumulated: 0 },
-            turbo2: { owned: false, power: 2500, price: 60, startTime: null, isRunning: false, accumulated: 0 },
-            golden1: { owned: false, power: 5000, price: 100, startTime: null, isRunning: false, accumulated: 0 },
-            golden2: { owned: false, power: 10000, price: 200, startTime: null, isRunning: false, accumulated: 0 }
+        // Mining kartları - GÜNCELLENDİ
+        let miningCards = [
+            { id: 'eco1', name: 'Eco Miner Rig', image: 'eco_miner_rig.png', power: 10, price: 0.5, color: 'green', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'eco2', name: 'Eco Miner Rig+', image: 'eco_miner_rig2.png', power: 25, price: 1, color: 'green', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'basic1', name: 'Basic Mining Unit', image: 'basic_mining_unit.png', power: 50, price: 2, color: 'white', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'basic2', name: 'Basic Mining Unit+', image: 'basic_mining_unit2.png', power: 100, price: 4, color: 'white', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'blue1', name: 'Blue Core Miner', image: 'blue_core_miner.png', power: 250, price: 8, color: 'blue', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'blue2', name: 'Blue Core Miner+', image: 'blue_core_miner2.png', power: 500, price: 15, color: 'blue', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'turbo1', name: 'Turbo Flame Miner', image: 'turbo_flame_miner.png', power: 1000, price: 30, color: 'red', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'turbo2', name: 'Turbo Flame Miner+', image: 'turbo_flame_miner2.png', power: 2500, price: 60, color: 'red', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'golden1', name: 'Golden Hash Machine', image: 'golden_hash_machine.png', power: 5000, price: 100, color: 'gold', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'golden2', name: 'Golden Hash Machine+', image: 'golden_hash_machine2.png', power: 10000, price: 200, color: 'gold', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 }
+        ];
+
+        const MINING_CONFIG = {
+            CYCLE_DURATION: 24 * 60 * 60 * 1000, // 24 saat
+            HOURLY_MULTIPLIER: 0.0625 // power * 0.0625 = saatlik NEON
         };
 
         // Load game data
@@ -1545,8 +1475,8 @@
             
             const miningSaved = localStorage.getItem(`mining_${gameData.user_id}`);
             if (miningSaved) {
-                const data = JSON.parse(miningSaved);
-                Object.assign(miningCards, data);
+                const savedCards = JSON.parse(miningSaved);
+                miningCards = savedCards;
             }
         }
 
@@ -1612,7 +1542,117 @@
             updateDisplay();
         }, 1000);
 
-        // Display update
+        // Mining update - GÜNCELLENDİ
+        setInterval(() => {
+            let needsUpdate = false;
+            const now = Date.now();
+
+            miningCards.forEach(card => {
+                if (card.owned && card.isRunning) {
+                    const elapsed = now - card.startTime;
+                    
+                    if (elapsed >= MINING_CONFIG.CYCLE_DURATION) {
+                        // 24 saat doldu, claim hazır
+                        card.isRunning = false;
+                        card.isClaimReady = true;
+                        card.accumulated = card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24; // 24 saatlik toplam
+                        needsUpdate = true;
+                    } else {
+                        // Henüz dolmadı, birikeni güncelle
+                        card.accumulated = (elapsed / (60 * 60 * 1000)) * card.power * MINING_CONFIG.HOURLY_MULTIPLIER;
+                    }
+                }
+            });
+
+            if (needsUpdate) {
+                saveGameData();
+            }
+
+            updateMiningCards();
+        }, 1000);
+
+        // Mining kartlarını render et - YENİ
+        function updateMiningCards() {
+            const container = document.getElementById('mining-cards-container');
+            if (!container) return;
+
+            container.innerHTML = miningCards.map(card => {
+                const hourlyEarn = (card.power * MINING_CONFIG.HOURLY_MULTIPLIER).toFixed(3);
+                const dailyMax = (card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24).toFixed(1);
+                
+                // Kartın durumuna göre badge
+                let badgeHtml = '';
+                if (card.owned) {
+                    if (card.isClaimReady) {
+                        badgeHtml = `<div class="mining-status-badge mining-status-ready">Claim Hazır</div>`;
+                    } else if (card.isRunning) {
+                        badgeHtml = `<div class="mining-status-badge mining-status-active">Aktif</div>`;
+                    }
+                }
+
+                // Buton
+                let buttonHtml = '';
+                if (!card.owned) {
+                    buttonHtml = `<button class="buy-mining-card-btn" onclick="buyMiningCard('${card.id}')">Satın Al</button>`;
+                } else if (card.isClaimReady) {
+                    buttonHtml = `<button class="claim-mining-btn" onclick="claimMiningReward('${card.id}')">Claim Et</button>`;
+                }
+
+                // Kalan süre (sadece aktif kartlar için)
+                let countdownHtml = '';
+                if (card.owned && card.isRunning && card.startTime) {
+                    const elapsed = Date.now() - card.startTime;
+                    const remaining = Math.max(0, MINING_CONFIG.CYCLE_DURATION - elapsed);
+                    const hours = Math.floor(remaining / (60 * 60 * 1000));
+                    const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+                    const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+                    countdownHtml = `
+                        <div class="mining-countdown">
+                            <span class="countdown-label">Kalan Süre:</span>
+                            <span class="countdown-time">${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}</span>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="mining-card mining-card-${card.color}">
+                        ${badgeHtml}
+                        <img src="assets/icons/${card.image}" alt="${card.name}" class="mining-card-image">
+                        <div class="mining-card-details">
+                            <div class="mining-card-name">${card.name}</div>
+                            <div class="mining-info-row">
+                                <span class="mining-label">Mining Power:</span>
+                                <span class="mining-value">${card.power} MH</span>
+                            </div>
+                            <div class="mining-info-row">
+                                <span class="mining-label">Saatlik Üretim:</span>
+                                <span class="mining-value mining-green">
+                                    +${hourlyEarn}
+                                    <img src="assets/icons/1000010729-removebg-preview.png" alt="NEON" class="neon-icon">
+                                </span>
+                            </div>
+                            <div class="mining-info-row">
+                                <span class="mining-label">24 Saatlik Maks:</span>
+                                <span class="mining-value mining-gold">
+                                    ${dailyMax}
+                                    <img src="assets/icons/1000010729-removebg-preview.png" alt="NEON" class="neon-icon">
+                                </span>
+                            </div>
+                            <div class="mining-info-row mining-price-row">
+                                <span class="mining-label">Fiyat:</span>
+                                <span class="mining-price-value">
+                                    <img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> ${card.price} TON
+                                </span>
+                            </div>
+                        </div>
+                        ${countdownHtml}
+                        ${buttonHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Display update - GÜNCELLENDİ
         function updateDisplay() {
             document.getElementById('coin-count').textContent = formatNumber(Math.floor(gameData.coins));
             document.getElementById('profit-per-hour').textContent = formatNumber(gameData.profit_per_hour);
@@ -1641,11 +1681,18 @@
             // Airdrop
             document.getElementById('airdrop-token-balance').textContent = formatNumber(gameData.neonTapToken);
             
-            // Mining
-            let totalPower = 0;
-            Object.values(miningCards).forEach(card => { if (card.owned) totalPower += card.power; });
-            document.getElementById('total-mining-power').textContent = formatNumber(totalPower) + ' MH/s';
-            document.getElementById('mining-per-second').textContent = formatNumber(totalPower / 10) + ' coin/s';
+            // Mining - Saatlik kazanç
+            let totalHourlyNeon = 0;
+            miningCards.forEach(card => {
+                if (card.owned && (card.isRunning || card.isClaimReady)) {
+                    totalHourlyNeon += card.power * MINING_CONFIG.HOURLY_MULTIPLIER;
+                }
+            });
+            document.getElementById('mining-hourly-earning').innerHTML = `
+                ${totalHourlyNeon.toFixed(1)}
+                <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="neon-icon">
+                <span class="neontap-text">NEONTAP</span>
+            `;
         }
 
         function formatNumber(num) {
@@ -1699,9 +1746,9 @@
             alert(`Kart satın alındı! Saatlik kazancın +${profit} arttı!`);
         };
 
-        // Mining kart satın al
+        // Mining kart satın al - GÜNCELLENDİ
         window.buyMiningCard = function(cardId) {
-            const card = miningCards[cardId];
+            const card = miningCards.find(c => c.id === cardId);
             if (card.owned) {
                 alert('Bu kartı zaten satın aldınız!');
                 return;
@@ -1716,13 +1763,37 @@
 
             gameData.coins -= coinEquivalent;
             card.owned = true;
-            card.startTime = Date.now();
             card.isRunning = true;
+            card.isClaimReady = false;
+            card.startTime = Date.now();
             card.accumulated = 0;
 
             saveGameData();
             updateDisplay();
-            alert(`${cardId} satın alındı! Madencilik başladı.`);
+            updateMiningCards();
+            alert(`${card.name} satın alındı! Madencilik başladı.`);
+        };
+
+        // Mining ödülü claim et - YENİ
+        window.claimMiningReward = function(cardId) {
+            const card = miningCards.find(c => c.id === cardId);
+            if (!card || !card.isClaimReady) return;
+
+            const reward = Math.floor(card.accumulated);
+            gameData.neonTapToken += reward;
+
+            // Kartı yeniden başlat
+            card.isRunning = true;
+            card.isClaimReady = false;
+            card.startTime = Date.now();
+            card.accumulated = 0;
+
+            saveGameData();
+            updateDisplay();
+            updateMiningCards();
+
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            alert(`${reward} NeonTap Token kazandınız!`);
         };
 
         // Takas hesaplama
@@ -1784,6 +1855,7 @@
         };
 
         // İlk güncelleme
+        updateMiningCards();
         updateDisplay();
     </script>
 </body>

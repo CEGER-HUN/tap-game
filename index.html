@@ -165,20 +165,22 @@
         .coin-display {
             font-size: 48px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         .coin-label {
-            font-size: 14px;
-            opacity: 0.7;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #FFD700;
             margin-bottom: 20px;
         }
 
         /* Stat Cards */
         .stat-cards {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -191,12 +193,118 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 12px;
+            text-align: center;
         }
 
         .stat-value {
             font-size: 16px;
             font-weight: bold;
             margin-top: 5px;
+        }
+
+        /* Pasif Kazanç Kartı */
+        .passive-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .passive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .passive-title {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .passive-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff96;
+        }
+
+        .passive-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .passive-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff96, #00ccff);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .passive-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .passive-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .passive-button:active {
+            transform: scale(0.95);
+        }
+
+        .passive-button.claim {
+            background: linear-gradient(135deg, #00ff96, #00cc66);
+            color: #1a1a2e;
+        }
+
+        .passive-button.claim:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .passive-button.x2 {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a1a2e;
+            position: relative;
+        }
+
+        .passive-button.x2:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .x2-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .passive-time {
+            font-size: 11px;
+            opacity: 0.6;
+            margin-top: 8px;
+            text-align: center;
         }
 
         /* Level & Energy Bar */
@@ -243,7 +351,7 @@
         /* Coin Button */
         .clicker-area {
             text-align: center;
-            margin: 40px 0;
+            margin: 20px 0;
             position: relative;
         }
 
@@ -258,6 +366,12 @@
             font-size: 14px;
             font-weight: bold;
             border: 2px solid #FFD700;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .combo-display.visible {
+            opacity: 1;
         }
 
         .coin-button {
@@ -278,15 +392,6 @@
             width: 100%;
             height: 100%;
             filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.5));
-        }
-
-        .tap-counter {
-            text-align: center;
-            font-size: 48px;
-            font-weight: bold;
-            margin-top: 20px;
-            color: #FFD700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
         }
 
         /* Floating Animation */
@@ -1065,15 +1170,33 @@
         <div class="screen active" id="home-screen">
             <div class="top-info">
                 <div class="coin-display" id="coin-count">0</div>
-                <div class="coin-label">Coins</div>
+                <div class="coin-label">GO COIN</div>
+            </div>
+
+            <!-- Pasif Kazanç Kartı -->
+            <div class="passive-card">
+                <div class="passive-header">
+                    <span class="passive-title">Pasif Kazanç</span>
+                    <span class="passive-amount" id="passive-amount">0 GO</span>
+                </div>
+                <div class="passive-progress">
+                    <div class="passive-progress-fill" id="passive-progress" style="width: 0%;"></div>
+                </div>
+                <div class="passive-buttons">
+                    <button class="passive-button x2" id="x2-button" onclick="claimPassiveWithAd()">
+                        2X
+                        <span class="x2-counter" id="x2-counter">6</span>
+                    </button>
+                    <button class="passive-button claim" id="claim-button" onclick="claimPassive()">
+                        CLAIM
+                    </button>
+                </div>
+                <div class="passive-time" id="passive-time"></div>
             </div>
 
             <div class="stat-cards">
                 <div class="stat-card">
-                    💰 Saatlik: <span class="stat-value" id="profit-per-hour">0</span>
-                </div>
-                <div class="stat-card">
-                    3h: <span class="stat-value" id="profit-3h">0</span>
+                    <span class="stat-value" id="profit-per-hour">0</span>/s
                 </div>
             </div>
 
@@ -1092,11 +1215,10 @@
             </div>
 
             <div class="clicker-area">
-                <div class="combo-display">COMBO X<span id="combo-multiplier">1</span></div>
+                <div class="combo-display" id="combo-display">COMBO X<span id="combo-multiplier">1</span></div>
                 <button class="coin-button" id="coin-button">
-                    <img src="assets/icons/1000010731-removebg-preview.png" alt="Neontap Coin">
+                    <img src="assets/icons/1000010731-removebg-preview.png" alt="GO Coin">
                 </button>
-                <div class="tap-counter" id="tap-counter">0</div>
             </div>
         </div>
 
@@ -1338,7 +1460,7 @@
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
 
-        // 📦 Kart Verileri (Mevcut kartlar korundu, sadece level ve unlock eklendi)
+        // 📦 Kart Verileri
         const CARDS = [
             // Profesyon Kategorisi (6 kart)
             { id: 'profesyon', category: 'profession', name: 'Profesyon', baseIncome: 100, basePrice: 500, icon: 'card_profession.png', level: 0, unlockRequirement: null },
@@ -1370,7 +1492,7 @@
             coins: 0,
             energy: 1000,
             max_energy: 1000,
-            energy_recharge_rate: 1,
+            energy_recharge_rate: 1000 / (30 * 60), // 30 dakikada tam dolar
             tap_power: 1,
             level: 1,
             xp: 0,
@@ -1385,7 +1507,16 @@
             totalTradedGoCoin: 0,
             totalEarnedNeonTap: 0,
             prestigePoints: 0,
-            cardLevels: {} // Kart level'ları için
+            cardLevels: {},
+            
+            // Pasif kazanç sistemi
+            passiveEarnings: 0,
+            passiveStartTime: Date.now(),
+            passiveLastClaim: Date.now(),
+            passiveMaxDuration: 5 * 60 * 60 * 1000, // 5 saat
+            passiveCooldown: 0,
+            x2UsesLeft: 6,
+            x2LastReset: Date.now()
         };
 
         // Kart level'larını başlat
@@ -1436,7 +1567,9 @@
             CARDS.forEach(card => {
                 total += calculateCardIncome(card, gameData.cardLevels[card.id]);
             });
-            // Prestige bonusu ekle
+            // Level bonusu (%5 per level)
+            total = total * (1 + (gameData.level - 1) * 0.05);
+            // Prestige bonusu
             total = total * (1 + gameData.prestigePoints * 0.1);
             return total;
         }
@@ -1554,11 +1687,108 @@
             updateDisplay();
         };
 
+        // Pasif kazanç hesaplama
+        function calculatePassiveEarnings() {
+            const now = Date.now();
+            const totalIncome = calculateTotalIncome() / 3600; // Saniyelik kazanç
+            
+            // 5 saat kontrolü
+            const elapsed = Math.min(now - gameData.passiveStartTime, gameData.passiveMaxDuration);
+            gameData.passiveEarnings = Math.floor(totalIncome * elapsed / 1000); // milisaniyeye göre düzelt
+            
+            return gameData.passiveEarnings;
+        }
+
+        // CLAIM işlemi
+        window.claimPassive = function() {
+            const now = Date.now();
+            
+            // Cooldown kontrolü (5 saniye)
+            if (gameData.passiveCooldown > now) {
+                showModal('Bekleyin', 'Lütfen 5 saniye bekleyin.');
+                return;
+            }
+            
+            const earnings = calculatePassiveEarnings();
+            if (earnings <= 0) {
+                showModal('Bilgi', 'Henüz birikmiş kazancınız yok.');
+                return;
+            }
+            
+            gameData.coins += earnings;
+            gameData.passiveStartTime = now;
+            gameData.passiveEarnings = 0;
+            gameData.passiveCooldown = now + 5000; // 5 saniye cooldown
+            
+            saveGameData();
+            updateDisplay();
+            
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        };
+
+        // 2X Claim (Reklam)
+        window.claimPassiveWithAd = function() {
+            const now = Date.now();
+            
+            // Günlük reset kontrolü
+            const dayInMs = 24 * 60 * 60 * 1000;
+            if (now - gameData.x2LastReset > dayInMs) {
+                gameData.x2UsesLeft = 6;
+                gameData.x2LastReset = now;
+            }
+            
+            if (gameData.x2UsesLeft <= 0) {
+                showModal('Limit Doldu', 'Günlük 2X hakkınız bitti. Yarın tekrar deneyin.');
+                return;
+            }
+            
+            // Cooldown kontrolü
+            if (gameData.passiveCooldown > now) {
+                showModal('Bekleyin', 'Lütfen 5 saniye bekleyin.');
+                return;
+            }
+            
+            const earnings = calculatePassiveEarnings();
+            if (earnings <= 0) {
+                showModal('Bilgi', 'Henüz birikmiş kazancınız yok.');
+                return;
+            }
+            
+            // Reklam simülasyonu (gerçekte reklam gösterilir)
+            showModal('Reklam', 'Reklam izleniyor...');
+            
+            setTimeout(() => {
+                gameData.coins += earnings * 2;
+                gameData.x2UsesLeft--;
+                gameData.passiveStartTime = now;
+                gameData.passiveEarnings = 0;
+                gameData.passiveCooldown = now + 5000;
+                
+                saveGameData();
+                updateDisplay();
+                closeModal();
+                
+                showModal('Başarılı', `${earnings * 2} GO Coin kazandınız!`);
+                if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            }, 2000);
+        };
+
         // Load game data
         function loadGameData() {
             const saved = localStorage.getItem(`game_${gameData.user_id}`);
             if (saved) {
                 const data = JSON.parse(saved);
+                
+                // Zaman manipülasyonu kontrolü
+                if (data.last_energy_update) {
+                    const timeDiff = Date.now() - data.last_energy_update;
+                    if (timeDiff > 24 * 60 * 60 * 1000) { // 24 saatten fazla fark varsa
+                        // Hile şüphesi, enerjiyi normale çek
+                        data.energy = data.max_energy;
+                        data.last_energy_update = Date.now();
+                    }
+                }
+                
                 Object.assign(gameData, data);
                 
                 // Kart level'larını yükle
@@ -1587,9 +1817,20 @@
         // Load data
         loadGameData();
 
+        // Combo sistemi - spam korumalı
+        let lastComboIncrease = 0;
+        
         // Coin click handler
         document.getElementById('coin-button').addEventListener('click', function(e) {
             if (gameData.energy < gameData.tap_power) return;
+
+            const now = Date.now();
+            
+            // Combo artışı (maksimum 1 saniyede 1)
+            if (now - lastComboIncrease >= 1000) {
+                gameData.combo_multiplier = Math.min(gameData.combo_multiplier + 0.1, 5);
+                lastComboIncrease = now;
+            }
 
             const earnedCoins = gameData.tap_power * gameData.combo_multiplier;
             gameData.coins += earnedCoins;
@@ -1597,15 +1838,15 @@
             gameData.total_taps++;
             gameData.xp += 1;
 
-            // Level up
+            // Level up kontrolü
             if (gameData.xp >= gameData.xp_to_next_level) {
                 gameData.level++;
                 gameData.xp = 0;
                 gameData.xp_to_next_level = Math.floor(gameData.xp_to_next_level * 1.5);
+                showModal('Level Up!', `Tebrikler! Level ${gameData.level} oldunuz!`);
             }
 
-            // Combo
-            gameData.combo_multiplier = Math.min(gameData.combo_multiplier + 0.1, 5);
+            // Combo zaman aşımı
             clearTimeout(gameData.combo_timeout);
             gameData.combo_timeout = setTimeout(() => {
                 gameData.combo_multiplier = 1;
@@ -1628,7 +1869,7 @@
             saveGameData();
         });
 
-        // Energy update
+        // Energy update - 30 dakikada tam dolar
         setInterval(() => {
             const now = Date.now();
             const timePassed = (now - gameData.last_energy_update) / 1000;
@@ -1748,16 +1989,51 @@
         // Display update
         function updateDisplay() {
             const totalIncome = calculateTotalIncome();
+            const passiveEarnings = calculatePassiveEarnings();
+            const now = Date.now();
             
+            // Ana ekran
             document.getElementById('coin-count').textContent = formatNumberFull(Math.floor(gameData.coins));
             document.getElementById('profit-per-hour').textContent = formatNumber(totalIncome);
-            document.getElementById('profit-3h').textContent = formatNumber(totalIncome * 3);
+            
+            // Level
             document.getElementById('level-text').textContent = `Level ${gameData.level}`;
             document.getElementById('xp-text').textContent = Math.floor(gameData.xp);
+            
+            // Enerji
             document.getElementById('energy-display').textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
-            document.getElementById('tap-counter').textContent = gameData.total_taps;
-            document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
             document.getElementById('energy-fill').style.width = (gameData.energy / gameData.max_energy * 100) + '%';
+            
+            // Combo (sadece aktifse görünür)
+            const comboDisplay = document.getElementById('combo-display');
+            if (gameData.combo_multiplier > 1) {
+                comboDisplay.classList.add('visible');
+                document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
+            } else {
+                comboDisplay.classList.remove('visible');
+            }
+            
+            // Pasif kazanç
+            document.getElementById('passive-amount').textContent = `${formatNumberFull(passiveEarnings)} GO`;
+            
+            // Progress bar
+            const elapsed = Math.min(now - gameData.passiveStartTime, gameData.passiveMaxDuration);
+            const progressPercent = (elapsed / gameData.passiveMaxDuration) * 100;
+            document.getElementById('passive-progress').style.width = `${progressPercent}%`;
+            
+            // Kalan süre
+            const remainingMs = Math.max(0, gameData.passiveMaxDuration - elapsed);
+            const remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
+            const remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
+            document.getElementById('passive-time').textContent = 
+                `Maksimum: 5 saat • Kalan: ${remainingHours}s ${remainingMinutes}d`;
+            
+            // 2X butonu
+            document.getElementById('x2-counter').textContent = gameData.x2UsesLeft;
+            document.getElementById('x2-button').disabled = gameData.x2UsesLeft <= 0;
+            
+            // Claim butonu
+            document.getElementById('claim-button').disabled = passiveEarnings <= 0 || gameData.passiveCooldown > now;
             
             // Profile
             document.getElementById('profile-name').textContent = gameData.username;
@@ -1952,6 +2228,9 @@
         document.getElementById('modal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
+
+        // Periyodik güncelleme
+        setInterval(updateDisplay, 1000);
     </script>
 </body>
 </html>

@@ -1141,7 +1141,7 @@
 </head>
 <body>
     <!-- Yükleme Ekranı -->
-    <div class="loading" id="loading">
+    <div class="loading" id="loading" style="display: none;">
         <div class="loading-spinner"></div>
     </div>
 
@@ -1783,6 +1783,31 @@
     </div>
 
     <script>
+        // 🚨 ACİL: Loading ekranını hemen kapat
+        (function() {
+            const hideLoading = function() {
+                const loading = document.getElementById('loading');
+                if (loading) {
+                    loading.style.display = 'none';
+                    console.log('Loading screen hidden');
+                }
+            };
+            
+            // Hemen çalıştır
+            hideLoading();
+            
+            // 100ms sonra tekrar dene
+            setTimeout(hideLoading, 100);
+            
+            // window.load'da tekrar dene
+            window.addEventListener('load', hideLoading);
+            
+            // DOMContentLoaded'da tekrar dene
+            document.addEventListener('DOMContentLoaded', hideLoading);
+        })();
+
+        console.log('🎮 Game script started');
+
         // Telegram Web App
         let tg = window.Telegram?.WebApp;
         if (tg) {

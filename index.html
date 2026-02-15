@@ -174,7 +174,7 @@
             font-weight: bold;
             letter-spacing: 2px;
             color: #FFD700;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         /* Stat Cards */
@@ -182,14 +182,14 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .stat-card {
             flex: 1;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 8px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 12px;
@@ -199,15 +199,15 @@
         .stat-value {
             font-size: 16px;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
-        /* Pasif Kazanç Kartı */
+        /* Pasif Kazanç Kartı - Kompakt versiyon */
         .passive-card {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            padding: 10px 12px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
@@ -216,26 +216,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .passive-title {
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.8;
         }
 
         .passive-amount {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             color: #00ff96;
         }
 
         .passive-progress {
             width: 100%;
-            height: 6px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin: 10px 0;
+            border-radius: 2px;
+            margin: 6px 0;
             overflow: hidden;
         }
 
@@ -248,17 +248,17 @@
 
         .passive-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 8px;
         }
 
         .passive-button {
             flex: 1;
-            padding: 12px;
+            padding: 8px 0;
             border: none;
-            border-radius: 12px;
+            border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -290,20 +290,20 @@
 
         .x2-counter {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -4px;
+            right: -4px;
             background: #ff4444;
             color: white;
             border-radius: 20px;
-            padding: 2px 6px;
-            font-size: 10px;
+            padding: 2px 5px;
+            font-size: 9px;
             font-weight: bold;
         }
 
         .passive-time {
-            font-size: 11px;
-            opacity: 0.6;
-            margin-top: 8px;
+            font-size: 10px;
+            opacity: 0.5;
+            margin-top: 6px;
             text-align: center;
         }
 
@@ -311,33 +311,33 @@
         .level-energy {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            padding: 15px;
+            padding: 12px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .level-display {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
         }
 
         .energy-bar-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
 
         .progress-bar {
             width: 100%;
-            height: 10px;
+            height: 8px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            border-radius: 4px;
             overflow: hidden;
         }
 
@@ -345,25 +345,25 @@
             height: 100%;
             background: linear-gradient(90deg, #00f260 0%, #0575e6 100%);
             transition: width 0.3s;
-            border-radius: 10px;
+            border-radius: 4px;
         }
 
         /* Coin Button */
         .clicker-area {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
             position: relative;
         }
 
         .combo-display {
             position: absolute;
-            top: -30px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 215, 0, 0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
             font-weight: bold;
             border: 2px solid #FFD700;
             opacity: 0;
@@ -375,8 +375,8 @@
         }
 
         .coin-button {
-            width: 250px;
-            height: 250px;
+            width: 220px;
+            height: 220px;
             border: none;
             background: transparent;
             cursor: pointer;
@@ -391,13 +391,13 @@
         .coin-button img {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.5));
+            filter: drop-shadow(0 8px 20px rgba(255, 215, 0, 0.5));
         }
 
         /* Floating Animation */
         .floating-text {
             position: absolute;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             pointer-events: none;
             animation: float-up 1s ease-out forwards;
@@ -413,7 +413,7 @@
             }
             100% {
                 opacity: 0;
-                transform: translateY(-100px) scale(1.5);
+                transform: translateY(-80px) scale(1.3);
             }
         }
 
@@ -426,7 +426,7 @@
             background: #0d0d0f;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 10px 0;
+            padding: 8px 0;
             display: flex;
             justify-content: space-around;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -438,10 +438,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 10px;
         }
 
@@ -455,8 +455,8 @@
         }
 
         .nav-icon {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -469,7 +469,7 @@
         }
 
         .nav-label {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.8;
         }
 
@@ -482,7 +482,7 @@
             display: block;
         }
 
-        /* Modal */
+        /* Modern Toast Popup */
         .modal {
             display: none;
             position: fixed;
@@ -490,7 +490,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -501,45 +501,62 @@
         }
 
         .modal-content {
-            background: linear-gradient(180deg, #1e3a5f 0%, #0f2540 100%);
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+            background: rgba(30, 30, 50, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px 25px;
+            border-radius: 18px;
+            max-width: 280px;
+            width: 80%;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 150, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 255, 150, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            animation: modalPop 0.2s ease-out;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        @keyframes modalPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #00ff96;
+            text-shadow: 0 0 15px #00ff96;
         }
 
         .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-message {
+            font-size: 13px;
+            line-height: 1.4;
+            opacity: 0.9;
+            color: #ddd;
+        }
+
+        .modal-close {
+            display: none;
         }
 
         /* Kartlar Ekranı */
         .cards-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 15px;
             overflow-x: auto;
             padding-bottom: 5px;
         }
@@ -548,12 +565,13 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.3s;
             backdrop-filter: blur(10px);
+            font-size: 12px;
         }
 
         .tab-button.active {
@@ -564,19 +582,19 @@
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
         .card-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
+            padding: 12px;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            min-height: 280px;
+            gap: 8px;
+            min-height: 260px;
             position: relative;
         }
 
@@ -592,7 +610,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -602,20 +620,20 @@
         }
 
         .lock-icon {
-            font-size: 30px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            margin-bottom: 6px;
         }
 
         .lock-text {
-            font-size: 11px;
+            font-size: 10px;
             text-align: center;
-            padding: 0 10px;
+            padding: 0 8px;
         }
 
         .card-icon {
             width: 100%;
-            height: 100px;
-            border-radius: 10px;
+            height: 80px;
+            border-radius: 8px;
             object-fit: cover;
             flex-shrink: 0;
             background: rgba(255, 255, 255, 0.1);
@@ -630,41 +648,41 @@
 
         .card-name {
             font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 4px;
+            font-size: 13px;
         }
 
         .card-profit {
-            font-size: 13px;
+            font-size: 12px;
             color: #FFD700;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .card-level-badge {
             background: rgba(255, 215, 0, 0.2);
-            padding: 2px 6px;
+            padding: 2px 5px;
             border-radius: 4px;
-            font-size: 10px;
+            font-size: 9px;
             display: inline-block;
         }
 
         .card-cost {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.6;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .buy-card-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             white-space: nowrap;
-            font-size: 13px;
+            font-size: 12px;
             width: 100%;
         }
 
@@ -676,57 +694,57 @@
         /* Profil Ekranı */
         .profile-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .profile-avatar {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            margin: 0 auto 15px;
+            font-size: 35px;
+            margin: 0 auto 12px;
             border: 3px solid rgba(255, 255, 255, 0.3);
         }
 
         .profile-name {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .profile-id {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.6;
         }
 
         .profile-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
         .profile-stat-card {
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 15px;
+            border-radius: 12px;
             text-align: center;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .profile-stat-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .profile-stat-label {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.7;
         }
 
@@ -734,19 +752,19 @@
         .mining-cards-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .mining-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 10px;
             backdrop-filter: blur(20px);
             border: 2px solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
         }
@@ -757,36 +775,36 @@
 
         .mining-card-green {
             border-color: rgba(0, 255, 100, 0.5);
-            box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
+            box-shadow: 0 0 12px rgba(0, 255, 100, 0.2);
         }
 
         .mining-card-white {
             border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
         }
 
         .mining-card-blue {
             border-color: rgba(50, 150, 255, 0.5);
-            box-shadow: 0 0 15px rgba(50, 150, 255, 0.2);
+            box-shadow: 0 0 12px rgba(50, 150, 255, 0.2);
         }
 
         .mining-card-red {
             border-color: rgba(255, 50, 50, 0.5);
-            box-shadow: 0 0 15px rgba(255, 50, 50, 0.2);
+            box-shadow: 0 0 12px rgba(255, 50, 50, 0.2);
         }
 
         .mining-card-gold {
             border-color: rgba(255, 215, 0, 0.5);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
         }
 
         .mining-status-badge {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
+            top: 6px;
+            right: 6px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 9px;
             font-weight: 600;
             z-index: 1;
         }
@@ -805,24 +823,24 @@
 
         .mining-card-image {
             width: 100%;
-            height: 100px;
+            height: 85px;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 8px;
             background: rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .mining-card-details {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .mining-card-name {
             font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 4px;
+            font-size: 12px;
+            margin-bottom: 3px;
             opacity: 0.9;
         }
 
@@ -830,7 +848,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .mining-label {
@@ -853,8 +871,8 @@
         }
 
         .mining-price-row {
-            margin-top: 4px;
-            padding-top: 6px;
+            margin-top: 3px;
+            padding-top: 4px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -867,14 +885,14 @@
         }
 
         .ton-icon {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             object-fit: contain;
         }
 
         .neon-icon {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             object-fit: contain;
             vertical-align: middle;
             display: inline-block;
@@ -882,32 +900,32 @@
 
         .mining-countdown {
             background: rgba(0, 0, 0, 0.3);
-            padding: 8px;
-            border-radius: 8px;
+            padding: 6px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .countdown-label {
             opacity: 0.7;
-            margin-right: 6px;
+            margin-right: 4px;
         }
 
         .countdown-time {
             font-weight: 700;
             color: #00ffcc;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         .buy-mining-card-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.2s;
         }
 
@@ -920,13 +938,13 @@
             background: linear-gradient(135deg, #ffaa00, #ff8800);
             color: #000000;
             border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.2s;
-            box-shadow: 0 0 20px rgba(255, 170, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
         }
 
         /* Airdrop Ekranı */
@@ -935,21 +953,21 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 255, 150, 0.3);
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: 0 0 30px rgba(0, 255, 150, 0.15);
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 150, 0.15);
         }
 
         .airdrop-claim-btn {
             background: linear-gradient(135deg, #00ffcc, #00cc66);
-            border-radius: 16px;
+            border-radius: 14px;
             font-weight: 600;
-            padding: 16px;
+            padding: 14px;
             border: none;
             color: #000000;
             width: 100%;
-            font-size: 16px;
+            font-size: 15px;
             cursor: not-allowed;
             font-family: inherit;
             opacity: 0.5;
@@ -960,9 +978,9 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 20px;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 15px;
         }
 
         /* Takas Ekranı */
@@ -971,16 +989,16 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 14px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            margin-bottom: 16px;
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 14px;
         }
 
         .swap-input {
             background: transparent;
             border: none;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
             color: #ffffff;
             outline: none;
@@ -995,12 +1013,12 @@
         }
 
         .swap-toggle {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            margin: 12px auto;
+            margin: 10px auto;
             background: linear-gradient(145deg, #00ffcc, #0077ff);
-            box-shadow: 0 0 20px rgba(0, 255, 200, 0.6);
+            box-shadow: 0 0 15px rgba(0, 255, 200, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1011,13 +1029,13 @@
 
         .swap-toggle:hover {
             transform: rotate(180deg);
-            box-shadow: 0 0 30px rgba(0, 255, 200, 0.8);
+            box-shadow: 0 0 25px rgba(0, 255, 200, 0.8);
         }
 
         .swap-info {
-            font-size: 12px;
-            margin-top: 12px;
-            margin-bottom: 16px;
+            font-size: 11px;
+            margin-top: 10px;
+            margin-bottom: 14px;
             padding: 0 4px;
             text-align: center;
             opacity: 0.7;
@@ -1025,15 +1043,15 @@
 
         .swap-confirm {
             background: linear-gradient(135deg, #00ffcc, #00cc66);
-            border-radius: 16px;
+            border-radius: 14px;
             font-weight: 600;
-            padding: 16px;
-            box-shadow: 0 0 25px rgba(0, 255, 150, 0.6);
+            padding: 14px;
+            box-shadow: 0 0 20px rgba(0, 255, 150, 0.6);
             transition: all 0.2s;
             border: none;
             color: #000000;
             width: 100%;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             font-family: inherit;
         }
@@ -1041,9 +1059,9 @@
         /* Madencilik Üst Bilgi Kartı */
         .mining-stats-card {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -1055,27 +1073,27 @@
         }
 
         .mining-stat-label {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.8;
         }
 
         .mining-stat-value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #FFD700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .mining-stat-value img {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             object-fit: contain;
         }
 
         .neontap-text {
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.6);
             margin-left: 4px;
         }
@@ -1098,8 +1116,8 @@
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-top: 4px solid #FFD700;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             animation: spin 1s linear infinite;
         }
 
@@ -1155,12 +1173,12 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modern Toast Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
-            <div class="modal-close" onclick="closeModal()">✕</div>
+            <div class="modal-icon" id="modalIcon">✅</div>
             <div class="modal-title" id="modalTitle"></div>
-            <div id="modalMessage"></div>
+            <div class="modal-message" id="modalMessage"></div>
         </div>
     </div>
 
@@ -1173,7 +1191,7 @@
                 <div class="coin-label">GO COIN</div>
             </div>
 
-            <!-- Pasif Kazanç Kartı -->
+            <!-- Pasif Kazanç Kartı - Kompakt -->
             <div class="passive-card">
                 <div class="passive-header">
                     <span class="passive-title">Pasif Kazanç</span>
@@ -1224,7 +1242,7 @@
 
         <!-- Kartlar Ekranı -->
         <div class="screen" id="cards-screen">
-            <div class="modal-title" style="margin: 20px 0;">Kartlar</div>
+            <div class="modal-title" style="margin: 15px 0;">Kartlar</div>
             
             <div class="cards-tabs">
                 <button class="tab-button active" onclick="showCardCategory('profession')">Profesyon</button>
@@ -1250,9 +1268,9 @@
 
         <!-- Madencilik Kartları Ekranı -->
         <div class="screen" id="mining-screen">
-            <div class="modal-title" style="margin: 20px 0;">Madencilik Kartları</div>
+            <div class="modal-title" style="margin: 15px 0;">Madencilik Kartları</div>
             
-            <div style="padding: 20px;">
+            <div style="padding: 15px;">
                 <!-- Madencilik Bilgi Kartı -->
                 <div class="mining-stats-card">
                     <div class="mining-stat-item">
@@ -1274,7 +1292,7 @@
 
         <!-- Profil Ekranı -->
         <div class="screen" id="profile-screen">
-            <div class="modal-title" style="margin: 20px 0;">👤 Profil</div>
+            <div class="modal-title" style="margin: 15px 0;">👤 Profil</div>
             <div class="profile-header">
                 <div class="profile-avatar">😊</div>
                 <div class="profile-name" id="profile-name">Oyuncu</div>
@@ -1303,16 +1321,16 @@
 
         <!-- Airdrop Ekranı -->
         <div class="screen" id="airdrop-screen">
-            <div class="modal-title" style="margin: 20px 0;">Airdrop</div>
+            <div class="modal-title" style="margin: 15px 0;">Airdrop</div>
             
-            <div style="padding: 20px; max-width: 420px; margin: 0 auto;">
+            <div style="padding: 15px; max-width: 420px; margin: 0 auto;">
                 <div class="airdrop-balance-card">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" style="width: 40px; height: 40px; object-fit: contain;">
-                        <div style="font-size: 18px; font-weight: 600; opacity: 0.9;">Toplam NeonTap</div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" style="width: 36px; height: 36px; object-fit: contain;">
+                        <div style="font-size: 16px; font-weight: 600; opacity: 0.9;">Toplam NeonTap</div>
                     </div>
-                    <div style="font-size: 42px; font-weight: 700; color: #00ff96; margin-bottom: 12px;" id="airdrop-token-balance">0</div>
-                    <div style="font-size: 13px; opacity: 0.6; line-height: 1.5;">
+                    <div style="font-size: 38px; font-weight: 700; color: #00ff96; margin-bottom: 10px;" id="airdrop-token-balance">0</div>
+                    <div style="font-size: 12px; opacity: 0.6; line-height: 1.4;">
                         Takas, görevler ve madencilikten kazanılan NeonTap Coinler
                     </div>
                 </div>
@@ -1320,10 +1338,10 @@
                 <button class="airdrop-claim-btn" disabled>Ödül Talep Et</button>
 
                 <div class="airdrop-info-card">
-                    <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px; opacity: 0.9;">
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px; opacity: 0.9;">
                         Airdrop Bilgilendirme
                     </div>
-                    <div style="font-size: 14px; line-height: 1.6; opacity: 0.85;">
+                    <div style="font-size: 13px; line-height: 1.5; opacity: 0.85;">
                         NeonTap Coin'leriniz takas, görevler ve madencilik aktiviteleri sonucunda otomatik olarak biriktirilir.
                         <br><br>
                         Token resmi olarak listelendiğinde ve airdrop süreci başlatıldığında, biriktirdiğiniz NeonTap Coin'leri talep edebileceksiniz.
@@ -1334,47 +1352,47 @@
 
         <!-- Takas Ekranı -->
         <div class="screen" id="trade-screen">
-            <div class="modal-title" style="margin: 20px 0;">Takas</div>
+            <div class="modal-title" style="margin: 15px 0;">Takas</div>
             
-            <div style="padding: 20px; max-width: 420px; margin: 0 auto;">
+            <div style="padding: 15px; max-width: 420px; margin: 0 auto;">
                 <div class="swap-card">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 28px; height: 28px; object-fit: contain;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <img src="assets/icons/1000010731-removebg-preview.png" alt="GO Coin" style="width: 24px; height: 24px; object-fit: contain;">
                             <div>
-                                <div style="font-weight: 600; font-size: 18px;">GO Coin</div>
-                                <div style="font-size: 12px; opacity: 0.6;">Bakiye: <span id="swap-from-balance">0</span></div>
+                                <div style="font-weight: 600; font-size: 16px;">GO Coin</div>
+                                <div style="font-size: 11px; opacity: 0.6;">Bakiye: <span id="swap-from-balance">0</span></div>
                             </div>
                         </div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
                         <input type="number" class="swap-input" id="swap-from-input" placeholder="0" min="50000" step="1000" oninput="calculateSwapAmount()">
-                        <div style="font-size: 16px; font-weight: 600; opacity: 0.5;">GO</div>
+                        <div style="font-size: 14px; font-weight: 600; opacity: 0.5;">GO</div>
                     </div>
-                    <div style="font-size: 12px; opacity: 0.6; margin-top: 8px;">Minimum: 50,000 GO</div>
-                    <div id="swap-error-msg" style="font-size: 12px; color: #ff5555; margin-top: 6px; display: none;">Minimum 50,000 GO gerekli</div>
+                    <div style="font-size: 11px; opacity: 0.6; margin-top: 6px;">Minimum: 50,000 GO</div>
+                    <div id="swap-error-msg" style="font-size: 11px; color: #ff5555; margin-top: 5px; display: none;">Minimum 50,000 GO gerekli</div>
                 </div>
 
                 <div class="swap-toggle">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M7 16V4M7 4L3 8M7 4L11 8"></path>
                         <path d="M17 8V20M17 20L21 16M17 20L13 16"></path>
                     </svg>
                 </div>
 
                 <div class="swap-card">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 28px; height: 28px; object-fit: contain;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap Token" style="width: 24px; height: 24px; object-fit: contain;">
                             <div>
-                                <div style="font-weight: 600; font-size: 18px;">NeonTap Token</div>
-                                <div style="font-size: 12px; opacity: 0.6;">Alınacak Miktar</div>
+                                <div style="font-weight: 600; font-size: 16px;">NeonTap Token</div>
+                                <div style="font-size: 11px; opacity: 0.6;">Alınacak Miktar</div>
                             </div>
                         </div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
                         <input type="text" class="swap-input" id="swap-to-display" placeholder="0" readonly>
-                        <div style="font-size: 16px; font-weight: 600; opacity: 0.5;">NEON</div>
+                        <div style="font-size: 14px; font-weight: 600; opacity: 0.5;">NEON</div>
                     </div>
                 </div>
 
@@ -1382,18 +1400,18 @@
 
                 <button class="swap-confirm" id="swap-confirm-btn" onclick="executeTradeWithInput()">Takası Onayla</button>
 
-                <div id="trade-status" style="margin-top: 15px; text-align: center; font-size: 14px;"></div>
+                <div id="trade-status" style="margin-top: 12px; text-align: center; font-size: 13px;"></div>
 
-                <div style="margin-top: 25px;">
-                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 12px; opacity: 0.7;">İstatistikler</div>
-                    <div style="display: grid; gap: 8px;">
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                <div style="margin-top: 20px;">
+                    <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px; opacity: 0.7;">İstatistikler</div>
+                    <div style="display: grid; gap: 6px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; font-size: 12px;">
                             <span>Toplam Takas:</span> <span id="total-trades">0</span>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; font-size: 12px;">
                             <span>Takas Edilen GO Coin:</span> <span style="color: #FFD700;" id="total-traded-gocoin">0</span>
                         </div>
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; font-size: 13px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 8px 10px; border-radius: 8px; display: flex; justify-content: space-between; font-size: 12px;">
                             <span>Kazanılan NeonTap:</span> <span style="color: #00ff96;" id="total-earned-neontap">0</span>
                         </div>
                     </div>
@@ -1492,7 +1510,7 @@
             coins: 0,
             energy: 1000,
             max_energy: 1000,
-            energy_recharge_rate: 1000 / (30 * 60), // 30 dakikada tam dolar
+            energy_recharge_rate: 1000 / (30 * 60),
             tap_power: 1,
             level: 1,
             xp: 0,
@@ -1513,7 +1531,7 @@
             passiveEarnings: 0,
             passiveStartTime: Date.now(),
             passiveLastClaim: Date.now(),
-            passiveMaxDuration: 5 * 60 * 60 * 1000, // 5 saat
+            passiveMaxDuration: 5 * 60 * 60 * 1000,
             passiveCooldown: 0,
             x2UsesLeft: 6,
             x2LastReset: Date.now()
@@ -1550,16 +1568,16 @@
             const base = card.baseIncome;
             
             if (level <= 50) {
-                return base * level;
+                return Math.floor(base * level);
             } else if (level <= 100) {
-                return (base * 50) + (base * (level - 50) * 0.5);
+                return Math.floor((base * 50) + (base * (level - 50) * 0.5));
             } else {
-                return (base * 50) + (base * 50 * 0.5) + (base * (level - 100) * 0.25);
+                return Math.floor((base * 50) + (base * 50 * 0.5) + (base * (level - 100) * 0.25));
             }
         }
 
         function calculateNextLevelIncome(card, level) {
-            return calculateCardIncome(card, level + 1) - calculateCardIncome(card, level);
+            return Math.floor(calculateCardIncome(card, level + 1) - calculateCardIncome(card, level));
         }
 
         function calculateTotalIncome() {
@@ -1568,9 +1586,9 @@
                 total += calculateCardIncome(card, gameData.cardLevels[card.id]);
             });
             // Level bonusu (%5 per level)
-            total = total * (1 + (gameData.level - 1) * 0.05);
+            total = Math.floor(total * (1 + (gameData.level - 1) * 0.05));
             // Prestige bonusu
-            total = total * (1 + gameData.prestigePoints * 0.1);
+            total = Math.floor(total * (1 + gameData.prestigePoints * 0.1));
             return total;
         }
 
@@ -1690,11 +1708,10 @@
         // Pasif kazanç hesaplama
         function calculatePassiveEarnings() {
             const now = Date.now();
-            const totalIncome = calculateTotalIncome() / 3600; // Saniyelik kazanç
+            const totalIncome = calculateTotalIncome() / 3600;
             
-            // 5 saat kontrolü
             const elapsed = Math.min(now - gameData.passiveStartTime, gameData.passiveMaxDuration);
-            gameData.passiveEarnings = Math.floor(totalIncome * elapsed / 1000); // milisaniyeye göre düzelt
+            gameData.passiveEarnings = Math.floor(totalIncome * elapsed / 1000);
             
             return gameData.passiveEarnings;
         }
@@ -1703,7 +1720,6 @@
         window.claimPassive = function() {
             const now = Date.now();
             
-            // Cooldown kontrolü (5 saniye)
             if (gameData.passiveCooldown > now) {
                 showModal('Bekleyin', 'Lütfen 5 saniye bekleyin.');
                 return;
@@ -1718,7 +1734,7 @@
             gameData.coins += earnings;
             gameData.passiveStartTime = now;
             gameData.passiveEarnings = 0;
-            gameData.passiveCooldown = now + 5000; // 5 saniye cooldown
+            gameData.passiveCooldown = now + 5000;
             
             saveGameData();
             updateDisplay();
@@ -1730,7 +1746,6 @@
         window.claimPassiveWithAd = function() {
             const now = Date.now();
             
-            // Günlük reset kontrolü
             const dayInMs = 24 * 60 * 60 * 1000;
             if (now - gameData.x2LastReset > dayInMs) {
                 gameData.x2UsesLeft = 6;
@@ -1742,7 +1757,6 @@
                 return;
             }
             
-            // Cooldown kontrolü
             if (gameData.passiveCooldown > now) {
                 showModal('Bekleyin', 'Lütfen 5 saniye bekleyin.');
                 return;
@@ -1754,7 +1768,6 @@
                 return;
             }
             
-            // Reklam simülasyonu (gerçekte reklam gösterilir)
             showModal('Reklam', 'Reklam izleniyor...');
             
             setTimeout(() => {
@@ -1779,11 +1792,9 @@
             if (saved) {
                 const data = JSON.parse(saved);
                 
-                // Zaman manipülasyonu kontrolü
                 if (data.last_energy_update) {
                     const timeDiff = Date.now() - data.last_energy_update;
-                    if (timeDiff > 24 * 60 * 60 * 1000) { // 24 saatten fazla fark varsa
-                        // Hile şüphesi, enerjiyi normale çek
+                    if (timeDiff > 24 * 60 * 60 * 1000) {
                         data.energy = data.max_energy;
                         data.last_energy_update = Date.now();
                     }
@@ -1791,7 +1802,6 @@
                 
                 Object.assign(gameData, data);
                 
-                // Kart level'larını yükle
                 if (data.cardLevels) {
                     CARDS.forEach(card => {
                         if (data.cardLevels[card.id] !== undefined) {
@@ -1826,19 +1836,17 @@
 
             const now = Date.now();
             
-            // Combo artışı (maksimum 1 saniyede 1)
             if (now - lastComboIncrease >= 1000) {
                 gameData.combo_multiplier = Math.min(gameData.combo_multiplier + 0.1, 5);
                 lastComboIncrease = now;
             }
 
-            const earnedCoins = gameData.tap_power * gameData.combo_multiplier;
+            const earnedCoins = Math.floor(gameData.tap_power * gameData.combo_multiplier);
             gameData.coins += earnedCoins;
             gameData.energy -= gameData.tap_power;
             gameData.total_taps++;
             gameData.xp += 1;
 
-            // Level up kontrolü
             if (gameData.xp >= gameData.xp_to_next_level) {
                 gameData.level++;
                 gameData.xp = 0;
@@ -1846,14 +1854,12 @@
                 showModal('Level Up!', `Tebrikler! Level ${gameData.level} oldunuz!`);
             }
 
-            // Combo zaman aşımı
             clearTimeout(gameData.combo_timeout);
             gameData.combo_timeout = setTimeout(() => {
                 gameData.combo_multiplier = 1;
                 updateDisplay();
             }, 2000);
 
-            // Floating text
             const element = document.createElement('div');
             element.className = 'floating-text';
             element.textContent = `+${earnedCoins}`;
@@ -1862,14 +1868,13 @@
             document.body.appendChild(element);
             setTimeout(() => element.remove(), 1000);
 
-            // Haptic feedback
             if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
 
             updateDisplay();
             saveGameData();
         });
 
-        // Energy update - 30 dakikada tam dolar
+        // Energy update
         setInterval(() => {
             const now = Date.now();
             const timePassed = (now - gameData.last_energy_update) / 1000;
@@ -1893,7 +1898,7 @@
                     if (elapsed >= MINING_CONFIG.CYCLE_DURATION) {
                         card.isRunning = false;
                         card.isClaimReady = true;
-                        card.accumulated = card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24;
+                        card.accumulated = Math.floor(card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24);
                         needsUpdate = true;
                     } else {
                         card.accumulated = (elapsed / (60 * 60 * 1000)) * card.power * MINING_CONFIG.HOURLY_MULTIPLIER;
@@ -1914,8 +1919,8 @@
             if (!container) return;
 
             container.innerHTML = miningCards.map(card => {
-                const hourlyEarn = (card.power * MINING_CONFIG.HOURLY_MULTIPLIER).toFixed(3);
-                const dailyMax = (card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24).toFixed(1);
+                const hourlyEarn = Math.floor(card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 100) / 100;
+                const dailyMax = Math.floor(card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24 * 100) / 100;
                 
                 let badgeHtml = '';
                 if (card.owned) {
@@ -1961,14 +1966,14 @@
                             <div class="mining-info-row">
                                 <span class="mining-label">Saatlik Üretim:</span>
                                 <span class="mining-value mining-green">
-                                    +${hourlyEarn}
+                                    +${hourlyEarn.toFixed(2)}
                                     <img src="assets/icons/1000010729-removebg-preview.png" alt="NEON" class="neon-icon">
                                 </span>
                             </div>
                             <div class="mining-info-row">
                                 <span class="mining-label">24 Saatlik Maks:</span>
                                 <span class="mining-value mining-gold">
-                                    ${dailyMax}
+                                    ${dailyMax.toFixed(1)}
                                     <img src="assets/icons/1000010729-removebg-preview.png" alt="NEON" class="neon-icon">
                                 </span>
                             </div>
@@ -1992,19 +1997,15 @@
             const passiveEarnings = calculatePassiveEarnings();
             const now = Date.now();
             
-            // Ana ekran
             document.getElementById('coin-count').textContent = formatNumberFull(Math.floor(gameData.coins));
             document.getElementById('profit-per-hour').textContent = formatNumber(totalIncome);
             
-            // Level
             document.getElementById('level-text').textContent = `Level ${gameData.level}`;
             document.getElementById('xp-text').textContent = Math.floor(gameData.xp);
             
-            // Enerji
             document.getElementById('energy-display').textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
             document.getElementById('energy-fill').style.width = (gameData.energy / gameData.max_energy * 100) + '%';
             
-            // Combo (sadece aktifse görünür)
             const comboDisplay = document.getElementById('combo-display');
             if (gameData.combo_multiplier > 1) {
                 comboDisplay.classList.add('visible');
@@ -2013,29 +2014,23 @@
                 comboDisplay.classList.remove('visible');
             }
             
-            // Pasif kazanç
             document.getElementById('passive-amount').textContent = `${formatNumberFull(passiveEarnings)} GO`;
             
-            // Progress bar
             const elapsed = Math.min(now - gameData.passiveStartTime, gameData.passiveMaxDuration);
             const progressPercent = (elapsed / gameData.passiveMaxDuration) * 100;
             document.getElementById('passive-progress').style.width = `${progressPercent}%`;
             
-            // Kalan süre
             const remainingMs = Math.max(0, gameData.passiveMaxDuration - elapsed);
             const remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
             const remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
             document.getElementById('passive-time').textContent = 
-                `Maksimum: 5 saat • Kalan: ${remainingHours}s ${remainingMinutes}d`;
+                `Maks: 5s • Kalan: ${remainingHours}s ${remainingMinutes}d`;
             
-            // 2X butonu
             document.getElementById('x2-counter').textContent = gameData.x2UsesLeft;
             document.getElementById('x2-button').disabled = gameData.x2UsesLeft <= 0;
             
-            // Claim butonu
             document.getElementById('claim-button').disabled = passiveEarnings <= 0 || gameData.passiveCooldown > now;
             
-            // Profile
             document.getElementById('profile-name').textContent = gameData.username;
             document.getElementById('profile-id').textContent = gameData.user_id;
             document.getElementById('profile-coins').textContent = formatNumberFull(Math.floor(gameData.coins));
@@ -2043,16 +2038,13 @@
             document.getElementById('profile-taps').textContent = formatNumberFull(gameData.total_taps);
             document.getElementById('profile-cards').textContent = gameData.cards_bought;
             
-            // Trade
             document.getElementById('swap-from-balance').textContent = formatNumberFull(Math.floor(gameData.coins));
             document.getElementById('total-trades').textContent = formatNumberFull(gameData.totalTrades);
             document.getElementById('total-traded-gocoin').textContent = formatNumberFull(gameData.totalTradedGoCoin);
             document.getElementById('total-earned-neontap').textContent = formatNumberFull(gameData.totalEarnedNeonTap);
             
-            // Airdrop
             document.getElementById('airdrop-token-balance').textContent = formatNumberFull(gameData.neonTapToken);
             
-            // Mining - Saatlik kazanç
             let totalHourlyNeon = 0;
             miningCards.forEach(card => {
                 if (card.owned && (card.isRunning || card.isClaimReady)) {
@@ -2060,7 +2052,7 @@
                 }
             });
             document.getElementById('mining-hourly-earning').innerHTML = `
-                ${totalHourlyNeon.toFixed(1)}
+                ${Math.floor(totalHourlyNeon * 100) / 100}
                 <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="neon-icon">
                 <span class="neontap-text">NEONTAP</span>
             `;
@@ -2074,14 +2066,32 @@
         }
 
         function formatNumberFull(num) {
-            return num.toLocaleString('tr-TR');
+            return Math.floor(num).toLocaleString('tr-TR');
         }
 
-        // Modal
+        // Modern Toast Modal
         window.showModal = function(title, message) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalMessage').textContent = message;
+            
+            const iconMap = {
+                'Başarılı': '✅',
+                'Yetersiz Bakiye': '❌',
+                'Bilgi': 'ℹ️',
+                'Uyarı': '⚠️',
+                'Limit Doldu': '⏰',
+                'Reklam': '📺',
+                'Level Up!': '⭐'
+            };
+            
+            document.getElementById('modalIcon').textContent = iconMap[title] || '✅';
+            
             document.getElementById('modal').classList.add('active');
+            
+            if (window.modalTimeout) clearTimeout(window.modalTimeout);
+            window.modalTimeout = setTimeout(() => {
+                closeModal();
+            }, 2000);
         };
 
         window.closeModal = function() {
@@ -2120,7 +2130,7 @@
                 return;
             }
 
-            const coinEquivalent = card.price * 1000;
+            const coinEquivalent = Math.floor(card.price * 1000);
             
             if (gameData.coins < coinEquivalent) {
                 showModal('Yetersiz Bakiye', `Yetersiz coin! ${formatNumberFull(coinEquivalent)} coin gerekli.`);
@@ -2167,9 +2177,9 @@
             const confirmBtn = document.getElementById('swap-confirm-btn');
             const errorMsg = document.getElementById('swap-error-msg');
             
-            const neonTapAmount = (inputValue / 50000) * 1000;
+            const neonTapAmount = Math.floor((inputValue / 50000) * 1000);
             
-            document.getElementById('swap-to-display').value = Math.floor(neonTapAmount);
+            document.getElementById('swap-to-display').value = neonTapAmount;
 
             if (inputValue > 0 && inputValue < 50000) {
                 confirmBtn.disabled = true;
@@ -2188,7 +2198,7 @@
 
         // Takas işlemi
         window.executeTradeWithInput = function() {
-            const tradeAmount = parseFloat(document.getElementById('swap-from-input').value) || 0;
+            const tradeAmount = Math.floor(parseFloat(document.getElementById('swap-from-input').value) || 0);
 
             if (tradeAmount < 50000) {
                 showModal('Uyarı', 'Minimum 50,000 GO Coin gerekli!');
@@ -2200,7 +2210,7 @@
                 return;
             }
 
-            const neonTapReward = (tradeAmount / 50000) * 1000;
+            const neonTapReward = Math.floor((tradeAmount / 50000) * 1000);
 
             gameData.coins -= tradeAmount;
             gameData.neonTapToken += neonTapReward;
@@ -2214,7 +2224,7 @@
             document.getElementById('swap-from-input').value = '';
             document.getElementById('swap-to-display').value = '0';
             
-            showModal('Başarılı', `${Math.floor(neonTapReward)} NeonTap Token kazandınız!`);
+            showModal('Başarılı', `${neonTapReward} NeonTap Token kazandınız!`);
 
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };

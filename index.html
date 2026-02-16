@@ -72,6 +72,30 @@
             transform: rotate(-45deg) translate(6px, -6px);
         }
 
+        /* Header Version */
+        .header-version {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.5px;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-version span {
+            color: #00ff96;
+            margin-left: 4px;
+        }
+
         /* Profesyonel Hamburger Menü */
         .side-menu-overlay {
             position: fixed;
@@ -214,7 +238,209 @@
             text-align: center;
         }
 
-        /* Profil Panel */
+        /* Roadmap Panel */
+        .roadmap-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            transition: right 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .roadmap-panel.active {
+            right: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .panel-close {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .panel-close:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Phase Card */
+        .phase-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .phase-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .phase-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .phase-status {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .phase-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .phase-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .item-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .item-dot.completed {
+            background: rgba(0, 255, 150, 0.2);
+            color: #00ff96;
+            border: 1px solid #00ff96;
+        }
+
+        .item-dot.completed::before {
+            content: "✓";
+        }
+
+        .item-dot.upcoming {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+        }
+
+        .item-dot.upcoming::before {
+            content: "●";
+            font-size: 8px;
+        }
+
+        .item-dot.planned {
+            background: rgba(0, 150, 255, 0.2);
+            color: #0096ff;
+            border: 1px solid #0096ff;
+        }
+
+        .item-dot.planned::before {
+            content: "○";
+            font-size: 8px;
+        }
+
+        .item-text {
+            flex: 1;
+        }
+
+        /* Changelog */
+        .changelog-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .changelog-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 12px;
+        }
+
+        .changelog-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .changelog-badge {
+            background: rgba(0, 255, 150, 0.2);
+            color: #00ff96;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .changelog-date {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-left: auto;
+        }
+
+        /* Profil Paneli */
         .profile-panel {
             position: fixed;
             top: 0;
@@ -235,42 +461,6 @@
 
         .profile-panel.active {
             right: 0;
-        }
-
-        .profile-panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .profile-panel-title {
-            font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .profile-panel-close {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .profile-panel-close:active {
-            transform: scale(0.9);
-            background: rgba(255, 255, 255, 0.2);
         }
 
         .profile-avatar-large {
@@ -534,7 +724,7 @@
             transform: scale(0.95);
         }
 
-        /* Referans Kodu Kopyala Toast */
+        /* Copy Toast */
         .copy-toast {
             position: fixed;
             bottom: 100px;
@@ -561,7 +751,6 @@
             }
         }
 
-        /* Mevcut CSS'in geri kalanı (oyun kısmı) aynen korunuyor */
         /* Ana Container */
         .container {
             max-width: 480px;
@@ -574,7 +763,7 @@
 
         /* Üst Bilgi Kartı */
         .top-info {
-            margin-top: 40px;
+            margin-top: 60px;
             text-align: center;
         }
 
@@ -1112,7 +1301,7 @@
             cursor: not-allowed;
         }
 
-        /* Profil Ekranı - Oyun içi profil */
+        /* Profil Ekranı (Oyun içi) */
         .profile-header {
             text-align: center;
             margin-bottom: 25px;
@@ -1554,6 +1743,11 @@
         <div class="loading-spinner"></div>
     </div>
 
+    <!-- Header Version -->
+    <div class="header-version">
+        NeonTap <span>v1.2.0</span>
+    </div>
+
     <!-- Hamburger Menü Toggle -->
     <div class="menu-toggle" id="menuToggle">
         <span></span>
@@ -1595,17 +1789,135 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
+            <!-- Yeni Roadmap Bölümü -->
+            <div class="menu-item" onclick="openRoadmapPanel()">
+                <div class="menu-item-icon">📍</div>
+                <div class="menu-item-text">
+                    <div class="menu-item-title">Roadmap</div>
+                    <div class="menu-item-desc">Geliştirme planı ve yenilikler</div>
+                </div>
+                <div class="menu-item-arrow">→</div>
+            </div>
         </div>
         <div class="menu-footer">
             © 2026 GO Coin Game
         </div>
     </div>
 
+    <!-- Roadmap Paneli -->
+    <div class="roadmap-panel" id="roadmapPanel">
+        <div class="panel-header">
+            <div class="panel-title">📍 Roadmap</div>
+            <div class="panel-close" onclick="closeRoadmapPanel()">✕</div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="phase-card">
+            <div class="phase-header">
+                <div class="phase-icon">1</div>
+                <div class="phase-title">Core System</div>
+                <div class="phase-status">Tamamlandı</div>
+            </div>
+            <div class="phase-items">
+                <div class="phase-item">
+                    <div class="item-dot completed"></div>
+                    <span class="item-text">Tap sistemi</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot completed"></div>
+                    <span class="item-text">Pasif kazanç</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot completed"></div>
+                    <span class="item-text">2X sistemi</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot completed"></div>
+                    <span class="item-text">Referans sistemi</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot completed"></div>
+                    <span class="item-text">Leaderboard</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase-card">
+            <div class="phase-header">
+                <div class="phase-icon">2</div>
+                <div class="phase-title">Growth Update</div>
+                <div class="phase-status">Yakında</div>
+            </div>
+            <div class="phase-items">
+                <div class="phase-item">
+                    <div class="item-dot upcoming"></div>
+                    <span class="item-text">Günlük görevler</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot upcoming"></div>
+                    <span class="item-text">Upgrade market</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot upcoming"></div>
+                    <span class="item-text">Critical tap</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot upcoming"></div>
+                    <span class="item-text">Lig sistemi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase-card">
+            <div class="phase-header">
+                <div class="phase-icon">3</div>
+                <div class="phase-title">Expansion</div>
+                <div class="phase-status">Planlanıyor</div>
+            </div>
+            <div class="phase-items">
+                <div class="phase-item">
+                    <div class="item-dot planned"></div>
+                    <span class="item-text">Global leaderboard</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot planned"></div>
+                    <span class="item-text">Turnuvalar</span>
+                </div>
+                <div class="phase-item">
+                    <div class="item-dot planned"></div>
+                    <span class="item-text">Etkinlikler</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Changelog -->
+        <div class="changelog-card">
+            <div class="changelog-title">📋 Son Güncelleme</div>
+            <div class="changelog-item">
+                <span class="changelog-badge">v1.2.0</span>
+                <span>Enerji 500'e düşürüldü</span>
+                <span class="changelog-date">Bugün</span>
+            </div>
+            <div class="changelog-item">
+                <span class="changelog-badge">v1.1.0</span>
+                <span>Referans sistemi eklendi</span>
+                <span class="changelog-date">3 gün önce</span>
+            </div>
+            <div class="changelog-item">
+                <span class="changelog-badge">v1.0.0</span>
+                <span>Pasif kazanç sistemi güncellendi</span>
+                <span class="changelog-date">1 hafta önce</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Profil Paneli -->
     <div class="profile-panel" id="profilePanel">
-        <div class="profile-panel-header">
-            <div class="profile-panel-title">Profilim</div>
-            <div class="profile-panel-close" onclick="closeProfilePanel()">✕</div>
+        <div class="panel-header">
+            <div class="panel-title">👤 Profilim</div>
+            <div class="panel-close" onclick="closeProfilePanel()">✕</div>
         </div>
         
         <div class="profile-avatar-large" id="profileAvatar">😊</div>
@@ -1654,9 +1966,9 @@
 
     <!-- Liderlik Tablosu Paneli -->
     <div class="leaderboard-panel" id="leaderboardPanel">
-        <div class="profile-panel-header">
-            <div class="profile-panel-title">Liderlik Tablosu</div>
-            <div class="profile-panel-close" onclick="closeLeaderboardPanel()">✕</div>
+        <div class="panel-header">
+            <div class="panel-title">🏆 Liderlik</div>
+            <div class="panel-close" onclick="closeLeaderboardPanel()">✕</div>
         </div>
         
         <div id="leaderboardContainer" style="margin-top: 20px;">
@@ -2181,6 +2493,16 @@
         window.openReferralPanel = function() {
             closeMenu();
             openProfilePanel(); // Referans bilgileri profil panelinde
+        };
+
+        // Roadmap paneli fonksiyonları
+        window.openRoadmapPanel = function() {
+            closeMenu();
+            document.getElementById('roadmapPanel').classList.add('active');
+        };
+
+        window.closeRoadmapPanel = function() {
+            document.getElementById('roadmapPanel').classList.remove('active');
         };
 
         window.closeMenu = function() {

@@ -238,8 +238,8 @@
             text-align: center;
         }
 
-        /* Roadmap Panel */
-        .roadmap-panel {
+        /* Panel Tasarımı */
+        .support-panel, .sponsor-panel {
             position: fixed;
             top: 0;
             right: -100%;
@@ -257,7 +257,7 @@
             box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
         }
 
-        .roadmap-panel.active {
+        .support-panel.active, .sponsor-panel.active {
             right: 0;
         }
 
@@ -297,7 +297,160 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Phase Card */
+        /* Form Elemanları */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00ff96;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input[readonly] {
+            background: rgba(255, 255, 255, 0.02);
+            color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #00ff96;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #00ff96;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00ff96, #00cc66);
+            border: none;
+            border-radius: 20px;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.95);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Sponsor Kartı */
+        .sponsor-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sponsor-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .sponsor-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .sponsor-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Roadmap Paneli */
+        .roadmap-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            transition: right 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .roadmap-panel.active {
+            right: 0;
+        }
+
         .phase-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -394,10 +547,6 @@
         .item-dot.planned::before {
             content: "○";
             font-size: 8px;
-        }
-
-        .item-text {
-            flex: 1;
         }
 
         /* Changelog */
@@ -1789,7 +1938,6 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
-            <!-- Yeni Roadmap Bölümü -->
             <div class="menu-item" onclick="openRoadmapPanel()">
                 <div class="menu-item-icon">📍</div>
                 <div class="menu-item-text">
@@ -1798,10 +1946,108 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
+            <!-- Yeni Destek Bölümü -->
+            <div class="menu-item" onclick="openSupportPanel()">
+                <div class="menu-item-icon">🛠</div>
+                <div class="menu-item-text">
+                    <div class="menu-item-title">Destek</div>
+                    <div class="menu-item-desc">Teknik destek ve geri bildirim</div>
+                </div>
+                <div class="menu-item-arrow">→</div>
+            </div>
+            <!-- Yeni Sponsor/Reklam Bölümü -->
+            <div class="menu-item" onclick="openSponsorPanel()">
+                <div class="menu-item-icon">📢</div>
+                <div class="menu-item-text">
+                    <div class="menu-item-title">Sponsor / Reklam</div>
+                    <div class="menu-item-desc">NeonTap'te reklam verin</div>
+                </div>
+                <div class="menu-item-arrow">→</div>
+            </div>
         </div>
         <div class="menu-footer">
             © 2026 GO Coin Game
         </div>
+    </div>
+
+    <!-- Destek Paneli -->
+    <div class="support-panel" id="supportPanel">
+        <div class="panel-header">
+            <div class="panel-title">🛠 Destek</div>
+            <div class="panel-close" onclick="closeSupportPanel()">✕</div>
+        </div>
+
+        <form id="supportForm" onsubmit="submitSupportTicket(event)">
+            <div class="form-group">
+                <label class="form-label">Oyuncu ID</label>
+                <input type="text" class="form-input" id="supportPlayerId" readonly value="">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Kategori</label>
+                <select class="form-select" id="supportCategory" required>
+                    <option value="" disabled selected>Kategori seçin</option>
+                    <option value="technical">Teknik Sorun</option>
+                    <option value="payment">Ödeme / Coin Sorunu</option>
+                    <option value="account">Hesap Sorunu</option>
+                    <option value="feedback">Geri Bildirim</option>
+                    <option value="other">Diğer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mesajınız</label>
+                <textarea class="form-textarea" id="supportMessage" placeholder="Şikayet, geri bildirim veya destek talebinizi buraya yazın..." minlength="10" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Gönder</button>
+        </form>
+    </div>
+
+    <!-- Sponsor/Reklam Paneli -->
+    <div class="sponsor-panel" id="sponsorPanel">
+        <div class="panel-header">
+            <div class="panel-title">📢 Sponsor / Reklam</div>
+            <div class="panel-close" onclick="closeSponsorPanel()">✕</div>
+        </div>
+
+        <div class="sponsor-card">
+            <div class="sponsor-icon">📢</div>
+            <div class="sponsor-title">NeonTap'te Reklam Verin</div>
+            <div class="sponsor-desc">
+                NeonTap aktif büyüyen bir platformdur. Sponsor olmak için başvuru yapabilirsiniz.
+            </div>
+        </div>
+
+        <form id="sponsorForm" onsubmit="submitSponsorRequest(event)">
+            <div class="form-group">
+                <label class="form-label">Şirket / Proje Adı</label>
+                <input type="text" class="form-input" id="sponsorCompany" placeholder="Şirket veya proje adı" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">İletişim E-posta</label>
+                <input type="email" class="form-input" id="sponsorEmail" placeholder="ornek@firma.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Reklam Türü</label>
+                <select class="form-select" id="sponsorType" required>
+                    <option value="" disabled selected>Reklam türü seçin</option>
+                    <option value="banner">Banner</option>
+                    <option value="event">Özel Etkinlik Sponsorluğu</option>
+                    <option value="featured">Öne Çıkan Proje</option>
+                    <option value="other">Diğer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mesajınız</label>
+                <textarea class="form-textarea" id="sponsorMessage" placeholder="Reklam talebiniz hakkında detaylı bilgi..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Başvur</button>
+        </form>
     </div>
 
     <!-- Roadmap Paneli -->
@@ -2343,7 +2589,11 @@
             passiveMaxDuration: 5 * 60 * 60 * 1000,
             passiveCooldown: 0,
             x2UsesLeft: 6,
-            x2LastReset: Date.now()
+            x2LastReset: Date.now(),
+
+            // Support ve sponsor talepleri
+            supportTickets: [],
+            sponsorRequests: []
         };
 
         // Kart level'larını başlat
@@ -2367,6 +2617,9 @@
             document.getElementById('referralCount').textContent = gameData.referralCount;
             document.getElementById('referralCode').textContent = gameData.referralCode;
             document.getElementById('referralEarnings').textContent = formatNumberFull(gameData.referralEarnings);
+            
+            // Destek panelindeki oyuncu ID'yi güncelle
+            document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
         }
 
         // İsim değiştirme modalı
@@ -2416,6 +2669,98 @@
                 document.body.appendChild(toast);
                 setTimeout(() => toast.remove(), 2000);
             });
+        };
+
+        // Destek talebi gönderme
+        window.submitSupportTicket = function(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('supportCategory').value;
+            const message = document.getElementById('supportMessage').value.trim();
+            
+            if (!category) {
+                showModal('Uyarı', 'Lütfen bir kategori seçin.');
+                return;
+            }
+            
+            if (message.length < 10) {
+                showModal('Uyarı', 'Mesajınız en az 10 karakter olmalıdır.');
+                return;
+            }
+            
+            // Ticket oluştur
+            const ticket = {
+                id: 'TICKET-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                userId: gameData.user_id,
+                username: gameData.username,
+                category: category,
+                message: message,
+                date: new Date().toISOString(),
+                status: 'Bekliyor',
+                read: false
+            };
+            
+            // LocalStorage'a kaydet
+            if (!gameData.supportTickets) gameData.supportTickets = [];
+            gameData.supportTickets.push(ticket);
+            
+            // Formu temizle
+            document.getElementById('supportCategory').value = '';
+            document.getElementById('supportMessage').value = '';
+            
+            saveGameData();
+            showModal('Başarılı', 'Destek talebiniz alındı. En kısa sürede dönüş yapılacaktır.');
+            closeSupportPanel();
+        };
+
+        // Sponsor başvurusu gönderme
+        window.submitSponsorRequest = function(event) {
+            event.preventDefault();
+            
+            const company = document.getElementById('sponsorCompany').value.trim();
+            const email = document.getElementById('sponsorEmail').value.trim();
+            const type = document.getElementById('sponsorType').value;
+            const message = document.getElementById('sponsorMessage').value.trim();
+            
+            if (!company || !email || !type || !message) {
+                showModal('Uyarı', 'Lütfen tüm alanları doldurun.');
+                return;
+            }
+            
+            // Email formatı kontrolü
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showModal('Uyarı', 'Geçerli bir e-posta adresi giriniz.');
+                return;
+            }
+            
+            // Sponsor talebi oluştur
+            const request = {
+                id: 'SPONSOR-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                userId: gameData.user_id,
+                username: gameData.username,
+                company: company,
+                email: email,
+                type: type,
+                message: message,
+                date: new Date().toISOString(),
+                status: 'Bekliyor',
+                read: false
+            };
+            
+            // LocalStorage'a kaydet
+            if (!gameData.sponsorRequests) gameData.sponsorRequests = [];
+            gameData.sponsorRequests.push(request);
+            
+            // Formu temizle
+            document.getElementById('sponsorCompany').value = '';
+            document.getElementById('sponsorEmail').value = '';
+            document.getElementById('sponsorType').value = '';
+            document.getElementById('sponsorMessage').value = '';
+            
+            saveGameData();
+            showModal('Başarılı', 'Sponsorluk başvurunuz alındı. En kısa sürede iletişime geçilecektir.');
+            closeSponsorPanel();
         };
 
         // Demo leaderboard oluştur
@@ -2503,6 +2848,27 @@
 
         window.closeRoadmapPanel = function() {
             document.getElementById('roadmapPanel').classList.remove('active');
+        };
+
+        // Destek paneli fonksiyonları
+        window.openSupportPanel = function() {
+            closeMenu();
+            document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
+            document.getElementById('supportPanel').classList.add('active');
+        };
+
+        window.closeSupportPanel = function() {
+            document.getElementById('supportPanel').classList.remove('active');
+        };
+
+        // Sponsor paneli fonksiyonları
+        window.openSponsorPanel = function() {
+            closeMenu();
+            document.getElementById('sponsorPanel').classList.add('active');
+        };
+
+        window.closeSponsorPanel = function() {
+            document.getElementById('sponsorPanel').classList.remove('active');
         };
 
         window.closeMenu = function() {

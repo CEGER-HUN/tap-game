@@ -25,64 +25,54 @@
             position: relative;
         }
 
-        /* Hamburger Menü */
+        /* Hamburger Menü Butonu */
         .menu-toggle {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 14px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             cursor: pointer;
             z-index: 1001;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:active {
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .menu-toggle span {
-            width: 20px;
-            height: 2px;
+            width: 22px;
+            height: 2.5px;
             background: white;
+            border-radius: 2px;
             transition: 0.3s;
         }
 
         .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: rotate(45deg) translate(6px, 6px);
         }
 
         .menu-toggle.active span:nth-child(2) {
             opacity: 0;
+            transform: translateX(-10px);
         }
 
         .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
+            transform: rotate(-45deg) translate(6px, -6px);
         }
 
-        /* Yan Menü */
-        .side-menu {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            height: 100vh;
-            background: linear-gradient(180deg, #1e3a5f 0%, #0f2540 100%);
-            z-index: 1000;
-            transition: 0.3s;
-            overflow-y: auto;
-            padding: 80px 0 20px 0;
-            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .side-menu.active {
-            left: 0;
-        }
-
+        /* Profesyonel Hamburger Menü */
         .side-menu-overlay {
             position: fixed;
             top: 0;
@@ -90,46 +80,103 @@
             width: 100%;
             height: 100vh;
             background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             z-index: 999;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
         }
 
         .side-menu-overlay.active {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -75%;
+            width: 75%;
+            max-width: 360px;
+            height: 100vh;
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.95), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: left 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .side-menu.active {
+            left: 0;
         }
 
         .menu-header {
-            padding: 0 20px 20px;
+            padding: 30px 20px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .menu-title {
-            font-size: 24px;
-            font-weight: bold;
+        .menu-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 5px;
         }
 
-        .menu-items {
-            padding: 20px 0;
+        .menu-header p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .menu-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .menu-item {
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 16px;
             display: flex;
             align-items: center;
             gap: 15px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateX(5px);
+        }
+
+        .menu-item:active {
+            transform: scale(0.98);
         }
 
         .menu-item-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 24px;
-            width: 30px;
-            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
         .menu-item-text {
@@ -137,15 +184,384 @@
         }
 
         .menu-item-title {
-            font-weight: bold;
-            margin-bottom: 3px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #fff;
         }
 
         .menu-item-desc {
             font-size: 12px;
-            opacity: 0.6;
+            color: rgba(255, 255, 255, 0.5);
         }
 
+        .menu-item-arrow {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .menu-item:hover .menu-item-arrow {
+            transform: translateX(5px);
+            color: #FFD700;
+        }
+
+        .menu-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        /* Profil Panel */
+        .profile-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            transition: right 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-panel.active {
+            right: 0;
+        }
+
+        .profile-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-panel-title {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-panel-close {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-panel-close:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-avatar-large {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            margin: 0 auto 15px;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .profile-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .profile-field-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .profile-field-value {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .edit-name-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .edit-name-btn:active {
+            transform: scale(0.95);
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #00ff96;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Liderlik Tablosu */
+        .leaderboard-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            transition: right 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .leaderboard-panel.active {
+            right: 0;
+        }
+
+        .leaderboard-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .leaderboard-item.top-1 {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .leaderboard-item.top-2 {
+            background: rgba(192, 192, 192, 0.1);
+            border-color: #C0C0C0;
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.2);
+        }
+
+        .leaderboard-item.top-3 {
+            background: rgba(205, 127, 50, 0.1);
+            border-color: #CD7F32;
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.2);
+        }
+
+        .leaderboard-rank {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .leaderboard-coins {
+            font-size: 12px;
+            color: #00ff96;
+        }
+
+        /* İsim Değiştirme Modalı */
+        .name-edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .name-edit-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .name-edit-content {
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 24px;
+            padding: 25px;
+            width: 90%;
+            max-width: 320px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .name-edit-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #FFD700;
+        }
+
+        .name-edit-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .name-edit-input:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .name-edit-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .name-edit-button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .name-edit-button.save {
+            background: linear-gradient(135deg, #00ff96, #00cc66);
+            color: #1a1a2e;
+        }
+
+        .name-edit-button.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .name-edit-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Referans Kodu Kopyala Toast */
+        .copy-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 150, 0.9);
+            color: #1a1a2e;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 4000;
+            animation: toastSlide 0.3s ease-out;
+        }
+
+        @keyframes toastSlide {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Mevcut CSS'in geri kalanı (oyun kısmı) aynen korunuyor */
         /* Ana Container */
         .container {
             max-width: 480px;
@@ -313,7 +729,7 @@
             text-align: center;
         }
 
-        /* Energy Bar - Enerji 500 max */
+        /* Energy Bar */
         .energy-section {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -346,7 +762,7 @@
             border-radius: 4px;
         }
 
-        /* Coin Button - %15 büyütüldü */
+        /* Coin Button */
         .clicker-area {
             text-align: center;
             margin: 15px 0;
@@ -373,8 +789,8 @@
         }
 
         .coin-button {
-            width: 253px;  /* 220px'den %15 büyük */
-            height: 253px; /* 220px'den %15 büyük */
+            width: 253px;
+            height: 253px;
             border: none;
             background: transparent;
             cursor: pointer;
@@ -395,7 +811,7 @@
             transition: all 0.15s ease-out;
         }
 
-        /* Floating Animation - Geliştirilmiş */
+        /* Floating Animation */
         .floating-text {
             position: absolute;
             font-size: 32px;
@@ -696,7 +1112,7 @@
             cursor: not-allowed;
         }
 
-        /* Profil Ekranı */
+        /* Profil Ekranı - Oyun içi profil */
         .profile-header {
             text-align: center;
             margin-bottom: 25px;
@@ -1148,32 +1564,114 @@
     <!-- Yan Menü Overlay -->
     <div class="side-menu-overlay" id="menuOverlay"></div>
 
-    <!-- Yan Menü -->
+    <!-- Profesyonel Hamburger Menü -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
-            <div class="menu-title">GO Coin Game</div>
+            <h2>GO Coin Game</h2>
+            <p>v1.0.0 • Premium</p>
         </div>
-        <div class="menu-items">
-            <div class="menu-item" onclick="openProfile()">
+        <div class="menu-content">
+            <div class="menu-item" onclick="openProfilePanel()">
                 <div class="menu-item-icon">👤</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Profilim</div>
-                    <div class="menu-item-desc">Hesap bilgileri</div>
+                    <div class="menu-item-desc">Hesap bilgileri, ID, referanslar</div>
                 </div>
+                <div class="menu-item-arrow">→</div>
             </div>
-            <div class="menu-item" onclick="showModal('Bilgi', 'Liderlik tablosu yakında!')">
+            <div class="menu-item" onclick="openLeaderboardPanel()">
                 <div class="menu-item-icon">🏆</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Liderlik Tablosu</div>
-                    <div class="menu-item-desc">En iyi oyuncular</div>
+                    <div class="menu-item-desc">En çok NeonTap kazananlar</div>
                 </div>
+                <div class="menu-item-arrow">→</div>
             </div>
-            <div class="menu-item" onclick="showModal('Bilgi', 'Arkadaşlar özelliği yakında!')">
+            <div class="menu-item" onclick="openReferralPanel()">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
-                    <div class="menu-item-title">Arkadaşlar</div>
-                    <div class="menu-item-desc">Davet et & kazan</div>
+                    <div class="menu-item-title">Arkadaş Davet</div>
+                    <div class="menu-item-desc">Davet et, bonus kazan</div>
                 </div>
+                <div class="menu-item-arrow">→</div>
+            </div>
+        </div>
+        <div class="menu-footer">
+            © 2026 GO Coin Game
+        </div>
+    </div>
+
+    <!-- Profil Paneli -->
+    <div class="profile-panel" id="profilePanel">
+        <div class="profile-panel-header">
+            <div class="profile-panel-title">Profilim</div>
+            <div class="profile-panel-close" onclick="closeProfilePanel()">✕</div>
+        </div>
+        
+        <div class="profile-avatar-large" id="profileAvatar">😊</div>
+        
+        <div class="profile-field">
+            <div class="profile-field-label">Oyuncu ID</div>
+            <div class="profile-field-value">
+                <span id="playerId">#123456</span>
+            </div>
+        </div>
+        
+        <div class="profile-field">
+            <div class="profile-field-label">Oyuncu Adı</div>
+            <div class="profile-field-value">
+                <span id="playerName">Oyuncu</span>
+                <button class="edit-name-btn" onclick="openNameEditModal()">İsmi Değiştir</button>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalNeonTap">0</div>
+                <div class="stat-label">NeonTap Coin</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="referralCount">0</div>
+                <div class="stat-label">Referans</div>
+            </div>
+        </div>
+        
+        <div class="profile-field">
+            <div class="profile-field-label">Referans Kodun</div>
+            <div class="profile-field-value">
+                <span id="referralCode">GO-123456</span>
+                <button class="copy-btn" onclick="copyReferralCode()">Kopyala</button>
+            </div>
+        </div>
+        
+        <div class="profile-field">
+            <div class="profile-field-label">Referanstan Kazanılan</div>
+            <div class="profile-field-value">
+                <span id="referralEarnings">0</span> NeonTap
+            </div>
+        </div>
+    </div>
+
+    <!-- Liderlik Tablosu Paneli -->
+    <div class="leaderboard-panel" id="leaderboardPanel">
+        <div class="profile-panel-header">
+            <div class="profile-panel-title">Liderlik Tablosu</div>
+            <div class="profile-panel-close" onclick="closeLeaderboardPanel()">✕</div>
+        </div>
+        
+        <div id="leaderboardContainer" style="margin-top: 20px;">
+            <!-- Liderlik tablosu JavaScript ile doldurulacak -->
+        </div>
+    </div>
+
+    <!-- İsim Değiştirme Modalı -->
+    <div class="name-edit-modal" id="nameEditModal">
+        <div class="name-edit-content">
+            <div class="name-edit-title">İsmini Değiştir</div>
+            <input type="text" class="name-edit-input" id="nameInput" maxlength="16" placeholder="Yeni isim...">
+            <div class="name-edit-buttons">
+                <button class="name-edit-button cancel" onclick="closeNameEditModal()">İptal</button>
+                <button class="name-edit-button save" onclick="saveName()">Kaydet</button>
             </div>
         </div>
     </div>
@@ -1187,7 +1685,7 @@
         </div>
     </div>
 
-    <!-- Ana Container -->
+    <!-- Ana Container (Oyun) -->
     <div class="container">
         <!-- Ana Ekran -->
         <div class="screen active" id="home-screen">
@@ -1223,7 +1721,7 @@
                 </div>
             </div>
 
-            <!-- Enerji Barı - Level sistemi kaldırıldı -->
+            <!-- Enerji Barı -->
             <div class="energy-section">
                 <div class="energy-bar-container">
                     <span>⚡ Enerji</span>
@@ -1292,7 +1790,7 @@
             </div>
         </div>
 
-        <!-- Profil Ekranı -->
+        <!-- Profil Ekranı (Oyun içi) -->
         <div class="screen" id="profile-screen">
             <div class="modal-title" style="margin: 15px 0;">👤 Profil</div>
             <div class="profile-header">
@@ -1467,7 +1965,6 @@
             const navItem = document.querySelector(`[data-screen="${screenName}"]`);
             if (navItem) navItem.classList.add('active');
 
-            // Kartlar ekranına geçildiğinde kartları güncelle
             if (screenName === 'cards') {
                 renderAllCards();
             }
@@ -1482,22 +1979,17 @@
 
         // 📦 Kart Verileri
         const CARDS = [
-            // Profesyon Kategorisi (6 kart)
             { id: 'profesyon', category: 'profession', name: 'Profesyon', baseIncome: 100, basePrice: 500, icon: 'card_profession.png', level: 0, unlockRequirement: null },
             { id: 'freelancer', category: 'profession', name: 'Freelancer', baseIncome: 250, basePrice: 1000, icon: 'card_freelancer.png', level: 0, unlockRequirement: { cardId: 'profesyon', level: 5 } },
             { id: 'danisman', category: 'profession', name: 'Danışman', baseIncome: 500, basePrice: 2500, icon: 'card_consultant.png', level: 0, unlockRequirement: { cardId: 'profesyon', level: 10 } },
             { id: 'muhasebeci', category: 'profession', name: 'Muhasebeci', baseIncome: 1000, basePrice: 5000, icon: 'card_accountant.png', level: 0, unlockRequirement: { cardId: 'freelancer', level: 10 } },
             { id: 'avukat', category: 'profession', name: 'Avukat', baseIncome: 2000, basePrice: 10000, icon: 'card_lawyer.png', level: 0, unlockRequirement: { cardId: 'muhasebeci', level: 15 } },
             { id: 'ceo', category: 'profession', name: 'CEO', baseIncome: 5000, basePrice: 25000, icon: 'card_ceo.png', level: 0, unlockRequirement: { cardId: 'avukat', level: 20 } },
-            
-            // Şirketler Kategorisi (5 kart)
             { id: 'kafe', category: 'companies', name: 'Kafe', baseIncome: 300, basePrice: 1500, icon: 'card_cafe.png', level: 0, unlockRequirement: { cardId: 'ceo', level: 5 } },
             { id: 'restoran', category: 'companies', name: 'Restoran', baseIncome: 750, basePrice: 4000, icon: 'card_restaurant.png', level: 0, unlockRequirement: { cardId: 'kafe', level: 10 } },
             { id: 'butik', category: 'companies', name: 'Butik', baseIncome: 1500, basePrice: 8000, icon: 'card_boutique.png', level: 0, unlockRequirement: { cardId: 'restoran', level: 15 } },
             { id: 'otel', category: 'companies', name: 'Otel', baseIncome: 3000, basePrice: 15000, icon: 'card_hotel.png', level: 0, unlockRequirement: { cardId: 'butik', level: 20 } },
             { id: 'avm', category: 'companies', name: 'AVM', baseIncome: 7500, basePrice: 35000, icon: 'card_mall.png', level: 0, unlockRequirement: { cardId: 'otel', level: 25 } },
-            
-            // Teknoloji Kategorisi (5 kart)
             { id: 'app', category: 'technology', name: 'Uygulama Geliştirme', baseIncome: 2000, basePrice: 10000, icon: 'card_app_dev.png', level: 0, unlockRequirement: { cardId: 'avm', level: 10 } },
             { id: 'teknisyen', category: 'technology', name: 'Teknisyen', baseIncome: 4000, basePrice: 20000, icon: 'card_technician.png', level: 0, unlockRequirement: { cardId: 'app', level: 15 } },
             { id: 'kripto', category: 'technology', name: 'Kripto Madenciliği', baseIncome: 8000, basePrice: 40000, icon: 'card_crypto_mining.png', level: 0, unlockRequirement: { cardId: 'teknisyen', level: 20 } },
@@ -1526,7 +2018,13 @@
             prestigePoints: 0,
             cardLevels: {},
             
-            // Pasif kazanç sistemi
+            // Referans sistemi
+            referralCode: '',
+            referralCount: 0,
+            referralEarnings: 0,
+            referredBy: null,
+            
+            // Pasif kazanç
             passiveEarnings: 0,
             passiveStartTime: Date.now(),
             passiveLastClaim: Date.now(),
@@ -1540,6 +2038,156 @@
         CARDS.forEach(card => {
             gameData.cardLevels[card.id] = 0;
         });
+
+        // Referans kodu oluştur
+        function generateReferralCode() {
+            return 'GO-' + gameData.user_id.toString().slice(-6);
+        }
+
+        // İlk yükleme
+        gameData.referralCode = generateReferralCode();
+
+        // Profil bilgilerini güncelle
+        function updateProfileDisplay() {
+            document.getElementById('playerId').textContent = '#' + gameData.user_id;
+            document.getElementById('playerName').textContent = gameData.username;
+            document.getElementById('totalNeonTap').textContent = formatNumberFull(gameData.neonTapToken);
+            document.getElementById('referralCount').textContent = gameData.referralCount;
+            document.getElementById('referralCode').textContent = gameData.referralCode;
+            document.getElementById('referralEarnings').textContent = formatNumberFull(gameData.referralEarnings);
+        }
+
+        // İsim değiştirme modalı
+        window.openNameEditModal = function() {
+            document.getElementById('nameInput').value = gameData.username;
+            document.getElementById('nameEditModal').classList.add('active');
+            closeMenu();
+        };
+
+        window.closeNameEditModal = function() {
+            document.getElementById('nameEditModal').classList.remove('active');
+        };
+
+        window.saveName = function() {
+            const newName = document.getElementById('nameInput').value.trim();
+            
+            // Küfür filtresi (basit)
+            const forbiddenWords = ['sex', 'porn', 'fuck', 'sik', 'amk', 'aq', 'yarrak', 'göt'];
+            let hasBadWord = false;
+            forbiddenWords.forEach(word => {
+                if (newName.toLowerCase().includes(word)) hasBadWord = true;
+            });
+            
+            if (hasBadWord) {
+                showModal('Uyarı', 'Geçersiz isim! Lütfen başka bir isim seçin.');
+                return;
+            }
+            
+            if (newName && newName.length > 0 && newName.length <= 16) {
+                gameData.username = newName;
+                document.getElementById('playerName').textContent = newName;
+                document.getElementById('profile-name').textContent = newName;
+                closeNameEditModal();
+                saveGameData();
+                showModal('Başarılı', 'İsminiz güncellendi!');
+            } else {
+                showModal('Uyarı', 'İsim 1-16 karakter arası olmalıdır.');
+            }
+        };
+
+        // Referans kodu kopyala
+        window.copyReferralCode = function() {
+            navigator.clipboard.writeText(gameData.referralCode).then(() => {
+                const toast = document.createElement('div');
+                toast.className = 'copy-toast';
+                toast.textContent = 'Kod kopyalandı!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        };
+
+        // Demo leaderboard oluştur
+        function generateLeaderboard() {
+            const players = [
+                { name: 'CryptoKing', coins: 1250000 },
+                { name: 'NeonMaster', coins: 980000 },
+                { name: 'CoinHunter', coins: 750000 },
+                { name: 'MiningGuru', coins: 520000 },
+                { name: 'TokenLord', coins: 410000 },
+                { name: 'BlockchainPro', coins: 320000 },
+                { name: 'GoldMiner', coins: 280000 },
+                { name: 'DiamondHands', coins: 210000 },
+                { name: 'MoonWalker', coins: 150000 },
+                { name: 'SatHunter', coins: 98000 }
+            ];
+            
+            // Oyuncuyu ekle
+            const playerCoins = gameData.neonTapToken;
+            const playerIndex = players.findIndex(p => p.coins < playerCoins);
+            
+            let leaderboardHtml = '';
+            
+            players.forEach((player, index) => {
+                let rankClass = '';
+                if (index === 0) rankClass = 'top-1';
+                else if (index === 1) rankClass = 'top-2';
+                else if (index === 2) rankClass = 'top-3';
+                
+                leaderboardHtml += `
+                    <div class="leaderboard-item ${rankClass}">
+                        <div class="leaderboard-rank">#${index + 1}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${player.name}</div>
+                            <div class="leaderboard-coins">${formatNumberFull(player.coins)} NEON</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Oyuncunun sırasını göster
+            if (playerCoins > 0) {
+                const rank = playerIndex + 1;
+                leaderboardHtml += `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(255,215,0,0.1); border-radius: 12px; text-align: center;">
+                        Senin Sıran: #${rank} • ${formatNumberFull(playerCoins)} NEON
+                    </div>
+                `;
+            }
+            
+            document.getElementById('leaderboardContainer').innerHTML = leaderboardHtml;
+        }
+
+        // Panel açma/kapama fonksiyonları
+        window.openProfilePanel = function() {
+            closeMenu();
+            updateProfileDisplay();
+            document.getElementById('profilePanel').classList.add('active');
+        };
+
+        window.closeProfilePanel = function() {
+            document.getElementById('profilePanel').classList.remove('active');
+        };
+
+        window.openLeaderboardPanel = function() {
+            closeMenu();
+            generateLeaderboard();
+            document.getElementById('leaderboardPanel').classList.add('active');
+        };
+
+        window.closeLeaderboardPanel = function() {
+            document.getElementById('leaderboardPanel').classList.remove('active');
+        };
+
+        window.openReferralPanel = function() {
+            closeMenu();
+            openProfilePanel(); // Referans bilgileri profil panelinde
+        };
+
+        window.closeMenu = function() {
+            document.getElementById('menuToggle').classList.remove('active');
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+        };
 
         // Mining kartları
         let miningCards = [
@@ -1584,7 +2232,6 @@
             CARDS.forEach(card => {
                 total += calculateCardIncome(card, gameData.cardLevels[card.id]);
             });
-            // Prestige bonusu
             total = Math.floor(total * (1 + gameData.prestigePoints * 0.1));
             return total;
         }
@@ -1632,7 +2279,6 @@
                 let buttonText = level === 0 ? 'Satın Al' : 'Yükselt';
                 let buttonDisabled = !canAfford;
 
-                // Kilitli kart kontrolü
                 if (!unlocked) {
                     const req = card.unlockRequirement;
                     const reqCard = CARDS.find(c => c.id === req.cardId);
@@ -1652,7 +2298,6 @@
                     `;
                 }
 
-                // Açık kart
                 return `
                     <div class="card-item">
                         <img src="assets/icons/${card.icon}" alt="${card.name}" class="card-icon">
@@ -1675,16 +2320,13 @@
             if (!card) return;
             
             const currentLevel = gameData.cardLevels[cardId];
-            const upgradeCost = currentLevel === 0 ? 
-                calculateUpgradeCost(card, 0) : 
-                calculateUpgradeCost(card, currentLevel);
+            const upgradeCost = currentLevel === 0 ? calculateUpgradeCost(card, 0) : calculateUpgradeCost(card, currentLevel);
             
             if (gameData.coins < upgradeCost) {
                 showModal('Yetersiz Bakiye', 'Bu işlem için yeterli coininiz yok.');
                 return;
             }
             
-            // Yükselt
             gameData.coins -= upgradeCost;
             gameData.cardLevels[cardId] = currentLevel + 1;
             
@@ -1739,7 +2381,7 @@
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };
 
-        // 2X Claim (Reklam)
+        // 2X Claim
         window.claimPassiveWithAd = function() {
             const now = Date.now();
             
@@ -1824,10 +2466,10 @@
         // Load data
         loadGameData();
 
-        // Combo sistemi - spam korumalı
+        // Combo sistemi
         let lastComboIncrease = 0;
         
-        // Coin click handler - Geliştirilmiş animasyon
+        // Coin click handler
         document.getElementById('coin-button').addEventListener('click', function(e) {
             if (gameData.energy < gameData.tap_power) return;
 
@@ -1843,14 +2485,12 @@
             gameData.energy -= gameData.tap_power;
             gameData.total_taps++;
 
-            // Combo zaman aşımı
             clearTimeout(gameData.combo_timeout);
             gameData.combo_timeout = setTimeout(() => {
                 gameData.combo_multiplier = 1;
                 updateDisplay();
             }, 2000);
 
-            // Premium floating text animasyonu
             const element = document.createElement('div');
             element.className = 'floating-text';
             element.textContent = `+${earnedCoins}`;
@@ -1859,7 +2499,6 @@
             document.body.appendChild(element);
             setTimeout(() => element.remove(), 800);
 
-            // Haptic feedback
             if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
 
             updateDisplay();
@@ -2015,7 +2654,6 @@
             document.getElementById('passive-time').textContent = 
                 `Maks: 5s • Kalan: ${remainingHours}s ${remainingMinutes}d`;
             
-            // Buton aktif/pasif mantığı - Sadece 5 saat dolunca aktif
             const isFull = elapsed >= gameData.passiveMaxDuration;
             document.getElementById('x2-counter').textContent = gameData.x2UsesLeft;
             document.getElementById('x2-button').disabled = !isFull || gameData.x2UsesLeft <= 0;
@@ -2024,7 +2662,7 @@
             document.getElementById('profile-name').textContent = gameData.username;
             document.getElementById('profile-id').textContent = gameData.user_id;
             document.getElementById('profile-coins').textContent = formatNumberFull(Math.floor(gameData.coins));
-            document.getElementById('profile-level').textContent = 1; // Level sabit
+            document.getElementById('profile-level').textContent = 1;
             document.getElementById('profile-taps').textContent = formatNumberFull(gameData.total_taps);
             document.getElementById('profile-cards').textContent = gameData.cards_bought;
             
@@ -2088,17 +2726,23 @@
         };
 
         // Menu toggle
-        document.getElementById('menuToggle').addEventListener('click', toggleMenu);
-        document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
-
-        function toggleMenu() {
-            document.getElementById('menuToggle').classList.toggle('active');
+        document.getElementById('menuToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
             document.getElementById('sideMenu').classList.toggle('active');
             document.getElementById('menuOverlay').classList.toggle('active');
+        });
+
+        document.getElementById('menuOverlay').addEventListener('click', closeMenu);
+
+        function closeMenu() {
+            document.getElementById('menuToggle').classList.remove('active');
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
         }
 
         function openProfile() {
-            toggleMenu();
+            closeMenu();
             switchScreen('profile');
         }
 
@@ -2222,6 +2866,7 @@
         renderAllCards();
         updateMiningCards();
         updateDisplay();
+        updateProfileDisplay();
 
         // Modal arka plana tıklayınca kapat
         document.getElementById('modal').addEventListener('click', function(e) {

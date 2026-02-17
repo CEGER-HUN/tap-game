@@ -123,6 +123,11 @@
             justify-content: center;
             transition: all 0.2s ease;
             animation: questPulse 2.5s infinite ease-in-out;
+            position: relative;
+        }
+
+        .quest-button.hidden {
+            display: none;
         }
 
         .quest-button:active {
@@ -145,6 +150,35 @@
             50% {
                 box-shadow: 0 0 40px rgba(106, 13, 173, 0.9), 0 0 60px rgba(106, 13, 173, 0.5);
                 transform: translateY(-50%) scale(1.05);
+            }
+        }
+
+        /* Red Dot */
+        .quest-red-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff4444;
+            border: 2px solid #1a1a2e;
+            animation: redDotPulse 1.5s infinite ease-in-out;
+            z-index: 1000;
+        }
+
+        .quest-red-dot.hidden {
+            display: none;
+        }
+
+        @keyframes redDotPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
             }
         }
 
@@ -214,6 +248,31 @@
             line-height: 1.5;
         }
 
+        /* Uyarı Kutusu */
+        .quest-warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+        }
+
+        .quest-warning-icon {
+            font-size: 18px;
+            color: #ffaa00;
+        }
+
+        .quest-warning-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            flex: 1;
+        }
+
         /* Görev Kartları */
         .quest-card {
             background: rgba(255, 255, 255, 0.05);
@@ -221,7 +280,7 @@
             border-radius: 18px;
             padding: 16px;
             margin-bottom: 15px;
-            transition: all 0.2s;
+            transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
@@ -231,22 +290,34 @@
         }
 
         .quest-card.completed {
-            opacity: 0.8;
             border-color: #00ff96;
             box-shadow: 0 0 20px rgba(0, 255, 150, 0.2);
+        }
+
+        .quest-card.claim-ready {
+            border-color: #ffaa00;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
         }
 
         .quest-card-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             margin-bottom: 12px;
+            gap: 8px;
+        }
+
+        .quest-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            margin-right: 8px;
         }
 
         .quest-title {
             font-size: 16px;
             font-weight: 600;
             color: #fff;
+            flex: 1;
         }
 
         .quest-reward {
@@ -282,6 +353,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 10px;
         }
 
         .quest-button-action {
@@ -295,7 +367,7 @@
             cursor: pointer;
             transition: all 0.2s;
             flex: 1;
-            max-width: 120px;
+            min-width: 100px;
         }
 
         .quest-button-action:active {
@@ -306,6 +378,31 @@
             opacity: 0.5;
             cursor: not-allowed;
             background: rgba(255, 255, 255, 0.1);
+        }
+
+        .quest-button-action.claim {
+            background: linear-gradient(135deg, #00ff96, #00cc66);
+            color: #1a1a2e;
+        }
+
+        .quest-button-action.claim:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .quest-button-action.review {
+            background: rgba(255, 165, 0, 0.3);
+            color: #ffaa00;
+            cursor: wait;
+        }
+
+        .quest-timer {
+            font-size: 12px;
+            color: #ffaa00;
+            background: rgba(255, 165, 0, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 165, 0, 0.3);
         }
 
         .quest-completed-badge {
@@ -343,6 +440,25 @@
             100% {
                 opacity: 0;
                 transform: translateY(-60px) scale(1.5);
+            }
+        }
+
+        /* Sparkle Efekti */
+        .quest-sparkle {
+            position: fixed;
+            pointer-events: none;
+            animation: sparkle 0.8s ease-out forwards;
+            z-index: 3000;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 1;
+                transform: scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2) rotate(180deg);
             }
         }
 
@@ -2161,6 +2277,7 @@
     <!-- Görev Butonu -->
     <div class="quest-button" id="questButton" onclick="openQuestPanel()">
         <img src="assets/icons/1000011085-removebg-preview.png" alt="Görevler">
+        <div class="quest-red-dot" id="questRedDot"></div>
     </div>
 
     <!-- Görev Paneli -->
@@ -2174,10 +2291,19 @@
             Sosyal görevleri tamamla, NeonTap coin kazan.
         </div>
 
-        <!-- Görev Kartları -->
+        <!-- Uyarı Kutusu -->
+        <div class="quest-warning">
+            <span class="quest-warning-icon">⚠️</span>
+            <span class="quest-warning-text">
+                Görevler manuel olarak incelenmektedir. Lütfen görevleri eksiksiz ve doğru şekilde tamamladığınızdan emin olun. Onay sonrası CLAIM butonu aktif olacaktır.
+            </span>
+        </div>
+
+        <!-- Telegram Görevi -->
         <div class="quest-card" id="questTelegram">
             <div class="quest-card-header">
-                <span class="quest-title">📱 Telegram Kanalına Katıl</span>
+                <img src="assets/icons/1000011087-removebg-preview.png" alt="Telegram" class="quest-icon">
+                <span class="quest-title">Telegram Kanalına Katıl</span>
                 <div class="quest-reward">
                     <span class="quest-reward-value">+50</span>
                     <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="quest-reward-icon">
@@ -2186,43 +2312,26 @@
             <div class="quest-description">
                 Resmi Telegram kanalımıza katıl, güncellemelerden haberdar ol.
             </div>
-            <div class="quest-actions">
-                <button class="quest-button-action" id="questTelegramBtn" onclick="completeQuest('telegram', 50)">Katıl</button>
-                <div class="quest-completed-badge" id="questTelegramBadge" style="display: none;">Tamamlandı</div>
+            <div class="quest-actions" id="questTelegramActions">
+                <!-- Dinamik olarak doldurulacak -->
             </div>
         </div>
 
-        <div class="quest-card" id="questTwitter">
+        <!-- X (Twitter) Görevi -->
+        <div class="quest-card" id="questX">
             <div class="quest-card-header">
-                <span class="quest-title">🐦 Twitter Hesabını Takip Et</span>
+                <img src="assets/icons/images (1).png" alt="X" class="quest-icon">
+                <span class="quest-title">X Hesabını Takip Et</span>
                 <div class="quest-reward">
                     <span class="quest-reward-value">+50</span>
                     <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="quest-reward-icon">
                 </div>
             </div>
             <div class="quest-description">
-                Twitter'da bizi takip et, duyuruları kaçırma.
+                X'te bizi takip et, duyuruları kaçırma.
             </div>
-            <div class="quest-actions">
-                <button class="quest-button-action" id="questTwitterBtn" onclick="completeQuest('twitter', 50)">Takip Et</button>
-                <div class="quest-completed-badge" id="questTwitterBadge" style="display: none;">Tamamlandı</div>
-            </div>
-        </div>
-
-        <div class="quest-card" id="questGame">
-            <div class="quest-card-header">
-                <span class="quest-title">🎮 Telegram Oyunu Oyna</span>
-                <div class="quest-reward">
-                    <span class="quest-reward-value">+75</span>
-                    <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="quest-reward-icon">
-                </div>
-            </div>
-            <div class="quest-description">
-                Telegram'daki mini oyunumuzu dene, ekstra ödül kazan.
-            </div>
-            <div class="quest-actions">
-                <button class="quest-button-action" id="questGameBtn" onclick="completeQuest('game', 75)">Oyna</button>
-                <div class="quest-completed-badge" id="questGameBadge" style="display: none;">Tamamlandı</div>
+            <div class="quest-actions" id="questXActions">
+                <!-- Dinamik olarak doldurulacak -->
             </div>
         </div>
     </div>
@@ -2835,10 +2944,11 @@
     </div>
 
     <script>
-        // 🎯 Navigation - Hamburger ve Header görünürlüğü kontrolü
+        // 🎯 Navigation - Hamburger, Header ve Görev Butonu görünürlüğü kontrolü
         function updateUIVisibility() {
             const menuToggle = document.getElementById('menuToggle');
             const headerVersion = document.getElementById('headerVersion');
+            const questButton = document.getElementById('questButton');
             const activeScreen = document.querySelector('.screen.active');
             
             const isHomeScreen = activeScreen && activeScreen.id === 'home-screen';
@@ -2846,9 +2956,11 @@
             if (isHomeScreen) {
                 menuToggle.classList.remove('hidden');
                 headerVersion.classList.remove('hidden');
+                questButton.classList.remove('hidden');
             } else {
                 menuToggle.classList.add('hidden');
                 headerVersion.classList.add('hidden');
+                questButton.classList.add('hidden');
             }
         }
 
@@ -2947,9 +3059,20 @@
 
             // Görevler
             quests: {
-                telegram: false,
-                twitter: false,
-                game: false
+                telegram: { 
+                    started: false,
+                    completed: false,
+                    claimed: false,
+                    startTime: null,
+                    reviewEndTime: null
+                },
+                x: { 
+                    started: false,
+                    completed: false,
+                    claimed: false,
+                    startTime: null,
+                    reviewEndTime: null
+                }
             }
         };
 
@@ -3026,45 +3149,126 @@
             });
         };
 
-        // Görev sistemini yükle
-        function loadQuests() {
-            document.getElementById('questTelegramBtn').disabled = gameData.quests.telegram;
-            document.getElementById('questTwitterBtn').disabled = gameData.quests.twitter;
-            document.getElementById('questGameBtn').disabled = gameData.quests.game;
-            
-            document.getElementById('questTelegramBadge').style.display = gameData.quests.telegram ? 'block' : 'none';
-            document.getElementById('questTwitterBadge').style.display = gameData.quests.twitter ? 'block' : 'none';
-            document.getElementById('questGameBadge').style.display = gameData.quests.game ? 'block' : 'none';
-            
-            if (gameData.quests.telegram) document.getElementById('questTelegram').classList.add('completed');
-            if (gameData.quests.twitter) document.getElementById('questTwitter').classList.add('completed');
-            if (gameData.quests.game) document.getElementById('questGame').classList.add('completed');
+        // Red Dot kontrolü
+        function updateRedDot() {
+            const hasUnclaimed = Object.values(gameData.quests).some(quest => quest.completed && !quest.claimed);
+            const redDot = document.getElementById('questRedDot');
+            if (hasUnclaimed) {
+                redDot.classList.remove('hidden');
+            } else {
+                redDot.classList.add('hidden');
+            }
         }
 
-        // Görev tamamlama
-        window.completeQuest = function(questId, reward) {
-            if (gameData.quests[questId]) {
-                showModal('Bilgi', 'Bu görevi zaten tamamladınız!');
-                return;
+        // Görev butonlarını güncelle
+        function updateQuestButtons() {
+            const telegramQuest = gameData.quests.telegram;
+            const xQuest = gameData.quests.x;
+            
+            const telegramActions = document.getElementById('questTelegramActions');
+            const xActions = document.getElementById('questXActions');
+            
+            const now = Date.now();
+            
+            // Telegram görevi
+            if (!telegramQuest.started) {
+                telegramActions.innerHTML = `<button class="quest-button-action" onclick="startQuest('telegram')">Katıl</button>`;
+                document.getElementById('questTelegram').classList.remove('completed', 'claim-ready');
+            } else if (telegramQuest.completed) {
+                if (telegramQuest.claimed) {
+                    telegramActions.innerHTML = `<div class="quest-completed-badge">Tamamlandı</div>`;
+                    document.getElementById('questTelegram').classList.add('completed');
+                    document.getElementById('questTelegram').classList.remove('claim-ready');
+                } else {
+                    telegramActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('telegram', 50)">CLAIM</button>`;
+                    document.getElementById('questTelegram').classList.add('claim-ready');
+                    document.getElementById('questTelegram').classList.remove('completed');
+                }
+            } else if (telegramQuest.started && !telegramQuest.completed) {
+                const timeLeft = Math.max(0, 5 * 60 * 1000 - (now - telegramQuest.startTime));
+                if (timeLeft > 0) {
+                    const minutes = Math.floor(timeLeft / 60000);
+                    const seconds = Math.floor((timeLeft % 60000) / 1000);
+                    telegramActions.innerHTML = `
+                        <button class="quest-button-action review" disabled>İnceleniyor (${minutes}:${seconds.toString().padStart(2, '0')})</button>
+                    `;
+                } else {
+                    // 5 dakika doldu, inceleme tamamlandı
+                    telegramQuest.completed = true;
+                    telegramQuest.reviewEndTime = now;
+                    telegramActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('telegram', 50)">CLAIM</button>`;
+                    document.getElementById('questTelegram').classList.add('claim-ready');
+                }
+                document.getElementById('questTelegram').classList.remove('completed', 'claim-ready');
             }
             
-            // Linkleri aç
+            // X görevi
+            if (!xQuest.started) {
+                xActions.innerHTML = `<button class="quest-button-action" onclick="startQuest('x')">Takip Et</button>`;
+                document.getElementById('questX').classList.remove('completed', 'claim-ready');
+            } else if (xQuest.completed) {
+                if (xQuest.claimed) {
+                    xActions.innerHTML = `<div class="quest-completed-badge">Tamamlandı</div>`;
+                    document.getElementById('questX').classList.add('completed');
+                    document.getElementById('questX').classList.remove('claim-ready');
+                } else {
+                    xActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('x', 50)">CLAIM</button>`;
+                    document.getElementById('questX').classList.add('claim-ready');
+                    document.getElementById('questX').classList.remove('completed');
+                }
+            } else if (xQuest.started && !xQuest.completed) {
+                const timeLeft = Math.max(0, 5 * 60 * 1000 - (now - xQuest.startTime));
+                if (timeLeft > 0) {
+                    const minutes = Math.floor(timeLeft / 60000);
+                    const seconds = Math.floor((timeLeft % 60000) / 1000);
+                    xActions.innerHTML = `
+                        <button class="quest-button-action review" disabled>İnceleniyor (${minutes}:${seconds.toString().padStart(2, '0')})</button>
+                    `;
+                } else {
+                    // 5 dakika doldu, inceleme tamamlandı
+                    xQuest.completed = true;
+                    xQuest.reviewEndTime = now;
+                    xActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('x', 50)">CLAIM</button>`;
+                    document.getElementById('questX').classList.add('claim-ready');
+                }
+                document.getElementById('questX').classList.remove('completed', 'claim-ready');
+            }
+            
+            updateRedDot();
+            saveGameData();
+        }
+
+        // Göreve başla
+        window.startQuest = function(questId) {
             const links = {
                 telegram: 'https://t.me/neontap_official',
-                twitter: 'https://twitter.com/neontap',
-                game: 'https://t.me/neontap_bot/game'
+                x: 'https://x.com/neontap'
             };
             
             window.open(links[questId], '_blank');
             
-            // Ödülü ver
-            gameData.neonTapToken += reward;
-            gameData.quests[questId] = true;
+            gameData.quests[questId].started = true;
+            gameData.quests[questId].startTime = Date.now();
             
-            // Floating coin animasyonu
-            const button = document.getElementById(`quest${questId.charAt(0).toUpperCase() + questId.slice(1)}Btn`);
+            updateQuestButtons();
+            saveGameData();
+        };
+
+        // Görev claim et
+        window.claimQuest = function(questId, reward) {
+            const quest = gameData.quests[questId];
+            
+            if (!quest.completed || quest.claimed) return;
+            
+            // Ödülü ekle
+            gameData.neonTapToken += reward;
+            quest.claimed = true;
+            
+            // Animasyonlar
+            const button = document.querySelector(`#quest${questId === 'x' ? 'X' : 'Telegram'}Actions .quest-button-action`);
             const rect = button.getBoundingClientRect();
             
+            // Floating coin
             const floating = document.createElement('div');
             floating.className = 'quest-floating-coin';
             floating.textContent = `+${reward}`;
@@ -3073,16 +3277,32 @@
             document.body.appendChild(floating);
             setTimeout(() => floating.remove(), 1000);
             
-            loadQuests();
-            saveGameData();
+            // Sparkle efekti
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'quest-sparkle';
+                sparkle.innerHTML = '✨';
+                sparkle.style.left = rect.left + Math.random() * rect.width + 'px';
+                sparkle.style.top = rect.top + Math.random() * rect.height + 'px';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 800);
+            }
+            
+            updateQuestButtons();
             updateDisplay();
+            saveGameData();
             
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };
 
-        // Panel açma/kapama fonksiyonları
+        // Görevleri periyodik güncelle
+        setInterval(() => {
+            updateQuestButtons();
+        }, 1000);
+
+        // Görev paneli aç/kapat
         window.openQuestPanel = function() {
-            loadQuests();
+            updateQuestButtons();
             document.getElementById('questPanel').classList.add('active');
         };
 
@@ -3090,6 +3310,7 @@
             document.getElementById('questPanel').classList.remove('active');
         };
 
+        // Diğer panel fonksiyonları
         window.openProfilePanel = function() {
             closeMenu();
             updateProfileDisplay();
@@ -3961,7 +4182,7 @@
         updateMiningCards();
         updateDisplay();
         updateProfileDisplay();
-        loadQuests();
+        updateQuestButtons();
         
         updateUIVisibility();
 

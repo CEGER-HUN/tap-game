@@ -104,11 +104,11 @@
             margin-left: 4px;
         }
 
-        /* Görev Butonu */
+        /* Görev Butonu - Konum düzeltildi */
         .quest-button {
             position: fixed;
             right: 20px;
-            top: 60%;
+            top: 55%;
             transform: translateY(-50%);
             width: 65px;
             height: 65px;
@@ -140,6 +140,12 @@
             height: 70%;
             object-fit: contain;
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        @media (max-width: 480px) {
+            .quest-button {
+                top: 58%; /* Küçük ekranlarda biraz aşağı */
+            }
         }
 
         @keyframes questPulse {
@@ -307,10 +313,10 @@
         }
 
         .quest-icon {
-            width: 22px;
-            height: 22px;
+            width: 28px;
+            height: 28px;
             object-fit: contain;
-            margin-right: 8px;
+            margin-right: 10px;
         }
 
         .quest-title {
@@ -394,15 +400,6 @@
             background: rgba(255, 165, 0, 0.3);
             color: #ffaa00;
             cursor: wait;
-        }
-
-        .quest-timer {
-            font-size: 12px;
-            color: #ffaa00;
-            background: rgba(255, 165, 0, 0.1);
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 165, 0, 0.3);
         }
 
         .quest-completed-badge {
@@ -2274,7 +2271,7 @@
         <span></span>
     </div>
 
-    <!-- Görev Butonu -->
+    <!-- Görev Butonu - Konum düzeltildi -->
     <div class="quest-button" id="questButton" onclick="openQuestPanel()">
         <img src="assets/icons/1000011085-removebg-preview.png" alt="Görevler">
         <div class="quest-red-dot" id="questRedDot"></div>
@@ -3185,19 +3182,16 @@
                     document.getElementById('questTelegram').classList.remove('completed');
                 }
             } else if (telegramQuest.started && !telegramQuest.completed) {
-                const timeLeft = Math.max(0, 5 * 60 * 1000 - (now - telegramQuest.startTime));
-                if (timeLeft > 0) {
-                    const minutes = Math.floor(timeLeft / 60000);
-                    const seconds = Math.floor((timeLeft % 60000) / 1000);
-                    telegramActions.innerHTML = `
-                        <button class="quest-button-action review" disabled>İnceleniyor (${minutes}:${seconds.toString().padStart(2, '0')})</button>
-                    `;
-                } else {
-                    // 5 dakika doldu, inceleme tamamlandı
+                const timeLeft = 10 * 60 * 1000 - (now - telegramQuest.startTime);
+                if (timeLeft <= 0) {
+                    // 10 dakika doldu, inceleme tamamlandı
                     telegramQuest.completed = true;
                     telegramQuest.reviewEndTime = now;
                     telegramActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('telegram', 50)">CLAIM</button>`;
                     document.getElementById('questTelegram').classList.add('claim-ready');
+                } else {
+                    // İnceleme devam ediyor - sayaç gösterilmiyor
+                    telegramActions.innerHTML = `<button class="quest-button-action review" disabled>İnceleniyor</button>`;
                 }
                 document.getElementById('questTelegram').classList.remove('completed', 'claim-ready');
             }
@@ -3217,19 +3211,16 @@
                     document.getElementById('questX').classList.remove('completed');
                 }
             } else if (xQuest.started && !xQuest.completed) {
-                const timeLeft = Math.max(0, 5 * 60 * 1000 - (now - xQuest.startTime));
-                if (timeLeft > 0) {
-                    const minutes = Math.floor(timeLeft / 60000);
-                    const seconds = Math.floor((timeLeft % 60000) / 1000);
-                    xActions.innerHTML = `
-                        <button class="quest-button-action review" disabled>İnceleniyor (${minutes}:${seconds.toString().padStart(2, '0')})</button>
-                    `;
-                } else {
-                    // 5 dakika doldu, inceleme tamamlandı
+                const timeLeft = 10 * 60 * 1000 - (now - xQuest.startTime);
+                if (timeLeft <= 0) {
+                    // 10 dakika doldu, inceleme tamamlandı
                     xQuest.completed = true;
                     xQuest.reviewEndTime = now;
                     xActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('x', 50)">CLAIM</button>`;
                     document.getElementById('questX').classList.add('claim-ready');
+                } else {
+                    // İnceleme devam ediyor - sayaç gösterilmiyor
+                    xActions.innerHTML = `<button class="quest-button-action review" disabled>İnceleniyor</button>`;
                 }
                 document.getElementById('questX').classList.remove('completed', 'claim-ready');
             }
@@ -3266,26 +3257,28 @@
             
             // Animasyonlar
             const button = document.querySelector(`#quest${questId === 'x' ? 'X' : 'Telegram'}Actions .quest-button-action`);
-            const rect = button.getBoundingClientRect();
-            
-            // Floating coin
-            const floating = document.createElement('div');
-            floating.className = 'quest-floating-coin';
-            floating.textContent = `+${reward}`;
-            floating.style.left = rect.left + rect.width/2 + 'px';
-            floating.style.top = rect.top + 'px';
-            document.body.appendChild(floating);
-            setTimeout(() => floating.remove(), 1000);
-            
-            // Sparkle efekti
-            for (let i = 0; i < 5; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'quest-sparkle';
-                sparkle.innerHTML = '✨';
-                sparkle.style.left = rect.left + Math.random() * rect.width + 'px';
-                sparkle.style.top = rect.top + Math.random() * rect.height + 'px';
-                document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 800);
+            if (button) {
+                const rect = button.getBoundingClientRect();
+                
+                // Floating coin
+                const floating = document.createElement('div');
+                floating.className = 'quest-floating-coin';
+                floating.textContent = `+${reward}`;
+                floating.style.left = rect.left + rect.width/2 + 'px';
+                floating.style.top = rect.top + 'px';
+                document.body.appendChild(floating);
+                setTimeout(() => floating.remove(), 1000);
+                
+                // Sparkle efekti
+                for (let i = 0; i < 5; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'quest-sparkle';
+                    sparkle.innerHTML = '✨';
+                    sparkle.style.left = rect.left + Math.random() * rect.width + 'px';
+                    sparkle.style.top = rect.top + Math.random() * rect.height + 'px';
+                    document.body.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 800);
+                }
             }
             
             updateQuestButtons();
@@ -3295,10 +3288,10 @@
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };
 
-        // Görevleri periyodik güncelle
+        // Görevleri periyodik güncelle (her 5 saniyede bir)
         setInterval(() => {
             updateQuestButtons();
-        }, 1000);
+        }, 5000);
 
         // Görev paneli aç/kapat
         window.openQuestPanel = function() {

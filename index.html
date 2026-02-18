@@ -25,6 +25,10 @@
             position: relative;
         }
 
+        body.modal-open {
+            overflow: hidden;
+        }
+
         /* Hamburger Menü Butonu */
         .menu-toggle {
             position: fixed;
@@ -104,7 +108,7 @@
             margin-left: 4px;
         }
 
-        /* ========== GÖREV BUTONU - KESİN DÜZELTİLDİ ========== */
+        /* ========== GÖREV BUTONU ========== */
         .quest-button {
             position: fixed !important;
             right: 20px !important;
@@ -187,6 +191,123 @@
                 transform: scale(1.2);
                 opacity: 0.8;
             }
+        }
+
+        /* Hesap Bilgileri Modalı */
+        .account-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .account-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .account-modal {
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 24px;
+            padding: 25px;
+            width: 90%;
+            max-width: 340px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 215, 0, 0.1) inset;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .account-modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .account-modal-input-group {
+            margin-bottom: 20px;
+        }
+
+        .account-modal-label {
+            display: block;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 6px;
+            margin-left: 4px;
+        }
+
+        .account-modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .account-modal-input:focus {
+            outline: none;
+            border-color: #00ff96;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .account-modal-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .account-modal-error {
+            color: #ff5555;
+            font-size: 12px;
+            margin-top: 5px;
+            margin-left: 4px;
+            min-height: 18px;
+        }
+
+        .account-modal-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00ff96, #00cc66);
+            border: none;
+            border-radius: 16px;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .account-modal-button:active {
+            transform: scale(0.95);
         }
 
         /* Görev Paneli */
@@ -868,6 +989,60 @@
 
         .support-panel.active, .sponsor-panel.active, .profile-panel.active, .leaderboard-panel.active {
             right: 0;
+        }
+
+        /* Profil Paneli - Sosyal Hesap Kartı */
+        .social-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 18px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .social-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-info-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .social-info-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .social-update-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+
+        .social-update-btn:active {
+            transform: scale(0.95);
         }
 
         /* Form Elemanları */
@@ -2272,10 +2447,31 @@
         <span></span>
     </div>
 
-    <!-- ========== GÖREV BUTONU - KESİN DÜZELTİLDİ ========== -->
-    <div class="quest-button" id="questButton" onclick="openQuestPanel()">
+    <!-- ========== GÖREV BUTONU ========== -->
+    <div class="quest-button" id="questButton" onclick="handleQuestButtonClick()">
         <img src="assets/icons/1000011085-removebg-preview.png" alt="Görevler">
         <div class="quest-red-dot" id="questRedDot"></div>
+    </div>
+
+    <!-- Hesap Bilgileri Modalı -->
+    <div class="account-modal-overlay" id="accountModal">
+        <div class="account-modal">
+            <div class="account-modal-title">Hesap Bilgilerini Gir</div>
+            
+            <div class="account-modal-input-group">
+                <label class="account-modal-label">X Kullanıcı Adı</label>
+                <input type="text" class="account-modal-input" id="xUsername" placeholder="@kullaniciadi">
+                <div class="account-modal-error" id="xUsernameError"></div>
+            </div>
+
+            <div class="account-modal-input-group">
+                <label class="account-modal-label">Telegram Kullanıcı Adı</label>
+                <input type="text" class="account-modal-input" id="telegramUsername" placeholder="@kullaniciadi">
+                <div class="account-modal-error" id="telegramUsernameError"></div>
+            </div>
+
+            <button class="account-modal-button" onclick="saveAccountInfo()">KAYDET</button>
+        </div>
     </div>
 
     <!-- Görev Paneli -->
@@ -2647,6 +2843,23 @@
                 <span id="referralEarnings">0</span> NeonTap
             </div>
         </div>
+
+        <!-- Sosyal Hesap Bilgileri Kartı -->
+        <div class="social-card">
+            <div class="social-card-title">Sosyal Hesap Bilgileri</div>
+            
+            <div class="social-info-row">
+                <span class="social-info-label">X Kullanıcı Adı</span>
+                <span class="social-info-value" id="profileXUsername">-</span>
+            </div>
+            
+            <div class="social-info-row">
+                <span class="social-info-label">Telegram Kullanıcı Adı</span>
+                <span class="social-info-value" id="profileTelegramUsername">-</span>
+            </div>
+
+            <button class="social-update-btn" onclick="openAccountModal(true)">Güncelle</button>
+        </div>
     </div>
 
     <!-- Liderlik Tablosu Paneli -->
@@ -2947,11 +3160,15 @@
             const menuToggle = document.getElementById('menuToggle');
             const headerVersion = document.getElementById('headerVersion');
             const questButton = document.getElementById('questButton');
+            const questPanel = document.getElementById('questPanel');
+            const accountModal = document.getElementById('accountModal');
             const activeScreen = document.querySelector('.screen.active');
             
             const isHomeScreen = activeScreen && activeScreen.id === 'home-screen';
+            const isQuestPanelOpen = questPanel.classList.contains('active');
+            const isAccountModalOpen = accountModal.classList.contains('active');
             
-            if (isHomeScreen) {
+            if (isHomeScreen && !isQuestPanelOpen && !isAccountModalOpen) {
                 menuToggle.classList.remove('hidden');
                 headerVersion.classList.remove('hidden');
                 questButton.classList.remove('hidden');
@@ -3071,7 +3288,11 @@
                     startTime: null,
                     reviewEndTime: null
                 }
-            }
+            },
+
+            // Sosyal medya hesapları
+            xUsername: '',
+            telegramUsername: ''
         };
 
         // Kart level'larını başlat
@@ -3096,7 +3317,82 @@
             document.getElementById('referralCode').textContent = gameData.referralCode;
             document.getElementById('referralEarnings').textContent = formatNumberFull(gameData.referralEarnings);
             
+            // Sosyal medya bilgilerini göster
+            document.getElementById('profileXUsername').textContent = gameData.xUsername || '-';
+            document.getElementById('profileTelegramUsername').textContent = gameData.telegramUsername || '-';
+            
             document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
+        }
+
+        // Hesap bilgileri modalını aç
+        function openAccountModal(isUpdate = false) {
+            if (isUpdate) {
+                // Güncelleme modunda mevcut bilgileri doldur
+                document.getElementById('xUsername').value = gameData.xUsername || '';
+                document.getElementById('telegramUsername').value = gameData.telegramUsername || '';
+            } else {
+                // İlk kayıt modunda boş göster
+                document.getElementById('xUsername').value = '';
+                document.getElementById('telegramUsername').value = '';
+            }
+            
+            // Hata mesajlarını temizle
+            document.getElementById('xUsernameError').textContent = '';
+            document.getElementById('telegramUsernameError').textContent = '';
+            
+            document.getElementById('accountModal').classList.add('active');
+            document.body.classList.add('modal-open');
+            updateUIVisibility();
+        }
+
+        // Hesap bilgilerini kaydet
+        function saveAccountInfo() {
+            const xUsername = document.getElementById('xUsername').value.trim();
+            const telegramUsername = document.getElementById('telegramUsername').value.trim();
+            
+            let hasError = false;
+            
+            if (!xUsername) {
+                document.getElementById('xUsernameError').textContent = 'X kullanıcı adı zorunludur';
+                hasError = true;
+            } else {
+                document.getElementById('xUsernameError').textContent = '';
+            }
+            
+            if (!telegramUsername) {
+                document.getElementById('telegramUsernameError').textContent = 'Telegram kullanıcı adı zorunludur';
+                hasError = true;
+            } else {
+                document.getElementById('telegramUsernameError').textContent = '';
+            }
+            
+            if (hasError) return;
+            
+            gameData.xUsername = xUsername;
+            gameData.telegramUsername = telegramUsername;
+            
+            closeAccountModal();
+            updateProfileDisplay();
+            saveGameData();
+            
+            // Görev panelini aç
+            openQuestPanel();
+        }
+
+        // Hesap bilgileri modalını kapat
+        function closeAccountModal() {
+            document.getElementById('accountModal').classList.remove('active');
+            document.body.classList.remove('modal-open');
+            updateUIVisibility();
+        }
+
+        // Görev butonu tıklama işleyicisi
+        function handleQuestButtonClick() {
+            if (!gameData.xUsername || !gameData.telegramUsername) {
+                openAccountModal(false);
+            } else {
+                openQuestPanel();
+            }
         }
 
         // İsim değiştirme modalı
@@ -3185,13 +3481,11 @@
             } else if (telegramQuest.started && !telegramQuest.completed) {
                 const timeLeft = 10 * 60 * 1000 - (now - telegramQuest.startTime);
                 if (timeLeft <= 0) {
-                    // 10 dakika doldu, inceleme tamamlandı
                     telegramQuest.completed = true;
                     telegramQuest.reviewEndTime = now;
                     telegramActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('telegram', 50)">CLAIM</button>`;
                     document.getElementById('questTelegram').classList.add('claim-ready');
                 } else {
-                    // İnceleme devam ediyor - sayaç gösterilmiyor
                     telegramActions.innerHTML = `<button class="quest-button-action review" disabled>İnceleniyor</button>`;
                 }
                 document.getElementById('questTelegram').classList.remove('completed', 'claim-ready');
@@ -3214,13 +3508,11 @@
             } else if (xQuest.started && !xQuest.completed) {
                 const timeLeft = 10 * 60 * 1000 - (now - xQuest.startTime);
                 if (timeLeft <= 0) {
-                    // 10 dakika doldu, inceleme tamamlandı
                     xQuest.completed = true;
                     xQuest.reviewEndTime = now;
                     xActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('x', 50)">CLAIM</button>`;
                     document.getElementById('questX').classList.add('claim-ready');
                 } else {
-                    // İnceleme devam ediyor - sayaç gösterilmiyor
                     xActions.innerHTML = `<button class="quest-button-action review" disabled>İnceleniyor</button>`;
                 }
                 document.getElementById('questX').classList.remove('completed', 'claim-ready');
@@ -3252,16 +3544,13 @@
             
             if (!quest.completed || quest.claimed) return;
             
-            // Ödülü ekle
             gameData.neonTapToken += reward;
             quest.claimed = true;
             
-            // Animasyonlar
             const button = document.querySelector(`#quest${questId === 'x' ? 'X' : 'Telegram'}Actions .quest-button-action`);
             if (button) {
                 const rect = button.getBoundingClientRect();
                 
-                // Floating coin
                 const floating = document.createElement('div');
                 floating.className = 'quest-floating-coin';
                 floating.textContent = `+${reward}`;
@@ -3270,7 +3559,6 @@
                 document.body.appendChild(floating);
                 setTimeout(() => floating.remove(), 1000);
                 
-                // Sparkle efekti
                 for (let i = 0; i < 5; i++) {
                     const sparkle = document.createElement('div');
                     sparkle.className = 'quest-sparkle';
@@ -3289,7 +3577,7 @@
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };
 
-        // Görevleri periyodik güncelle (her 5 saniyede bir)
+        // Görevleri periyodik güncelle
         setInterval(() => {
             updateQuestButtons();
         }, 5000);
@@ -3298,10 +3586,12 @@
         window.openQuestPanel = function() {
             updateQuestButtons();
             document.getElementById('questPanel').classList.add('active');
+            updateUIVisibility();
         };
 
         window.closeQuestPanel = function() {
             document.getElementById('questPanel').classList.remove('active');
+            updateUIVisibility();
         };
 
         // Diğer panel fonksiyonları

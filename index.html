@@ -104,48 +104,48 @@
             margin-left: 4px;
         }
 
-        /* Görev Butonu - DÜZELTİLDİ */
+        /* ========== GÖREV BUTONU - KESİN DÜZELTİLDİ ========== */
         .quest-button {
-            position: fixed;
-            right: 20px;
-            top: 55%;
-            transform: translateY(-50%);
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #6b21a5, #1e1a4b);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(106, 13, 173, 0.6), 0 0 40px rgba(106, 13, 173, 0.3);
-            cursor: pointer;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            animation: questPulse 2.5s infinite ease-in-out;
-            position: relative;
+            position: fixed !important;
+            right: 20px !important;
+            top: 55% !important;
+            transform: translateY(-50%) !important;
+            width: 65px !important;
+            height: 65px !important;
+            border-radius: 50% !important;
+            background: radial-gradient(circle at 30% 30%, #6b21a5, #1e1a4b) !important;
+            border: 2px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 0 20px rgba(106, 13, 173, 0.6), 0 0 40px rgba(106, 13, 173, 0.3) !important;
+            cursor: pointer !important;
+            z-index: 9999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease !important;
+            animation: questPulse 2.5s infinite ease-in-out !important;
+            pointer-events: auto !important;
         }
 
         .quest-button.hidden {
-            display: none;
+            display: none !important;
         }
 
         .quest-button:active {
-            transform: translateY(-50%) scale(0.95);
-            box-shadow: 0 0 30px rgba(106, 13, 173, 0.8);
+            transform: translateY(-50%) scale(0.95) !important;
+            box-shadow: 0 0 30px rgba(106, 13, 173, 0.8) !important;
         }
 
         .quest-button img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+            width: 70% !important;
+            height: 70% !important;
+            object-fit: contain !important;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) !important;
         }
 
         @media (max-width: 480px) {
             .quest-button {
-                right: 15px;
-                top: 58%;
+                right: 15px !important;
+                top: 58% !important;
             }
         }
 
@@ -2272,7 +2272,7 @@
         <span></span>
     </div>
 
-    <!-- Görev Butonu - DÜZELTİLDİ: Body seviyesinde, fixed pozisyonlu -->
+    <!-- ========== GÖREV BUTONU - KESİN DÜZELTİLDİ ========== -->
     <div class="quest-button" id="questButton" onclick="openQuestPanel()">
         <img src="assets/icons/1000011085-removebg-preview.png" alt="Görevler">
         <div class="quest-red-dot" id="questRedDot"></div>

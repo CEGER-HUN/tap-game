@@ -104,7 +104,7 @@
             margin-left: 4px;
         }
 
-        /* Görev Butonu - Konum düzeltildi */
+        /* Görev Butonu - DÜZELTİLDİ */
         .quest-button {
             position: fixed;
             right: 20px;
@@ -117,7 +117,7 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 20px rgba(106, 13, 173, 0.6), 0 0 40px rgba(106, 13, 173, 0.3);
             cursor: pointer;
-            z-index: 999;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -144,7 +144,8 @@
 
         @media (max-width: 480px) {
             .quest-button {
-                top: 58%; /* Küçük ekranlarda biraz aşağı */
+                right: 15px;
+                top: 58%;
             }
         }
 
@@ -2271,7 +2272,7 @@
         <span></span>
     </div>
 
-    <!-- Görev Butonu - Konum düzeltildi -->
+    <!-- Görev Butonu - DÜZELTİLDİ: Body seviyesinde, fixed pozisyonlu -->
     <div class="quest-button" id="questButton" onclick="openQuestPanel()">
         <img src="assets/icons/1000011085-removebg-preview.png" alt="Görevler">
         <div class="quest-red-dot" id="questRedDot"></div>

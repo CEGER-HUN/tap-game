@@ -723,7 +723,7 @@
             text-align: center;
         }
 
-        /* Referans Paneli - YENİ */
+        /* Referans Paneli */
         .referral-panel {
             position: fixed;
             top: 0;
@@ -1587,6 +1587,127 @@
 
         .name-edit-button:active {
             transform: scale(0.95);
+        }
+
+        /* ========== ONBOARDING SİSTEMİ ========== */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .onboarding-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .onboarding-modal {
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 150, 0.3);
+            border-radius: 24px;
+            padding: 28px 24px;
+            width: 90%;
+            max-width: 340px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 255, 150, 0.1) inset, 0 0 30px rgba(0, 255, 150, 0.2);
+            animation: onboardingSlideUp 0.3s ease-out;
+            text-align: center;
+        }
+
+        @keyframes onboardingSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .onboarding-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .onboarding-text {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .onboarding-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00ff96, #00cc66);
+            border: none;
+            border-radius: 20px;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 20px rgba(0, 255, 150, 0.3);
+        }
+
+        .onboarding-button:active {
+            transform: scale(0.95);
+        }
+
+        .onboarding-highlight {
+            position: relative;
+            z-index: 10002;
+            box-shadow: 0 0 0 4px #00ff96, 0 0 20px 4px #00ff96;
+            border-radius: 12px;
+            animation: highlightPulse 2s infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px #00ff96, 0 0 20px 4px #00ff96;
+            }
+            50% {
+                box-shadow: 0 0 0 6px #00ff96, 0 0 30px 6px #00ff96;
+            }
+        }
+
+        .onboarding-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .onboarding-progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+
+        .onboarding-progress-dot.active {
+            background: #00ff96;
+            box-shadow: 0 0 10px #00ff96;
+            transform: scale(1.2);
         }
 
         /* Ana Container */
@@ -2702,7 +2823,6 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
-            <!-- Referans sekmesi - ARTIK PROFİLE ATMİYOR -->
             <div class="menu-item" onclick="openReferralPanel()">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
@@ -2741,7 +2861,7 @@
         </div>
     </div>
 
-    <!-- Referans Paneli - YENİ -->
+    <!-- Referans Paneli -->
     <div class="referral-panel" id="referralPanel">
         <div class="panel-header">
             <div class="panel-title">👥 Referans Sistemi</div>
@@ -3077,6 +3197,16 @@
         </div>
     </div>
 
+    <!-- ========== ONBOARDING SİSTEMİ ========== -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+        <div class="onboarding-modal" id="onboardingModal">
+            <div class="onboarding-title" id="onboardingTitle">NeonTap’e Hoş Geldin 🚀</div>
+            <div class="onboarding-text" id="onboardingText">Tap yap, kart al, madencilik yap ve Airdrop kazan.</div>
+            <button class="onboarding-button" id="onboardingButton">Başlayalım</button>
+            <div class="onboarding-progress" id="onboardingProgress"></div>
+        </div>
+    </div>
+
     <!-- Ana Container (Oyun) -->
     <div class="container">
         <!-- Ana Ekran -->
@@ -3337,6 +3467,203 @@
     </div>
 
     <script>
+        // ========== ONBOARDING SİSTEMİ ==========
+        const onboardingSteps = [
+            {
+                title: "NeonTap’e Hoş Geldin 🚀",
+                text: "Tap yap, kart al, madencilik yap ve Airdrop kazan.",
+                buttonText: "Başlayalım",
+                highlight: null,
+                requireTap: false
+            },
+            {
+                title: "GO Coin",
+                text: "Bu butona basarak coin kazanmaya başla.",
+                buttonText: "İleri",
+                highlight: "coin-button",
+                requireTap: true,
+                tapElement: "coin-button"
+            },
+            {
+                title: "Enerji Sistemi",
+                text: "Her tap enerji harcar. Enerji zamanla yenilenir.",
+                buttonText: "Devam",
+                highlight: "energy-section",
+                requireTap: false
+            },
+            {
+                title: "Kartlar",
+                text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar.",
+                buttonText: "Devam",
+                highlight: "nav-item[data-screen='cards']",
+                requireTap: false
+            },
+            {
+                title: "Madencilik",
+                text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yap.",
+                buttonText: "Devam",
+                highlight: "nav-item[data-screen='mining']",
+                requireTap: false
+            },
+            {
+                title: "Airdrop",
+                text: "Airdrop görevlerini tamamla ve ekstra ödüller kazan.",
+                buttonText: "Devam",
+                highlight: "nav-item[data-screen='airdrop']",
+                requireTap: false
+            },
+            {
+                title: "Profil",
+                text: "Referans kodunu burada bulabilirsin.",
+                buttonText: "Devam",
+                highlight: "nav-item[data-screen='profile']",
+                requireTap: false
+            },
+            {
+                title: "Liderlik",
+                text: "En çok coin kazanan oyuncuları burada gör.",
+                buttonText: "Devam",
+                highlight: "nav-item[data-screen='leaderboard']",
+                requireTap: false
+            },
+            {
+                title: "Öğretici Tamamlandı 🎉",
+                text: "Artık kazanmaya hazırsın!",
+                buttonText: "Ödülümü Al",
+                highlight: null,
+                requireTap: false,
+                isFinal: true
+            }
+        ];
+
+        let onboardingCurrentStep = 0;
+        let onboardingActive = false;
+        let originalOnboardingButtonHandler = null;
+        let tapListenerAttached = false;
+
+        function startOnboarding() {
+            const tutorialCompleted = localStorage.getItem('neon_tutorial_completed');
+            if (tutorialCompleted === 'true') return;
+            
+            onboardingActive = true;
+            onboardingCurrentStep = 0;
+            showOnboardingStep(0);
+        }
+
+        function showOnboardingStep(stepIndex) {
+            const step = onboardingSteps[stepIndex];
+            const overlay = document.getElementById('onboardingOverlay');
+            const titleEl = document.getElementById('onboardingTitle');
+            const textEl = document.getElementById('onboardingText');
+            const buttonEl = document.getElementById('onboardingButton');
+            const progressEl = document.getElementById('onboardingProgress');
+            
+            // Remove previous highlight
+            document.querySelectorAll('.onboarding-highlight').forEach(el => {
+                el.classList.remove('onboarding-highlight');
+            });
+            
+            // Add new highlight
+            if (step.highlight) {
+                const highlightEl = document.querySelector(step.highlight);
+                if (highlightEl) {
+                    highlightEl.classList.add('onboarding-highlight');
+                }
+            }
+            
+            // Update content
+            titleEl.textContent = step.title;
+            textEl.textContent = step.text;
+            buttonEl.textContent = step.buttonText;
+            
+            // Update progress dots
+            let dotsHtml = '';
+            for (let i = 0; i < onboardingSteps.length; i++) {
+                dotsHtml += `<div class="onboarding-progress-dot ${i === stepIndex ? 'active' : ''}"></div>`;
+            }
+            progressEl.innerHTML = dotsHtml;
+            
+            // Remove previous button handler
+            if (originalOnboardingButtonHandler) {
+                buttonEl.removeEventListener('click', originalOnboardingButtonHandler);
+            }
+            
+            // Add new button handler
+            originalOnboardingButtonHandler = function() {
+                if (step.isFinal) {
+                    completeOnboarding();
+                } else {
+                    nextOnboardingStep();
+                }
+            };
+            buttonEl.addEventListener('click', originalOnboardingButtonHandler);
+            
+            // Attach tap listener if required
+            if (step.requireTap && step.tapElement) {
+                attachTapListener(step.tapElement);
+            } else {
+                removeTapListener();
+            }
+            
+            overlay.classList.add('active');
+        }
+
+        function attachTapListener(elementId) {
+            if (tapListenerAttached) return;
+            
+            const element = document.getElementById(elementId);
+            if (element) {
+                const tapHandler = function() {
+                    if (onboardingActive && onboardingSteps[onboardingCurrentStep]?.requireTap) {
+                        element.removeEventListener('click', tapHandler);
+                        tapListenerAttached = false;
+                        nextOnboardingStep();
+                    }
+                };
+                element.addEventListener('click', tapHandler);
+                tapListenerAttached = true;
+            }
+        }
+
+        function removeTapListener() {
+            tapListenerAttached = false;
+        }
+
+        function nextOnboardingStep() {
+            if (onboardingCurrentStep < onboardingSteps.length - 1) {
+                onboardingCurrentStep++;
+                showOnboardingStep(onboardingCurrentStep);
+            }
+        }
+
+        function completeOnboarding() {
+            // Ödülü ekle (250 NeonTap Coin)
+            gameData.neonTapToken += 250;
+            
+            // LocalStorage'a kaydet
+            localStorage.setItem('neon_tutorial_completed', 'true');
+            
+            // Onboarding'i kapat
+            const overlay = document.getElementById('onboardingOverlay');
+            overlay.classList.remove('active');
+            
+            // Highlight'ları temizle
+            document.querySelectorAll('.onboarding-highlight').forEach(el => {
+                el.classList.remove('onboarding-highlight');
+            });
+            
+            onboardingActive = false;
+            
+            // Display'i güncelle
+            updateDisplay();
+            saveGameData();
+            
+            // Toast göster
+            showModal('🎉 Tebrikler!', '250 NeonTap Coin kazandınız!');
+        }
+
+        // ========== MEVCUT SİSTEM ==========
+        
         // 🎯 Navigation State - Aktif panel takibi
         let activePanel = null; // 'profile', 'leaderboard', 'referral', 'roadmap', 'support', 'sponsor', 'quest', null
 
@@ -3348,16 +3675,18 @@
             const sideMenu = document.getElementById('sideMenu');
             const questPanel = document.getElementById('questPanel');
             const accountModal = document.getElementById('accountModal');
+            const onboardingOverlay = document.getElementById('onboardingOverlay');
             const activeScreen = document.querySelector('.screen.active');
             
             const isHomeScreen = activeScreen && activeScreen.id === 'home-screen';
             const isSideMenuOpen = sideMenu.classList.contains('active');
             const isQuestPanelOpen = questPanel.classList.contains('active');
             const isAccountModalOpen = accountModal.classList.contains('active');
+            const isOnboardingActive = onboardingOverlay.classList.contains('active');
             const isAnyPanelOpen = activePanel !== null;
             
-            // Sadece Ana Sayfa aktifse ve hiçbir panel/modal açık değilse göster
-            if (isHomeScreen && !isSideMenuOpen && !isQuestPanelOpen && !isAccountModalOpen && !isAnyPanelOpen) {
+            // Sadece Ana Sayfa aktifse ve hiçbir panel/modal açık değilse ve onboarding aktif değilse göster
+            if (isHomeScreen && !isSideMenuOpen && !isQuestPanelOpen && !isAccountModalOpen && !isAnyPanelOpen && !isOnboardingActive) {
                 menuToggle.classList.remove('hidden');
                 headerVersion.classList.remove('hidden');
                 questButton.classList.remove('hidden');
@@ -3827,7 +4156,6 @@
             updateUIVisibility();
         };
 
-        // Referans paneli - ARTIK AYRI BİR PANEL
         window.openReferralPanel = function() {
             closeMenu();
             updateReferralDisplay();
@@ -4705,6 +5033,9 @@
         updateProfileDisplay();
         updateReferralDisplay();
         updateQuestButtons();
+        
+        // Onboarding'i başlat
+        startOnboarding();
         
         updateUIVisibility();
 

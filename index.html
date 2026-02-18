@@ -723,6 +723,179 @@
             text-align: center;
         }
 
+        /* Referans Paneli - YENİ */
+        .referral-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            transition: right 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .referral-panel.active {
+            right: 0;
+        }
+
+        /* Referans Kartı */
+        .referral-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .referral-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .referral-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+        }
+
+        .referral-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .referral-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .referral-copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .referral-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .referral-copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .referral-copy-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: #fff;
+        }
+
+        .referral-stats {
+            background: rgba(0, 255, 150, 0.05);
+            border: 1px solid rgba(0, 255, 150, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .referral-stats-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00ff96;
+            margin-bottom: 5px;
+        }
+
+        .referral-stats-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .referral-share-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1DA1F2, #0d8bd9);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .referral-share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+        }
+
+        .referral-share-btn:active {
+            transform: scale(0.95);
+        }
+
+        .referral-share-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 150, 0.9);
+            color: #1a1a2e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 10000;
+            animation: toastFade 0.3s ease-out;
+        }
+
+        @keyframes toastFade {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
         /* Roadmap Paneli */
         .roadmap-panel {
             position: fixed;
@@ -1414,33 +1587,6 @@
 
         .name-edit-button:active {
             transform: scale(0.95);
-        }
-
-        /* Copy Toast */
-        .copy-toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 255, 150, 0.9);
-            color: #1a1a2e;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 14px;
-            z-index: 4000;
-            animation: toastSlide 0.3s ease-out;
-        }
-
-        @keyframes toastSlide {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
         }
 
         /* Ana Container */
@@ -2544,7 +2690,7 @@
                 <div class="menu-item-icon">👤</div>
                 <div class="menu-item-text">
                     <div class="menu-item-title">Profilim</div>
-                    <div class="menu-item-desc">Hesap bilgileri, ID, referanslar</div>
+                    <div class="menu-item-desc">Hesap bilgileri, ID</div>
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
@@ -2556,10 +2702,11 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
+            <!-- Referans sekmesi - ARTIK PROFİLE ATMİYOR -->
             <div class="menu-item" onclick="openReferralPanel()">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
-                    <div class="menu-item-title">Arkadaş Davet</div>
+                    <div class="menu-item-title">Referans</div>
                     <div class="menu-item-desc">Davet et, bonus kazan</div>
                 </div>
                 <div class="menu-item-arrow">→</div>
@@ -2591,6 +2738,56 @@
         </div>
         <div class="menu-footer">
             © 2026 GO Coin Game
+        </div>
+    </div>
+
+    <!-- Referans Paneli - YENİ -->
+    <div class="referral-panel" id="referralPanel">
+        <div class="panel-header">
+            <div class="panel-title">👥 Referans Sistemi</div>
+            <div class="panel-close" onclick="closeReferralPanel()">✕</div>
+        </div>
+
+        <div class="referral-card">
+            <div class="referral-title">Referans Kodun</div>
+            
+            <div class="referral-row">
+                <span class="referral-label">Kod:</span>
+                <div class="referral-value">
+                    <span id="referralCodeDisplay">GO-123456</span>
+                    <div class="referral-copy-btn" onclick="copyToClipboard('referralCodeDisplay')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="referral-row">
+                <span class="referral-label">Link:</span>
+                <div class="referral-value">
+                    <span id="referralLinkDisplay">https://neontap.com/?ref=GO-123456</span>
+                    <div class="referral-copy-btn" onclick="copyToClipboard('referralLinkDisplay')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="referral-stats">
+                <div class="referral-stats-value" id="referralCountDisplay">0</div>
+                <div class="referral-stats-label">Toplam Referans</div>
+            </div>
+
+            <button class="referral-share-btn" onclick="shareOnX()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                </svg>
+                X'te Paylaş
+            </button>
         </div>
     </div>
 
@@ -2826,21 +3023,6 @@
             <div class="stat-card">
                 <div class="stat-value" id="referralCount">0</div>
                 <div class="stat-label">Referans</div>
-            </div>
-        </div>
-        
-        <div class="profile-field">
-            <div class="profile-field-label">Referans Kodun</div>
-            <div class="profile-field-value">
-                <span id="referralCode">GO-123456</span>
-                <button class="copy-btn" onclick="copyReferralCode()">Kopyala</button>
-            </div>
-        </div>
-        
-        <div class="profile-field">
-            <div class="profile-field-label">Referanstan Kazanılan</div>
-            <div class="profile-field-value">
-                <span id="referralEarnings">0</span> NeonTap
             </div>
         </div>
 
@@ -3155,20 +3337,27 @@
     </div>
 
     <script>
+        // 🎯 Navigation State - Aktif panel takibi
+        let activePanel = null; // 'profile', 'leaderboard', 'referral', 'roadmap', 'support', 'sponsor', 'quest', null
+
         // 🎯 Navigation - Hamburger, Header ve Görev Butonu görünürlüğü kontrolü
         function updateUIVisibility() {
             const menuToggle = document.getElementById('menuToggle');
             const headerVersion = document.getElementById('headerVersion');
             const questButton = document.getElementById('questButton');
+            const sideMenu = document.getElementById('sideMenu');
             const questPanel = document.getElementById('questPanel');
             const accountModal = document.getElementById('accountModal');
             const activeScreen = document.querySelector('.screen.active');
             
             const isHomeScreen = activeScreen && activeScreen.id === 'home-screen';
+            const isSideMenuOpen = sideMenu.classList.contains('active');
             const isQuestPanelOpen = questPanel.classList.contains('active');
             const isAccountModalOpen = accountModal.classList.contains('active');
+            const isAnyPanelOpen = activePanel !== null;
             
-            if (isHomeScreen && !isQuestPanelOpen && !isAccountModalOpen) {
+            // Sadece Ana Sayfa aktifse ve hiçbir panel/modal açık değilse göster
+            if (isHomeScreen && !isSideMenuOpen && !isQuestPanelOpen && !isAccountModalOpen && !isAnyPanelOpen) {
                 menuToggle.classList.remove('hidden');
                 headerVersion.classList.remove('hidden');
                 questButton.classList.remove('hidden');
@@ -3201,6 +3390,9 @@
             if (screenName === 'cards') {
                 renderAllCards();
             }
+            
+            // Aktif paneli sıfırla
+            activePanel = null;
             
             updateUIVisibility();
         };
@@ -3314,8 +3506,6 @@
             document.getElementById('playerName').textContent = gameData.username;
             document.getElementById('totalNeonTap').textContent = formatNumberFull(gameData.neonTapToken);
             document.getElementById('referralCount').textContent = gameData.referralCount;
-            document.getElementById('referralCode').textContent = gameData.referralCode;
-            document.getElementById('referralEarnings').textContent = formatNumberFull(gameData.referralEarnings);
             
             // Sosyal medya bilgilerini göster
             document.getElementById('profileXUsername').textContent = gameData.xUsername || '-';
@@ -3324,19 +3514,43 @@
             document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
         }
 
+        // Referans panelini güncelle
+        function updateReferralDisplay() {
+            document.getElementById('referralCodeDisplay').textContent = gameData.referralCode;
+            document.getElementById('referralLinkDisplay').textContent = `https://neontap.com/?ref=${gameData.referralCode}`;
+            document.getElementById('referralCountDisplay').textContent = gameData.referralCount;
+        }
+
+        // Kopyalama fonksiyonu
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.createElement('div');
+                toast.className = 'copy-toast';
+                toast.textContent = 'Kopyalandı!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        }
+
+        // X'te paylaş
+        function shareOnX() {
+            const text = encodeURIComponent(`NeonTap ile coin kazanıyorum 🚀\nSen de katıl!\n🔗 https://neontap.com/?ref=${gameData.referralCode}`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        }
+
         // Hesap bilgileri modalını aç
         function openAccountModal(isUpdate = false) {
             if (isUpdate) {
-                // Güncelleme modunda mevcut bilgileri doldur
                 document.getElementById('xUsername').value = gameData.xUsername || '';
                 document.getElementById('telegramUsername').value = gameData.telegramUsername || '';
             } else {
-                // İlk kayıt modunda boş göster
                 document.getElementById('xUsername').value = '';
                 document.getElementById('telegramUsername').value = '';
             }
             
-            // Hata mesajlarını temizle
             document.getElementById('xUsernameError').textContent = '';
             document.getElementById('telegramUsernameError').textContent = '';
             
@@ -3375,7 +3589,6 @@
             updateProfileDisplay();
             saveGameData();
             
-            // Görev panelini aç
             openQuestPanel();
         }
 
@@ -3430,17 +3643,6 @@
             } else {
                 showModal('Uyarı', 'İsim 1-16 karakter arası olmalıdır.');
             }
-        };
-
-        // Referans kodu kopyala
-        window.copyReferralCode = function() {
-            navigator.clipboard.writeText(gameData.referralCode).then(() => {
-                const toast = document.createElement('div');
-                toast.className = 'copy-toast';
-                toast.textContent = 'Kod kopyalandı!';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
-            });
         };
 
         // Red Dot kontrolü
@@ -3586,11 +3788,13 @@
         window.openQuestPanel = function() {
             updateQuestButtons();
             document.getElementById('questPanel').classList.add('active');
+            activePanel = 'quest';
             updateUIVisibility();
         };
 
         window.closeQuestPanel = function() {
             document.getElementById('questPanel').classList.remove('active');
+            activePanel = null;
             updateUIVisibility();
         };
 
@@ -3599,59 +3803,90 @@
             closeMenu();
             updateProfileDisplay();
             document.getElementById('profilePanel').classList.add('active');
+            activePanel = 'profile';
+            updateUIVisibility();
         };
 
         window.closeProfilePanel = function() {
             document.getElementById('profilePanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
         };
 
         window.openLeaderboardPanel = function() {
             closeMenu();
             generateLeaderboard();
             document.getElementById('leaderboardPanel').classList.add('active');
+            activePanel = 'leaderboard';
+            updateUIVisibility();
         };
 
         window.closeLeaderboardPanel = function() {
             document.getElementById('leaderboardPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
         };
 
+        // Referans paneli - ARTIK AYRI BİR PANEL
         window.openReferralPanel = function() {
             closeMenu();
-            openProfilePanel();
+            updateReferralDisplay();
+            document.getElementById('referralPanel').classList.add('active');
+            activePanel = 'referral';
+            updateUIVisibility();
+        };
+
+        window.closeReferralPanel = function() {
+            document.getElementById('referralPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
         };
 
         window.openRoadmapPanel = function() {
             closeMenu();
             document.getElementById('roadmapPanel').classList.add('active');
+            activePanel = 'roadmap';
+            updateUIVisibility();
         };
 
         window.closeRoadmapPanel = function() {
             document.getElementById('roadmapPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
         };
 
         window.openSupportPanel = function() {
             closeMenu();
             document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
             document.getElementById('supportPanel').classList.add('active');
+            activePanel = 'support';
+            updateUIVisibility();
         };
 
         window.closeSupportPanel = function() {
             document.getElementById('supportPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
         };
 
         window.openSponsorPanel = function() {
             closeMenu();
             document.getElementById('sponsorPanel').classList.add('active');
+            activePanel = 'sponsor';
+            updateUIVisibility();
         };
 
         window.closeSponsorPanel = function() {
             document.getElementById('sponsorPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
         };
 
         window.closeMenu = function() {
             document.getElementById('menuToggle').classList.remove('active');
             document.getElementById('sideMenu').classList.remove('active');
             document.getElementById('menuOverlay').classList.remove('active');
+            updateUIVisibility();
         };
 
         // Demo leaderboard oluştur
@@ -4330,6 +4565,7 @@
             this.classList.toggle('active');
             document.getElementById('sideMenu').classList.toggle('active');
             document.getElementById('menuOverlay').classList.toggle('active');
+            updateUIVisibility();
         });
 
         document.getElementById('menuOverlay').addEventListener('click', closeMenu);
@@ -4338,6 +4574,7 @@
             document.getElementById('menuToggle').classList.remove('active');
             document.getElementById('sideMenu').classList.remove('active');
             document.getElementById('menuOverlay').classList.remove('active');
+            updateUIVisibility();
         }
 
         function openProfile() {
@@ -4466,6 +4703,7 @@
         updateMiningCards();
         updateDisplay();
         updateProfileDisplay();
+        updateReferralDisplay();
         updateQuestButtons();
         
         updateUIVisibility();

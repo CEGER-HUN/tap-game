@@ -4716,297 +4716,347 @@
     </script>
 </body>
 </html>
-<!-- ========== DOĞRU ONBOARDING SİSTEMİ ========== -->
+<!-- ========== AAA ONBOARDING SİSTEMİ ========== -->
 <style>
-    .onboarding-panel {
+    /* Onboarding Overlay */
+    .tutorial-overlay {
         position: fixed;
         top: 0;
-        right: -100%;
+        left: 0;
         width: 100%;
-        max-width: 400px;
         height: 100vh;
-        background: rgba(30, 30, 50, 0.98);
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 999999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .tutorial-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Spotlight Cutout */
+    .tutorial-spotlight {
+        position: absolute;
+        border-radius: 16px;
+        box-shadow: 0 0 0 4px #00ff96, 0 0 0 9999px rgba(0, 0, 0, 0.85);
+        transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+        pointer-events: none;
+        z-index: 1000000;
+        animation: spotlightPulse 2s infinite;
+    }
+
+    @keyframes spotlightPulse {
+        0%, 100% { box-shadow: 0 0 0 4px #00ff96, 0 0 0 9999px rgba(0, 0, 0, 0.85); }
+        50% { box-shadow: 0 0 0 6px #00ff96, 0 0 0 9999px rgba(0, 0, 0, 0.85); }
+    }
+
+    /* Onboarding Modal */
+    .tutorial-modal {
+        position: absolute;
+        background: rgba(25, 30, 45, 0.95);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(0, 255, 150, 0.4);
+        border-radius: 24px;
+        padding: 24px;
+        width: 300px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 0 50px rgba(0, 255, 150, 0.3);
+        z-index: 1000001;
+        pointer-events: auto;
+        transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    }
+
+    /* Modal Arrow */
+    .tutorial-arrow {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: rgba(25, 30, 45, 0.95);
+        border-left: 2px solid rgba(0, 255, 150, 0.4);
+        border-top: 2px solid rgba(0, 255, 150, 0.4);
+        transform: rotate(45deg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         z-index: 1000000;
-        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
-        overflow-y: auto;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
     }
 
-    .onboarding-panel.active {
-        right: 0;
-    }
-
-    .onboarding-header {
+    .tutorial-header {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        align-items: center;
+        margin-bottom: 15px;
     }
 
-    .onboarding-title {
-        font-size: 24px;
+    .tutorial-progress {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.5px;
+    }
+
+    .tutorial-progress-bar {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        margin: 10px 0 20px;
+        overflow: hidden;
+    }
+
+    .tutorial-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #00ff96, #00ccff);
+        width: 0%;
+        transition: width 0.3s ease;
+        border-radius: 2px;
+        box-shadow: 0 0 10px #00ff96;
+    }
+
+    .tutorial-icon {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 0 20px rgba(0, 255, 150, 0.5));
+    }
+
+    .tutorial-title {
+        font-size: 22px;
         font-weight: 700;
+        text-align: center;
+        margin-bottom: 10px;
         background: linear-gradient(135deg, #FFD700, #FFA500);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
-    .onboarding-close {
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .onboarding-close:active {
-        transform: scale(0.9);
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .onboarding-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 20px 0;
-    }
-
-    .onboarding-icon {
-        font-size: 80px;
+    .tutorial-text {
+        font-size: 15px;
         text-align: center;
-        margin-bottom: 30px;
-        animation: float 3s infinite ease-in-out;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-
-    .onboarding-message {
-        font-size: 28px;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 15px;
-        color: #fff;
-        line-height: 1.3;
-    }
-
-    .onboarding-description {
-        font-size: 16px;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.7);
-        margin-bottom: 40px;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 25px;
         line-height: 1.6;
-        padding: 0 10px;
     }
 
-    .onboarding-progress {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 30px;
-    }
-
-    .onboarding-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
-        transition: all 0.3s;
-    }
-
-    .onboarding-dot.active {
-        background: #00ff96;
-        box-shadow: 0 0 15px #00ff96;
-        transform: scale(1.3);
-    }
-
-    .onboarding-button {
+    .tutorial-button {
+        width: 100%;
+        padding: 16px;
         background: linear-gradient(135deg, #00ff96, #00cc66);
-        color: #1a1a2e;
         border: none;
         border-radius: 16px;
-        padding: 18px;
-        font-size: 18px;
+        color: #1a1a2e;
         font-weight: 700;
+        font-size: 16px;
         cursor: pointer;
         transition: all 0.2s;
-        width: 100%;
-        box-shadow: 0 5px 20px rgba(0, 255, 150, 0.3);
+        box-shadow: 0 10px 25px -5px rgba(0, 255, 150, 0.5);
     }
 
-    .onboarding-button:active {
-        transform: scale(0.95);
+    .tutorial-button:active {
+        transform: scale(0.96);
     }
 
-    .onboarding-button:disabled {
+    .tutorial-button:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
     }
 
-    .onboarding-step {
+    .tutorial-skip {
         text-align: center;
-        font-size: 14px;
-        color: rgba(255, 255, 255, 0.4);
-        margin-top: 20px;
+        margin-top: 15px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: color 0.2s;
     }
 
-    .onboarding-highlight {
-        position: relative;
-        z-index: 1000001;
-        animation: highlightPulse 2s infinite;
-        border-radius: 12px;
+    .tutorial-skip:hover {
+        color: rgba(255, 255, 255, 0.6);
     }
 
-    @keyframes highlightPulse {
-        0%, 100% { box-shadow: 0 0 0 4px #00ff96, 0 0 20px 4px #00ff96; }
-        50% { box-shadow: 0 0 0 6px #00ff96, 0 0 30px 6px #00ff96; }
+    /* Coin Particle Effect */
+    .tutorial-particle {
+        position: fixed;
+        pointer-events: none;
+        color: #FFD700;
+        font-weight: bold;
+        animation: particleFloat 1s ease-out forwards;
+        z-index: 1000002;
+    }
+
+    @keyframes particleFloat {
+        0% { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(-100px) scale(2); }
     }
 </style>
 
-<div class="onboarding-panel" id="onboardingPanel">
-    <div class="onboarding-header">
-        <div class="onboarding-title">🎯 Hızlı Tur</div>
-        <div class="onboarding-close" onclick="skipOnboarding()">✕</div>
-    </div>
-    <div class="onboarding-content">
-        <div class="onboarding-icon" id="onboardingIcon">🚀</div>
-        <div class="onboarding-message" id="onboardingMessage">NeonTap'e Hoş Geldin!</div>
-        <div class="onboarding-description" id="onboardingDescription">Tap yap, coin kazan, kartlarını yükselt ve madencilik yap.</div>
-        <div class="onboarding-progress" id="onboardingProgress"></div>
-        <button class="onboarding-button" id="onboardingAction">BAŞLA</button>
-        <div class="onboarding-step" id="onboardingStepCounter">1/7</div>
+<!-- Onboarding Elements -->
+<div class="tutorial-overlay" id="tutorialOverlay">
+    <div class="tutorial-spotlight" id="tutorialSpotlight"></div>
+    <div class="tutorial-modal" id="tutorialModal">
+        <div class="tutorial-arrow" id="tutorialArrow"></div>
+        <div class="tutorial-header">
+            <span class="tutorial-progress" id="tutorialProgress">Adım 1/8</span>
+        </div>
+        <div class="tutorial-progress-bar">
+            <div class="tutorial-progress-fill" id="tutorialProgressFill" style="width: 12.5%;"></div>
+        </div>
+        <div class="tutorial-icon" id="tutorialIcon">🚀</div>
+        <div class="tutorial-title" id="tutorialTitle">NeonTap'e Hoş Geldin!</div>
+        <div class="tutorial-text" id="tutorialText">Tap yap, coin kazan, kartlarını yükselt ve madencilik yap.</div>
+        <button class="tutorial-button" id="tutorialButton">Başlayalım</button>
+        <div class="tutorial-skip" onclick="skipTutorial()">Turu Atla</div>
     </div>
 </div>
 
 <script>
 (function() {
-    // ========== ONBOARDING ADIMLARI ==========
-    const steps = [
+    // ========== TUTORIAL CONFIG ==========
+    const TUTORIAL_STEPS = [
         {
             icon: "🚀",
             title: "NeonTap'e Hoş Geldin!",
-            desc: "Tap yap, coin kazan, kartlarını yükselt ve madencilik yap. Hadi başlayalım!",
-            button: "BAŞLA",
-            action: null
+            text: "Tap yap, coin kazan, kartlarını yükselt ve madencilik yap. Hadi başlayalım!",
+            button: "Başlayalım",
+            target: null,
+            requireTap: false,
+            position: 'center'
         },
         {
             icon: "💰",
             title: "GO Coin",
-            desc: "Ortadaki GO Coin butonuna tıkla ve coin kazanmaya başla. Her tıklamada coin kazanırsın.",
-            button: "TIKLA",
-            highlight: "#coin-button",
-            requireTap: true
+            text: "Bu butona basarak coin kazanmaya başla. Her tıklamada coin kazanırsın.",
+            button: "Tıkla ve Devam Et",
+            target: "#coin-button",
+            requireTap: true,
+            position: 'bottom'
         },
         {
             icon: "⚡",
             title: "Enerji Sistemi",
-            desc: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
-            button: "DEVAM",
-            highlight: ".energy-section"
+            text: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
+            button: "Devam",
+            target: ".energy-section",
+            requireTap: false,
+            position: 'bottom'
         },
         {
             icon: "🃏",
             title: "Kartlar",
-            desc: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar. Kartlar menüsünden satın alabilirsin.",
-            button: "DEVAM",
-            highlight: "[data-screen='cards']"
+            text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar. Kartlar menüsünden satın alabilirsin.",
+            button: "Devam",
+            target: "[data-screen='cards']",
+            requireTap: false,
+            position: 'top'
         },
         {
             icon: "⛏️",
             title: "Madencilik",
-            desc: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
-            button: "DEVAM",
-            highlight: "[data-screen='mining']"
+            text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
+            button: "Devam",
+            target: "[data-screen='mining']",
+            requireTap: false,
+            position: 'top'
         },
         {
             icon: "🎯",
-            title: "Görevler",
-            desc: "Sağdaki görev butonundan sosyal görevleri tamamla ve ekstra NeonTap Coin kazan.",
-            button: "DEVAM",
-            highlight: ".quest-button"
+            title: "Airdrop",
+            text: "Airdrop görevlerini tamamla ve ekstra NeonTap Coin kazan.",
+            button: "Devam",
+            target: "[data-screen='airdrop']",
+            requireTap: false,
+            position: 'top'
         },
         {
-            icon: "🎉",
-            title: "Harikasın!",
-            desc: "Artık oynamaya hazırsın. Bol şans!",
-            button: "ÖDÜLÜMÜ AL",
-            reward: 250,
-            isFinal: true
+            icon: "👤",
+            title: "Profil & Referans",
+            text: "Profilinde referans kodunu bulabilir, arkadaşlarını davet ederek bonus kazanabilirsin.",
+            button: "Devam",
+            target: "[data-screen='profile']",
+            requireTap: false,
+            position: 'top'
+        },
+        {
+            icon: "🏆",
+            title: "Liderlik",
+            text: "En çok coin kazanan oyuncuları burada görebilir, rekabet edebilirsin.",
+            button: "Ödülümü Al",
+            target: "[data-screen='leaderboard']",
+            requireTap: false,
+            position: 'top',
+            isFinal: true,
+            reward: 250
         }
     ];
 
     let currentStep = 0;
+    let isTutorialActive = false;
     let tapListener = null;
     let originalGameData = window.gameData;
 
-    // ========== ONBOARDING FONKSİYONLARI ==========
-    function startOnboarding() {
-        if (localStorage.getItem('onboarding_completed') === 'true') return;
-        
-        const panel = document.getElementById('onboardingPanel');
-        if (!panel) return;
+    // ========== TUTORIAL FONKSİYONLARI ==========
+    function startTutorial() {
+        if (localStorage.getItem('tutorialCompleted') === 'true') return;
 
-        // Scroll'u kilitle
+        const overlay = document.getElementById('tutorialOverlay');
+        if (!overlay) return;
+
+        // Navigation'ı kilitle
         document.body.style.overflow = 'hidden';
-        
-        panel.classList.add('active');
+        document.querySelectorAll('.nav-item, .menu-toggle, .quest-button').forEach(el => {
+            if (el) el.style.pointerEvents = 'none';
+        });
+
+        isTutorialActive = true;
+        overlay.classList.add('active');
         showStep(0);
     }
 
     function showStep(index) {
-        const step = steps[index];
+        const step = TUTORIAL_STEPS[index];
         if (!step) return;
 
-        // UI güncelle
-        document.getElementById('onboardingIcon').textContent = step.icon;
-        document.getElementById('onboardingMessage').textContent = step.title;
-        document.getElementById('onboardingDescription').textContent = step.desc;
-        document.getElementById('onboardingAction').textContent = step.button;
-        document.getElementById('onboardingStepCounter').textContent = `${index + 1}/${steps.length}`;
+        // UI Güncelle
+        document.getElementById('tutorialIcon').textContent = step.icon;
+        document.getElementById('tutorialTitle').textContent = step.title;
+        document.getElementById('tutorialText').textContent = step.text;
+        document.getElementById('tutorialButton').textContent = step.button;
+        document.getElementById('tutorialProgress').textContent = `Adım ${index + 1}/${TUTORIAL_STEPS.length}`;
+        document.getElementById('tutorialProgressFill').style.width = `${((index + 1) / TUTORIAL_STEPS.length) * 100}%`;
 
-        // Progress dotlarını güncelle
-        const progressHtml = steps.map((_, i) => 
-            `<div class="onboarding-dot ${i === index ? 'active' : ''}"></div>`
-        ).join('');
-        document.getElementById('onboardingProgress').innerHTML = progressHtml;
+        // Spotlight'ı konumlandır
+        if (step.target) {
+            const targetEl = document.querySelector(step.target);
+            if (targetEl) {
+                const rect = targetEl.getBoundingClientRect();
+                const spotlight = document.getElementById('tutorialSpotlight');
+                spotlight.style.display = 'block';
+                spotlight.style.top = rect.top + 'px';
+                spotlight.style.left = rect.left + 'px';
+                spotlight.style.width = rect.width + 'px';
+                spotlight.style.height = rect.height + 'px';
 
-        // Highlight temizle
-        document.querySelectorAll('.onboarding-highlight').forEach(el => {
-            el.classList.remove('onboarding-highlight');
-        });
-
-        // Yeni highlight ekle
-        if (step.highlight) {
-            const target = document.querySelector(step.highlight);
-            if (target) {
-                target.classList.add('onboarding-highlight');
+                // Modal'ı konumlandır
+                positionModal(rect, step.position);
+            } else {
+                document.getElementById('tutorialSpotlight').style.display = 'none';
+                centerModal();
             }
+        } else {
+            document.getElementById('tutorialSpotlight').style.display = 'none';
+            centerModal();
         }
 
         // Tap listener'ı yönet
-        const button = document.getElementById('onboardingAction');
-        if (step.requireTap && step.highlight) {
+        const button = document.getElementById('tutorialButton');
+        if (step.requireTap && step.target) {
             button.disabled = true;
-            attachTapListener(step.highlight);
+            attachTapListener(step.target);
         } else {
             button.disabled = false;
             removeTapListener();
@@ -5014,20 +5064,74 @@
 
         // Buton aksiyonu
         if (step.isFinal) {
-            button.onclick = completeOnboarding;
+            button.onclick = completeTutorial;
         } else {
             button.onclick = nextStep;
         }
     }
 
+    function positionModal(targetRect, position) {
+        const modal = document.getElementById('tutorialModal');
+        const arrow = document.getElementById('tutorialArrow');
+        const modalWidth = 300;
+        const modalHeight = modal.offsetHeight;
+        const spacing = 20;
+
+        let top, left;
+        let arrowTop, arrowLeft;
+        let arrowRotation;
+
+        switch(position) {
+            case 'bottom':
+                top = targetRect.bottom + spacing;
+                left = targetRect.left + (targetRect.width / 2) - (modalWidth / 2);
+                arrowRotation = '45deg';
+                arrowTop = -10;
+                arrowLeft = modalWidth / 2 - 10;
+                break;
+            case 'top':
+                top = targetRect.top - modalHeight - spacing;
+                left = targetRect.left + (targetRect.width / 2) - (modalWidth / 2);
+                arrowRotation = '225deg';
+                arrowTop = modalHeight - 10;
+                arrowLeft = modalWidth / 2 - 10;
+                break;
+            default:
+                centerModal();
+                return;
+        }
+
+        // Ekran sınırları kontrolü
+        left = Math.max(10, Math.min(left, window.innerWidth - modalWidth - 10));
+        top = Math.max(10, Math.min(top, window.innerHeight - modalHeight - 10));
+
+        modal.style.top = top + 'px';
+        modal.style.left = left + 'px';
+        modal.style.transform = 'none';
+
+        arrow.style.display = 'block';
+        arrow.style.top = arrowTop + 'px';
+        arrow.style.left = arrowLeft + 'px';
+        arrow.style.transform = `rotate(${arrowRotation})`;
+    }
+
+    function centerModal() {
+        const modal = document.getElementById('tutorialModal');
+        modal.style.top = '50%';
+        modal.style.left = '50%';
+        modal.style.transform = 'translate(-50%, -50%)';
+        document.getElementById('tutorialArrow').style.display = 'none';
+    }
+
     function attachTapListener(selector) {
         removeTapListener();
-        
+
         const element = document.querySelector(selector);
         if (!element) return;
 
-        tapListener = function() {
-            document.getElementById('onboardingAction').disabled = false;
+        tapListener = function(e) {
+            createCoinParticles(e);
+            document.getElementById('tutorialButton').disabled = false;
             removeTapListener();
             nextStep();
         };
@@ -5037,9 +5141,9 @@
 
     function removeTapListener() {
         if (tapListener) {
-            const currentStep = steps[currentStep];
-            if (currentStep?.highlight) {
-                const element = document.querySelector(currentStep.highlight);
+            const currentStep = TUTORIAL_STEPS[currentStep];
+            if (currentStep?.target) {
+                const element = document.querySelector(currentStep.target);
                 if (element) {
                     element.removeEventListener('click', tapListener);
                 }
@@ -5048,62 +5152,121 @@
         }
     }
 
+    function createCoinParticles(event) {
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.className = 'tutorial-particle';
+                particle.textContent = '+1 ✨';
+                particle.style.left = (event.clientX || window.innerWidth/2) + (Math.random() * 80 - 40) + 'px';
+                particle.style.top = (event.clientY || window.innerHeight/2) + (Math.random() * 80 - 40) + 'px';
+                particle.style.fontSize = (16 + Math.random() * 20) + 'px';
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }, i * 50);
+        }
+    }
+
     function nextStep() {
-        if (currentStep < steps.length - 1) {
+        if (currentStep < TUTORIAL_STEPS.length - 1) {
             currentStep++;
             showStep(currentStep);
         }
     }
 
-    function completeOnboarding() {
-        const finalStep = steps[currentStep];
-        
+    function completeTutorial() {
+        const finalStep = TUTORIAL_STEPS[currentStep];
+
         // Ödülü ver
         if (finalStep.reward && window.gameData) {
             window.gameData.neonTapToken = (window.gameData.neonTapToken || 0) + finalStep.reward;
+
+            // Partikül efektleri
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'tutorial-particle';
+                    particle.textContent = `+${finalStep.reward}`;
+                    particle.style.left = window.innerWidth/2 + (Math.random() * 200 - 100) + 'px';
+                    particle.style.top = window.innerHeight/2 + (Math.random() * 200 - 100) + 'px';
+                    particle.style.color = '#00ff96';
+                    particle.style.fontSize = '24px';
+                    particle.style.fontWeight = 'bold';
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 1500);
+                }, i * 30);
+            }
+
+            // Display güncelle
             if (typeof window.updateDisplay === 'function') {
                 window.updateDisplay();
             }
         }
 
         // Temizlik
-        cleanup();
-        
+        cleanupTutorial();
+
         // Tamamlandı olarak işaretle
-        localStorage.setItem('onboarding_completed', 'true');
+        localStorage.setItem('tutorialCompleted', 'true');
     }
 
-    function skipOnboarding() {
-        if (confirm('Hızlı turu atlamak istediğine emin misin?')) {
-            cleanup();
-            localStorage.setItem('onboarding_completed', 'true');
-        }
-    }
-
-    function cleanup() {
-        const panel = document.getElementById('onboardingPanel');
-        if (panel) {
-            panel.classList.remove('active');
+    function cleanupTutorial() {
+        const overlay = document.getElementById('tutorialOverlay');
+        if (overlay) {
+            overlay.classList.remove('active');
         }
 
-        document.querySelectorAll('.onboarding-highlight').forEach(el => {
-            el.classList.remove('onboarding-highlight');
+        // Spotlight'ı gizle
+        document.getElementById('tutorialSpotlight').style.display = 'none';
+
+        // Navigation'ı geri aç
+        document.body.style.overflow = '';
+        document.querySelectorAll('.nav-item, .menu-toggle, .quest-button').forEach(el => {
+            if (el) el.style.pointerEvents = '';
         });
 
         removeTapListener();
-        document.body.style.overflow = '';
+        isTutorialActive = false;
     }
 
-    // ========== BAŞLAT ==========
-    window.skipOnboarding = skipOnboarding;
-    
+    // ========== GLOBAL FONKSİYONLAR ==========
+    window.skipTutorial = function() {
+        if (confirm('Turu atlamak istediğine emin misin? (250 NeonTap Coin ödülünü kaybedeceksin)')) {
+            cleanupTutorial();
+            localStorage.setItem('tutorialCompleted', 'true');
+        }
+    };
+
+    window.restartTutorial = function() {
+        localStorage.removeItem('tutorialCompleted');
+        startTutorial();
+    };
+
+    // ========== TUTORIAL'İ BAŞLAT ==========
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => setTimeout(startOnboarding, 800));
+        document.addEventListener('DOMContentLoaded', () => setTimeout(startTutorial, 1000));
     } else {
-        setTimeout(startOnboarding, 800);
+        setTimeout(startTutorial, 1000);
     }
 
-    console.log('🎯 Onboarding hazır');
+    // Window resize'da spotlight'ı güncelle
+    window.addEventListener('resize', () => {
+        if (isTutorialActive && TUTORIAL_STEPS[currentStep]?.target) {
+            const step = TUTORIAL_STEPS[currentStep];
+            const targetEl = document.querySelector(step.target);
+            if (targetEl) {
+                const rect = targetEl.getBoundingClientRect();
+                const spotlight = document.getElementById('tutorialSpotlight');
+                spotlight.style.top = rect.top + 'px';
+                spotlight.style.left = rect.left + 'px';
+                spotlight.style.width = rect.width + 'px';
+                spotlight.style.height = rect.height + 'px';
+                positionModal(rect, step.position);
+            }
+        }
+    });
+
+    console.log('🎯 AAA Tutorial hazır! (Tekrar başlatmak için: restartTutorial())');
 })();
 </script>
-<!-- ========== ONBOARDING SONU ========== -->
+<!-- ========== AAA ONBOARDING SONU ========== -->

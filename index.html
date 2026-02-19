@@ -2622,10 +2622,18 @@
         .tutorial-title {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             background: linear-gradient(135deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .tutorial-subtitle {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
         }
 
         .tutorial-text {
@@ -3441,94 +3449,106 @@
         </div>
     </div>
 
-    <!-- MEVCUT TÜM JAVASCRIPT KODU BURADA (KISALTMALAR NEDENİYLE TAMAMINI YAZMADIM) -->
+    <!-- MEVCUT JAVASCRIPT KODU (ÖZET) - GERÇEK PROJENİZDE BURASI ÇOK DAHA UZUN OLACAK -->
     <script>
         // MEVCUT TÜM JAVASCRIPT KODU AYNEN KALIYOR
-        // (gameData, switchScreen, openProfilePanel, openLeaderboardPanel, openReferralPanel, 
+        // gameData, switchScreen, openProfilePanel, openLeaderboardPanel, openReferralPanel,
         // openRoadmapPanel, openSupportPanel, openSponsorPanel, claimPassive, claimPassiveWithAd,
-        // buyMiningCard, claimMiningReward, calculateSwapAmount, executeTradeWithInput, 
-        // copyToClipboard, shareOnX, openAccountModal, saveAccountInfo, openNameEditModal, 
-        // saveName, showModal, closeModal, updateDisplay, formatNumber, formatNumberFull, 
-        // updateUIVisibility, generateLeaderboard, submitSupportTicket, submitSponsorRequest vb.)
+        // buyMiningCard, claimMiningReward, calculateSwapAmount, executeTradeWithInput,
+        // copyToClipboard, shareOnX, openAccountModal, saveAccountInfo, openNameEditModal,
+        // saveName, showModal, closeModal, updateDisplay, formatNumber, formatNumberFull,
+        // updateUIVisibility, generateLeaderboard, submitSupportTicket, submitSponsorRequest vb.
+        
         // Bu kısım çok uzun olduğu için tamamını yazmadım ama orijinal kodunuzda ne varsa aynen kalacak.
+        // ÖNEMLİ: addCoin fonksiyonu yoksa finishTutorial'da window.gameData.neonTapToken kullanılıyor.
     </script>
 
-    <!-- ========== BAĞIMSIZ TUTORIAL SİSTEMİ ========== -->
+    <!-- ========== BAĞIMSIZ TUTORIAL SİSTEMİ (DÜZELTİLMİŞ VERSİYON) ========== -->
     <script>
         (function() {
             // Daha önce tamamlandı mı kontrol et
             if (localStorage.getItem("tutorialCompleted") === "true") return;
 
             // Tutorial konfigürasyonu
-            const TUTORIAL_STEPS = [
-                {
-                    target: null,
-                    title: "NeonTap'e Hoş Geldin 🚀",
-                    text: "Tap yaparak coin kazanmaya başla. Kartlarını yükselt, madencilik yap ve Airdrop kazan!",
-                    requireClick: false
-                },
-                {
-                    target: "#coin-button",
-                    title: "💰 GO Coin",
-                    text: "Bu butona basarak coin kazanmaya başla. Her tıklamada coin kazanırsın.",
-                    requireClick: true
-                },
-                {
-                    target: ".energy-section",
-                    title: "⚡ Enerji Sistemi",
-                    text: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
-                    requireClick: false
-                },
-                {
-                    target: "[data-screen='cards']",
-                    title: "🃏 Kartlar",
-                    text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar.",
-                    requireClick: false
-                },
-                {
-                    target: "[data-screen='mining']",
-                    title: "⛏️ Madencilik",
-                    text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
-                    requireClick: false
-                },
-                {
-                    target: "[data-screen='airdrop']",
-                    title: "🎯 Airdrop",
-                    text: "Airdrop görevlerini tamamla ve ekstra NeonTap Coin kazan.",
-                    requireClick: false
-                },
-                {
-                    target: "[data-screen='profile']",
-                    title: "👤 Profil",
-                    text: "Profilinde referans kodunu bulabilir, arkadaşlarını davet edebilirsin.",
-                    requireClick: false
-                },
-                {
-                    target: "[data-screen='leaderboard']",
-                    title: "🏆 Liderlik",
-                    text: "En çok coin kazanan oyuncuları burada görebilirsin.",
-                    requireClick: false,
-                    isFinal: true,
-                    reward: 250
-                }
-            ];
-
-            let currentStep = 0;
-            let overlay = null;
-            let tooltip = null;
-            let resizeHandler = null;
-            let tapListener = null;
+            const Tutorial = {
+                currentStep: 0,
+                overlay: null,
+                tooltip: null,
+                resizeHandler: null,
+                tapListener: null,
+                active: false,
+                steps: [
+                    {
+                        target: null,
+                        title: "Hoş Geldin",
+                        subtitle: "NeonTap",
+                        text: "Tap yaparak coin kazanmaya başla. Kartlarını yükselt, madencilik yap ve Airdrop kazan!",
+                        requireClick: false
+                    },
+                    {
+                        target: "#coin-button",
+                        title: "GO Coin",
+                        subtitle: "Ana Mekanik",
+                        text: "Bu butona basarak coin kazanmaya başla. Her tıklamada coin kazanırsın.",
+                        requireClick: true
+                    },
+                    {
+                        target: ".energy-section",
+                        title: "Enerji Sistemi",
+                        subtitle: "Kaynak Yönetimi",
+                        text: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
+                        requireClick: false
+                    },
+                    {
+                        target: "[data-screen='cards']",
+                        title: "Kartlar",
+                        subtitle: "Pasif Gelir",
+                        text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar.",
+                        requireClick: false
+                    },
+                    {
+                        target: "[data-screen='mining']",
+                        title: "Madencilik",
+                        subtitle: "Pasif Kazanç",
+                        text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
+                        requireClick: false
+                    },
+                    {
+                        target: "[data-screen='airdrop']",
+                        title: "Airdrop",
+                        subtitle: "Ekstra Ödüller",
+                        text: "Airdrop görevlerini tamamla ve ekstra NeonTap Coin kazan.",
+                        requireClick: false
+                    },
+                    {
+                        target: "[data-screen='profile']",
+                        title: "Profil",
+                        subtitle: "Hesap Yönetimi",
+                        text: "Profilinde referans kodunu bulabilir, arkadaşlarını davet edebilirsin.",
+                        requireClick: false
+                    },
+                    {
+                        target: "[data-screen='leaderboard']",
+                        title: "Liderlik",
+                        subtitle: "Rekabet",
+                        text: "En çok coin kazanan oyuncuları burada görebilirsin.",
+                        requireClick: false,
+                        isFinal: true,
+                        reward: 250
+                    }
+                ]
+            };
 
             // Overlay oluştur
             function createOverlay() {
-                overlay = document.createElement("div");
-                overlay.className = "tutorial-overlay";
-                document.body.appendChild(overlay);
+                Tutorial.overlay = document.createElement("div");
+                Tutorial.overlay.className = "tutorial-overlay";
+                document.body.appendChild(Tutorial.overlay);
             }
 
             // Highlight element
             function highlightElement(el) {
-                if (!overlay) return;
+                if (!Tutorial.overlay) return;
                 
                 const rect = el.getBoundingClientRect();
                 const pad = 10;
@@ -3538,7 +3558,7 @@
                 const w = rect.width + pad * 2;
                 const h = rect.height + pad * 2;
 
-                overlay.style.clipPath = `
+                Tutorial.overlay.style.clipPath = `
                     polygon(
                         0% 0%, 100% 0%, 100% 100%, 0% 100%,
                         0% ${y}px,
@@ -3556,22 +3576,23 @@
 
             // Tooltip oluştur
             function createTooltip(step, targetEl) {
-                tooltip = document.createElement("div");
-                tooltip.className = "tutorial-tooltip";
+                Tutorial.tooltip = document.createElement("div");
+                Tutorial.tooltip.className = "tutorial-tooltip";
 
-                tooltip.innerHTML = `
-                    <div class="tutorial-step-badge">Adım ${currentStep + 1} / ${TUTORIAL_STEPS.length}</div>
+                Tutorial.tooltip.innerHTML = `
+                    <div class="tutorial-step-badge">Adım ${Tutorial.currentStep + 1} / ${Tutorial.steps.length}</div>
                     <div class="tutorial-title">${step.title}</div>
+                    <div class="tutorial-subtitle">${step.subtitle}</div>
                     <div class="tutorial-text">${step.text}</div>
                     ${!step.requireClick ? '<button class="tutorial-next-btn">Devam</button>' : ''}
                 `;
 
-                document.body.appendChild(tooltip);
+                document.body.appendChild(Tutorial.tooltip);
 
                 // Tooltip konumlandır
                 if (targetEl) {
                     const targetRect = targetEl.getBoundingClientRect();
-                    const tooltipRect = tooltip.getBoundingClientRect();
+                    const tooltipRect = Tutorial.tooltip.getBoundingClientRect();
 
                     let top = targetRect.bottom + 20;
                     let left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
@@ -3583,17 +3604,17 @@
 
                     left = Math.max(10, Math.min(left, window.innerWidth - tooltipRect.width - 10));
 
-                    tooltip.style.top = top + "px";
-                    tooltip.style.left = left + "px";
+                    Tutorial.tooltip.style.top = top + "px";
+                    Tutorial.tooltip.style.left = left + "px";
                 } else {
                     // Ortada göster
-                    tooltip.style.top = "50%";
-                    tooltip.style.left = "50%";
-                    tooltip.style.transform = "translate(-50%, -50%)";
+                    Tutorial.tooltip.style.top = "50%";
+                    Tutorial.tooltip.style.left = "50%";
+                    Tutorial.tooltip.style.transform = "translate(-50%, -50%)";
                 }
 
                 // Next butonu varsa event ekle
-                const nextBtn = tooltip.querySelector(".tutorial-next-btn");
+                const nextBtn = Tutorial.tooltip.querySelector(".tutorial-next-btn");
                 if (nextBtn) {
                     nextBtn.addEventListener("click", nextStep);
                 }
@@ -3604,15 +3625,15 @@
                 const element = document.querySelector(selector);
                 if (!element) return;
 
-                tapListener = function() {
+                Tutorial.tapListener = function(e) {
                     // Partikül efekti
                     for (let i = 0; i < 5; i++) {
                         setTimeout(() => {
                             const particle = document.createElement("div");
                             particle.className = "tutorial-particle";
                             particle.textContent = "✨";
-                            particle.style.left = (event?.clientX || window.innerWidth/2) + (Math.random() * 60 - 30) + "px";
-                            particle.style.top = (event?.clientY || window.innerHeight/2) + (Math.random() * 60 - 30) + "px";
+                            particle.style.left = (e?.clientX || window.innerWidth/2) + (Math.random() * 60 - 30) + "px";
+                            particle.style.top = (e?.clientY || window.innerHeight/2) + (Math.random() * 60 - 30) + "px";
                             document.body.appendChild(particle);
                             setTimeout(() => particle.remove(), 1000);
                         }, i * 50);
@@ -3622,24 +3643,24 @@
                     element.classList.remove("tutorial-highlight");
                     
                     // Listener'ı kaldır
-                    element.removeEventListener("click", tapListener);
-                    tapListener = null;
+                    element.removeEventListener("click", Tutorial.tapListener);
+                    Tutorial.tapListener = null;
                     
                     // Sonraki adıma geç
                     nextStep();
                 };
 
-                element.addEventListener("click", tapListener);
+                element.addEventListener("click", Tutorial.tapListener);
             }
 
             // Adımı göster
             function showStep(index) {
-                const step = TUTORIAL_STEPS[index];
+                const step = Tutorial.steps[index];
                 if (!step) return;
 
                 // Önceki tooltip ve highlight'ı temizle
-                if (tooltip) tooltip.remove();
-                if (overlay) {
+                if (Tutorial.tooltip) Tutorial.tooltip.remove();
+                if (Tutorial.overlay) {
                     document.querySelectorAll(".tutorial-highlight").forEach(el => {
                         el.classList.remove("tutorial-highlight");
                     });
@@ -3651,7 +3672,7 @@
                 }
 
                 // Overlay yoksa oluştur
-                if (!overlay) {
+                if (!Tutorial.overlay) {
                     createOverlay();
                 }
 
@@ -3664,19 +3685,19 @@
                 createTooltip(step, targetEl);
 
                 // Resize handler
-                if (resizeHandler) {
-                    window.removeEventListener("resize", resizeHandler);
-                    window.removeEventListener("scroll", resizeHandler);
+                if (Tutorial.resizeHandler) {
+                    window.removeEventListener("resize", Tutorial.resizeHandler);
+                    window.removeEventListener("scroll", Tutorial.resizeHandler);
                 }
 
-                resizeHandler = function() {
+                Tutorial.resizeHandler = function() {
                     if (targetEl) {
                         highlightElement(targetEl);
                         
                         // Tooltip'i yeniden konumlandır
                         const targetRect = targetEl.getBoundingClientRect();
-                        const tooltipRect = tooltip?.getBoundingClientRect();
-                        if (tooltip && tooltipRect) {
+                        const tooltipRect = Tutorial.tooltip?.getBoundingClientRect();
+                        if (Tutorial.tooltip && tooltipRect) {
                             let top = targetRect.bottom + 20;
                             let left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
 
@@ -3686,14 +3707,14 @@
 
                             left = Math.max(10, Math.min(left, window.innerWidth - tooltipRect.width - 10));
 
-                            tooltip.style.top = top + "px";
-                            tooltip.style.left = left + "px";
+                            Tutorial.tooltip.style.top = top + "px";
+                            Tutorial.tooltip.style.left = left + "px";
                         }
                     }
                 };
 
-                window.addEventListener("resize", resizeHandler);
-                window.addEventListener("scroll", resizeHandler);
+                window.addEventListener("resize", Tutorial.resizeHandler);
+                window.addEventListener("scroll", Tutorial.resizeHandler);
 
                 // Tap gerekiyorsa listener ekle
                 if (step.requireClick && step.target) {
@@ -3704,36 +3725,77 @@
             // Sonraki adım
             function nextStep() {
                 // Önceki resize handler'ı temizle
-                if (resizeHandler) {
-                    window.removeEventListener("resize", resizeHandler);
-                    window.removeEventListener("scroll", resizeHandler);
+                if (Tutorial.resizeHandler) {
+                    window.removeEventListener("resize", Tutorial.resizeHandler);
+                    window.removeEventListener("scroll", Tutorial.resizeHandler);
                 }
 
                 // Tap listener'ı temizle
-                if (tapListener) {
-                    const step = TUTORIAL_STEPS[currentStep];
+                if (Tutorial.tapListener) {
+                    const step = Tutorial.steps[Tutorial.currentStep];
                     if (step?.target) {
                         const el = document.querySelector(step.target);
                         if (el) {
-                            el.removeEventListener("click", tapListener);
+                            el.removeEventListener("click", Tutorial.tapListener);
                         }
                     }
-                    tapListener = null;
+                    Tutorial.tapListener = null;
                 }
 
-                currentStep++;
+                Tutorial.currentStep++;
 
-                if (currentStep >= TUTORIAL_STEPS.length) {
+                if (Tutorial.currentStep >= Tutorial.steps.length) {
                     finishTutorial();
                 } else {
-                    showStep(currentStep);
+                    showStep(Tutorial.currentStep);
                 }
             }
 
-            // Tutorial'ı bitir
+            // Tutorial'ı bitir - DÜZELTİLMİŞ VERSİYON
             function finishTutorial() {
+                // Event listener temizliği
+                if (Tutorial.resizeHandler) {
+                    window.removeEventListener("resize", Tutorial.resizeHandler);
+                    window.removeEventListener("scroll", Tutorial.resizeHandler);
+                    Tutorial.resizeHandler = null;
+                }
+
+                // Tap listener'ı temizle
+                if (Tutorial.tapListener) {
+                    const step = Tutorial.steps[Tutorial.currentStep];
+                    if (step?.target) {
+                        const el = document.querySelector(step.target);
+                        if (el) {
+                            el.removeEventListener("click", Tutorial.tapListener);
+                        }
+                    }
+                    Tutorial.tapListener = null;
+                }
+
+                // Overlay temizliği
+                if (Tutorial.overlay) {
+                    Tutorial.overlay.style.clipPath = "none";
+                    Tutorial.overlay.remove();
+                    Tutorial.overlay = null;
+                }
+
+                // Tooltip temizliği
+                if (Tutorial.tooltip) {
+                    Tutorial.tooltip.remove();
+                    Tutorial.tooltip = null;
+                }
+
+                // Highlight'ları temizle
+                document.querySelectorAll(".tutorial-highlight").forEach(el => {
+                    el.classList.remove("tutorial-highlight");
+                });
+
+                // Body lock varsa kaldır
+                document.body.style.pointerEvents = "auto";
+                document.body.style.overflow = "auto";
+
                 // Son adımın ödülünü ver
-                const lastStep = TUTORIAL_STEPS[TUTORIAL_STEPS.length - 1];
+                const lastStep = Tutorial.steps[Tutorial.steps.length - 1];
                 if (lastStep.reward && window.gameData) {
                     window.gameData.neonTapToken = (window.gameData.neonTapToken || 0) + lastStep.reward;
                     
@@ -3758,23 +3820,10 @@
                     }
                 }
 
-                // Overlay ve tooltip'i kaldır
-                if (overlay) overlay.remove();
-                if (tooltip) tooltip.remove();
-                
-                // Highlight'ları temizle
-                document.querySelectorAll(".tutorial-highlight").forEach(el => {
-                    el.classList.remove("tutorial-highlight");
-                });
-
-                // Resize handler'ı temizle
-                if (resizeHandler) {
-                    window.removeEventListener("resize", resizeHandler);
-                    window.removeEventListener("scroll", resizeHandler);
-                }
-
                 // Tamamlandı olarak işaretle
                 localStorage.setItem("tutorialCompleted", "true");
+
+                Tutorial.active = false;
             }
 
             // Tutorial'ı başlat (sayfa yüklendikten sonra)

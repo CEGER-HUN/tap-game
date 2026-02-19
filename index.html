@@ -4716,314 +4716,303 @@
     </script>
 </body>
 </html>
-<!-- ========== PROFESYONEL ONBOARDING SİSTEMİ ========== -->
+<!-- ========== DOĞRU ONBOARDING SİSTEMİ ========== -->
 <style>
-    /* onboarding - Kesinlikle başka hiçbir şeyi etkilemez */
-    .onboarding-v2-overlay {
+    .onboarding-panel {
         position: fixed;
         top: 0;
-        left: 0;
+        right: -100%;
         width: 100%;
+        max-width: 400px;
         height: 100vh;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        z-index: 999999;
+        background: rgba(30, 30, 50, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        z-index: 1000000;
+        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .onboarding-panel.active {
+        right: 0;
+    }
+
+    .onboarding-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .onboarding-title {
+        font-size: 24px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .onboarding-close {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
     }
 
-    .onboarding-v2-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
+    .onboarding-close:active {
+        transform: scale(0.9);
+        background: rgba(255, 255, 255, 0.2);
     }
 
-    .onboarding-v2-card {
-        background: linear-gradient(165deg, rgba(30, 35, 55, 0.98), rgba(20, 25, 45, 0.98));
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 2px solid rgba(0, 255, 150, 0.4);
-        border-radius: 40px;
-        padding: 32px 28px;
-        width: 90%;
-        max-width: 380px;
+    .onboarding-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .onboarding-icon {
+        font-size: 80px;
         text-align: center;
-        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 255, 150, 0.2) inset, 0 0 50px rgba(0, 255, 150, 0.3);
-        animation: onboardingCardAppear 0.5s cubic-bezier(0.21, 1.11, 0.3, 1);
-        transform-origin: center;
+        margin-bottom: 30px;
+        animation: float 3s infinite ease-in-out;
     }
 
-    @keyframes onboardingCardAppear {
-        0% { opacity: 0; transform: scale(0.9) translateY(20px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .onboarding-v2-icon {
-        font-size: 64px;
-        margin-bottom: 16px;
-        filter: drop-shadow(0 10px 20px rgba(0, 255, 150, 0.4));
-        animation: onboardingIconFloat 3s infinite ease-in-out;
-    }
-
-    @keyframes onboardingIconFloat {
+    @keyframes float {
         0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
+        50% { transform: translateY(-10px); }
     }
 
-    .onboarding-v2-title {
-        font-size: 32px;
-        font-weight: 800;
-        margin-bottom: 12px;
-        background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -0.5px;
-        line-height: 1.2;
+    .onboarding-message {
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 15px;
+        color: #fff;
+        line-height: 1.3;
     }
 
-    .onboarding-v2-text {
+    .onboarding-description {
         font-size: 16px;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 28px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 40px;
         line-height: 1.6;
-        padding: 0 5px;
+        padding: 0 10px;
     }
 
-    .onboarding-v2-progress {
+    .onboarding-progress {
         display: flex;
         justify-content: center;
         gap: 12px;
-        margin: 25px 0 20px;
+        margin-bottom: 30px;
     }
 
-    .onboarding-v2-dot {
-        width: 12px;
-        height: 12px;
+    .onboarding-dot {
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
+        transition: all 0.3s;
     }
 
-    .onboarding-v2-dot.active {
+    .onboarding-dot.active {
         background: #00ff96;
-        box-shadow: 0 0 20px #00ff96;
-        transform: scale(1.4);
+        box-shadow: 0 0 15px #00ff96;
+        transform: scale(1.3);
     }
 
-    .onboarding-v2-button {
-        width: 100%;
-        padding: 18px 24px;
-        background: linear-gradient(135deg, #00ff96, #00cc66, #00aa55);
+    .onboarding-button {
+        background: linear-gradient(135deg, #00ff96, #00cc66);
+        color: #1a1a2e;
         border: none;
-        border-radius: 60px;
-        color: #0a0a12;
-        font-weight: 800;
+        border-radius: 16px;
+        padding: 18px;
         font-size: 18px;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.2s;
-        box-shadow: 0 10px 25px -5px rgba(0, 255, 150, 0.5);
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        margin-top: 10px;
+        width: 100%;
+        box-shadow: 0 5px 20px rgba(0, 255, 150, 0.3);
     }
 
-    .onboarding-v2-button:active {
-        transform: scale(0.96);
-        box-shadow: 0 5px 15px rgba(0, 255, 150, 0.7);
+    .onboarding-button:active {
+        transform: scale(0.95);
     }
 
-    .onboarding-v2-button:disabled {
+    .onboarding-button:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
     }
 
-    .onboarding-v2-step {
+    .onboarding-step {
+        text-align: center;
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.5);
-        margin-top: 18px;
-        letter-spacing: 0.5px;
-        font-weight: 500;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 20px;
     }
 
-    .onboarding-v2-highlight {
+    .onboarding-highlight {
         position: relative;
-        z-index: 1000000;
-        animation: onboardingPulse 2s infinite;
+        z-index: 1000001;
+        animation: highlightPulse 2s infinite;
         border-radius: 12px;
     }
 
-    @keyframes onboardingPulse {
+    @keyframes highlightPulse {
         0%, 100% { box-shadow: 0 0 0 4px #00ff96, 0 0 20px 4px #00ff96; }
         50% { box-shadow: 0 0 0 6px #00ff96, 0 0 30px 6px #00ff96; }
     }
-
-    .onboarding-v2-coin-particle {
-        position: fixed;
-        pointer-events: none;
-        color: #FFD700;
-        font-size: 20px;
-        font-weight: bold;
-        animation: onboardingParticleFloat 1s ease-out forwards;
-        z-index: 1000001;
-    }
-
-    @keyframes onboardingParticleFloat {
-        0% { opacity: 1; transform: translateY(0) scale(1); }
-        100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
-    }
 </style>
 
-<div class="onboarding-v2-overlay" id="onboardingV2Overlay">
-    <div class="onboarding-v2-card">
-        <div class="onboarding-v2-icon" id="onboardingV2Icon">🚀</div>
-        <div class="onboarding-v2-title" id="onboardingV2Title">NeonTap'e Hoş Geldin</div>
-        <div class="onboarding-v2-text" id="onboardingV2Text">Tap yap, coin kazan, kartlarını yükselt ve madencilik yap. Hadi başlayalım!</div>
-        <div class="onboarding-v2-progress" id="onboardingV2Progress"></div>
-        <button class="onboarding-v2-button" id="onboardingV2Button">BAŞLA</button>
-        <div class="onboarding-v2-step" id="onboardingV2Step">Adım 1/7</div>
+<div class="onboarding-panel" id="onboardingPanel">
+    <div class="onboarding-header">
+        <div class="onboarding-title">🎯 Hızlı Tur</div>
+        <div class="onboarding-close" onclick="skipOnboarding()">✕</div>
+    </div>
+    <div class="onboarding-content">
+        <div class="onboarding-icon" id="onboardingIcon">🚀</div>
+        <div class="onboarding-message" id="onboardingMessage">NeonTap'e Hoş Geldin!</div>
+        <div class="onboarding-description" id="onboardingDescription">Tap yap, coin kazan, kartlarını yükselt ve madencilik yap.</div>
+        <div class="onboarding-progress" id="onboardingProgress"></div>
+        <button class="onboarding-button" id="onboardingAction">BAŞLA</button>
+        <div class="onboarding-step" id="onboardingStepCounter">1/7</div>
     </div>
 </div>
 
 <script>
 (function() {
-    // ========== ONBOARDING KONFİGÜRASYONU - TAMAMEN BAĞIMSIZ ==========
-    const ONBOARDING_CONFIG = {
-        steps: [
-            {
-                icon: "🚀",
-                title: "NeonTap'e Hoş Geldin!",
-                text: "Tap yap, coin kazan, kartlarını yükselt ve madencilik yap. Hadi başlayalım!",
-                buttonText: "BAŞLA",
-                requireAction: false
-            },
-            {
-                icon: "💰",
-                title: "GO Coin",
-                text: "Ortadaki büyük GO Coin butonuna tıkla ve coin kazanmaya başla. Her tıklamada coin kazanırsın.",
-                buttonText: "TIKLA VE DEVAM ET",
-                requireTap: true,
-                targetSelector: "#coin-button",
-                actionMessage: "Şimdi GO Coin'e tıkla!"
-            },
-            {
-                icon: "⚡",
-                title: "Enerji Sistemi",
-                text: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
-                buttonText: "DEVAM",
-                requireAction: false
-            },
-            {
-                icon: "🃏",
-                title: "Kartlar",
-                text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar. 'Kartlar' menüsünden satın alabilirsin.",
-                buttonText: "DEVAM",
-                targetSelector: "[data-screen='cards']",
-                highlight: true
-            },
-            {
-                icon: "⛏️",
-                title: "Madencilik",
-                text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
-                buttonText: "DEVAM",
-                targetSelector: "[data-screen='mining']",
-                highlight: true
-            },
-            {
-                icon: "🎯",
-                title: "Görevler",
-                text: "Sağdaki görev butonundan sosyal görevleri tamamla ve ekstra NeonTap Coin kazan.",
-                buttonText: "DEVAM",
-                targetSelector: ".quest-button",
-                highlight: true
-            },
-            {
-                icon: "🎉",
-                title: "Harikasın!",
-                text: "Artık oynamaya hazırsın. Bol şans! 🎉",
-                buttonText: "ÖDÜLÜMÜ AL",
-                isFinal: true,
-                reward: 250
-            }
-        ],
-        currentStep: 0,
-        isActive: false,
-        tapListener: null
-    };
+    // ========== ONBOARDING ADIMLARI ==========
+    const steps = [
+        {
+            icon: "🚀",
+            title: "NeonTap'e Hoş Geldin!",
+            desc: "Tap yap, coin kazan, kartlarını yükselt ve madencilik yap. Hadi başlayalım!",
+            button: "BAŞLA",
+            action: null
+        },
+        {
+            icon: "💰",
+            title: "GO Coin",
+            desc: "Ortadaki GO Coin butonuna tıkla ve coin kazanmaya başla. Her tıklamada coin kazanırsın.",
+            button: "TIKLA",
+            highlight: "#coin-button",
+            requireTap: true
+        },
+        {
+            icon: "⚡",
+            title: "Enerji Sistemi",
+            desc: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
+            button: "DEVAM",
+            highlight: ".energy-section"
+        },
+        {
+            icon: "🃏",
+            title: "Kartlar",
+            desc: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar. Kartlar menüsünden satın alabilirsin.",
+            button: "DEVAM",
+            highlight: "[data-screen='cards']"
+        },
+        {
+            icon: "⛏️",
+            title: "Madencilik",
+            desc: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
+            button: "DEVAM",
+            highlight: "[data-screen='mining']"
+        },
+        {
+            icon: "🎯",
+            title: "Görevler",
+            desc: "Sağdaki görev butonundan sosyal görevleri tamamla ve ekstra NeonTap Coin kazan.",
+            button: "DEVAM",
+            highlight: ".quest-button"
+        },
+        {
+            icon: "🎉",
+            title: "Harikasın!",
+            desc: "Artık oynamaya hazırsın. Bol şans!",
+            button: "ÖDÜLÜMÜ AL",
+            reward: 250,
+            isFinal: true
+        }
+    ];
+
+    let currentStep = 0;
+    let tapListener = null;
+    let originalGameData = window.gameData;
 
     // ========== ONBOARDING FONKSİYONLARI ==========
     function startOnboarding() {
-        // Daha önce tamamlandı mı kontrol et
-        if (localStorage.getItem('neon_onboarding_completed') === 'true') {
-            return;
-        }
-
-        const overlay = document.getElementById('onboardingV2Overlay');
-        if (!overlay) return;
-
-        ONBOARDING_CONFIG.currentStep = 0;
-        ONBOARDING_CONFIG.isActive = true;
+        if (localStorage.getItem('onboarding_completed') === 'true') return;
         
-        // Navigation'ı kilitle (sadece onboarding sırasında)
+        const panel = document.getElementById('onboardingPanel');
+        if (!panel) return;
+
+        // Scroll'u kilitle
         document.body.style.overflow = 'hidden';
         
-        overlay.classList.add('active');
+        panel.classList.add('active');
         showStep(0);
     }
 
-    function showStep(stepIndex) {
-        const step = ONBOARDING_CONFIG.steps[stepIndex];
+    function showStep(index) {
+        const step = steps[index];
         if (!step) return;
 
-        // Elementleri güncelle
-        document.getElementById('onboardingV2Icon').textContent = step.icon;
-        document.getElementById('onboardingV2Title').textContent = step.title;
-        document.getElementById('onboardingV2Text').textContent = step.text;
-        document.getElementById('onboardingV2Button').textContent = step.buttonText;
-        document.getElementById('onboardingV2Step').textContent = `Adım ${stepIndex + 1}/${ONBOARDING_CONFIG.steps.length}`;
+        // UI güncelle
+        document.getElementById('onboardingIcon').textContent = step.icon;
+        document.getElementById('onboardingMessage').textContent = step.title;
+        document.getElementById('onboardingDescription').textContent = step.desc;
+        document.getElementById('onboardingAction').textContent = step.button;
+        document.getElementById('onboardingStepCounter').textContent = `${index + 1}/${steps.length}`;
 
-        // Progress dotları güncelle
-        const progressContainer = document.getElementById('onboardingV2Progress');
-        let dotsHtml = '';
-        for (let i = 0; i < ONBOARDING_CONFIG.steps.length; i++) {
-            dotsHtml += `<div class="onboarding-v2-dot ${i === stepIndex ? 'active' : ''}"></div>`;
-        }
-        progressContainer.innerHTML = dotsHtml;
+        // Progress dotlarını güncelle
+        const progressHtml = steps.map((_, i) => 
+            `<div class="onboarding-dot ${i === index ? 'active' : ''}"></div>`
+        ).join('');
+        document.getElementById('onboardingProgress').innerHTML = progressHtml;
 
         // Highlight temizle
-        document.querySelectorAll('.onboarding-v2-highlight').forEach(el => {
-            el.classList.remove('onboarding-v2-highlight');
+        document.querySelectorAll('.onboarding-highlight').forEach(el => {
+            el.classList.remove('onboarding-highlight');
         });
 
-        // Target highlight
-        if (step.highlight && step.targetSelector) {
-            const target = document.querySelector(step.targetSelector);
+        // Yeni highlight ekle
+        if (step.highlight) {
+            const target = document.querySelector(step.highlight);
             if (target) {
-                target.classList.add('onboarding-v2-highlight');
+                target.classList.add('onboarding-highlight');
             }
         }
 
-        // Tap gerekiyorsa butonu devre dışı bırak ve dinleyici ekle
-        const button = document.getElementById('onboardingV2Button');
-        if (step.requireTap && step.targetSelector) {
+        // Tap listener'ı yönet
+        const button = document.getElementById('onboardingAction');
+        if (step.requireTap && step.highlight) {
             button.disabled = true;
-            attachTapListener(step.targetSelector);
-            
-            // Kısa bir mesaj göster
-            if (step.actionMessage) {
-                document.getElementById('onboardingV2Text').textContent = step.actionMessage;
-            }
+            attachTapListener(step.highlight);
         } else {
             button.disabled = false;
             removeTapListener();
         }
 
-        // Final step özel işlemleri
+        // Buton aksiyonu
         if (step.isFinal) {
             button.onclick = completeOnboarding;
         } else {
@@ -5032,136 +5021,89 @@
     }
 
     function attachTapListener(selector) {
-        removeTapListener(); // Önceki listener'ı temizle
+        removeTapListener();
         
         const element = document.querySelector(selector);
         if (!element) return;
 
-        ONBOARDING_CONFIG.tapListener = function() {
-            // Ödül efekti
-            createCoinParticle(event);
-            
-            // Butonu aktif et ve sonraki adıma geç
-            document.getElementById('onboardingV2Button').disabled = false;
+        tapListener = function() {
+            document.getElementById('onboardingAction').disabled = false;
             removeTapListener();
             nextStep();
         };
 
-        element.addEventListener('click', ONBOARDING_CONFIG.tapListener);
+        element.addEventListener('click', tapListener);
     }
 
     function removeTapListener() {
-        const currentStep = ONBOARDING_CONFIG.steps[ONBOARDING_CONFIG.currentStep];
-        if (currentStep && currentStep.targetSelector && ONBOARDING_CONFIG.tapListener) {
-            const element = document.querySelector(currentStep.targetSelector);
-            if (element) {
-                element.removeEventListener('click', ONBOARDING_CONFIG.tapListener);
+        if (tapListener) {
+            const currentStep = steps[currentStep];
+            if (currentStep?.highlight) {
+                const element = document.querySelector(currentStep.highlight);
+                if (element) {
+                    element.removeEventListener('click', tapListener);
+                }
             }
-        }
-        ONBOARDING_CONFIG.tapListener = null;
-    }
-
-    function createCoinParticle(event) {
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-                const particle = document.createElement('div');
-                particle.className = 'onboarding-v2-coin-particle';
-                particle.textContent = '+1 ✨';
-                particle.style.left = (event.clientX || window.innerWidth/2) + (Math.random() * 40 - 20) + 'px';
-                particle.style.top = (event.clientY || window.innerHeight/2) + (Math.random() * 40 - 20) + 'px';
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1000);
-            }, i * 100);
+            tapListener = null;
         }
     }
 
     function nextStep() {
-        if (ONBOARDING_CONFIG.currentStep < ONBOARDING_CONFIG.steps.length - 1) {
-            // Highlight'ı temizle
-            document.querySelectorAll('.onboarding-v2-highlight').forEach(el => {
-                el.classList.remove('onboarding-v2-highlight');
-            });
-
-            ONBOARDING_CONFIG.currentStep++;
-            showStep(ONBOARDING_CONFIG.currentStep);
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            showStep(currentStep);
         }
     }
 
     function completeOnboarding() {
-        const finalStep = ONBOARDING_CONFIG.steps[ONBOARDING_CONFIG.currentStep];
+        const finalStep = steps[currentStep];
         
-        // Ödülü ver (eğer varsa)
+        // Ödülü ver
         if (finalStep.reward && window.gameData) {
             window.gameData.neonTapToken = (window.gameData.neonTapToken || 0) + finalStep.reward;
-            
-            // Görsel efekt
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'onboarding-v2-coin-particle';
-                    particle.textContent = `+${finalStep.reward}`;
-                    particle.style.left = window.innerWidth/2 + (Math.random() * 100 - 50) + 'px';
-                    particle.style.top = window.innerHeight/2 + (Math.random() * 100 - 50) + 'px';
-                    particle.style.color = '#00ff96';
-                    particle.style.fontSize = '24px';
-                    document.body.appendChild(particle);
-                    setTimeout(() => particle.remove(), 1200);
-                }, i * 100);
-            }
-
-            // Display güncelle (eğer fonksiyon varsa)
             if (typeof window.updateDisplay === 'function') {
                 window.updateDisplay();
             }
         }
 
         // Temizlik
-        cleanupOnboarding();
+        cleanup();
         
         // Tamamlandı olarak işaretle
-        localStorage.setItem('neon_onboarding_completed', 'true');
+        localStorage.setItem('onboarding_completed', 'true');
     }
 
-    function cleanupOnboarding() {
-        // Overlay'i kapat
-        const overlay = document.getElementById('onboardingV2Overlay');
-        if (overlay) {
-            overlay.classList.remove('active');
+    function skipOnboarding() {
+        if (confirm('Hızlı turu atlamak istediğine emin misin?')) {
+            cleanup();
+            localStorage.setItem('onboarding_completed', 'true');
+        }
+    }
+
+    function cleanup() {
+        const panel = document.getElementById('onboardingPanel');
+        if (panel) {
+            panel.classList.remove('active');
         }
 
-        // Highlight'ları temizle
-        document.querySelectorAll('.onboarding-v2-highlight').forEach(el => {
-            el.classList.remove('onboarding-v2-highlight');
+        document.querySelectorAll('.onboarding-highlight').forEach(el => {
+            el.classList.remove('onboarding-highlight');
         });
 
-        // Listener'ları temizle
         removeTapListener();
-
-        // Scroll'u geri aç
         document.body.style.overflow = '';
-
-        // State'i güncelle
-        ONBOARDING_CONFIG.isActive = false;
     }
 
-    // ========== ONBOARDING'İ BAŞLAT ==========
-    // Sayfa yüklendiğinde ve DOM hazır olduğunda başlat
+    // ========== BAŞLAT ==========
+    window.skipOnboarding = skipOnboarding;
+    
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(startOnboarding, 500); // 500ms bekle, oyunun yüklenmesi için
-        });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(startOnboarding, 800));
     } else {
-        setTimeout(startOnboarding, 500);
+        setTimeout(startOnboarding, 800);
     }
 
-    // Eğer kullanıcı sayfayı manuel yenilemek isterse (opsiyonel)
-    window.restartOnboarding = function() {
-        localStorage.removeItem('neon_onboarding_completed');
-        startOnboarding();
-    };
-
-    // Konsola yardım mesajı
-    console.log('🎯 Onboarding sistemi hazır! (Tekrar başlatmak için: restartOnboarding())');
+    console.log('🎯 Onboarding hazır');
 })();
 </script>
-<!-- ========== ONBOARDING SİSTEMİ SONU ========== -->
+<!-- ========== ONBOARDING SONU ========== -->

@@ -3350,7 +3350,7 @@
         // ÖNEMLİ: addCoin fonksiyonu yoksa finishTutorial'da window.gameData.neonTapToken kullanılıyor.
     </script>
 
-    <!-- ========== TUTORIAL SİSTEMİ (SADECE OVERLAY + TOOLTIP) ========== -->
+    <!-- ========== TUTORIAL SİSTEMİ (GLOBAL INTERACTION BLOK YOK) ========== -->
     <script>
     (function () {
 
@@ -3406,11 +3406,13 @@
         overlay.id = "tutorial-overlay";
         overlay.style.position = "fixed";
         overlay.style.inset = "0";
-        overlay.style.background = "rgba(0,0,0,0.7)";
-        overlay.style.backdropFilter = "blur(6px)";
+        overlay.style.background = "rgba(0,0,0,0.6)";
+        overlay.style.backdropFilter = "blur(5px)";
         overlay.style.zIndex = "9999";
+        
+        // EN KRİTİK SATIR - Overlay tıklanamaz, alttaki elementler çalışır
         overlay.style.pointerEvents = "none";
-        overlay.style.transition = "clip-path 0.3s ease";
+
         document.body.appendChild(overlay);
         Tutorial.overlay = overlay;
       }
@@ -3453,6 +3455,8 @@
         box.style.maxWidth = "260px";
         box.style.boxShadow = "0 0 25px rgba(0,255,200,0.3)";
         box.style.fontFamily = "sans-serif";
+        
+        // Tooltip tıklanabilir olmalı
         box.style.pointerEvents = "auto";
 
         box.innerHTML = `
@@ -3485,6 +3489,8 @@
             left = window.innerWidth - tooltipRect.width - 15;
           }
 
+          left = Math.max(10, left); // Sola çok yapışmasın
+
           box.style.top = top + "px";
           box.style.left = left + "px";
         } else {
@@ -3510,6 +3516,7 @@
 
         const el = document.querySelector(step.target);
         if (!el) {
+          // Hedef element yoksa atla
           nextStep();
           return;
         }
@@ -3523,6 +3530,7 @@
         Tutorial.resizeHandler = reposition;
 
         if (step.requireClick) {
+          // SADECE hedef elemente click listener ekle, başka hiçbir şeyi bloklama
           el.addEventListener("click", nextStep, { once: true });
         }
       }

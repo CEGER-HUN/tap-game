@@ -3338,16 +3338,133 @@
 
     <!-- MEVCUT JAVASCRIPT KODU (ÖZET) - GERÇEK PROJENİZDE BURASI ÇOK DAHA UZUN OLACAK -->
     <script>
-        // MEVCUT TÜM JAVASCRIPT KODU AYNEN KALIYOR
-        // gameData, switchScreen, openProfilePanel, openLeaderboardPanel, openReferralPanel,
-        // openRoadmapPanel, openSupportPanel, openSponsorPanel, claimPassive, claimPassiveWithAd,
-        // buyMiningCard, claimMiningReward, calculateSwapAmount, executeTradeWithInput,
-        // copyToClipboard, shareOnX, openAccountModal, saveAccountInfo, openNameEditModal,
-        // saveName, showModal, closeModal, updateDisplay, formatNumber, formatNumberFull,
-        // updateUIVisibility, generateLeaderboard, submitSupportTicket, submitSponsorRequest vb.
-        
-        // Bu kısım çok uzun olduğu için tamamını yazmadım ama orijinal kodunuzda ne varsa aynen kalacak.
-        // ÖNEMLİ: addCoin fonksiyonu yoksa finishTutorial'da window.gameData.neonTapToken kullanılıyor.
+        // 🎯 NAVIGATION - En önemli fonksiyon
+        window.switchScreen = function(screenName) {
+            console.log('🔄 Switching to:', screenName);
+            
+            // Tüm ekranları gizle
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Screen mapping
+            const screenMap = {
+                'home': 'home-screen',
+                'cards': 'cards-screen',
+                'mining': 'mining-screen',
+                'profile': 'profile-screen',
+                'airdrop': 'airdrop-screen',
+                'trade': 'trade-screen'
+            };
+            
+            // Hedef ekranı göster
+            const targetScreen = document.getElementById(screenMap[screenName]);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+            
+            // Nav item'ı aktif yap
+            const navItem = document.querySelector('[data-screen="' + screenName + '"]');
+            if (navItem) {
+                navItem.classList.add('active');
+            }
+        };
+
+        // 💰 Game Data
+        let gameData = {
+            coins: 0,
+            neonTapToken: 0,
+            energy: 1000,
+            max_energy: 1000,
+            total_taps: 0,
+            profit_per_hour: 0,
+            level: 1,
+            xp: 0,
+            cards_bought: 0,
+            combo_multiplier: 1,
+            user_id: null,
+            username: 'Oyuncu'
+        };
+
+        // 📊 Display güncelleme
+        function updateDisplay() {
+            const coinCount = document.getElementById('coin-count');
+            if (coinCount) coinCount.textContent = formatNumber(Math.floor(gameData.coins));
+            
+            const profitHour = document.getElementById('profit-per-hour');
+            if (profitHour) profitHour.textContent = formatNumber(gameData.profit_per_hour);
+            
+            const energyDisplay = document.getElementById('energy-display');
+            if (energyDisplay) energyDisplay.textContent = Math.floor(gameData.energy) + ' / ' + gameData.max_energy;
+            
+            const energyFill = document.getElementById('energy-fill');
+            if (energyFill) {
+                const energyPercent = (gameData.energy / gameData.max_energy) * 100;
+                energyFill.style.width = energyPercent + '%';
+            }
+        }
+
+        // 🔢 Number formatting
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toLocaleString();
+        }
+
+        // 🎮 Coin click handler
+        function handleCoinClick() {
+            if (gameData.energy >= 1) {
+                gameData.coins += gameData.combo_multiplier;
+                gameData.energy -= 1;
+                gameData.total_taps++;
+                updateDisplay();
+                saveGameData();
+            }
+        }
+
+        // 💾 Save/Load
+        function saveGameData() {
+            localStorage.setItem('game_' + gameData.user_id, JSON.stringify(gameData));
+        }
+
+        function loadGameData() {
+            const saved = localStorage.getItem('game_' + gameData.user_id);
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.assign(gameData, data);
+            }
+        }
+
+        // ⚡ Energy regeneration
+        setInterval(function() {
+            if (gameData.energy < gameData.max_energy) {
+                gameData.energy += 1;
+                updateDisplay();
+            }
+        }, 1000);
+
+        // 🎬 Initialize
+        window.addEventListener('load', function() {
+            console.log('🎮 Game initialized');
+            
+            // User ID
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+                gameData.user_id = window.Telegram.WebApp.initDataUnsafe.user.id;
+                gameData.username = window.Telegram.WebApp.initDataUnsafe.user.first_name || 'Oyuncu';
+            } else {
+                gameData.user_id = Math.floor(Math.random() * 1000000);
+            }
+            
+            loadGameData();
+            updateDisplay();
+            
+            // Coin button
+            const coinButton = document.getElementById('coin-button');
+            if (coinButton) {
+                coinButton.addEventListener('click', handleCoinClick);
+            }
+            
+            console.log('✅ Navigation ready');
+        });
     </script>
 
     <!-- ========== TUTORIAL SİSTEMİ (GLOBAL INTERACTION BLOK YOK) ========== -->
@@ -3395,7 +3512,7 @@
           {
             target: "[data-screen='airdrop']",
             title: "Airdrop",
-            text: "Görev yaparak ekstra kazan.",
+            text: "Biriktirdiğin NeonTap coinlerini token listelenince talep et!",
             requireClick: false
           }
         ]

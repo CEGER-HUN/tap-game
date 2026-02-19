@@ -723,7 +723,7 @@
             text-align: center;
         }
 
-        /* Referans Paneli */
+        /* Referans Paneli - YENİ */
         .referral-panel {
             position: fixed;
             top: 0;
@@ -1587,159 +1587,6 @@
 
         .name-edit-button:active {
             transform: scale(0.95);
-        }
-
-        /* ========== YENİ ONBOARDING SİSTEMİ ========== */
-        .onboarding-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 10001;
-            pointer-events: none;
-        }
-
-        .onboarding-overlay.active {
-            pointer-events: auto;
-        }
-
-        .onboarding-backdrop {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: opacity 0.3s ease;
-        }
-
-        .onboarding-spotlight {
-            position: absolute;
-            border-radius: 16px;
-            box-shadow: 0 0 0 4px #00ff96, 0 0 0 9999px rgba(0, 0, 0, 0.8);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 10002;
-            animation: spotlightPulse 2s infinite;
-        }
-
-        @keyframes spotlightPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 4px #00ff96, 0 0 0 9999px rgba(0, 0, 0, 0.8);
-            }
-            50% {
-                box-shadow: 0 0 0 6px #00ff96, 0 0 0 9999px rgba(0, 0, 0, 0.8);
-            }
-        }
-
-        .onboarding-card {
-            position: absolute;
-            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 150, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            width: 280px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 255, 150, 0.2);
-            z-index: 10003;
-            pointer-events: auto;
-            animation: cardAppear 0.3s ease-out;
-        }
-
-        @keyframes cardAppear {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .onboarding-card-arrow {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(165deg, rgba(30, 30, 50, 0.98), rgba(20, 20, 35, 0.98));
-            border-left: 1px solid rgba(0, 255, 150, 0.3);
-            border-top: 1px solid rgba(0, 255, 150, 0.3);
-            transform: rotate(45deg);
-            z-index: 10002;
-        }
-
-        .onboarding-card-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .onboarding-card-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .onboarding-card-progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .onboarding-step-indicator {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .onboarding-progress-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .onboarding-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.2s;
-        }
-
-        .onboarding-dot.active {
-            background: #00ff96;
-            box-shadow: 0 0 10px #00ff96;
-            transform: scale(1.2);
-        }
-
-        .onboarding-card-button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #00ff96, #00cc66);
-            border: none;
-            border-radius: 16px;
-            color: #1a1a2e;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 0 20px rgba(0, 255, 150, 0.3);
-        }
-
-        .onboarding-card-button:active {
-            transform: scale(0.95);
-        }
-
-        .onboarding-card-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
         }
 
         /* Ana Container */
@@ -2855,6 +2702,7 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
+            <!-- Referans sekmesi - ARTIK PROFİLE ATMİYOR -->
             <div class="menu-item" onclick="openReferralPanel()">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
@@ -2893,7 +2741,7 @@
         </div>
     </div>
 
-    <!-- Referans Paneli -->
+    <!-- Referans Paneli - YENİ -->
     <div class="referral-panel" id="referralPanel">
         <div class="panel-header">
             <div class="panel-title">👥 Referans Sistemi</div>
@@ -3229,22 +3077,6 @@
         </div>
     </div>
 
-    <!-- ========== YENİ ONBOARDING SİSTEMİ ========== -->
-    <div class="onboarding-overlay" id="onboardingOverlay">
-        <div class="onboarding-backdrop" id="onboardingBackdrop"></div>
-        <div class="onboarding-spotlight" id="onboardingSpotlight"></div>
-        <div class="onboarding-card" id="onboardingCard">
-            <div class="onboarding-card-arrow" id="onboardingCardArrow"></div>
-            <div class="onboarding-card-title" id="onboardingCardTitle">NeonTap’e Hoş Geldin 🚀</div>
-            <div class="onboarding-card-text" id="onboardingCardText">Tap yap, kart al, madencilik yap ve Airdrop kazan.</div>
-            <div class="onboarding-card-progress">
-                <span class="onboarding-step-indicator" id="onboardingStepIndicator">Adım 1/9</span>
-                <div class="onboarding-progress-dots" id="onboardingProgressDots"></div>
-            </div>
-            <button class="onboarding-card-button" id="onboardingCardButton">Başlayalım</button>
-        </div>
-    </div>
-
     <!-- Ana Container (Oyun) -->
     <div class="container">
         <!-- Ana Ekran -->
@@ -3505,299 +3337,6 @@
     </div>
 
     <script>
-        // ========== YENİ ONBOARDING SİSTEMİ ==========
-        const onboardingSteps = [
-            {
-                title: "NeonTap’e Hoş Geldin 🚀",
-                text: "Tap yap, kart al, madencilik yap ve Airdrop kazan.",
-                buttonText: "Başlayalım",
-                highlight: null,
-                requireTap: false
-            },
-            {
-                title: "GO Coin",
-                text: "Bu butona basarak coin kazanmaya başla.",
-                buttonText: "İleri",
-                highlight: "#coin-button",
-                requireTap: true,
-                tapElement: "#coin-button"
-            },
-            {
-                title: "Enerji Sistemi",
-                text: "Her tap enerji harcar. Enerji zamanla yenilenir.",
-                buttonText: "Devam",
-                highlight: ".energy-section",
-                requireTap: false
-            },
-            {
-                title: "Kartlar",
-                text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar.",
-                buttonText: "Devam",
-                highlight: ".nav-item[data-screen='cards']",
-                requireTap: false
-            },
-            {
-                title: "Madencilik",
-                text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yap.",
-                buttonText: "Devam",
-                highlight: ".nav-item[data-screen='mining']",
-                requireTap: false
-            },
-            {
-                title: "Airdrop",
-                text: "Airdrop görevlerini tamamla ve ekstra ödüller kazan.",
-                buttonText: "Devam",
-                highlight: ".nav-item[data-screen='airdrop']",
-                requireTap: false
-            },
-            {
-                title: "Profil",
-                text: "Referans kodunu burada bulabilirsin.",
-                buttonText: "Devam",
-                highlight: ".nav-item[data-screen='profile']",
-                requireTap: false
-            },
-            {
-                title: "Liderlik",
-                text: "En çok coin kazanan oyuncuları burada gör.",
-                buttonText: "Devam",
-                highlight: ".nav-item[data-screen='leaderboard']",
-                requireTap: false
-            },
-            {
-                title: "Öğretici Tamamlandı 🎉",
-                text: "Artık kazanmaya hazırsın!",
-                buttonText: "Ödülümü Al",
-                highlight: null,
-                requireTap: false,
-                isFinal: true
-            }
-        ];
-
-        let onboardingCurrentStep = 0;
-        let onboardingActive = false;
-        let tapListenerAttached = false;
-        let tapHandler = null;
-
-        function startOnboarding() {
-            const tutorialCompleted = localStorage.getItem('neon_tutorial_completed');
-            if (tutorialCompleted === 'true') return;
-            
-            // Navigation'ı kilitle
-            document.body.style.overflow = 'hidden';
-            const navItems = document.querySelectorAll('.nav-item, .menu-toggle, .quest-button');
-            navItems.forEach(item => {
-                if (item) item.style.pointerEvents = 'none';
-            });
-            
-            onboardingActive = true;
-            onboardingCurrentStep = 0;
-            showOnboardingStep(0);
-        }
-
-        function showOnboardingStep(stepIndex) {
-            const step = onboardingSteps[stepIndex];
-            const overlay = document.getElementById('onboardingOverlay');
-            const spotlight = document.getElementById('onboardingSpotlight');
-            const card = document.getElementById('onboardingCard');
-            const cardArrow = document.getElementById('onboardingCardArrow');
-            const titleEl = document.getElementById('onboardingCardTitle');
-            const textEl = document.getElementById('onboardingCardText');
-            const buttonEl = document.getElementById('onboardingCardButton');
-            const stepIndicator = document.getElementById('onboardingStepIndicator');
-            const progressDots = document.getElementById('onboardingProgressDots');
-            
-            // Update content
-            titleEl.textContent = step.title;
-            textEl.textContent = step.text;
-            buttonEl.textContent = step.buttonText;
-            stepIndicator.textContent = `Adım ${stepIndex + 1}/${onboardingSteps.length}`;
-            
-            // Update progress dots
-            let dotsHtml = '';
-            for (let i = 0; i < onboardingSteps.length; i++) {
-                dotsHtml += `<div class="onboarding-dot ${i === stepIndex ? 'active' : ''}"></div>`;
-            }
-            progressDots.innerHTML = dotsHtml;
-            
-            // Update spotlight
-            if (step.highlight) {
-                const targetEl = document.querySelector(step.highlight);
-                if (targetEl) {
-                    const rect = targetEl.getBoundingClientRect();
-                    spotlight.style.display = 'block';
-                    spotlight.style.top = rect.top + 'px';
-                    spotlight.style.left = rect.left + 'px';
-                    spotlight.style.width = rect.width + 'px';
-                    spotlight.style.height = rect.height + 'px';
-                    
-                    // Position card near the highlighted element
-                    positionCardNearElement(rect, card, cardArrow);
-                } else {
-                    spotlight.style.display = 'none';
-                    positionCardCenter(card, cardArrow);
-                }
-            } else {
-                spotlight.style.display = 'none';
-                positionCardCenter(card, cardArrow);
-            }
-            
-            // Update button handler
-            const oldHandler = buttonEl.onclick;
-            buttonEl.onclick = null;
-            
-            buttonEl.onclick = function() {
-                if (step.isFinal) {
-                    completeOnboarding();
-                } else if (!step.requireTap) {
-                    nextOnboardingStep();
-                }
-            };
-            
-            // Handle tap requirement
-            if (step.requireTap && step.tapElement) {
-                buttonEl.disabled = true;
-                attachTapListener(step.tapElement);
-            } else {
-                buttonEl.disabled = false;
-                removeTapListener();
-            }
-            
-            overlay.classList.add('active');
-        }
-
-        function positionCardNearElement(rect, card, arrow) {
-            const cardWidth = 280;
-            const cardHeight = card.offsetHeight;
-            const margin = 20;
-            
-            let top, left;
-            let arrowTop, arrowLeft;
-            let arrowPosition = 'top';
-            
-            // Check if there's space above
-            if (rect.top > cardHeight + margin) {
-                // Place above
-                top = rect.top - cardHeight - margin;
-                left = rect.left + (rect.width / 2) - (cardWidth / 2);
-                arrowPosition = 'bottom';
-                arrowTop = cardHeight;
-                arrowLeft = cardWidth / 2 - 10;
-            } else {
-                // Place below
-                top = rect.bottom + margin;
-                left = rect.left + (rect.width / 2) - (cardWidth / 2);
-                arrowPosition = 'top';
-                arrowTop = -10;
-                arrowLeft = cardWidth / 2 - 10;
-            }
-            
-            // Ensure card stays within viewport
-            left = Math.max(10, Math.min(left, window.innerWidth - cardWidth - 10));
-            
-            card.style.top = top + 'px';
-            card.style.left = left + 'px';
-            
-            // Position arrow
-            arrow.style.display = 'block';
-            arrow.style.top = arrowTop + 'px';
-            arrow.style.left = arrowLeft + 'px';
-            
-            if (arrowPosition === 'top') {
-                arrow.style.transform = 'rotate(45deg)';
-            } else {
-                arrow.style.transform = 'rotate(225deg)';
-            }
-        }
-
-        function positionCardCenter(card, arrow) {
-            card.style.top = '50%';
-            card.style.left = '50%';
-            card.style.transform = 'translate(-50%, -50%)';
-            arrow.style.display = 'none';
-        }
-
-        function attachTapListener(selector) {
-            if (tapListenerAttached) return;
-            
-            const element = document.querySelector(selector);
-            if (element) {
-                tapHandler = function() {
-                    if (onboardingActive && onboardingSteps[onboardingCurrentStep]?.requireTap) {
-                        element.removeEventListener('click', tapHandler);
-                        tapListenerAttached = false;
-                        document.getElementById('onboardingCardButton').disabled = false;
-                        nextOnboardingStep();
-                    }
-                };
-                element.addEventListener('click', tapHandler);
-                tapListenerAttached = true;
-            }
-        }
-
-        function removeTapListener() {
-            if (tapListenerAttached && tapHandler) {
-                const step = onboardingSteps[onboardingCurrentStep];
-                if (step && step.tapElement) {
-                    const element = document.querySelector(step.tapElement);
-                    if (element) {
-                        element.removeEventListener('click', tapHandler);
-                    }
-                }
-                tapListenerAttached = false;
-                tapHandler = null;
-            }
-        }
-
-        function nextOnboardingStep() {
-            if (onboardingCurrentStep < onboardingSteps.length - 1) {
-                onboardingCurrentStep++;
-                showOnboardingStep(onboardingCurrentStep);
-            }
-        }
-
-        function cleanUpTutorial() {
-            // Remove all onboarding elements
-            const overlay = document.getElementById('onboardingOverlay');
-            overlay.classList.remove('active');
-            
-            // Reset body styles
-            document.body.style.overflow = '';
-            
-            // Re-enable navigation
-            const navItems = document.querySelectorAll('.nav-item, .menu-toggle, .quest-button');
-            navItems.forEach(item => {
-                if (item) item.style.pointerEvents = '';
-            });
-            
-            // Remove any leftover styles
-            onboardingActive = false;
-            removeTapListener();
-            
-            // Force UI update
-            updateUIVisibility();
-        }
-
-        function completeOnboarding() {
-            // Ödülü ekle
-            if (gameData) {
-                gameData.neonTapToken += 250;
-                updateDisplay();
-                saveGameData();
-            }
-            
-            // LocalStorage'a kaydet
-            localStorage.setItem('neon_tutorial_completed', 'true');
-            
-            // Clean up tutorial
-            cleanUpTutorial();
-            
-            // Show success message
-            showModal('🎉 Tebrikler!', '250 NeonTap Coin kazandınız!');
-        }
-
-        // ========== MEVCUT SİSTEM ==========
-        
         // 🎯 Navigation State - Aktif panel takibi
         let activePanel = null; // 'profile', 'leaderboard', 'referral', 'roadmap', 'support', 'sponsor', 'quest', null
 
@@ -3809,18 +3348,16 @@
             const sideMenu = document.getElementById('sideMenu');
             const questPanel = document.getElementById('questPanel');
             const accountModal = document.getElementById('accountModal');
-            const onboardingOverlay = document.getElementById('onboardingOverlay');
             const activeScreen = document.querySelector('.screen.active');
             
             const isHomeScreen = activeScreen && activeScreen.id === 'home-screen';
             const isSideMenuOpen = sideMenu.classList.contains('active');
             const isQuestPanelOpen = questPanel.classList.contains('active');
             const isAccountModalOpen = accountModal.classList.contains('active');
-            const isOnboardingActive = onboardingOverlay.classList.contains('active');
             const isAnyPanelOpen = activePanel !== null;
             
-            // Sadece Ana Sayfa aktifse ve hiçbir panel/modal açık değilse ve onboarding aktif değilse göster
-            if (isHomeScreen && !isSideMenuOpen && !isQuestPanelOpen && !isAccountModalOpen && !isAnyPanelOpen && !isOnboardingActive) {
+            // Sadece Ana Sayfa aktifse ve hiçbir panel/modal açık değilse göster
+            if (isHomeScreen && !isSideMenuOpen && !isQuestPanelOpen && !isAccountModalOpen && !isAnyPanelOpen) {
                 menuToggle.classList.remove('hidden');
                 headerVersion.classList.remove('hidden');
                 questButton.classList.remove('hidden');
@@ -4290,6 +3827,7 @@
             updateUIVisibility();
         };
 
+        // Referans paneli - ARTIK AYRI BİR PANEL
         window.openReferralPanel = function() {
             closeMenu();
             updateReferralDisplay();
@@ -5167,9 +4705,6 @@
         updateProfileDisplay();
         updateReferralDisplay();
         updateQuestButtons();
-        
-        // Onboarding'i başlat
-        startOnboarding();
         
         updateUIVisibility();
 

@@ -6,7 +6,6 @@
     <title>GO Coin Game</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* MEVCUT TÜM CSS STILLERI AYNEN KALIYOR */
         * {
             margin: 0;
             padding: 0;
@@ -2574,118 +2573,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* ========== TUTORIAL STYLES (BAĞIMSIZ) ========== */
-        .tutorial-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 999999;
-            pointer-events: auto;
-            transition: clip-path 0.3s ease;
-        }
-
-        .tutorial-tooltip {
-            position: fixed;
-            z-index: 1000000;
-            background: rgba(25, 30, 40, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: white;
-            padding: 20px;
-            border-radius: 20px;
-            max-width: 300px;
-            box-shadow: 0 0 30px rgba(0, 255, 150, 0.3), 0 0 0 1px rgba(0, 255, 150, 0.2) inset;
-            border: 1px solid rgba(0, 255, 150, 0.3);
-            font-family: sans-serif;
-            pointer-events: auto;
-            animation: tooltipAppear 0.3s ease;
-        }
-
-        @keyframes tooltipAppear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .tutorial-step-badge {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .tutorial-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .tutorial-subtitle {
-            font-size: 14px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .tutorial-text {
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 16px;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .tutorial-next-btn {
-            background: linear-gradient(135deg, #00ff96, #00cc66);
-            border: none;
-            border-radius: 12px;
-            padding: 12px 20px;
-            color: #0a0a12;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-            box-shadow: 0 5px 15px rgba(0, 255, 150, 0.3);
-        }
-
-        .tutorial-next-btn:active {
-            transform: scale(0.96);
-        }
-
-        .tutorial-highlight {
-            position: relative;
-            z-index: 999998;
-            animation: highlightPulse 2s infinite;
-            border-radius: 12px;
-        }
-
-        @keyframes highlightPulse {
-            0%, 100% { box-shadow: 0 0 0 4px #00ff96, 0 0 20px 4px #00ff96; }
-            50% { box-shadow: 0 0 0 6px #00ff96, 0 0 30px 6px #00ff96; }
-        }
-
-        .tutorial-particle {
-            position: fixed;
-            pointer-events: none;
-            color: #FFD700;
-            font-weight: bold;
-            animation: particleFloat 1s ease-out forwards;
-            z-index: 1000001;
-        }
-
-        @keyframes particleFloat {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
-        }
     </style>
 </head>
 <body>
@@ -3463,367 +3350,240 @@
         // ÖNEMLİ: addCoin fonksiyonu yoksa finishTutorial'da window.gameData.neonTapToken kullanılıyor.
     </script>
 
-    <!-- ========== BAĞIMSIZ TUTORIAL SİSTEMİ (DÜZELTİLMİŞ VERSİYON) ========== -->
+    <!-- ========== TUTORIAL SİSTEMİ (SADECE OVERLAY + TOOLTIP) ========== -->
     <script>
-        (function() {
-            // Daha önce tamamlandı mı kontrol et
-            if (localStorage.getItem("tutorialCompleted") === "true") return;
+    (function () {
 
-            // Tutorial konfigürasyonu
-            const Tutorial = {
-                currentStep: 0,
-                overlay: null,
-                tooltip: null,
-                resizeHandler: null,
-                tapListener: null,
-                active: false,
-                steps: [
-                    {
-                        target: null,
-                        title: "Hoş Geldin",
-                        subtitle: "NeonTap",
-                        text: "Tap yaparak coin kazanmaya başla. Kartlarını yükselt, madencilik yap ve Airdrop kazan!",
-                        requireClick: false
-                    },
-                    {
-                        target: "#coin-button",
-                        title: "GO Coin",
-                        subtitle: "Ana Mekanik",
-                        text: "Bu butona basarak coin kazanmaya başla. Her tıklamada coin kazanırsın.",
-                        requireClick: true
-                    },
-                    {
-                        target: ".energy-section",
-                        title: "Enerji",
-                        subtitle: "Kaynak Yönetimi",
-                        text: "Her tıklama enerji harcar. Enerji zamanla yenilenir. Mavi bar enerji seviyeni gösterir.",
-                        requireClick: false
-                    },
-                    {
-                        target: "[data-screen='cards']",
-                        title: "Kartlar",
-                        subtitle: "Pasif Gelir",
-                        text: "Kartlar saatlik gelir sağlar. Seviye atladıkça kazancın artar.",
-                        requireClick: false
-                    },
-                    {
-                        target: "[data-screen='mining']",
-                        title: "Madencilik",
-                        subtitle: "Pasif Kazanç",
-                        text: "Madencilik ile pasif gelir kazanırsın. Süre dolunca claim yaparak ödülünü al.",
-                        requireClick: false
-                    },
-                    {
-                        target: "[data-screen='airdrop']",
-                        title: "Airdrop",
-                        subtitle: "Ekstra Ödüller",
-                        text: "Airdrop görevlerini tamamla ve ekstra NeonTap Coin kazan.",
-                        requireClick: false
-                    },
-                    {
-                        target: "[data-screen='profile']",
-                        title: "Profil",
-                        subtitle: "Hesap Yönetimi",
-                        text: "Profilinde referans kodunu bulabilir, arkadaşlarını davet edebilirsin.",
-                        requireClick: false
-                    },
-                    {
-                        target: "[data-screen='leaderboard']",
-                        title: "Liderlik",
-                        subtitle: "Rekabet",
-                        text: "En çok coin kazanan oyuncuları burada görebilirsin.",
-                        requireClick: false,
-                        isFinal: true,
-                        reward: 250
-                    }
-                ]
-            };
+      if (localStorage.getItem("tutorialCompleted") === "true") return;
 
-            // Overlay oluştur
-            function createOverlay() {
-                Tutorial.overlay = document.createElement("div");
-                Tutorial.overlay.className = "tutorial-overlay";
-                document.body.appendChild(Tutorial.overlay);
-            }
+      const Tutorial = {
+        currentStep: 0,
+        overlay: null,
+        tooltip: null,
+        resizeHandler: null,
+        steps: [
+          {
+            target: null,
+            title: "Hoş Geldin",
+            text: "Tap yaparak coin kazanmaya başla.",
+            requireClick: false
+          },
+          {
+            target: "#coin-button",
+            title: "GO Coin",
+            text: "Basarak coin kazan.",
+            requireClick: true
+          },
+          {
+            target: "[data-screen='cards']",
+            title: "Kartlar",
+            text: "Saatlik gelir sağlar.",
+            requireClick: false
+          },
+          {
+            target: "[data-screen='mining']",
+            title: "Madencilik",
+            text: "Pasif gelir kazan.",
+            requireClick: false
+          },
+          {
+            target: "[data-screen='trade']",
+            title: "Takas",
+            text: "Coinlerini takas edebilirsin.",
+            requireClick: false
+          },
+          {
+            target: "[data-screen='airdrop']",
+            title: "Airdrop",
+            text: "Görev yaparak ekstra kazan.",
+            requireClick: false
+          }
+        ]
+      };
 
-            // Highlight element
-            function highlightElement(el) {
-                if (!Tutorial.overlay) return;
-                
-                const rect = el.getBoundingClientRect();
-                const pad = 10;
+      function createOverlay() {
+        const overlay = document.createElement("div");
+        overlay.id = "tutorial-overlay";
+        overlay.style.position = "fixed";
+        overlay.style.inset = "0";
+        overlay.style.background = "rgba(0,0,0,0.7)";
+        overlay.style.backdropFilter = "blur(6px)";
+        overlay.style.zIndex = "9999";
+        overlay.style.pointerEvents = "none";
+        overlay.style.transition = "clip-path 0.3s ease";
+        document.body.appendChild(overlay);
+        Tutorial.overlay = overlay;
+      }
 
-                const x = rect.left - pad;
-                const y = rect.top - pad;
-                const w = rect.width + pad * 2;
-                const h = rect.height + pad * 2;
+      function highlightElement(el) {
+        if (!Tutorial.overlay) return;
+        
+        const rect = el.getBoundingClientRect();
+        const pad = 10;
 
-                Tutorial.overlay.style.clipPath = `
-                    polygon(
-                        0% 0%, 100% 0%, 100% 100%, 0% 100%,
-                        0% ${y}px,
-                        ${x}px ${y}px,
-                        ${x}px ${y + h}px,
-                        ${x + w}px ${y + h}px,
-                        ${x + w}px ${y}px,
-                        0% ${y}px
-                    )
-                `;
+        const x = rect.left - pad;
+        const y = rect.top - pad;
+        const w = rect.width + pad * 2;
+        const h = rect.height + pad * 2;
 
-                // Highlight class ekle
-                el.classList.add("tutorial-highlight");
-            }
+        Tutorial.overlay.style.clipPath = `
+          polygon(
+            0% 0%, 100% 0%, 100% 100%, 0% 100%,
+            0% ${y}px,
+            ${x}px ${y}px,
+            ${x}px ${y + h}px,
+            ${x + w}px ${y + h}px,
+            ${x + w}px ${y}px,
+            0% ${y}px
+          )
+        `;
+      }
 
-            // Tooltip oluştur
-            function createTooltip(step, targetEl) {
-                Tutorial.tooltip = document.createElement("div");
-                Tutorial.tooltip.className = "tutorial-tooltip";
+      function createTooltip(step, el) {
+        if (Tutorial.tooltip) Tutorial.tooltip.remove();
 
-                Tutorial.tooltip.innerHTML = `
-                    <div class="tutorial-step-badge">Adım ${Tutorial.currentStep + 1} / ${Tutorial.steps.length}</div>
-                    <div class="tutorial-title">${step.title}</div>
-                    <div class="tutorial-subtitle">${step.subtitle}</div>
-                    <div class="tutorial-text">${step.text}</div>
-                    ${!step.requireClick ? '<button class="tutorial-next-btn">Devam</button>' : ''}
-                `;
+        const box = document.createElement("div");
+        box.id = "tutorial-tooltip";
+        box.style.position = "fixed";
+        box.style.zIndex = "10000";
+        box.style.background = "#111";
+        box.style.color = "#fff";
+        box.style.padding = "18px";
+        box.style.borderRadius = "14px";
+        box.style.maxWidth = "260px";
+        box.style.boxShadow = "0 0 25px rgba(0,255,200,0.3)";
+        box.style.fontFamily = "sans-serif";
+        box.style.pointerEvents = "auto";
 
-                document.body.appendChild(Tutorial.tooltip);
+        box.innerHTML = `
+          <div style="font-size:12px;opacity:.6;margin-bottom:6px;">
+            ${Tutorial.currentStep + 1} / ${Tutorial.steps.length}
+          </div>
+          <h3 style="margin:0 0 8px 0;">${step.title}</h3>
+          <p style="font-size:14px;line-height:1.4;">${step.text}</p>
+          ${!step.requireClick ? 
+            '<button id="tutorialNextBtn" style="margin-top:12px;padding:8px 14px;border:none;border-radius:8px;background:#00ffcc;color:#000;font-weight:bold;cursor:pointer;">Devam</button>' 
+            : ''}
+        `;
 
-                // Tooltip konumlandır
-                if (targetEl) {
-                    const targetRect = targetEl.getBoundingClientRect();
-                    const tooltipRect = Tutorial.tooltip.getBoundingClientRect();
+        document.body.appendChild(box);
+        Tutorial.tooltip = box;
 
-                    let top = targetRect.bottom + 20;
-                    let left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const tooltipRect = box.getBoundingClientRect();
+          
+          let top = rect.bottom + 15;
+          let left = rect.left;
 
-                    // Ekran dışına taşma kontrolü
-                    if (top + tooltipRect.height > window.innerHeight) {
-                        top = targetRect.top - tooltipRect.height - 20;
-                    }
+          // Ekran dışına taşma kontrolü
+          if (top + tooltipRect.height > window.innerHeight) {
+            top = rect.top - tooltipRect.height - 15;
+          }
 
-                    left = Math.max(10, Math.min(left, window.innerWidth - tooltipRect.width - 10));
+          if (left + tooltipRect.width > window.innerWidth) {
+            left = window.innerWidth - tooltipRect.width - 15;
+          }
 
-                    Tutorial.tooltip.style.top = top + "px";
-                    Tutorial.tooltip.style.left = left + "px";
-                } else {
-                    // Ortada göster
-                    Tutorial.tooltip.style.top = "50%";
-                    Tutorial.tooltip.style.left = "50%";
-                    Tutorial.tooltip.style.transform = "translate(-50%, -50%)";
-                }
+          box.style.top = top + "px";
+          box.style.left = left + "px";
+        } else {
+          box.style.top = "50%";
+          box.style.left = "50%";
+          box.style.transform = "translate(-50%, -50%)";
+        }
 
-                // Next butonu varsa event ekle
-                const nextBtn = Tutorial.tooltip.querySelector(".tutorial-next-btn");
-                if (nextBtn) {
-                    nextBtn.addEventListener("click", nextStep);
-                }
-            }
+        if (!step.requireClick) {
+          document.getElementById("tutorialNextBtn")
+            ?.addEventListener("click", nextStep);
+        }
+      }
 
-            // Tap listener ekle
-            function attachTapListener(selector) {
-                const element = document.querySelector(selector);
-                if (!element) return;
+      function runStep() {
+        const step = Tutorial.steps[Tutorial.currentStep];
+        if (!step) return;
 
-                Tutorial.tapListener = function(e) {
-                    // Partikül efekti
-                    for (let i = 0; i < 5; i++) {
-                        setTimeout(() => {
-                            const particle = document.createElement("div");
-                            particle.className = "tutorial-particle";
-                            particle.textContent = "✨";
-                            particle.style.left = (e?.clientX || window.innerWidth/2) + (Math.random() * 60 - 30) + "px";
-                            particle.style.top = (e?.clientY || window.innerHeight/2) + (Math.random() * 60 - 30) + "px";
-                            document.body.appendChild(particle);
-                            setTimeout(() => particle.remove(), 1000);
-                        }, i * 50);
-                    }
+        if (!step.target) {
+          createTooltip(step);
+          return;
+        }
 
-                    // Highlight'ı kaldır
-                    element.classList.remove("tutorial-highlight");
-                    
-                    // Listener'ı kaldır
-                    element.removeEventListener("click", Tutorial.tapListener);
-                    Tutorial.tapListener = null;
-                    
-                    // Sonraki adıma geç
-                    nextStep();
-                };
+        const el = document.querySelector(step.target);
+        if (!el) {
+          nextStep();
+          return;
+        }
 
-                element.addEventListener("click", Tutorial.tapListener);
-            }
+        highlightElement(el);
+        createTooltip(step, el);
 
-            // Adımı göster
-            function showStep(index) {
-                const step = Tutorial.steps[index];
-                if (!step) return;
+        const reposition = () => highlightElement(el);
+        window.addEventListener("resize", reposition);
+        window.addEventListener("scroll", reposition);
+        Tutorial.resizeHandler = reposition;
 
-                // Önceki tooltip ve highlight'ı temizle
-                if (Tutorial.tooltip) Tutorial.tooltip.remove();
-                if (Tutorial.overlay) {
-                    document.querySelectorAll(".tutorial-highlight").forEach(el => {
-                        el.classList.remove("tutorial-highlight");
-                    });
-                }
+        if (step.requireClick) {
+          el.addEventListener("click", nextStep, { once: true });
+        }
+      }
 
-                let targetEl = null;
-                if (step.target) {
-                    targetEl = document.querySelector(step.target);
-                }
+      function nextStep() {
+        window.removeEventListener("resize", Tutorial.resizeHandler);
+        window.removeEventListener("scroll", Tutorial.resizeHandler);
 
-                // Overlay yoksa oluştur
-                if (!Tutorial.overlay) {
-                    createOverlay();
-                }
+        Tutorial.currentStep++;
 
-                // Element varsa highlight et
-                if (targetEl) {
-                    highlightElement(targetEl);
-                }
+        if (Tutorial.currentStep >= Tutorial.steps.length) {
+          finishTutorial();
+        } else {
+          runStep();
+        }
+      }
 
-                // Tooltip oluştur
-                createTooltip(step, targetEl);
+      function finishTutorial() {
 
-                // Resize handler
-                if (Tutorial.resizeHandler) {
-                    window.removeEventListener("resize", Tutorial.resizeHandler);
-                    window.removeEventListener("scroll", Tutorial.resizeHandler);
-                }
+        window.removeEventListener("resize", Tutorial.resizeHandler);
+        window.removeEventListener("scroll", Tutorial.resizeHandler);
 
-                Tutorial.resizeHandler = function() {
-                    if (targetEl) {
-                        highlightElement(targetEl);
-                        
-                        // Tooltip'i yeniden konumlandır
-                        const targetRect = targetEl.getBoundingClientRect();
-                        const tooltipRect = Tutorial.tooltip?.getBoundingClientRect();
-                        if (Tutorial.tooltip && tooltipRect) {
-                            let top = targetRect.bottom + 20;
-                            let left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
+        if (Tutorial.overlay) {
+          Tutorial.overlay.remove();
+          Tutorial.overlay = null;
+        }
 
-                            if (top + tooltipRect.height > window.innerHeight) {
-                                top = targetRect.top - tooltipRect.height - 20;
-                            }
+        if (Tutorial.tooltip) {
+          Tutorial.tooltip.remove();
+          Tutorial.tooltip = null;
+        }
 
-                            left = Math.max(10, Math.min(left, window.innerWidth - tooltipRect.width - 10));
+        // Coin ödülü ekle
+        if (typeof window.addCoin === "function") {
+          window.addCoin(250);
+        } else if (window.gameData) {
+          window.gameData.neonTapToken = (window.gameData.neonTapToken || 0) + 250;
+          if (typeof window.updateDisplay === "function") {
+            window.updateDisplay();
+          }
+        }
 
-                            Tutorial.tooltip.style.top = top + "px";
-                            Tutorial.tooltip.style.left = left + "px";
-                        }
-                    }
-                };
+        localStorage.setItem("tutorialCompleted", "true");
+      }
 
-                window.addEventListener("resize", Tutorial.resizeHandler);
-                window.addEventListener("scroll", Tutorial.resizeHandler);
+      function startTutorial() {
+        createOverlay();
+        runStep();
+      }
 
-                // Tap gerekiyorsa listener ekle
-                if (step.requireClick && step.target) {
-                    attachTapListener(step.target);
-                }
-            }
+      // Sayfa tam yüklendikten sonra başlat
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          setTimeout(startTutorial, 700);
+        });
+      } else {
+        setTimeout(startTutorial, 700);
+      }
 
-            // Sonraki adım
-            function nextStep() {
-                // Önceki resize handler'ı temizle
-                if (Tutorial.resizeHandler) {
-                    window.removeEventListener("resize", Tutorial.resizeHandler);
-                    window.removeEventListener("scroll", Tutorial.resizeHandler);
-                }
-
-                // Tap listener'ı temizle
-                if (Tutorial.tapListener) {
-                    const step = Tutorial.steps[Tutorial.currentStep];
-                    if (step?.target) {
-                        const el = document.querySelector(step.target);
-                        if (el) {
-                            el.removeEventListener("click", Tutorial.tapListener);
-                        }
-                    }
-                    Tutorial.tapListener = null;
-                }
-
-                Tutorial.currentStep++;
-
-                if (Tutorial.currentStep >= Tutorial.steps.length) {
-                    finishTutorial();
-                } else {
-                    showStep(Tutorial.currentStep);
-                }
-            }
-
-            // Tutorial'ı bitir - YENİ VERSİYON (SADECE BU DEĞİŞTİ)
-            function finishTutorial() {
-
-                // Tüm tutorial eventlerini kapat
-                window.removeEventListener("resize", Tutorial.resizeHandler);
-                window.removeEventListener("scroll", Tutorial.resizeHandler);
-
-                // Overlay varsa tamamen yok et
-                const existingOverlay = document.querySelector(".tutorial-overlay");
-                if (existingOverlay) {
-                    existingOverlay.remove();
-                }
-
-                if (Tutorial.overlay) {
-                    Tutorial.overlay.remove();
-                    Tutorial.overlay = null;
-                }
-
-                // Tooltip temizle
-                if (Tutorial.tooltip) {
-                    Tutorial.tooltip.remove();
-                    Tutorial.tooltip = null;
-                }
-
-                // Body kilidini tamamen kaldır
-                document.body.style.pointerEvents = "";
-                document.body.style.overflow = "";
-                document.body.style.userSelect = "";
-                document.body.style.touchAction = "";
-
-                // Tüm nav ve butonları tekrar aktif yap
-                document.querySelectorAll("*").forEach(el => {
-                    el.style.pointerEvents = "";
-                });
-
-                // Z-index ile üstte kalan bir şey varsa temizle
-                document.querySelectorAll("div").forEach(el => {
-                    if (getComputedStyle(el).zIndex > 9990) {
-                        el.style.zIndex = "";
-                    }
-                });
-
-                // Coin ödül
-                const lastStep = Tutorial.steps[Tutorial.steps.length - 1];
-                if (lastStep.reward) {
-                    if (typeof window.addCoin === "function") {
-                        window.addCoin(lastStep.reward);
-                    } else if (window.gameData) {
-                        window.gameData.neonTapToken = (window.gameData.neonTapToken || 0) + lastStep.reward;
-                        if (typeof window.updateDisplay === "function") {
-                            window.updateDisplay();
-                        }
-                    }
-                }
-
-                localStorage.setItem("tutorialCompleted", "true");
-
-                Tutorial.active = false;
-
-                console.log("Tutorial fully unlocked.");
-            }
-
-            // Tutorial'ı başlat (sayfa yüklendikten sonra)
-            if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", () => {
-                    setTimeout(() => showStep(0), 1000);
-                });
-            } else {
-                setTimeout(() => showStep(0), 1000);
-            }
-
-            console.log("🎯 Tutorial sistemi hazır!");
-        })();
+    })();
     </script>
+    <!-- ========== TUTORIAL SİSTEMİ SONU ========== -->
 </body>
 </html>

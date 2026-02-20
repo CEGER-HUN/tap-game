@@ -4716,3 +4716,455 @@
     </script>
 </body>
 </html>
+<!-- TUTORIAL SİSTEMİ -->
+<style>
+    /* Tutorial Overlay */
+    .tutorial-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .tutorial-overlay.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    /* Tutorial Baloncuk */
+    .tutorial-bubble {
+        position: absolute;
+        background: linear-gradient(165deg, #2a2a4a, #1a1a3a);
+        border: 2px solid rgba(255, 215, 0, 0.5);
+        border-radius: 24px;
+        padding: 20px 25px;
+        max-width: 300px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
+        animation: bubblePop 0.3s ease-out;
+        z-index: 10001;
+    }
+
+    @keyframes bubblePop {
+        0% { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .tutorial-bubble::before {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(165deg, #2a2a4a, #1a1a3a);
+        border-left: 2px solid rgba(255, 215, 0, 0.5);
+        border-top: 2px solid rgba(255, 215, 0, 0.5);
+        transform: rotate(45deg);
+    }
+
+    .tutorial-bubble.top::before {
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%) rotate(135deg);
+        border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+        border-right: 2px solid rgba(255, 215, 0, 0.5);
+        border-left: none;
+        border-top: none;
+    }
+
+    .tutorial-bubble.bottom::before {
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-45deg);
+    }
+
+    .tutorial-bubble.left::before {
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%) rotate(135deg);
+    }
+
+    .tutorial-bubble.right::before {
+        left: -10px;
+        top: 50%;
+        transform: translateY(-50%) rotate(-45deg);
+    }
+
+    .tutorial-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .tutorial-text {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    .tutorial-highlight {
+        position: absolute;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.8), 0 0 20px 10px rgba(255, 215, 0, 0.3);
+        animation: highlightPulse 1.5s infinite;
+        pointer-events: none;
+        z-index: 10001;
+    }
+
+    @keyframes highlightPulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.8), 0 0 20px 10px rgba(255, 215, 0, 0.3); }
+        50% { box-shadow: 0 0 0 8px rgba(255, 215, 0, 0.9), 0 0 30px 15px rgba(255, 215, 0, 0.5); }
+    }
+
+    .tutorial-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .tutorial-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .tutorial-btn.next {
+        background: linear-gradient(135deg, #00ff96, #00cc66);
+        color: #1a1a2e;
+    }
+
+    .tutorial-btn.skip {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .tutorial-btn:active {
+        transform: scale(0.95);
+    }
+
+    .tutorial-progress {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10002;
+    }
+
+    .tutorial-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s;
+    }
+
+    .tutorial-dot.active {
+        background: #FFD700;
+        box-shadow: 0 0 15px #FFD700;
+        transform: scale(1.3);
+    }
+
+    /* Ok animasyonu */
+    .tutorial-arrow {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        animation: arrowMove 1s infinite;
+        z-index: 10002;
+    }
+
+    @keyframes arrowMove {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>
+
+<!-- Tutorial Container -->
+<div class="tutorial-overlay" id="tutorialOverlay">
+    <div class="tutorial-progress" id="tutorialProgress"></div>
+</div>
+
+<script>
+    // TUTORIAL SİSTEMİ
+    class TutorialSystem {
+        constructor() {
+            this.steps = [
+                {
+                    element: '.coin-button',
+                    title: '🎯 Ana Coin',
+                    text: 'NeonTap\'e hoş geldin! Para kazanmak için bu dev GO COIN\'e TIKLA! Her tıklamada coin kazanırsın.',
+                    position: 'bottom',
+                    highlight: true,
+                    screen: 'home'
+                },
+                {
+                    element: '.energy-section',
+                    title: '⚡ Enerji Sistemi',
+                    text: 'Her tıklama enerji harcar. Mavi bar enerjini gösterir. Enerjin zamanla yenilenir.',
+                    position: 'top',
+                    highlight: true,
+                    screen: 'home'
+                },
+                {
+                    element: '.passive-card',
+                    title: '💰 Pasif Kazanç',
+                    text: 'Burada biriken pasif kazancını CLAIM butonu ile topla. 2X butonu ile iki kat kazan!',
+                    position: 'top',
+                    highlight: true,
+                    screen: 'home'
+                },
+                {
+                    element: '[data-screen="cards"]',
+                    title: '📊 Kartlar',
+                    text: 'Buradan profesyoneller ve şirketler satın al. Her kart saniyelik kazancını (0/s) artırır!',
+                    position: 'top',
+                    highlight: true,
+                    screen: 'home',
+                    isNavItem: true
+                },
+                {
+                    element: '[data-screen="mining"]',
+                    title: '⛏️ Madencilik',
+                    text: 'Madencilik kartları satın al, saatlik NeonTap Coin üret. Farklı renkler farklı güçleri temsil eder.',
+                    position: 'top',
+                    highlight: true,
+                    screen: 'home',
+                    isNavItem: true
+                },
+                {
+                    element: '[data-screen="airdrop"]',
+                    title: '🎁 Airdrop',
+                    text: 'Kazandığın NeonTap Coin\'ler burada birikir. Token listelenince ödülünü alabileceksin!',
+                    position: 'top',
+                    highlight: true,
+                    screen: 'home',
+                    isNavItem: true,
+                    specialNote: 'Bekleyen ödül'
+                },
+                {
+                    element: '[data-screen="trade"]',
+                    title: '🔄 Takas',
+                    text: 'GO Coin\'lerini anında NeonTap Coin\'e dönüştür. 1 GO = 0.02 NEON. Minimum 50,000 GO gerekli.',
+                    position: 'top',
+                    highlight: true,
+                    screen: 'home',
+                    isNavItem: true,
+                    specialNote: 'Aktif işlem'
+                }
+            ];
+
+            this.currentStep = 0;
+            this.isActive = false;
+            this.highlightElement = null;
+        }
+
+        start() {
+            // Daha önce tutorial tamamlanmış mı kontrol et
+            if (localStorage.getItem('tutorialCompleted')) {
+                return;
+            }
+
+            this.isActive = true;
+            this.currentStep = 0;
+            
+            // Ana ekrana geç
+            if (typeof switchScreen === 'function') {
+                switchScreen('home');
+            }
+            
+            // Overlay'i göster
+            const overlay = document.getElementById('tutorialOverlay');
+            overlay.classList.add('active');
+            
+            // Progress dotlarını oluştur
+            this.updateProgress();
+            
+            // İlk adımı göster
+            setTimeout(() => this.showStep(), 300);
+        }
+
+        showStep() {
+            if (!this.isActive || this.currentStep >= this.steps.length) {
+                this.complete();
+                return;
+            }
+
+            const step = this.steps[this.currentStep];
+            
+            // Eğer farklı bir ekrandaysak geçiş yap
+            if (step.screen && typeof switchScreen === 'function') {
+                switchScreen(step.screen);
+            }
+
+            // Eski highlight'ı temizle
+            if (this.highlightElement) {
+                this.highlightElement.remove();
+            }
+
+            // Elementi bul
+            const element = document.querySelector(step.element);
+            if (!element) {
+                console.warn('Element bulunamadı:', step.element);
+                this.nextStep();
+                return;
+            }
+
+            // Highlight ekle
+            if (step.highlight) {
+                const rect = element.getBoundingClientRect();
+                this.highlightElement = document.createElement('div');
+                this.highlightElement.className = 'tutorial-highlight';
+                
+                if (step.isNavItem) {
+                    // Navigasyon item'ları için farklı boyut
+                    this.highlightElement.style.width = '70px';
+                    this.highlightElement.style.height = '70px';
+                    this.highlightElement.style.left = (rect.left + rect.width/2 - 35) + 'px';
+                    this.highlightElement.style.top = (rect.top + rect.height/2 - 35) + 'px';
+                    this.highlightElement.style.borderRadius = '20px';
+                } else {
+                    this.highlightElement.style.width = (rect.width + 20) + 'px';
+                    this.highlightElement.style.height = (rect.height + 20) + 'px';
+                    this.highlightElement.style.left = (rect.left - 10) + 'px';
+                    this.highlightElement.style.top = (rect.top - 10) + 'px';
+                    this.highlightElement.style.borderRadius = step.element === '.coin-button' ? '50%' : '20px';
+                }
+                
+                document.body.appendChild(this.highlightElement);
+            }
+
+            // Baloncuk pozisyonunu hesapla
+            const rect = element.getBoundingClientRect();
+            const bubble = document.createElement('div');
+            bubble.className = `tutorial-bubble ${step.position}`;
+            
+            // Özel not varsa ekle
+            const specialNoteHtml = step.specialNote ? 
+                `<div style="margin-top: 8px; padding: 5px 10px; background: rgba(255,215,0,0.2); border-radius: 12px; font-size: 12px; color: #FFD700;">✨ ${step.specialNote}</div>` : '';
+
+            bubble.innerHTML = `
+                <div class="tutorial-title">${step.title}</div>
+                <div class="tutorial-text">${step.text}</div>
+                ${specialNoteHtml}
+                <div class="tutorial-buttons">
+                    <button class="tutorial-btn skip" onclick="tutorial.skip()">Atla</button>
+                    <button class="tutorial-btn next" onclick="tutorial.nextStep()">${this.currentStep === this.steps.length - 1 ? 'Tamamla' : 'İleri'}</button>
+                </div>
+            `;
+
+            // Baloncuk pozisyonunu ayarla
+            const bubbleWidth = 300;
+            const bubbleHeight = bubble.offsetHeight || 200;
+
+            switch(step.position) {
+                case 'top':
+                    bubble.style.left = (rect.left + rect.width/2 - bubbleWidth/2) + 'px';
+                    bubble.style.top = (rect.top - bubbleHeight - 20) + 'px';
+                    break;
+                case 'bottom':
+                    bubble.style.left = (rect.left + rect.width/2 - bubbleWidth/2) + 'px';
+                    bubble.style.top = (rect.bottom + 20) + 'px';
+                    break;
+                case 'left':
+                    bubble.style.left = (rect.left - bubbleWidth - 20) + 'px';
+                    bubble.style.top = (rect.top + rect.height/2 - bubbleHeight/2) + 'px';
+                    break;
+                case 'right':
+                    bubble.style.left = (rect.right + 20) + 'px';
+                    bubble.style.top = (rect.top + rect.height/2 - bubbleHeight/2) + 'px';
+                    break;
+            }
+
+            // Ekran sınırlarına takılmasın
+            bubble.style.left = Math.max(10, Math.min(window.innerWidth - bubbleWidth - 10, parseFloat(bubble.style.left))) + 'px';
+            bubble.style.top = Math.max(10, Math.min(window.innerHeight - bubbleHeight - 10, parseFloat(bubble.style.top))) + 'px';
+
+            // Eski baloncuğu temizle
+            const oldBubble = document.querySelector('.tutorial-bubble');
+            if (oldBubble) oldBubble.remove();
+
+            document.body.appendChild(bubble);
+
+            // Progress'i güncelle
+            this.updateProgress();
+        }
+
+        nextStep() {
+            if (this.currentStep < this.steps.length - 1) {
+                this.currentStep++;
+                this.showStep();
+            } else {
+                this.complete();
+            }
+        }
+
+        skip() {
+            this.complete();
+        }
+
+        complete() {
+            this.isActive = false;
+            
+            // Highlight ve baloncuğu temizle
+            if (this.highlightElement) {
+                this.highlightElement.remove();
+            }
+            const bubble = document.querySelector('.tutorial-bubble');
+            if (bubble) bubble.remove();
+            
+            // Overlay'i kapat
+            const overlay = document.getElementById('tutorialOverlay');
+            overlay.classList.remove('active');
+            
+            // Tamamlandı olarak işaretle
+            localStorage.setItem('tutorialCompleted', 'true');
+            
+            // Hoş geldin mesajı
+            if (typeof showModal === 'function') {
+                setTimeout(() => {
+                    showModal('🎉 Başarılı', 'Artık oynamaya hazırsın! İyi eğlenceler!');
+                }, 300);
+            }
+        }
+
+        updateProgress() {
+            const progressContainer = document.getElementById('tutorialProgress');
+            let dots = '';
+            for (let i = 0; i < this.steps.length; i++) {
+                dots += `<div class="tutorial-dot ${i === this.currentStep ? 'active' : ''}"></div>`;
+            }
+            progressContainer.innerHTML = dots;
+        }
+    }
+
+    // Tutorial instance'ı oluştur
+    const tutorial = new TutorialSystem();
+
+    // Sayfa yüklendiğinde tutorial'ı başlat
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1 saniye bekle ve tutorial'ı başlat
+        setTimeout(() => {
+            tutorial.start();
+        }, 1000);
+    });
+</script>
+<!-- TUTORIAL SİSTEMİ SONU -->

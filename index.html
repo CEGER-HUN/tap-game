@@ -723,7 +723,7 @@
             text-align: center;
         }
 
-        /* Referans Paneli */
+        /* Referans Paneli - YENİ */
         .referral-panel {
             position: fixed;
             top: 0;
@@ -2576,7 +2576,6 @@
     </style>
 </head>
 <body>
-    <!-- MEVCUT TÜM HTML İÇERİĞİ AYNEN KALIYOR -->
     <!-- Yükleme Ekranı -->
     <div class="loading" id="loading" style="display: none;">
         <div class="loading-spinner"></div>
@@ -2594,7 +2593,7 @@
         <span></span>
     </div>
 
-    <!-- Görev Butonu -->
+    <!-- ========== GÖREV BUTONU ========== -->
     <div class="quest-button" id="questButton" onclick="handleQuestButtonClick()">
         <img src="assets/icons/1000011085-removebg-preview.png" alt="Görevler">
         <div class="quest-red-dot" id="questRedDot"></div>
@@ -2703,6 +2702,7 @@
                 </div>
                 <div class="menu-item-arrow">→</div>
             </div>
+            <!-- Referans sekmesi - ARTIK PROFİLE ATMİYOR -->
             <div class="menu-item" onclick="openReferralPanel()">
                 <div class="menu-item-icon">👥</div>
                 <div class="menu-item-text">
@@ -2741,7 +2741,7 @@
         </div>
     </div>
 
-    <!-- Referans Paneli -->
+    <!-- Referans Paneli - YENİ -->
     <div class="referral-panel" id="referralPanel">
         <div class="panel-header">
             <div class="panel-title">👥 Referans Sistemi</div>
@@ -2754,7 +2754,7 @@
             <div class="referral-row">
                 <span class="referral-label">Kod:</span>
                 <div class="referral-value">
-                    <span id="referralCodeDisplay">GO-678495</span>
+                    <span id="referralCodeDisplay">GO-123456</span>
                     <div class="referral-copy-btn" onclick="copyToClipboard('referralCodeDisplay')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -2767,7 +2767,7 @@
             <div class="referral-row">
                 <span class="referral-label">Link:</span>
                 <div class="referral-value">
-                    <span id="referralLinkDisplay">https://neontap.com/?ref=GO-678495</span>
+                    <span id="referralLinkDisplay">https://neontap.com/?ref=GO-123456</span>
                     <div class="referral-copy-btn" onclick="copyToClipboard('referralLinkDisplay')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -3003,7 +3003,7 @@
         <div class="profile-field">
             <div class="profile-field-label">Oyuncu ID</div>
             <div class="profile-field-value">
-                <span id="playerId">#678495</span>
+                <span id="playerId">#123456</span>
             </div>
         </div>
         
@@ -3104,7 +3104,7 @@
                         CLAIM
                     </button>
                 </div>
-                <div class="passive-time" id="passive-time">Maks: 5s • Kalan: 4s 59d</div>
+                <div class="passive-time" id="passive-time"></div>
             </div>
 
             <div class="stat-cards">
@@ -3188,7 +3188,7 @@
             <div class="profile-header">
                 <div class="profile-avatar">😊</div>
                 <div class="profile-name" id="profile-name">Oyuncu</div>
-                <div class="profile-id">ID: #<span id="profile-id">678495</span></div>
+                <div class="profile-id">ID: #<span id="profile-id">12345</span></div>
             </div>
 
             <div class="profile-stats">
@@ -3336,17 +3336,42 @@
         </div>
     </div>
 
-    <!-- MEVCUT JAVASCRIPT KODU (ÖZET) - GERÇEK PROJENİZDE BURASI ÇOK DAHA UZUN OLACAK -->
     <script>
-        // 🎯 NAVIGATION - En önemli fonksiyon
-        window.switchScreen = function(screenName) {
-            console.log('🔄 Switching to:', screenName);
+        // 🎯 Navigation State - Aktif panel takibi
+        let activePanel = null; // 'profile', 'leaderboard', 'referral', 'roadmap', 'support', 'sponsor', 'quest', null
+
+        // 🎯 Navigation - Hamburger, Header ve Görev Butonu görünürlüğü kontrolü
+        function updateUIVisibility() {
+            const menuToggle = document.getElementById('menuToggle');
+            const headerVersion = document.getElementById('headerVersion');
+            const questButton = document.getElementById('questButton');
+            const sideMenu = document.getElementById('sideMenu');
+            const questPanel = document.getElementById('questPanel');
+            const accountModal = document.getElementById('accountModal');
+            const activeScreen = document.querySelector('.screen.active');
             
-            // Tüm ekranları gizle
+            const isHomeScreen = activeScreen && activeScreen.id === 'home-screen';
+            const isSideMenuOpen = sideMenu.classList.contains('active');
+            const isQuestPanelOpen = questPanel.classList.contains('active');
+            const isAccountModalOpen = accountModal.classList.contains('active');
+            const isAnyPanelOpen = activePanel !== null;
+            
+            // Sadece Ana Sayfa aktifse ve hiçbir panel/modal açık değilse göster
+            if (isHomeScreen && !isSideMenuOpen && !isQuestPanelOpen && !isAccountModalOpen && !isAnyPanelOpen) {
+                menuToggle.classList.remove('hidden');
+                headerVersion.classList.remove('hidden');
+                questButton.classList.remove('hidden');
+            } else {
+                menuToggle.classList.add('hidden');
+                headerVersion.classList.add('hidden');
+                questButton.classList.add('hidden');
+            }
+        }
+
+        window.switchScreen = function(screenName) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
-            // Screen mapping
             const screenMap = {
                 'home': 'home-screen',
                 'cards': 'cards-screen',
@@ -3356,359 +3381,1338 @@
                 'trade': 'trade-screen'
             };
             
-            // Hedef ekranı göster
             const targetScreen = document.getElementById(screenMap[screenName]);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
+            if (targetScreen) targetScreen.classList.add('active');
+            
+            const navItem = document.querySelector(`[data-screen="${screenName}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            if (screenName === 'cards') {
+                renderAllCards();
             }
             
-            // Nav item'ı aktif yap
-            const navItem = document.querySelector('[data-screen="' + screenName + '"]');
-            if (navItem) {
-                navItem.classList.add('active');
-            }
+            // Aktif paneli sıfırla
+            activePanel = null;
+            
+            updateUIVisibility();
         };
 
-        // 💰 Game Data
+        // 🚫 Loading ekranını kapat
+        document.getElementById('loading').style.display = 'none';
+
+        // Telegram Web App
+        let tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+
+        // 📦 Kart Verileri
+        const CARDS = [
+            { id: 'profesyon', category: 'profession', name: 'Profesyon', baseIncome: 100, basePrice: 500, icon: 'card_profession.png', level: 0, unlockRequirement: null },
+            { id: 'freelancer', category: 'profession', name: 'Freelancer', baseIncome: 250, basePrice: 1000, icon: 'card_freelancer.png', level: 0, unlockRequirement: { cardId: 'profesyon', level: 5 } },
+            { id: 'danisman', category: 'profession', name: 'Danışman', baseIncome: 500, basePrice: 2500, icon: 'card_consultant.png', level: 0, unlockRequirement: { cardId: 'profesyon', level: 10 } },
+            { id: 'muhasebeci', category: 'profession', name: 'Muhasebeci', baseIncome: 1000, basePrice: 5000, icon: 'card_accountant.png', level: 0, unlockRequirement: { cardId: 'freelancer', level: 10 } },
+            { id: 'avukat', category: 'profession', name: 'Avukat', baseIncome: 2000, basePrice: 10000, icon: 'card_lawyer.png', level: 0, unlockRequirement: { cardId: 'muhasebeci', level: 15 } },
+            { id: 'ceo', category: 'profession', name: 'CEO', baseIncome: 5000, basePrice: 25000, icon: 'card_ceo.png', level: 0, unlockRequirement: { cardId: 'avukat', level: 20 } },
+            { id: 'kafe', category: 'companies', name: 'Kafe', baseIncome: 300, basePrice: 1500, icon: 'card_cafe.png', level: 0, unlockRequirement: { cardId: 'ceo', level: 5 } },
+            { id: 'restoran', category: 'companies', name: 'Restoran', baseIncome: 750, basePrice: 4000, icon: 'card_restaurant.png', level: 0, unlockRequirement: { cardId: 'kafe', level: 10 } },
+            { id: 'butik', category: 'companies', name: 'Butik', baseIncome: 1500, basePrice: 8000, icon: 'card_boutique.png', level: 0, unlockRequirement: { cardId: 'restoran', level: 15 } },
+            { id: 'otel', category: 'companies', name: 'Otel', baseIncome: 3000, basePrice: 15000, icon: 'card_hotel.png', level: 0, unlockRequirement: { cardId: 'butik', level: 20 } },
+            { id: 'avm', category: 'companies', name: 'AVM', baseIncome: 7500, basePrice: 35000, icon: 'card_mall.png', level: 0, unlockRequirement: { cardId: 'otel', level: 25 } },
+            { id: 'app', category: 'technology', name: 'Uygulama Geliştirme', baseIncome: 2000, basePrice: 10000, icon: 'card_app_dev.png', level: 0, unlockRequirement: { cardId: 'avm', level: 10 } },
+            { id: 'teknisyen', category: 'technology', name: 'Teknisyen', baseIncome: 4000, basePrice: 20000, icon: 'card_technician.png', level: 0, unlockRequirement: { cardId: 'app', level: 15 } },
+            { id: 'kripto', category: 'technology', name: 'Kripto Madenciliği', baseIncome: 8000, basePrice: 40000, icon: 'card_crypto_mining.png', level: 0, unlockRequirement: { cardId: 'teknisyen', level: 20 } },
+            { id: 'ai', category: 'technology', name: 'AI Startup', baseIncome: 15000, basePrice: 75000, icon: 'card_ai_startup.png', level: 0, unlockRequirement: { cardId: 'kripto', level: 25 } },
+            { id: 'uzay', category: 'technology', name: 'Uzay Teknolojisi', baseIncome: 30000, basePrice: 150000, icon: 'card_space_tech.png', level: 0, unlockRequirement: { cardId: 'ai', level: 30 } }
+        ];
+
+        // Oyun Verileri
         let gameData = {
+            user_id: Math.floor(Math.random() * 1000000),
+            username: 'Oyuncu',
             coins: 0,
-            neonTapToken: 0,
-            energy: 1000,
-            max_energy: 1000,
+            energy: 500,
+            max_energy: 500,
+            energy_recharge_rate: 500 / (30 * 60),
+            tap_power: 1,
             total_taps: 0,
-            profit_per_hour: 0,
-            level: 1,
-            xp: 0,
             cards_bought: 0,
             combo_multiplier: 1,
-            user_id: null,
-            username: 'Oyuncu'
+            combo_timeout: null,
+            last_energy_update: Date.now(),
+            neonTapToken: 0,
+            totalTrades: 0,
+            totalTradedGoCoin: 0,
+            totalEarnedNeonTap: 0,
+            prestigePoints: 0,
+            cardLevels: {},
+            
+            // Referans sistemi
+            referralCode: '',
+            referralCount: 0,
+            referralEarnings: 0,
+            referredBy: null,
+            
+            // Pasif kazanç
+            passiveEarnings: 0,
+            passiveStartTime: Date.now(),
+            passiveLastClaim: Date.now(),
+            passiveMaxDuration: 5 * 60 * 60 * 1000,
+            passiveCooldown: 0,
+            x2UsesLeft: 6,
+            x2LastReset: Date.now(),
+
+            // Support ve sponsor talepleri
+            supportTickets: [],
+            sponsorRequests: [],
+
+            // Görevler
+            quests: {
+                telegram: { 
+                    started: false,
+                    completed: false,
+                    claimed: false,
+                    startTime: null,
+                    reviewEndTime: null
+                },
+                x: { 
+                    started: false,
+                    completed: false,
+                    claimed: false,
+                    startTime: null,
+                    reviewEndTime: null
+                }
+            },
+
+            // Sosyal medya hesapları
+            xUsername: '',
+            telegramUsername: ''
         };
 
-        // 📊 Display güncelleme
-        function updateDisplay() {
-            const coinCount = document.getElementById('coin-count');
-            if (coinCount) coinCount.textContent = formatNumber(Math.floor(gameData.coins));
+        // Kart level'larını başlat
+        CARDS.forEach(card => {
+            gameData.cardLevels[card.id] = 0;
+        });
+
+        // Referans kodu oluştur
+        function generateReferralCode() {
+            return 'GO-' + gameData.user_id.toString().slice(-6);
+        }
+
+        // İlk yükleme
+        gameData.referralCode = generateReferralCode();
+
+        // Profil bilgilerini güncelle
+        function updateProfileDisplay() {
+            document.getElementById('playerId').textContent = '#' + gameData.user_id;
+            document.getElementById('playerName').textContent = gameData.username;
+            document.getElementById('totalNeonTap').textContent = formatNumberFull(gameData.neonTapToken);
+            document.getElementById('referralCount').textContent = gameData.referralCount;
             
-            const profitHour = document.getElementById('profit-per-hour');
-            if (profitHour) profitHour.textContent = formatNumber(gameData.profit_per_hour);
+            // Sosyal medya bilgilerini göster
+            document.getElementById('profileXUsername').textContent = gameData.xUsername || '-';
+            document.getElementById('profileTelegramUsername').textContent = gameData.telegramUsername || '-';
             
-            const energyDisplay = document.getElementById('energy-display');
-            if (energyDisplay) energyDisplay.textContent = Math.floor(gameData.energy) + ' / ' + gameData.max_energy;
+            document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
+        }
+
+        // Referans panelini güncelle
+        function updateReferralDisplay() {
+            document.getElementById('referralCodeDisplay').textContent = gameData.referralCode;
+            document.getElementById('referralLinkDisplay').textContent = `https://neontap.com/?ref=${gameData.referralCode}`;
+            document.getElementById('referralCountDisplay').textContent = gameData.referralCount;
+        }
+
+        // Kopyalama fonksiyonu
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
             
-            const energyFill = document.getElementById('energy-fill');
-            if (energyFill) {
-                const energyPercent = (gameData.energy / gameData.max_energy) * 100;
-                energyFill.style.width = energyPercent + '%';
-            }
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.createElement('div');
+                toast.className = 'copy-toast';
+                toast.textContent = 'Kopyalandı!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
         }
 
-        // 🔢 Number formatting
-        function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num.toLocaleString();
+        // X'te paylaş
+        function shareOnX() {
+            const text = encodeURIComponent(`NeonTap ile coin kazanıyorum 🚀\nSen de katıl!\n🔗 https://neontap.com/?ref=${gameData.referralCode}`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
         }
 
-        // 🎮 Coin click handler
-        function handleCoinClick() {
-            if (gameData.energy >= 1) {
-                gameData.coins += gameData.combo_multiplier;
-                gameData.energy -= 1;
-                gameData.total_taps++;
-                updateDisplay();
-                saveGameData();
-            }
-        }
-
-        // 💾 Save/Load
-        function saveGameData() {
-            localStorage.setItem('game_' + gameData.user_id, JSON.stringify(gameData));
-        }
-
-        function loadGameData() {
-            const saved = localStorage.getItem('game_' + gameData.user_id);
-            if (saved) {
-                const data = JSON.parse(saved);
-                Object.assign(gameData, data);
-            }
-        }
-
-        // ⚡ Energy regeneration
-        setInterval(function() {
-            if (gameData.energy < gameData.max_energy) {
-                gameData.energy += 1;
-                updateDisplay();
-            }
-        }, 1000);
-
-        // 🎬 Initialize
-        window.addEventListener('load', function() {
-            console.log('🎮 Game initialized');
-            
-            // User ID
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-                gameData.user_id = window.Telegram.WebApp.initDataUnsafe.user.id;
-                gameData.username = window.Telegram.WebApp.initDataUnsafe.user.first_name || 'Oyuncu';
+        // Hesap bilgileri modalını aç
+        function openAccountModal(isUpdate = false) {
+            if (isUpdate) {
+                document.getElementById('xUsername').value = gameData.xUsername || '';
+                document.getElementById('telegramUsername').value = gameData.telegramUsername || '';
             } else {
-                gameData.user_id = Math.floor(Math.random() * 1000000);
+                document.getElementById('xUsername').value = '';
+                document.getElementById('telegramUsername').value = '';
             }
             
-            loadGameData();
+            document.getElementById('xUsernameError').textContent = '';
+            document.getElementById('telegramUsernameError').textContent = '';
+            
+            document.getElementById('accountModal').classList.add('active');
+            document.body.classList.add('modal-open');
+            updateUIVisibility();
+        }
+
+        // Hesap bilgilerini kaydet
+        function saveAccountInfo() {
+            const xUsername = document.getElementById('xUsername').value.trim();
+            const telegramUsername = document.getElementById('telegramUsername').value.trim();
+            
+            let hasError = false;
+            
+            if (!xUsername) {
+                document.getElementById('xUsernameError').textContent = 'X kullanıcı adı zorunludur';
+                hasError = true;
+            } else {
+                document.getElementById('xUsernameError').textContent = '';
+            }
+            
+            if (!telegramUsername) {
+                document.getElementById('telegramUsernameError').textContent = 'Telegram kullanıcı adı zorunludur';
+                hasError = true;
+            } else {
+                document.getElementById('telegramUsernameError').textContent = '';
+            }
+            
+            if (hasError) return;
+            
+            gameData.xUsername = xUsername;
+            gameData.telegramUsername = telegramUsername;
+            
+            closeAccountModal();
+            updateProfileDisplay();
+            saveGameData();
+            
+            openQuestPanel();
+        }
+
+        // Hesap bilgileri modalını kapat
+        function closeAccountModal() {
+            document.getElementById('accountModal').classList.remove('active');
+            document.body.classList.remove('modal-open');
+            updateUIVisibility();
+        }
+
+        // Görev butonu tıklama işleyicisi
+        function handleQuestButtonClick() {
+            if (!gameData.xUsername || !gameData.telegramUsername) {
+                openAccountModal(false);
+            } else {
+                openQuestPanel();
+            }
+        }
+
+        // İsim değiştirme modalı
+        window.openNameEditModal = function() {
+            document.getElementById('nameInput').value = gameData.username;
+            document.getElementById('nameEditModal').classList.add('active');
+            closeMenu();
+        };
+
+        window.closeNameEditModal = function() {
+            document.getElementById('nameEditModal').classList.remove('active');
+        };
+
+        window.saveName = function() {
+            const newName = document.getElementById('nameInput').value.trim();
+            
+            const forbiddenWords = ['sex', 'porn', 'fuck', 'sik', 'amk', 'aq', 'yarrak', 'göt'];
+            let hasBadWord = false;
+            forbiddenWords.forEach(word => {
+                if (newName.toLowerCase().includes(word)) hasBadWord = true;
+            });
+            
+            if (hasBadWord) {
+                showModal('Uyarı', 'Geçersiz isim! Lütfen başka bir isim seçin.');
+                return;
+            }
+            
+            if (newName && newName.length > 0 && newName.length <= 16) {
+                gameData.username = newName;
+                document.getElementById('playerName').textContent = newName;
+                document.getElementById('profile-name').textContent = newName;
+                closeNameEditModal();
+                saveGameData();
+                showModal('Başarılı', 'İsminiz güncellendi!');
+            } else {
+                showModal('Uyarı', 'İsim 1-16 karakter arası olmalıdır.');
+            }
+        };
+
+        // Red Dot kontrolü
+        function updateRedDot() {
+            const hasUnclaimed = Object.values(gameData.quests).some(quest => quest.completed && !quest.claimed);
+            const redDot = document.getElementById('questRedDot');
+            if (hasUnclaimed) {
+                redDot.classList.remove('hidden');
+            } else {
+                redDot.classList.add('hidden');
+            }
+        }
+
+        // Görev butonlarını güncelle
+        function updateQuestButtons() {
+            const telegramQuest = gameData.quests.telegram;
+            const xQuest = gameData.quests.x;
+            
+            const telegramActions = document.getElementById('questTelegramActions');
+            const xActions = document.getElementById('questXActions');
+            
+            const now = Date.now();
+            
+            // Telegram görevi
+            if (!telegramQuest.started) {
+                telegramActions.innerHTML = `<button class="quest-button-action" onclick="startQuest('telegram')">Katıl</button>`;
+                document.getElementById('questTelegram').classList.remove('completed', 'claim-ready');
+            } else if (telegramQuest.completed) {
+                if (telegramQuest.claimed) {
+                    telegramActions.innerHTML = `<div class="quest-completed-badge">Tamamlandı</div>`;
+                    document.getElementById('questTelegram').classList.add('completed');
+                    document.getElementById('questTelegram').classList.remove('claim-ready');
+                } else {
+                    telegramActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('telegram', 50)">CLAIM</button>`;
+                    document.getElementById('questTelegram').classList.add('claim-ready');
+                    document.getElementById('questTelegram').classList.remove('completed');
+                }
+            } else if (telegramQuest.started && !telegramQuest.completed) {
+                const timeLeft = 10 * 60 * 1000 - (now - telegramQuest.startTime);
+                if (timeLeft <= 0) {
+                    telegramQuest.completed = true;
+                    telegramQuest.reviewEndTime = now;
+                    telegramActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('telegram', 50)">CLAIM</button>`;
+                    document.getElementById('questTelegram').classList.add('claim-ready');
+                } else {
+                    telegramActions.innerHTML = `<button class="quest-button-action review" disabled>İnceleniyor</button>`;
+                }
+                document.getElementById('questTelegram').classList.remove('completed', 'claim-ready');
+            }
+            
+            // X görevi
+            if (!xQuest.started) {
+                xActions.innerHTML = `<button class="quest-button-action" onclick="startQuest('x')">Takip Et</button>`;
+                document.getElementById('questX').classList.remove('completed', 'claim-ready');
+            } else if (xQuest.completed) {
+                if (xQuest.claimed) {
+                    xActions.innerHTML = `<div class="quest-completed-badge">Tamamlandı</div>`;
+                    document.getElementById('questX').classList.add('completed');
+                    document.getElementById('questX').classList.remove('claim-ready');
+                } else {
+                    xActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('x', 50)">CLAIM</button>`;
+                    document.getElementById('questX').classList.add('claim-ready');
+                    document.getElementById('questX').classList.remove('completed');
+                }
+            } else if (xQuest.started && !xQuest.completed) {
+                const timeLeft = 10 * 60 * 1000 - (now - xQuest.startTime);
+                if (timeLeft <= 0) {
+                    xQuest.completed = true;
+                    xQuest.reviewEndTime = now;
+                    xActions.innerHTML = `<button class="quest-button-action claim" onclick="claimQuest('x', 50)">CLAIM</button>`;
+                    document.getElementById('questX').classList.add('claim-ready');
+                } else {
+                    xActions.innerHTML = `<button class="quest-button-action review" disabled>İnceleniyor</button>`;
+                }
+                document.getElementById('questX').classList.remove('completed', 'claim-ready');
+            }
+            
+            updateRedDot();
+            saveGameData();
+        }
+
+        // Göreve başla
+        window.startQuest = function(questId) {
+            const links = {
+                telegram: 'https://t.me/neontap_official',
+                x: 'https://x.com/neontap'
+            };
+            
+            window.open(links[questId], '_blank');
+            
+            gameData.quests[questId].started = true;
+            gameData.quests[questId].startTime = Date.now();
+            
+            updateQuestButtons();
+            saveGameData();
+        };
+
+        // Görev claim et
+        window.claimQuest = function(questId, reward) {
+            const quest = gameData.quests[questId];
+            
+            if (!quest.completed || quest.claimed) return;
+            
+            gameData.neonTapToken += reward;
+            quest.claimed = true;
+            
+            const button = document.querySelector(`#quest${questId === 'x' ? 'X' : 'Telegram'}Actions .quest-button-action`);
+            if (button) {
+                const rect = button.getBoundingClientRect();
+                
+                const floating = document.createElement('div');
+                floating.className = 'quest-floating-coin';
+                floating.textContent = `+${reward}`;
+                floating.style.left = rect.left + rect.width/2 + 'px';
+                floating.style.top = rect.top + 'px';
+                document.body.appendChild(floating);
+                setTimeout(() => floating.remove(), 1000);
+                
+                for (let i = 0; i < 5; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'quest-sparkle';
+                    sparkle.innerHTML = '✨';
+                    sparkle.style.left = rect.left + Math.random() * rect.width + 'px';
+                    sparkle.style.top = rect.top + Math.random() * rect.height + 'px';
+                    document.body.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 800);
+                }
+            }
+            
+            updateQuestButtons();
+            updateDisplay();
+            saveGameData();
+            
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        };
+
+        // Görevleri periyodik güncelle
+        setInterval(() => {
+            updateQuestButtons();
+        }, 5000);
+
+        // Görev paneli aç/kapat
+        window.openQuestPanel = function() {
+            updateQuestButtons();
+            document.getElementById('questPanel').classList.add('active');
+            activePanel = 'quest';
+            updateUIVisibility();
+        };
+
+        window.closeQuestPanel = function() {
+            document.getElementById('questPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        // Diğer panel fonksiyonları
+        window.openProfilePanel = function() {
+            closeMenu();
+            updateProfileDisplay();
+            document.getElementById('profilePanel').classList.add('active');
+            activePanel = 'profile';
+            updateUIVisibility();
+        };
+
+        window.closeProfilePanel = function() {
+            document.getElementById('profilePanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        window.openLeaderboardPanel = function() {
+            closeMenu();
+            generateLeaderboard();
+            document.getElementById('leaderboardPanel').classList.add('active');
+            activePanel = 'leaderboard';
+            updateUIVisibility();
+        };
+
+        window.closeLeaderboardPanel = function() {
+            document.getElementById('leaderboardPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        // Referans paneli - ARTIK AYRI BİR PANEL
+        window.openReferralPanel = function() {
+            closeMenu();
+            updateReferralDisplay();
+            document.getElementById('referralPanel').classList.add('active');
+            activePanel = 'referral';
+            updateUIVisibility();
+        };
+
+        window.closeReferralPanel = function() {
+            document.getElementById('referralPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        window.openRoadmapPanel = function() {
+            closeMenu();
+            document.getElementById('roadmapPanel').classList.add('active');
+            activePanel = 'roadmap';
+            updateUIVisibility();
+        };
+
+        window.closeRoadmapPanel = function() {
+            document.getElementById('roadmapPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        window.openSupportPanel = function() {
+            closeMenu();
+            document.getElementById('supportPlayerId').value = '#' + gameData.user_id;
+            document.getElementById('supportPanel').classList.add('active');
+            activePanel = 'support';
+            updateUIVisibility();
+        };
+
+        window.closeSupportPanel = function() {
+            document.getElementById('supportPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        window.openSponsorPanel = function() {
+            closeMenu();
+            document.getElementById('sponsorPanel').classList.add('active');
+            activePanel = 'sponsor';
+            updateUIVisibility();
+        };
+
+        window.closeSponsorPanel = function() {
+            document.getElementById('sponsorPanel').classList.remove('active');
+            activePanel = null;
+            updateUIVisibility();
+        };
+
+        window.closeMenu = function() {
+            document.getElementById('menuToggle').classList.remove('active');
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+            updateUIVisibility();
+        };
+
+        // Demo leaderboard oluştur
+        function generateLeaderboard() {
+            const players = [
+                { name: 'CryptoKing', coins: 1250000 },
+                { name: 'NeonMaster', coins: 980000 },
+                { name: 'CoinHunter', coins: 750000 },
+                { name: 'MiningGuru', coins: 520000 },
+                { name: 'TokenLord', coins: 410000 },
+                { name: 'BlockchainPro', coins: 320000 },
+                { name: 'GoldMiner', coins: 280000 },
+                { name: 'DiamondHands', coins: 210000 },
+                { name: 'MoonWalker', coins: 150000 },
+                { name: 'SatHunter', coins: 98000 }
+            ];
+            
+            const playerCoins = gameData.neonTapToken;
+            const playerIndex = players.findIndex(p => p.coins < playerCoins);
+            
+            let leaderboardHtml = '';
+            
+            players.forEach((player, index) => {
+                let rankClass = '';
+                if (index === 0) rankClass = 'top-1';
+                else if (index === 1) rankClass = 'top-2';
+                else if (index === 2) rankClass = 'top-3';
+                
+                leaderboardHtml += `
+                    <div class="leaderboard-item ${rankClass}">
+                        <div class="leaderboard-rank">#${index + 1}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${player.name}</div>
+                            <div class="leaderboard-coins">${formatNumberFull(player.coins)} NEON</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (playerCoins > 0) {
+                const rank = playerIndex + 1;
+                leaderboardHtml += `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(255,215,0,0.1); border-radius: 12px; text-align: center;">
+                        Senin Sıran: #${rank} • ${formatNumberFull(playerCoins)} NEON
+                    </div>
+                `;
+            }
+            
+            document.getElementById('leaderboardContainer').innerHTML = leaderboardHtml;
+        }
+
+        // Destek talebi gönderme
+        window.submitSupportTicket = function(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('supportCategory').value;
+            const message = document.getElementById('supportMessage').value.trim();
+            
+            if (!category) {
+                showModal('Uyarı', 'Lütfen bir kategori seçin.');
+                return;
+            }
+            
+            if (message.length < 10) {
+                showModal('Uyarı', 'Mesajınız en az 10 karakter olmalıdır.');
+                return;
+            }
+            
+            const ticket = {
+                id: 'TICKET-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                userId: gameData.user_id,
+                username: gameData.username,
+                category: category,
+                message: message,
+                date: new Date().toISOString(),
+                status: 'Bekliyor',
+                read: false
+            };
+            
+            if (!gameData.supportTickets) gameData.supportTickets = [];
+            gameData.supportTickets.push(ticket);
+            
+            document.getElementById('supportCategory').value = '';
+            document.getElementById('supportMessage').value = '';
+            
+            saveGameData();
+            showModal('Başarılı', 'Destek talebiniz alındı. En kısa sürede dönüş yapılacaktır.');
+            closeSupportPanel();
+        };
+
+        // Sponsor başvurusu gönderme
+        window.submitSponsorRequest = function(event) {
+            event.preventDefault();
+            
+            const company = document.getElementById('sponsorCompany').value.trim();
+            const email = document.getElementById('sponsorEmail').value.trim();
+            const type = document.getElementById('sponsorType').value;
+            const message = document.getElementById('sponsorMessage').value.trim();
+            
+            if (!company || !email || !type || !message) {
+                showModal('Uyarı', 'Lütfen tüm alanları doldurun.');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showModal('Uyarı', 'Geçerli bir e-posta adresi giriniz.');
+                return;
+            }
+            
+            const request = {
+                id: 'SPONSOR-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                userId: gameData.user_id,
+                username: gameData.username,
+                company: company,
+                email: email,
+                type: type,
+                message: message,
+                date: new Date().toISOString(),
+                status: 'Bekliyor',
+                read: false
+            };
+            
+            if (!gameData.sponsorRequests) gameData.sponsorRequests = [];
+            gameData.sponsorRequests.push(request);
+            
+            document.getElementById('sponsorCompany').value = '';
+            document.getElementById('sponsorEmail').value = '';
+            document.getElementById('sponsorType').value = '';
+            document.getElementById('sponsorMessage').value = '';
+            
+            saveGameData();
+            showModal('Başarılı', 'Sponsorluk başvurunuz alındı. En kısa sürede iletişime geçilecektir.');
+            closeSponsorPanel();
+        };
+
+        // Mining kartları
+        let miningCards = [
+            { id: 'eco1', name: 'Eco Miner Rig', image: 'eco_miner_rig.png', power: 10, price: 0.5, color: 'green', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'eco2', name: 'Eco Miner Rig+', image: 'eco_miner_rig2.png', power: 25, price: 1, color: 'green', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'basic1', name: 'Basic Mining Unit', image: 'basic_mining_unit.png', power: 50, price: 2, color: 'white', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'basic2', name: 'Basic Mining Unit+', image: 'basic_mining_unit2.png', power: 100, price: 4, color: 'white', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'blue1', name: 'Blue Core Miner', image: 'blue_core_miner.png', power: 250, price: 8, color: 'blue', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'blue2', name: 'Blue Core Miner+', image: 'blue_core_miner2.png', power: 500, price: 15, color: 'blue', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'turbo1', name: 'Turbo Flame Miner', image: 'turbo_flame_miner.png', power: 1000, price: 30, color: 'red', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'turbo2', name: 'Turbo Flame Miner+', image: 'turbo_flame_miner2.png', power: 2500, price: 60, color: 'red', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'golden1', name: 'Golden Hash Machine', image: 'golden_hash_machine.png', power: 5000, price: 100, color: 'gold', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 },
+            { id: 'golden2', name: 'Golden Hash Machine+', image: 'golden_hash_machine2.png', power: 10000, price: 200, color: 'gold', owned: false, isRunning: false, isClaimReady: false, startTime: null, accumulated: 0 }
+        ];
+
+        const MINING_CONFIG = {
+            CYCLE_DURATION: 24 * 60 * 60 * 1000,
+            HOURLY_MULTIPLIER: 0.0625
+        };
+
+        // 📊 GELİR HESAPLAMA FONKSİYONLARI
+        function calculateCardIncome(card, level) {
+            if (level === 0) return 0;
+            
+            const base = card.baseIncome;
+            
+            if (level <= 50) {
+                return Math.floor(base * level);
+            } else if (level <= 100) {
+                return Math.floor((base * 50) + (base * (level - 50) * 0.5));
+            } else {
+                return Math.floor((base * 50) + (base * 50 * 0.5) + (base * (level - 100) * 0.25));
+            }
+        }
+
+        function calculateNextLevelIncome(card, level) {
+            return Math.floor(calculateCardIncome(card, level + 1) - calculateCardIncome(card, level));
+        }
+
+        function calculateTotalIncome() {
+            let total = 0;
+            CARDS.forEach(card => {
+                total += calculateCardIncome(card, gameData.cardLevels[card.id]);
+            });
+            total = Math.floor(total * (1 + gameData.prestigePoints * 0.1));
+            return total;
+        }
+
+        function calculateUpgradeCost(card, currentLevel) {
+            const nextLevel = currentLevel + 1;
+            const base = card.basePrice;
+            
+            if (nextLevel <= 75) {
+                return Math.floor(base * Math.pow(1.55, nextLevel));
+            } else {
+                return Math.floor(base * Math.pow(1.62, nextLevel));
+            }
+        }
+
+        // 🔓 UNLOCK KONTROL
+        function isCardUnlocked(card) {
+            if (!card.unlockRequirement) return true;
+            
+            const req = card.unlockRequirement;
+            return gameData.cardLevels[req.cardId] >= req.level;
+        }
+
+        // 🃏 KART RENDER
+        function renderAllCards() {
+            renderCategory('profession', 'profession-cards');
+            renderCategory('companies', 'companies-cards');
+            renderCategory('technology', 'technology-cards');
+        }
+
+        function renderCategory(category, elementId) {
+            const container = document.getElementById(elementId);
+            if (!container) return;
+
+            const categoryCards = CARDS.filter(c => c.category === category);
+            
+            container.innerHTML = categoryCards.map(card => {
+                const level = gameData.cardLevels[card.id];
+                const unlocked = isCardUnlocked(card);
+                const income = calculateCardIncome(card, level);
+                const nextIncomeIncrease = level > 0 ? calculateNextLevelIncome(card, level) : 0;
+                const upgradeCost = level === 0 ? calculateUpgradeCost(card, 0) : calculateUpgradeCost(card, level);
+                const canAfford = gameData.coins >= upgradeCost;
+                
+                let buttonText = level === 0 ? 'Satın Al' : 'Yükselt';
+                let buttonDisabled = !canAfford;
+
+                if (!unlocked) {
+                    const req = card.unlockRequirement;
+                    const reqCard = CARDS.find(c => c.id === req.cardId);
+                    
+                    return `
+                        <div class="card-item locked">
+                            <div class="card-lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <div class="lock-text">${reqCard.name} Lv.${req.level} gerekli</div>
+                            </div>
+                            <img src="assets/icons/${card.icon}" alt="${card.name}" class="card-icon">
+                            <div class="card-details">
+                                <div class="card-name">${card.name}</div>
+                                <div class="card-profit">Kilitli</div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="card-item">
+                        <img src="assets/icons/${card.icon}" alt="${card.name}" class="card-icon">
+                        <div class="card-details">
+                            <div class="card-name">${card.name} <span class="card-level-badge">Lv.${level}</span></div>
+                            <div class="card-profit">💰 ${formatNumber(income)}/s</div>
+                            ${level > 0 ? `<div class="card-cost">Sonraki: +${formatNumber(nextIncomeIncrease)}/s</div>` : ''}
+                            <button class="buy-card-button" onclick="upgradeCard('${card.id}')" ${buttonDisabled ? 'disabled' : ''}>
+                                ${buttonText} • ${formatNumberFull(upgradeCost)}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 💳 KART YÜKSELTME
+        window.upgradeCard = function(cardId) {
+            const card = CARDS.find(c => c.id === cardId);
+            if (!card) return;
+            
+            const currentLevel = gameData.cardLevels[cardId];
+            const upgradeCost = currentLevel === 0 ? calculateUpgradeCost(card, 0) : calculateUpgradeCost(card, currentLevel);
+            
+            if (gameData.coins < upgradeCost) {
+                showModal('Yetersiz Bakiye', 'Bu işlem için yeterli coininiz yok.');
+                return;
+            }
+            
+            gameData.coins -= upgradeCost;
+            gameData.cardLevels[cardId] = currentLevel + 1;
+            
+            if (currentLevel === 0) {
+                gameData.cards_bought++;
+                showModal('Başarılı', `${card.name} satın alındı!`);
+            } else {
+                showModal('Başarılı', `${card.name} Level ${currentLevel + 1} oldu!`);
+            }
+            
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+            saveGameData();
+            renderAllCards();
+            updateDisplay();
+        };
+
+        // Pasif kazanç hesaplama
+        function calculatePassiveEarnings() {
+            const now = Date.now();
+            const totalIncome = calculateTotalIncome() / 3600;
+            
+            const elapsed = Math.min(now - gameData.passiveStartTime, gameData.passiveMaxDuration);
+            gameData.passiveEarnings = Math.floor(totalIncome * elapsed / 1000);
+            
+            return gameData.passiveEarnings;
+        }
+
+        // CLAIM işlemi
+        window.claimPassive = function() {
+            const now = Date.now();
+            
+            if (gameData.passiveCooldown > now) {
+                showModal('Bekleyin', 'Lütfen 5 saniye bekleyin.');
+                return;
+            }
+            
+            const earnings = calculatePassiveEarnings();
+            if (earnings <= 0) {
+                showModal('Bilgi', 'Henüz birikmiş kazancınız yok.');
+                return;
+            }
+            
+            gameData.coins += earnings;
+            gameData.passiveStartTime = now;
+            gameData.passiveEarnings = 0;
+            gameData.passiveCooldown = now + 5000;
+            
+            saveGameData();
             updateDisplay();
             
-            // Coin button
-            const coinButton = document.getElementById('coin-button');
-            if (coinButton) {
-                coinButton.addEventListener('click', handleCoinClick);
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        };
+
+        // 2X Claim
+        window.claimPassiveWithAd = function() {
+            const now = Date.now();
+            
+            const dayInMs = 24 * 60 * 60 * 1000;
+            if (now - gameData.x2LastReset > dayInMs) {
+                gameData.x2UsesLeft = 6;
+                gameData.x2LastReset = now;
             }
             
-            console.log('✅ Navigation ready');
+            if (gameData.x2UsesLeft <= 0) {
+                showModal('Limit Doldu', 'Günlük 2X hakkınız bitti. Yarın tekrar deneyin.');
+                return;
+            }
+            
+            if (gameData.passiveCooldown > now) {
+                showModal('Bekleyin', 'Lütfen 5 saniye bekleyin.');
+                return;
+            }
+            
+            const earnings = calculatePassiveEarnings();
+            if (earnings <= 0) {
+                showModal('Bilgi', 'Henüz birikmiş kazancınız yok.');
+                return;
+            }
+            
+            showModal('Reklam', 'Reklam izleniyor...');
+            
+            setTimeout(() => {
+                gameData.coins += earnings * 2;
+                gameData.x2UsesLeft--;
+                gameData.passiveStartTime = now;
+                gameData.passiveEarnings = 0;
+                gameData.passiveCooldown = now + 5000;
+                
+                saveGameData();
+                updateDisplay();
+                closeModal();
+                
+                showModal('Başarılı', `${earnings * 2} GO Coin kazandınız!`);
+                if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            }, 2000);
+        };
+
+        // Load game data
+        function loadGameData() {
+            const saved = localStorage.getItem(`game_${gameData.user_id}`);
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                if (data.last_energy_update) {
+                    const timeDiff = Date.now() - data.last_energy_update;
+                    if (timeDiff > 24 * 60 * 60 * 1000) {
+                        data.energy = data.max_energy;
+                        data.last_energy_update = Date.now();
+                    }
+                }
+                
+                Object.assign(gameData, data);
+                
+                if (data.cardLevels) {
+                    CARDS.forEach(card => {
+                        if (data.cardLevels[card.id] !== undefined) {
+                            gameData.cardLevels[card.id] = data.cardLevels[card.id];
+                        }
+                    });
+                }
+            }
+            
+            const miningSaved = localStorage.getItem(`mining_${gameData.user_id}`);
+            if (miningSaved) {
+                const savedCards = JSON.parse(miningSaved);
+                miningCards = savedCards;
+            }
+        }
+
+        // Save game data
+        function saveGameData() {
+            localStorage.setItem(`game_${gameData.user_id}`, JSON.stringify(gameData));
+            localStorage.setItem(`mining_${gameData.user_id}`, JSON.stringify(miningCards));
+        }
+
+        // Load data
+        loadGameData();
+
+        // Combo sistemi
+        let lastComboIncrease = 0;
+        
+        // Coin click handler
+        document.getElementById('coin-button').addEventListener('click', function(e) {
+            if (gameData.energy < gameData.tap_power) return;
+
+            const now = Date.now();
+            
+            if (now - lastComboIncrease >= 1000) {
+                gameData.combo_multiplier = Math.min(gameData.combo_multiplier + 0.1, 5);
+                lastComboIncrease = now;
+            }
+
+            const earnedCoins = Math.floor(gameData.tap_power * gameData.combo_multiplier);
+            gameData.coins += earnedCoins;
+            gameData.energy -= gameData.tap_power;
+            gameData.total_taps++;
+
+            clearTimeout(gameData.combo_timeout);
+            gameData.combo_timeout = setTimeout(() => {
+                gameData.combo_multiplier = 1;
+                updateDisplay();
+            }, 2000);
+
+            const element = document.createElement('div');
+            element.className = 'floating-text';
+            element.textContent = `+${earnedCoins}`;
+            element.style.left = e.clientX + 'px';
+            element.style.top = e.clientY + 'px';
+            document.body.appendChild(element);
+            setTimeout(() => element.remove(), 800);
+
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+
+            updateDisplay();
+            saveGameData();
         });
-    </script>
 
-    <!-- ========== TUTORIAL SİSTEMİ (GLOBAL INTERACTION BLOK YOK) ========== -->
-    <script>
-    (function () {
+        // Energy update
+        setInterval(() => {
+            const now = Date.now();
+            const timePassed = (now - gameData.last_energy_update) / 1000;
+            const energyToAdd = timePassed * gameData.energy_recharge_rate;
 
-      if (localStorage.getItem("tutorialCompleted") === "true") return;
+            gameData.energy = Math.min(gameData.max_energy, gameData.energy + energyToAdd);
+            gameData.last_energy_update = now;
+            
+            updateDisplay();
+        }, 1000);
 
-      const Tutorial = {
-        currentStep: 0,
-        overlay: null,
-        tooltip: null,
-        resizeHandler: null,
-        steps: [
-          {
-            target: null,
-            title: "Hoş Geldin",
-            text: "Tap yaparak coin kazanmaya başla.",
-            requireClick: false
-          },
-          {
-            target: "#coin-button",
-            title: "GO Coin",
-            text: "Basarak coin kazan.",
-            requireClick: true
-          },
-          {
-            target: "[data-screen='cards']",
-            title: "Kartlar",
-            text: "Saatlik gelir sağlar.",
-            requireClick: false
-          },
-          {
-            target: "[data-screen='mining']",
-            title: "Madencilik",
-            text: "Pasif gelir kazan.",
-            requireClick: false
-          },
-          {
-            target: "[data-screen='trade']",
-            title: "Takas",
-            text: "Coinlerini takas edebilirsin.",
-            requireClick: false
-          },
-          {
-            target: "[data-screen='airdrop']",
-            title: "Airdrop",
-            text: "Biriktirdiğin NeonTap coinlerini token listelenince talep et!",
-            requireClick: false
-          }
-        ]
-      };
+        // Mining update
+        setInterval(() => {
+            let needsUpdate = false;
+            const now = Date.now();
 
-      function createOverlay() {
-        const overlay = document.createElement("div");
-        overlay.id = "tutorial-overlay";
-        overlay.style.position = "fixed";
-        overlay.style.inset = "0";
-        overlay.style.background = "rgba(0,0,0,0.6)";
-        overlay.style.backdropFilter = "blur(5px)";
-        overlay.style.zIndex = "9999";
-        
-        // EN KRİTİK SATIR - Overlay tıklanamaz, alttaki elementler çalışır
-        overlay.style.pointerEvents = "none";
+            miningCards.forEach(card => {
+                if (card.owned && card.isRunning) {
+                    const elapsed = now - card.startTime;
+                    
+                    if (elapsed >= MINING_CONFIG.CYCLE_DURATION) {
+                        card.isRunning = false;
+                        card.isClaimReady = true;
+                        card.accumulated = Math.floor(card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24);
+                        needsUpdate = true;
+                    } else {
+                        card.accumulated = (elapsed / (60 * 60 * 1000)) * card.power * MINING_CONFIG.HOURLY_MULTIPLIER;
+                    }
+                }
+            });
 
-        document.body.appendChild(overlay);
-        Tutorial.overlay = overlay;
-      }
+            if (needsUpdate) {
+                saveGameData();
+            }
 
-      function highlightElement(el) {
-        if (!Tutorial.overlay) return;
-        
-        const rect = el.getBoundingClientRect();
-        const pad = 10;
+            updateMiningCards();
+        }, 1000);
 
-        const x = rect.left - pad;
-        const y = rect.top - pad;
-        const w = rect.width + pad * 2;
-        const h = rect.height + pad * 2;
+        // Mining kartlarını render et
+        function updateMiningCards() {
+            const container = document.getElementById('mining-cards-container');
+            if (!container) return;
 
-        Tutorial.overlay.style.clipPath = `
-          polygon(
-            0% 0%, 100% 0%, 100% 100%, 0% 100%,
-            0% ${y}px,
-            ${x}px ${y}px,
-            ${x}px ${y + h}px,
-            ${x + w}px ${y + h}px,
-            ${x + w}px ${y}px,
-            0% ${y}px
-          )
-        `;
-      }
+            container.innerHTML = miningCards.map(card => {
+                const hourlyEarn = Math.floor(card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 100) / 100;
+                const dailyMax = Math.floor(card.power * MINING_CONFIG.HOURLY_MULTIPLIER * 24 * 100) / 100;
+                
+                let badgeHtml = '';
+                if (card.owned) {
+                    if (card.isClaimReady) {
+                        badgeHtml = `<div class="mining-status-badge mining-status-ready">Claim Hazır</div>`;
+                    } else if (card.isRunning) {
+                        badgeHtml = `<div class="mining-status-badge mining-status-active">Aktif</div>`;
+                    }
+                }
 
-      function createTooltip(step, el) {
-        if (Tutorial.tooltip) Tutorial.tooltip.remove();
+                let buttonHtml = '';
+                if (!card.owned) {
+                    buttonHtml = `<button class="buy-mining-card-btn" onclick="buyMiningCard('${card.id}')">Satın Al</button>`;
+                } else if (card.isClaimReady) {
+                    buttonHtml = `<button class="claim-mining-btn" onclick="claimMiningReward('${card.id}')">Claim Et</button>`;
+                }
 
-        const box = document.createElement("div");
-        box.id = "tutorial-tooltip";
-        box.style.position = "fixed";
-        box.style.zIndex = "10000";
-        box.style.background = "#111";
-        box.style.color = "#fff";
-        box.style.padding = "18px";
-        box.style.borderRadius = "14px";
-        box.style.maxWidth = "260px";
-        box.style.boxShadow = "0 0 25px rgba(0,255,200,0.3)";
-        box.style.fontFamily = "sans-serif";
-        
-        // Tooltip tıklanabilir olmalı
-        box.style.pointerEvents = "auto";
+                let countdownHtml = '';
+                if (card.owned && card.isRunning && card.startTime) {
+                    const elapsed = Date.now() - card.startTime;
+                    const remaining = Math.max(0, MINING_CONFIG.CYCLE_DURATION - elapsed);
+                    const hours = Math.floor(remaining / (60 * 60 * 1000));
+                    const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+                    const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+                    countdownHtml = `
+                        <div class="mining-countdown">
+                            <span class="countdown-label">Kalan Süre:</span>
+                            <span class="countdown-time">${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}</span>
+                        </div>
+                    `;
+                }
 
-        box.innerHTML = `
-          <div style="font-size:12px;opacity:.6;margin-bottom:6px;">
-            ${Tutorial.currentStep + 1} / ${Tutorial.steps.length}
-          </div>
-          <h3 style="margin:0 0 8px 0;">${step.title}</h3>
-          <p style="font-size:14px;line-height:1.4;">${step.text}</p>
-          ${!step.requireClick ? 
-            '<button id="tutorialNextBtn" style="margin-top:12px;padding:8px 14px;border:none;border-radius:8px;background:#00ffcc;color:#000;font-weight:bold;cursor:pointer;">Devam</button>' 
-            : ''}
-        `;
-
-        document.body.appendChild(box);
-        Tutorial.tooltip = box;
-
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          const tooltipRect = box.getBoundingClientRect();
-          
-          let top = rect.bottom + 15;
-          let left = rect.left;
-
-          // Ekran dışına taşma kontrolü
-          if (top + tooltipRect.height > window.innerHeight) {
-            top = rect.top - tooltipRect.height - 15;
-          }
-
-          if (left + tooltipRect.width > window.innerWidth) {
-            left = window.innerWidth - tooltipRect.width - 15;
-          }
-
-          left = Math.max(10, left); // Sola çok yapışmasın
-
-          box.style.top = top + "px";
-          box.style.left = left + "px";
-        } else {
-          box.style.top = "50%";
-          box.style.left = "50%";
-          box.style.transform = "translate(-50%, -50%)";
+                return `
+                    <div class="mining-card mining-card-${card.color}">
+                        ${badgeHtml}
+                        <img src="assets/icons/${card.image}" alt="${card.name}" class="mining-card-image">
+                        <div class="mining-card-details">
+                            <div class="mining-card-name">${card.name}</div>
+                            <div class="mining-info-row">
+                                <span class="mining-label">Mining Power:</span>
+                                <span class="mining-value">${card.power} MH</span>
+                            </div>
+                            <div class="mining-info-row">
+                                <span class="mining-label">Saatlik Üretim:</span>
+                                <span class="mining-value mining-green">
+                                    +${hourlyEarn.toFixed(2)}
+                                    <img src="assets/icons/1000010729-removebg-preview.png" alt="NEON" class="neon-icon">
+                                </span>
+                            </div>
+                            <div class="mining-info-row">
+                                <span class="mining-label">24 Saatlik Maks:</span>
+                                <span class="mining-value mining-gold">
+                                    ${dailyMax.toFixed(1)}
+                                    <img src="assets/icons/1000010729-removebg-preview.png" alt="NEON" class="neon-icon">
+                                </span>
+                            </div>
+                            <div class="mining-info-row mining-price-row">
+                                <span class="mining-label">Fiyat:</span>
+                                <span class="mining-price-value">
+                                    <img src="assets/icons/1000011039-removebg-preview.png" alt="TON" class="ton-icon"> ${card.price} TON
+                                </span>
+                            </div>
+                        </div>
+                        ${countdownHtml}
+                        ${buttonHtml}
+                    </div>
+                `;
+            }).join('');
         }
 
-        if (!step.requireClick) {
-          document.getElementById("tutorialNextBtn")
-            ?.addEventListener("click", nextStep);
-        }
-      }
-
-      function runStep() {
-        const step = Tutorial.steps[Tutorial.currentStep];
-        if (!step) return;
-
-        if (!step.target) {
-          createTooltip(step);
-          return;
-        }
-
-        const el = document.querySelector(step.target);
-        if (!el) {
-          // Hedef element yoksa atla
-          nextStep();
-          return;
-        }
-
-        highlightElement(el);
-        createTooltip(step, el);
-
-        const reposition = () => highlightElement(el);
-        window.addEventListener("resize", reposition);
-        window.addEventListener("scroll", reposition);
-        Tutorial.resizeHandler = reposition;
-
-        if (step.requireClick) {
-          // SADECE hedef elemente click listener ekle, başka hiçbir şeyi bloklama
-          el.addEventListener("click", nextStep, { once: true });
-        }
-      }
-
-      function nextStep() {
-        window.removeEventListener("resize", Tutorial.resizeHandler);
-        window.removeEventListener("scroll", Tutorial.resizeHandler);
-
-        Tutorial.currentStep++;
-
-        if (Tutorial.currentStep >= Tutorial.steps.length) {
-          finishTutorial();
-        } else {
-          runStep();
-        }
-      }
-
-      function finishTutorial() {
-
-        window.removeEventListener("resize", Tutorial.resizeHandler);
-        window.removeEventListener("scroll", Tutorial.resizeHandler);
-
-        if (Tutorial.overlay) {
-          Tutorial.overlay.remove();
-          Tutorial.overlay = null;
-        }
-
-        if (Tutorial.tooltip) {
-          Tutorial.tooltip.remove();
-          Tutorial.tooltip = null;
-        }
-
-        // Coin ödülü ekle
-        if (typeof window.addCoin === "function") {
-          window.addCoin(250);
-        } else if (window.gameData) {
-          window.gameData.neonTapToken = (window.gameData.neonTapToken || 0) + 250;
-          if (typeof window.updateDisplay === "function") {
-            window.updateDisplay();
-          }
+        // Display update
+        function updateDisplay() {
+            const totalIncome = calculateTotalIncome();
+            const passiveEarnings = calculatePassiveEarnings();
+            const now = Date.now();
+            
+            document.getElementById('coin-count').textContent = formatNumberFull(Math.floor(gameData.coins));
+            document.getElementById('profit-per-hour').textContent = formatNumber(totalIncome);
+            
+            document.getElementById('energy-display').textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
+            document.getElementById('energy-fill').style.width = (gameData.energy / gameData.max_energy * 100) + '%';
+            
+            const comboDisplay = document.getElementById('combo-display');
+            if (gameData.combo_multiplier > 1) {
+                comboDisplay.classList.add('visible');
+                document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
+            } else {
+                comboDisplay.classList.remove('visible');
+            }
+            
+            document.getElementById('passive-amount').textContent = `${formatNumberFull(passiveEarnings)} GO`;
+            
+            const elapsed = Math.min(now - gameData.passiveStartTime, gameData.passiveMaxDuration);
+            const progressPercent = (elapsed / gameData.passiveMaxDuration) * 100;
+            document.getElementById('passive-progress').style.width = `${progressPercent}%`;
+            
+            const remainingMs = Math.max(0, gameData.passiveMaxDuration - elapsed);
+            const remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
+            const remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
+            document.getElementById('passive-time').textContent = 
+                `Maks: 5s • Kalan: ${remainingHours}s ${remainingMinutes}d`;
+            
+            const isFull = elapsed >= gameData.passiveMaxDuration;
+            document.getElementById('x2-counter').textContent = gameData.x2UsesLeft;
+            document.getElementById('x2-button').disabled = !isFull || gameData.x2UsesLeft <= 0;
+            document.getElementById('claim-button').disabled = !isFull || gameData.passiveCooldown > now;
+            
+            document.getElementById('profile-name').textContent = gameData.username;
+            document.getElementById('profile-id').textContent = gameData.user_id;
+            document.getElementById('profile-coins').textContent = formatNumberFull(Math.floor(gameData.coins));
+            document.getElementById('profile-level').textContent = 1;
+            document.getElementById('profile-taps').textContent = formatNumberFull(gameData.total_taps);
+            document.getElementById('profile-cards').textContent = gameData.cards_bought;
+            
+            document.getElementById('swap-from-balance').textContent = formatNumberFull(Math.floor(gameData.coins));
+            document.getElementById('total-trades').textContent = formatNumberFull(gameData.totalTrades);
+            document.getElementById('total-traded-gocoin').textContent = formatNumberFull(gameData.totalTradedGoCoin);
+            document.getElementById('total-earned-neontap').textContent = formatNumberFull(gameData.totalEarnedNeonTap);
+            
+            document.getElementById('airdrop-token-balance').textContent = formatNumberFull(gameData.neonTapToken);
+            
+            let totalHourlyNeon = 0;
+            miningCards.forEach(card => {
+                if (card.owned && (card.isRunning || card.isClaimReady)) {
+                    totalHourlyNeon += card.power * MINING_CONFIG.HOURLY_MULTIPLIER;
+                }
+            });
+            document.getElementById('mining-hourly-earning').innerHTML = `
+                ${Math.floor(totalHourlyNeon * 100) / 100}
+                <img src="assets/icons/1000010729-removebg-preview.png" alt="NeonTap" class="neon-icon">
+                <span class="neontap-text">NEONTAP</span>
+            `;
         }
 
-        localStorage.setItem("tutorialCompleted", "true");
-      }
+        function formatNumber(num) {
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
 
-      function startTutorial() {
-        createOverlay();
-        runStep();
-      }
+        function formatNumberFull(num) {
+            return Math.floor(num).toLocaleString('tr-TR');
+        }
 
-      // Sayfa tam yüklendikten sonra başlat
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", () => {
-          setTimeout(startTutorial, 700);
+        // Modern Toast Modal
+        window.showModal = function(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            
+            const iconMap = {
+                'Başarılı': '✅',
+                'Yetersiz Bakiye': '❌',
+                'Bilgi': 'ℹ️',
+                'Uyarı': '⚠️',
+                'Limit Doldu': '⏰',
+                'Reklam': '📺'
+            };
+            
+            document.getElementById('modalIcon').textContent = iconMap[title] || '✅';
+            
+            document.getElementById('modal').classList.add('active');
+            
+            if (window.modalTimeout) clearTimeout(window.modalTimeout);
+            window.modalTimeout = setTimeout(() => {
+                closeModal();
+            }, 2000);
+        };
+
+        window.closeModal = function() {
+            document.getElementById('modal').classList.remove('active');
+        };
+
+        // Menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            document.getElementById('sideMenu').classList.toggle('active');
+            document.getElementById('menuOverlay').classList.toggle('active');
+            updateUIVisibility();
         });
-      } else {
-        setTimeout(startTutorial, 700);
-      }
 
-    })();
+        document.getElementById('menuOverlay').addEventListener('click', closeMenu);
+
+        function closeMenu() {
+            document.getElementById('menuToggle').classList.remove('active');
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+            updateUIVisibility();
+        }
+
+        function openProfile() {
+            closeMenu();
+            switchScreen('profile');
+        }
+
+        // Kart kategorileri
+        window.showCardCategory = function(category) {
+            document.querySelectorAll('.cards-grid').forEach(grid => grid.style.display = 'none');
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById(category + '-cards').style.display = 'grid';
+        };
+
+        // Mining kart satın al
+        window.buyMiningCard = function(cardId) {
+            const card = miningCards.find(c => c.id === cardId);
+            if (card.owned) {
+                showModal('Uyarı', 'Bu kartı zaten satın aldınız!');
+                return;
+            }
+
+            const coinEquivalent = Math.floor(card.price * 1000);
+            
+            if (gameData.coins < coinEquivalent) {
+                showModal('Yetersiz Bakiye', `Yetersiz coin! ${formatNumberFull(coinEquivalent)} coin gerekli.`);
+                return;
+            }
+
+            gameData.coins -= coinEquivalent;
+            card.owned = true;
+            card.isRunning = true;
+            card.isClaimReady = false;
+            card.startTime = Date.now();
+            card.accumulated = 0;
+
+            saveGameData();
+            updateDisplay();
+            updateMiningCards();
+            showModal('Başarılı', `${card.name} satın alındı! Madencilik başladı.`);
+        };
+
+        // Mining ödülü claim et
+        window.claimMiningReward = function(cardId) {
+            const card = miningCards.find(c => c.id === cardId);
+            if (!card || !card.isClaimReady) return;
+
+            const reward = Math.floor(card.accumulated);
+            gameData.neonTapToken += reward;
+
+            card.isRunning = true;
+            card.isClaimReady = false;
+            card.startTime = Date.now();
+            card.accumulated = 0;
+
+            saveGameData();
+            updateDisplay();
+            updateMiningCards();
+
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            showModal('Başarılı', `${reward} NeonTap Token kazandınız!`);
+        };
+
+        // Takas hesaplama
+        window.calculateSwapAmount = function() {
+            const inputValue = parseFloat(document.getElementById('swap-from-input').value) || 0;
+            const confirmBtn = document.getElementById('swap-confirm-btn');
+            const errorMsg = document.getElementById('swap-error-msg');
+            
+            const neonTapAmount = Math.floor((inputValue / 50000) * 1000);
+            
+            document.getElementById('swap-to-display').value = neonTapAmount;
+
+            if (inputValue > 0 && inputValue < 50000) {
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                errorMsg.style.display = 'block';
+            } else if (inputValue >= 50000) {
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+                errorMsg.style.display = 'none';
+            } else {
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                errorMsg.style.display = 'none';
+            }
+        };
+
+        // Takas işlemi
+        window.executeTradeWithInput = function() {
+            const tradeAmount = Math.floor(parseFloat(document.getElementById('swap-from-input').value) || 0);
+
+            if (tradeAmount < 50000) {
+                showModal('Uyarı', 'Minimum 50,000 GO Coin gerekli!');
+                return;
+            }
+
+            if (gameData.coins < tradeAmount) {
+                showModal('Yetersiz Bakiye', 'Yetersiz GO Coin!');
+                return;
+            }
+
+            const neonTapReward = Math.floor((tradeAmount / 50000) * 1000);
+
+            gameData.coins -= tradeAmount;
+            gameData.neonTapToken += neonTapReward;
+            gameData.totalTrades++;
+            gameData.totalTradedGoCoin += tradeAmount;
+            gameData.totalEarnedNeonTap += neonTapReward;
+
+            saveGameData();
+            updateDisplay();
+
+            document.getElementById('swap-from-input').value = '';
+            document.getElementById('swap-to-display').value = '0';
+            
+            showModal('Başarılı', `${neonTapReward} NeonTap Token kazandınız!`);
+
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        };
+
+        // İlk güncelleme
+        renderAllCards();
+        updateMiningCards();
+        updateDisplay();
+        updateProfileDisplay();
+        updateReferralDisplay();
+        updateQuestButtons();
+        
+        updateUIVisibility();
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        setInterval(updateDisplay, 1000);
     </script>
-    <!-- ========== TUTORIAL SİSTEMİ SONU ========== -->
 </body>
 </html>

@@ -1789,7 +1789,7 @@
             border-radius: 4px;
         }
 
-        /* Coin Button */
+        /* Coin Button - ULTRA OPTİMİZE */
         .clicker-area {
             text-align: center;
             margin: 15px 0;
@@ -1809,6 +1809,7 @@
             border: 2px solid #FFD700;
             opacity: 0;
             transition: opacity 0.2s;
+            will-change: opacity;
         }
 
         .combo-display.visible {
@@ -1821,51 +1822,55 @@
             border: none;
             background: transparent;
             cursor: pointer;
-            transition: all 0.15s ease-out;
+            transition: transform 0.05s cubic-bezier(0.1, 0.9, 0.2, 1);
+            will-change: transform;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
             position: relative;
-            filter: drop-shadow(0 8px 20px rgba(255, 215, 0, 0.5));
         }
 
         .coin-button:active {
             transform: scale(0.92);
-            filter: drop-shadow(0 15px 30px rgba(255, 215, 0, 0.9));
         }
 
         .coin-button img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: all 0.15s ease-out;
+            pointer-events: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        /* Floating Animation */
+        /* Floating Animation - OPTİMİZE */
         .floating-text {
             position: absolute;
             font-size: 32px;
             font-weight: bold;
             pointer-events: none;
-            animation: premium-float 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+            animation: smooth-float 0.6s ease-out forwards;
             color: #FFD700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 20px #FFD700;
             z-index: 100;
             white-space: nowrap;
+            will-change: transform, opacity;
         }
 
-        @keyframes premium-float {
+        @keyframes smooth-float {
             0% {
                 opacity: 1;
                 transform: translateY(0) scale(1);
-                filter: blur(0px);
             }
-            50% {
-                opacity: 0.9;
-                transform: translateY(-40px) scale(1.3);
-                filter: blur(1px);
+            70% {
+                opacity: 0.8;
+                transform: translateY(-50px) scale(1.3);
             }
             100% {
                 opacity: 0;
-                transform: translateY(-80px) scale(1.6);
-                filter: blur(3px);
+                transform: translateY(-80px) scale(1.5);
             }
         }
 
@@ -1895,6 +1900,8 @@
             transition: all 0.2s;
             padding: 8px 12px;
             border-radius: 10px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .nav-item:active {
@@ -1918,6 +1925,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+            pointer-events: none;
         }
 
         .nav-label {
@@ -2020,6 +2028,8 @@
             transition: all 0.3s;
             backdrop-filter: blur(10px);
             font-size: 12px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .tab-button.active {
@@ -2085,6 +2095,7 @@
             object-fit: cover;
             flex-shrink: 0;
             background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
         }
 
         .card-details {
@@ -2132,6 +2143,8 @@
             white-space: nowrap;
             font-size: 12px;
             width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .buy-card-button:disabled {
@@ -2276,6 +2289,7 @@
             border-radius: 8px;
             background: rgba(0, 0, 0, 0.2);
             margin-top: 15px;
+            pointer-events: none;
         }
 
         .mining-card-details {
@@ -2375,6 +2389,8 @@
             font-weight: 600;
             font-size: 12px;
             transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .buy-mining-card-btn:disabled {
@@ -2502,6 +2518,8 @@
             font-size: 15px;
             cursor: pointer;
             font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         /* Madencilik Üst Bilgi Kartı */
@@ -4303,53 +4321,191 @@
         // Combo sistemi
         let lastComboIncrease = 0;
         
-        // Coin click handler
-        document.getElementById('coin-button').addEventListener('click', function(e) {
-            if (gameData.energy < gameData.tap_power) return;
+        // ============================================
+        // ULTRA SMOOTH TAP ENGINE - OPTİMİZE EDİLDİ
+        // ============================================
 
+        // Tap batching sistemi - performans için
+        let pendingCoins = 0;
+        let tapBatchTimeout = null;
+        const TAP_BATCH_INTERVAL = 16; // 16ms = ~60fps
+
+        // Coin butonunu bul
+        const coinBtn = document.getElementById('coin-button');
+        
+        // Eski click listener'ı temizle (birden fazla eklenmesini engelle)
+        if (coinBtn) {
+            // Mevcut event listener'ları temizle (güvenli yol)
+            const newCoinBtn = coinBtn.cloneNode(true);
+            coinBtn.parentNode.replaceChild(newCoinBtn, coinBtn);
+            
+            // Yeni butonu değişkene ata
+            const updatedCoinBtn = document.getElementById('coin-button');
+            
+            // Touch event'leri engelleme
+            updatedCoinBtn.style.touchAction = 'manipulation';
+            
+            // Yeni pointerdown event (click'ten daha hızlı)
+            updatedCoinBtn.addEventListener('pointerdown', handleSmoothTap);
+            
+            // Touch iptalini engelle
+            updatedCoinBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+            }, { passive: false });
+            
+            // Mobilde context menu'yu engelle
+            updatedCoinBtn.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+        }
+
+        // Smooth tap handler
+        function handleSmoothTap(e) {
+            e.preventDefault(); // Varsayılan davranışı engelle
+            
             const now = Date.now();
             
+            // Enerji kontrolü
+            if (gameData.energy < gameData.tap_power) {
+                // Enerji yoksa hafif titreşim
+                if (navigator.vibrate) navigator.vibrate(10);
+                return;
+            }
+            
+            // Haptic feedback (çok hafif)
+            if (navigator.vibrate) navigator.vibrate(5);
+            
+            // Telegram haptic feedback
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            
+            // Combo sistemi
             if (now - lastComboIncrease >= 1000) {
                 gameData.combo_multiplier = Math.min(gameData.combo_multiplier + 0.1, 5);
                 lastComboIncrease = now;
+                
+                // Combo display'i hemen güncelle
+                const comboDisplay = document.getElementById('combo-display');
+                const comboMultiplier = document.getElementById('combo-multiplier');
+                if (comboMultiplier) {
+                    comboMultiplier.textContent = gameData.combo_multiplier.toFixed(1);
+                }
+                if (comboDisplay && gameData.combo_multiplier > 1) {
+                    comboDisplay.classList.add('visible');
+                }
+                
+                // Combo timeout'u sıfırla
+                clearTimeout(gameData.combo_timeout);
+                gameData.combo_timeout = setTimeout(() => {
+                    gameData.combo_multiplier = 1;
+                    const comboMultiplierEl = document.getElementById('combo-multiplier');
+                    if (comboMultiplierEl) comboMultiplierEl.textContent = '1';
+                    document.getElementById('combo-display')?.classList.remove('visible');
+                }, 2000);
             }
 
+            // Coin kazancını hesapla
             const earnedCoins = Math.floor(gameData.tap_power * gameData.combo_multiplier);
+            
+            // Oyun verilerini güncelle
             gameData.coins += earnedCoins;
             gameData.energy -= gameData.tap_power;
             gameData.total_taps++;
+            
+            // Floating text oluştur (hızlı)
+            createFloatingText(e, earnedCoins);
+            
+            // Batch ile coin display'i güncelle (performans için)
+            pendingCoins += earnedCoins;
+            
+            if (!tapBatchTimeout) {
+                tapBatchTimeout = requestAnimationFrame(() => {
+                    const coinDisplay = document.getElementById('coin-count');
+                    if (coinDisplay) {
+                        coinDisplay.textContent = formatNumberFull(Math.floor(gameData.coins));
+                    }
+                    
+                    // Enerji display'ini güncelle
+                    const energyDisplay = document.getElementById('energy-display');
+                    const energyFill = document.getElementById('energy-fill');
+                    if (energyDisplay) {
+                        energyDisplay.textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
+                    }
+                    if (energyFill) {
+                        energyFill.style.width = (gameData.energy / gameData.max_energy * 100) + '%';
+                    }
+                    
+                    pendingCoins = 0;
+                    tapBatchTimeout = null;
+                });
+            }
+            
+            // Verileri kaydet (arka planda)
+            if (gameData.total_taps % 10 === 0) {
+                setTimeout(() => saveGameData(), 0);
+            }
+        }
 
-            clearTimeout(gameData.combo_timeout);
-            gameData.combo_timeout = setTimeout(() => {
-                gameData.combo_multiplier = 1;
-                updateDisplay();
-            }, 2000);
-
+        // Floating text oluştur (optimize)
+        function createFloatingText(e, amount) {
             const element = document.createElement('div');
             element.className = 'floating-text';
-            element.textContent = `+${earnedCoins}`;
-            element.style.left = e.clientX + 'px';
-            element.style.top = e.clientY + 'px';
+            element.textContent = `+${amount}`;
+            
+            // Pozisyonu pointer'dan al
+            let clientX, clientY;
+            
+            if (e.pointerType === 'touch' && e.touches) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            
+            // Rastgele hafif sapma (daha doğal görünüm)
+            const offsetX = (Math.random() - 0.5) * 30;
+            const offsetY = (Math.random() - 0.5) * 20;
+            
+            element.style.left = (clientX + offsetX) + 'px';
+            element.style.top = (clientY + offsetY) + 'px';
+            
             document.body.appendChild(element);
-            setTimeout(() => element.remove(), 800);
+            
+            // Animasyon sonunda temizle
+            setTimeout(() => {
+                if (element.parentNode) {
+                    element.remove();
+                }
+            }, 580); // Animasyon süresinden biraz kısa
+        }
 
-            if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-
-            updateDisplay();
-            saveGameData();
-        });
-
-        // Energy update
+        // Energy update (optimize)
         setInterval(() => {
             const now = Date.now();
             const timePassed = (now - gameData.last_energy_update) / 1000;
             const energyToAdd = timePassed * gameData.energy_recharge_rate;
 
+            const oldEnergy = gameData.energy;
             gameData.energy = Math.min(gameData.max_energy, gameData.energy + energyToAdd);
             gameData.last_energy_update = now;
             
-            updateDisplay();
-        }, 1000);
+            // Sadece değiştiyse güncelle
+            if (Math.floor(oldEnergy) !== Math.floor(gameData.energy)) {
+                const energyDisplay = document.getElementById('energy-display');
+                const energyFill = document.getElementById('energy-fill');
+                
+                if (energyDisplay) {
+                    energyDisplay.textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
+                }
+                if (energyFill) {
+                    energyFill.style.width = (gameData.energy / gameData.max_energy * 100) + '%';
+                }
+            }
+            
+            updateDisplay(); // Diğer display'ler periyodik güncellenir
+        }, 500); // 500ms'de bir güncelle (performans)
 
         // Mining update
         setInterval(() => {
@@ -4462,19 +4618,12 @@
             const passiveEarnings = calculatePassiveEarnings();
             const now = Date.now();
             
-            document.getElementById('coin-count').textContent = formatNumberFull(Math.floor(gameData.coins));
+            // Coin display zaten tap engine tarafından güncelleniyor, burada tekrar güncelleme
+            // Ama diğer display'leri güncelle
+            
             document.getElementById('profit-per-hour').textContent = formatNumber(totalIncome);
             
-            document.getElementById('energy-display').textContent = `${Math.floor(gameData.energy)} / ${gameData.max_energy}`;
-            document.getElementById('energy-fill').style.width = (gameData.energy / gameData.max_energy * 100) + '%';
-            
-            const comboDisplay = document.getElementById('combo-display');
-            if (gameData.combo_multiplier > 1) {
-                comboDisplay.classList.add('visible');
-                document.getElementById('combo-multiplier').textContent = gameData.combo_multiplier.toFixed(1);
-            } else {
-                comboDisplay.classList.remove('visible');
-            }
+            // combo display zaten tap'te güncelleniyor
             
             document.getElementById('passive-amount').textContent = `${formatNumberFull(passiveEarnings)} GO`;
             
@@ -4712,7 +4861,8 @@
             if (e.target === this) closeModal();
         });
 
-        setInterval(updateDisplay, 1000);
+        // updateDisplay interval'i zaten var, onu kullanıyoruz
+        // setInterval(updateDisplay, 1000); - Bu satırı kaldırdık çünkü yukarıda var
     </script>
 </body>
 </html>

@@ -29,6 +29,95 @@
             overflow: hidden;
         }
 
+        /* ===== LOADING EKRANI ===== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(165deg, #1a1a2e, #16213e);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+            will-change: opacity;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-content {
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            animation: loadingPulse 1.5s infinite ease-in-out;
+        }
+
+        .loading-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px #FFD700);
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .loading-progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 15px #FFD700;
+            will-change: width;
+        }
+
+        .loading-percent {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+        }
+
+        .loading-subtext {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 15px;
+        }
+
         /* Hamburger Menü Butonu */
         .menu-toggle {
             position: fixed;
@@ -2595,17 +2684,8 @@
         }
 
         /* Loading */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
+        .loading.hidden {
+            display: none;
         }
 
         .loading-spinner {
@@ -2624,7 +2704,22 @@
     </style>
 </head>
 <body>
-    <!-- Yükleme Ekranı -->
+    <!-- GERÇEK LOADING EKRANI -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <img src="assets/icons/1000010731-removebg-preview.png" alt="GO Coin">
+            </div>
+            <div class="loading-percent" id="loadingPercent">0%</div>
+            <div class="loading-progress-container">
+                <div class="loading-progress-bar" id="loadingProgressBar" style="width: 0%;"></div>
+            </div>
+            <div class="loading-text">YÜKLENİYOR...</div>
+            <div class="loading-subtext" id="loadingSubtext">Görseller yükleniyor</div>
+        </div>
+    </div>
+
+    <!-- Yükleme Ekranı (eski) -->
     <div class="loading" id="loading" style="display: none;">
         <div class="loading-spinner"></div>
     </div>
@@ -3385,6 +3480,161 @@
     </div>
 
     <script>
+        // ============================================
+        // GERÇEK ASSET LOADING SİSTEMİ
+        // ============================================
+        
+        // Tüm assetleri topla
+        const assetList = [
+            // Ana coin
+            "assets/icons/1000010731-removebg-preview.png",
+            // Görev butonu
+            "assets/icons/1000011085-removebg-preview.png",
+            // Telegram ikonu
+            "assets/icons/1000011087-removebg-preview.png",
+            // NeonTap coin
+            "assets/icons/1000010729-removebg-preview.png",
+            // X ikonu
+            "assets/icons/images (1).png",
+            // Navigasyon ikonları
+            "assets/icons/IMG_20260212_212121.png",
+            "assets/icons/icon_cards.png",
+            "assets/icons/mining_hub_icon.png",
+            "assets/icons/IMG_20260212_212059.png",
+            "assets/icons/icon_trade.png",
+            // TON ikonu
+            "assets/icons/1000011039-removebg-preview.png",
+            // Kart ikonları
+            "assets/icons/card_profession.png",
+            "assets/icons/card_freelancer.png",
+            "assets/icons/card_consultant.png",
+            "assets/icons/card_accountant.png",
+            "assets/icons/card_lawyer.png",
+            "assets/icons/card_ceo.png",
+            "assets/icons/card_cafe.png",
+            "assets/icons/card_restaurant.png",
+            "assets/icons/card_boutique.png",
+            "assets/icons/card_hotel.png",
+            "assets/icons/card_mall.png",
+            "assets/icons/card_app_dev.png",
+            "assets/icons/card_technician.png",
+            "assets/icons/card_crypto_mining.png",
+            "assets/icons/card_ai_startup.png",
+            "assets/icons/card_space_tech.png",
+            // Mining kart ikonları
+            "assets/icons/eco_miner_rig.png",
+            "assets/icons/eco_miner_rig2.png",
+            "assets/icons/basic_mining_unit.png",
+            "assets/icons/basic_mining_unit2.png",
+            "assets/icons/blue_core_miner.png",
+            "assets/icons/blue_core_miner2.png",
+            "assets/icons/turbo_flame_miner.png",
+            "assets/icons/turbo_flame_miner2.png",
+            "assets/icons/golden_hash_machine.png",
+            "assets/icons/golden_hash_machine2.png"
+        ];
+
+        // Loading elementi
+        const loadingScreen = document.getElementById('loadingScreen');
+        const loadingPercent = document.getElementById('loadingPercent');
+        const loadingProgressBar = document.getElementById('loadingProgressBar');
+        const loadingSubtext = document.getElementById('loadingSubtext');
+
+        let loadedCount = 0;
+        const totalAssets = assetList.length;
+        let loadingComplete = false;
+        const startTime = Date.now();
+        const MIN_LOADING_TIME = 1000; // Minimum 1 saniye
+
+        // Her asset için yükleme fonksiyonu
+        function loadAsset(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    loadedCount++;
+                    updateProgress();
+                    resolve(src);
+                };
+                img.onerror = () => {
+                    // Hata olsa bile say, takılmasın
+                    loadedCount++;
+                    updateProgress();
+                    console.warn(`Asset yüklenemedi: ${src}`);
+                    resolve(src); // reject yerine resolve ile devam et
+                };
+                img.src = src;
+            });
+        }
+
+        // Progress güncelle
+        function updateProgress() {
+            const percent = Math.floor((loadedCount / totalAssets) * 100);
+            loadingPercent.textContent = percent + '%';
+            loadingProgressBar.style.width = percent + '%';
+            
+            // Alt metni güncelle
+            if (loadedCount < totalAssets) {
+                loadingSubtext.textContent = `Görsel ${loadedCount}/${totalAssets} yükleniyor...`;
+            }
+        }
+
+        // Tüm assetleri yükle
+        async function loadAllAssets() {
+            const promises = assetList.map(src => loadAsset(src));
+            await Promise.all(promises);
+            
+            // Yükleme tamamlandı
+            loadingComplete = true;
+            loadingSubtext.textContent = `Görsel ${totalAssets}/${totalAssets} yüklendi`;
+            
+            // Minimum loading süresini kontrol et
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+            
+            setTimeout(() => {
+                // %100 göster
+                loadingPercent.textContent = '100%';
+                loadingProgressBar.style.width = '100%';
+                
+                // Fade out ve ekranı kaldır
+                loadingScreen.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    
+                    // Oyunu başlat
+                    initGame();
+                }, 500);
+            }, remainingTime);
+        }
+
+        // Oyunu başlat
+        function initGame() {
+            // 🚫 Loading ekranını kapat
+            document.getElementById('loading').style.display = 'none';
+
+            // Telegram Web App
+            let tg = window.Telegram?.WebApp;
+            if (tg) tg.expand();
+
+            // İlk güncelleme
+            renderAllCards();
+            updateMiningCards();
+            updateDisplay();
+            updateProfileDisplay();
+            updateReferralDisplay();
+            updateQuestButtons();
+            
+            updateUIVisibility();
+
+            document.getElementById('modal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+        }
+
+        // Asset yüklemeyi başlat
+        loadAllAssets();
+
         // 🎯 Navigation State - Aktif panel takibi
         let activePanel = null; // 'profile', 'leaderboard', 'referral', 'roadmap', 'support', 'sponsor', 'quest', null
 
@@ -3445,12 +3695,8 @@
             updateUIVisibility();
         };
 
-        // 🚫 Loading ekranını kapat
-        document.getElementById('loading').style.display = 'none';
-
         // Telegram Web App
         let tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
 
         // 📦 Kart Verileri
         const CARDS = [
@@ -4929,23 +5175,6 @@
 
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         };
-
-        // İlk güncelleme
-        renderAllCards();
-        updateMiningCards();
-        updateDisplay();
-        updateProfileDisplay();
-        updateReferralDisplay();
-        updateQuestButtons();
-        
-        updateUIVisibility();
-
-        document.getElementById('modal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        // updateDisplay interval'i zaten var, onu kullanıyoruz
-        // setInterval(updateDisplay, 1000); - Bu satırı kaldırdık çünkü yukarıda var
     </script>
 </body>
 </html>

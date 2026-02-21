@@ -6,6 +6,14 @@
     <title>GO Coin Game</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<!-- 🔥 BURAYA EKLE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -5178,6 +5186,19 @@
     </script>
 </body>
 </html>
+<script>
+  const firebaseConfig = {
+    apiKey: "BURAYA",
+    authDomain: "BURAYA",
+    projectId: "BURAYA",
+    storageBucket: "BURAYA",
+    messagingSenderId: "BURAYA",
+    appId: "BURAYA"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
 <!-- TUTORIAL SİSTEMİ - SADECE RİNG -->
 <style>
     .tutorial-ring {

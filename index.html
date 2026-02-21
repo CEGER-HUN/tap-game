@@ -1789,7 +1789,7 @@
             border-radius: 4px;
         }
 
-        /* Coin Button - ULTRA OPTİMİZE */
+        /* Coin Button - YUVARLAK ve PATLAMA EFEKTLİ */
         .clicker-area {
             text-align: center;
             margin: 15px 0;
@@ -1830,6 +1830,10 @@
             user-select: none;
             box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
             position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            outline: none;
+            display: inline-block;
         }
 
         .coin-button:active {
@@ -1843,6 +1847,32 @@
             pointer-events: none;
             -webkit-user-select: none;
             user-select: none;
+            display: block;
+        }
+
+        /* Particle (Patlama) Efekti */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 15px #FFD700;
+            animation: particle-animation 0.3s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes particle-animation {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0.5);
+            }
         }
 
         /* Floating Animation - OPTİMİZE */
@@ -4322,7 +4352,7 @@
         let lastComboIncrease = 0;
         
         // ============================================
-        // ULTRA SMOOTH TAP ENGINE - OPTİMİZE EDİLDİ
+        // ULTRA SMOOTH TAP ENGINE + PATLAMA EFEKTİ
         // ============================================
 
         // Tap batching sistemi - performans için
@@ -4379,6 +4409,9 @@
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('light');
             }
+            
+            // PATLAMA EFEKTİ - Parçacıklar oluştur
+            createParticles(e);
             
             // Combo sistemi
             if (now - lastComboIncrease >= 1000) {
@@ -4444,6 +4477,56 @@
             // Verileri kaydet (arka planda)
             if (gameData.total_taps % 10 === 0) {
                 setTimeout(() => saveGameData(), 0);
+            }
+        }
+
+        // Patlama efekti - parçacıklar oluştur
+        function createParticles(e) {
+            const particleCount = 8; // 8 parçacık
+            const coinButton = document.getElementById('coin-button');
+            const rect = coinButton.getBoundingClientRect();
+            
+            // Merkez noktası
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Rastgele yön ve mesafe
+                const angle = (i / particleCount) * Math.PI * 2 + Math.random() * 0.5;
+                const distance = 50 + Math.random() * 50; // 50-100px arası
+                
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                // CSS değişkenleri ile animasyon
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                
+                // Rastgele boyut
+                const size = 6 + Math.random() * 6;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Rastgele renk varyasyonu
+                const hue = 45 + Math.random() * 20; // Altın tonları
+                particle.style.background = `hsl(${hue}, 100%, 60%)`;
+                particle.style.boxShadow = `0 0 15px hsl(${hue}, 100%, 60%)`;
+                
+                // Pozisyon (coin merkezi)
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+                
+                document.body.appendChild(particle);
+                
+                // 300ms sonra temizle
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.remove();
+                    }
+                }, 300);
             }
         }
 

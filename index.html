@@ -13,19 +13,14 @@
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "BURAYA_API_KEY",
-            authDomain: "BURAYA_PROJECT.firebaseapp.com",
-            projectId: "BURAYA_PROJECT_ID",
-            storageBucket: "BURAYA.appspot.com",
-            messagingSenderId: "XXXX",
-            appId: "XXXX"
-        };
-
-        // Firebase'i başlat
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        console.log("✅ Firebase aktif");
+  apiKey: "AIzaSyCg_JVh2QfTmUqgV8zZ5sfy4fLpVRmmXqY",
+  authDomain: "neontap-game.firebaseapp.com",
+  projectId: "neontap-game",
+  storageBucket: "neontap-game.firebasestorage.app",
+  messagingSenderId: "470008303209",
+  appId: "1:470008303209:web:c14d12073c78bbc413dcf8",
+  measurementId: "G-L05G6NELGT"
+};
         // TEST VERİSİ GÖNDER
 db.collection("test").add({
   name: "neontap",

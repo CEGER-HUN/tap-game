@@ -26,9 +26,14 @@
         const db = firebase.firestore();
 
         console.log("✅ Firebase aktif");
-        db.collection("test").doc("kontrol").set({
-  status: "çalışıyor",
+        // TEST VERİSİ GÖNDER
+db.collection("test").add({
+  name: "neontap",
   time: Date.now()
+}).then(() => {
+  console.log("🔥 Firebase yazma başarılı");
+}).catch((err) => {
+  console.error("❌ Firebase hata:", err);
 });
     </script>
     

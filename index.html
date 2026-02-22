@@ -26,6 +26,10 @@
         const db = firebase.firestore();
 
         console.log("✅ Firebase aktif");
+        db.collection("test").doc("kontrol").set({
+  status: "çalışıyor",
+  time: Date.now()
+});
     </script>
     
     <style>

@@ -3525,12 +3525,9 @@
             console.log("👤 Mevcut kullanıcı:", userId);
         }
 
-        // 2. OYUN DEĞİŞKENLERİNİ YAKALA (mevcut oyundan)
-        // Bu değişkenler mevcut oyun kodunda tanımlı olmalı
-        
-        // 3. FİRESTORE KAYIT FONKSİYONU
+        // 2. FİRESTORE KAYIT FONKSİYONU
         function saveGameToFirebase() {
-            // Mevcut oyun verilerini topla
+            // Mevcut oyun verilerini topla (gameData objesinden)
             const gameData = {
                 // Temel oyun verileri
                 coins: typeof gameDataObj !== 'undefined' ? gameDataObj.coins : 0,
@@ -3583,7 +3580,7 @@
                 });
         }
 
-        // 4. YÜKLEME FONKSİYONU
+        // 3. YÜKLEME FONKSİYONU
         function loadGameFromFirebase() {
             db.collection("users").doc(userId).get()
                 .then(doc => {
@@ -3624,7 +3621,7 @@
                             miningCards = data.miningCards;
                         }
                         
-                        // Ekranı güncelle
+                        // Ekranı güncelle (mevcut fonksiyonlar)
                         if (typeof updateDisplay === 'function') {
                             updateDisplay();
                         }
@@ -3653,59 +3650,11 @@
                 });
         }
 
-        // 5. OTOMATİK KAYIT SİSTEMİ
+        // 4. OTOMATİK KAYIT SİSTEMİ
         // Her 5 saniyede bir otomatik kaydet
         setInterval(saveGameToFirebase, 5000);
 
-        // 6. DEĞİŞİKLİKLERDE KAYDETME (trigger'lar)
-        // Orijinal fonksiyonları korumak için bir wrapper kullanalım
-        function withAutoSave(originalFunction) {
-            return function(...args) {
-                // Orijinal fonksiyonu çağır
-                const result = originalFunction.apply(this, args);
-                // Kaydet
-                setTimeout(saveGameToFirebase, 100);
-                return result;
-            };
-        }
-
-        // Mevcut fonksiyonları sarmala (eğer varlarsa)
-        if (typeof window.upgradeCard === 'function') {
-            const originalUpgradeCard = window.upgradeCard;
-            window.upgradeCard = withAutoSave(originalUpgradeCard);
-        }
-
-        if (typeof window.claimPassive === 'function') {
-            const originalClaimPassive = window.claimPassive;
-            window.claimPassive = withAutoSave(originalClaimPassive);
-        }
-
-        if (typeof window.claimPassiveWithAd === 'function') {
-            const originalClaimPassiveWithAd = window.claimPassiveWithAd;
-            window.claimPassiveWithAd = withAutoSave(originalClaimPassiveWithAd);
-        }
-
-        if (typeof window.claimQuest === 'function') {
-            const originalClaimQuest = window.claimQuest;
-            window.claimQuest = withAutoSave(originalClaimQuest);
-        }
-
-        if (typeof window.buyMiningCard === 'function') {
-            const originalBuyMiningCard = window.buyMiningCard;
-            window.buyMiningCard = withAutoSave(originalBuyMiningCard);
-        }
-
-        if (typeof window.claimMiningReward === 'function') {
-            const originalClaimMiningReward = window.claimMiningReward;
-            window.claimMiningReward = withAutoSave(originalClaimMiningReward);
-        }
-
-        if (typeof window.executeTradeWithInput === 'function') {
-            const originalExecuteTrade = window.executeTradeWithInput;
-            window.executeTradeWithInput = withAutoSave(originalExecuteTrade);
-        }
-
-        // 7. SAYFA YÜKLENİNCE VERİYİ YÜKLE
+        // 5. SAYFA YÜKLENİNCE VERİYİ YÜKLE
         window.addEventListener('load', function() {
             // Biraz bekle, oyun tam başlasın
             setTimeout(() => {
@@ -3713,7 +3662,7 @@
             }, 2000);
         });
 
-        // 8. SAYFA KAPANIRKEN KAYDET
+        // 6. SAYFA KAPANIRKEN KAYDET
         window.addEventListener('beforeunload', function() {
             saveGameToFirebase();
         });
@@ -3722,15 +3671,10 @@
     </script>
 
     <!-- ============================================ -->
-    <!-- MEVCUT OYUN KODU BURADAN SONRA GELECEK      -->
-    <!-- (gameDataObj değişkeni burada tanımlanmalı) -->
+    <!-- OYUN FONKSİYONLARI (ÖRNEK)                  -->
     <!-- ============================================ -->
     <script>
-        // Buraya mevcut oyun kodunuz gelecek
-        // ÖNEMLİ: Oyunun ana değişkeni "gameDataObj" olarak adlandırılmalı
-        // veya yukarıdaki kodda gameDataObj yerine kendi değişken adınızı kullanın
-        
-        // Örnek:
+        // ÖRNEK OYUN VERİLERİ - Kendi oyun kodunuzla değiştirin
         let gameDataObj = {
             coins: 0,
             energy: 500,
@@ -3754,31 +3698,64 @@
             telegramUsername: ''
         };
         
-        // Mining kartları (mevcut oyundan)
+        // ÖRNEK Madencilik kartları
         let miningCards = [];
         
-        // Oyun fonksiyonları (örnek)
+        // ÖRNEK Oyun fonksiyonları
         function updateDisplay() {
-            // Ekran güncelleme kodu
+            // Coin göstergesini güncelle
+            const coinDisplay = document.getElementById('coin-count');
+            if (coinDisplay) {
+                coinDisplay.textContent = gameDataObj.coins.toLocaleString();
+            }
+            
+            // Enerji göstergesini güncelle
+            const energyDisplay = document.getElementById('energy-display');
+            const energyFill = document.getElementById('energy-fill');
+            if (energyDisplay) {
+                energyDisplay.textContent = `${Math.floor(gameDataObj.energy)} / ${gameDataObj.max_energy}`;
+            }
+            if (energyFill) {
+                energyFill.style.width = (gameDataObj.energy / gameDataObj.max_energy * 100) + '%';
+            }
+            
+            console.log("🔄 Ekran güncellendi");
         }
         
         function renderAllCards() {
-            // Kart render kodu
+            // Kartları render et
+            console.log("🃏 Kartlar render edildi");
         }
         
         function updateMiningCards() {
-            // Mining kart render kodu
+            // Mining kartlarını render et
+            console.log("⛏️ Mining kartları güncellendi");
         }
         
         function updateQuestButtons() {
-            // Görev butonları güncelleme
+            // Görev butonlarını güncelle
+            console.log("🎯 Görevler güncellendi");
         }
         
         function updateProfileDisplay() {
-            // Profil güncelleme
+            // Profil bilgilerini güncelle
+            console.log("👤 Profil güncellendi");
         }
         
-        // Diğer oyun fonksiyonları...
+        // Coin tıklama fonksiyonu
+        document.addEventListener('DOMContentLoaded', function() {
+            const coinBtn = document.getElementById('coin-button');
+            if (coinBtn) {
+                coinBtn.addEventListener('click', function() {
+                    gameDataObj.coins += 1;
+                    gameDataObj.energy = Math.max(0, gameDataObj.energy - 1);
+                    updateDisplay();
+                    
+                    // Her tıklamada kaydet (opsiyonel)
+                    setTimeout(saveGameToFirebase, 100);
+                });
+            }
+        });
     </script>
 </body>
 </html>

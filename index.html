@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GO Coin Game - Firebase Test</title>
+    <title>GO Coin Game</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- ===== FIREBASE V8 - DOĞRU ENTEGRASYON ===== -->
+    <!-- ===== FIREBASE V8 ===== -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     
     <script>
-        // 🔥 FIREBASE YAPILANDIRMASI - SİZİN BİLGİLERİNİZ
+        // 🔥 FIREBASE YAPILANDIRMASI - SADECE 1 KEZ
         const firebaseConfig = {
             apiKey: "AIzaSyCg_JVh2QfTmUqgV8zZ5sfy4fLpVRmmXqY",
             authDomain: "neontap-game.firebaseapp.com",
@@ -22,113 +22,18 @@
             measurementId: "G-L05G6NELGT"
         };
 
-        // Firebase'i başlat
-        firebase.initializeApp(firebaseConfig);
+        // Firebase'i başlat (zaten başlatılmadıysa)
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         
         // Firestore'u başlat
         const db = firebase.firestore();
         
-        // Firestore ayarları (opsiyonel, performans için)
-        db.settings({
-            timestampsInSnapshots: true,
-            ignoreUndefinedProperties: true
-        });
-
-        console.log("✅ Firebase başarıyla başlatıldı!");
-        console.log("🔥 Firestore bağlantısı hazır:", db ? "Evet" : "Hayır");
-
-        // TEST: Veri yazma fonksiyonu
-        async function testFirestore() {
-            try {
-                console.log("📝 Test verisi yazılıyor...");
-                
-                // Test koleksiyonuna test belgesi ekle
-                const testDoc = await db.collection("test").add({
-                    message: "Firebase bağlantısı çalışıyor!",
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    userAgent: navigator.userAgent,
-                    url: window.location.href,
-                    testId: Math.random().toString(36).substring(7)
-                });
-                
-                console.log("✅ Test verisi başarıyla yazıldı! ID:", testDoc.id);
-                
-                // Yazılan veriyi oku
-                const doc = await testDoc.get();
-                if (doc.exists) {
-                    console.log("📄 Okunan veri:", doc.data());
-                }
-                
-                // Başarı mesajı göster
-                showFirebaseSuccess("✅ Firebase çalışıyor! Test verisi eklendi.");
-                
-            } catch (error) {
-                console.error("❌ Firebase test hatası:", error);
-                showFirebaseSuccess("❌ Firebase hatası: " + error.message, true);
-            }
-        }
-
-        // Firebase durumunu göstermek için basit bir fonksiyon
-        function showFirebaseSuccess(message, isError = false) {
-            const statusDiv = document.createElement('div');
-            statusDiv.style.position = 'fixed';
-            statusDiv.style.bottom = '80px';
-            statusDiv.style.left = '50%';
-            statusDiv.style.transform = 'translateX(-50%)';
-            statusDiv.style.backgroundColor = isError ? '#ff4444' : '#00C853';
-            statusDiv.style.color = 'white';
-            statusDiv.style.padding = '12px 24px';
-            statusDiv.style.borderRadius = '30px';
-            statusDiv.style.zIndex = '100000';
-            statusDiv.style.fontWeight = 'bold';
-            statusDiv.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
-            statusDiv.style.fontSize = '14px';
-            statusDiv.style.textAlign = 'center';
-            statusDiv.style.maxWidth = '80%';
-            statusDiv.style.animation = 'slideUp 0.3s ease';
-            statusDiv.textContent = message;
-            
-            document.body.appendChild(statusDiv);
-            
-            setTimeout(() => {
-                statusDiv.style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => statusDiv.remove(), 300);
-            }, 5000);
-        }
-
-        // Sayfa yüklendiğinde Firebase testini çalıştır
-        window.addEventListener('load', function() {
-            // 2 saniye bekle (diğer işlemler tamamlansın)
-            setTimeout(() => {
-                testFirestore();
-            }, 2000);
-        });
+        console.log("✅ Firebase aktif - Oyun hazır!");
     </script>
     
     <style>
-        /* Animasyonlar */
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-        }
-        
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-            to {
-                opacity: 0;
-                transform: translate(-50%, -20px);
-            }
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -239,6 +144,51 @@
             font-size: 11px;
             color: rgba(255, 255, 255, 0.4);
             margin-top: 15px;
+        }
+
+        /* Leaderboard Stili */
+        .leaderboard-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 15px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .leaderboard-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #FFD700;
+            text-align: center;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .leaderboard-rank {
+            color: #FFD700;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .leaderboard-name {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .leaderboard-coins {
+            color: #00ff96;
+            font-weight: 600;
         }
 
         /* Hamburger Menü Butonu */
@@ -3602,7 +3552,120 @@
         </div>
     </div>
 
+    <!-- ===== FIREBASE LEADERBOARD EKİ ===== -->
+    <div class="container" style="margin-top: 10px;">
+        <div class="leaderboard-container">
+            <div class="leaderboard-title">🏆 LİDERLİK TABLOSU</div>
+            <div id="firebase-leaderboard"></div>
+        </div>
+    </div>
+
     <script>
+        // ============================================
+        // FIREBASE USER ID, COIN SAVE & LOAD, LEADERBOARD
+        // ============================================
+        
+        // 🔥 USER ID SİSTEMİ
+        let userId = localStorage.getItem("userId");
+        
+        if (!userId) {
+            userId = "user_" + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem("userId", userId);
+            console.log("🆕 Yeni kullanıcı oluşturuldu:", userId);
+        } else {
+            console.log("👤 Mevcut kullanıcı:", userId);
+        }
+
+        // 📥 OYUN BAŞLARKEN COIN YÜKLE
+        window.addEventListener('load', function() {
+            // Firebase hazır mı kontrol et
+            if (typeof db !== 'undefined') {
+                db.collection("users").doc(userId).get().then(doc => {
+                    if (doc.exists) {
+                        const savedCoins = doc.data().coins || 0;
+                        // Oyunun coin değişkenini güncelle (gameData.coins)
+                        if (typeof gameData !== 'undefined') {
+                            gameData.coins = savedCoins;
+                            console.log("📥 Firebase'den coin yüklendi:", savedCoins);
+                            
+                            // Ekranı güncelle
+                            if (typeof updateDisplay === 'function') {
+                                updateDisplay();
+                            }
+                        }
+                    } else {
+                        console.log("📝 Yeni kullanıcı, henüz veri yok");
+                    }
+                }).catch(error => {
+                    console.error("❌ Coin yükleme hatası:", error);
+                });
+                
+                // Leaderboard'u yükle
+                loadFirebaseLeaderboard();
+            }
+        });
+
+        // 💰 COIN SAVE FONKSİYONU (5 saniyede bir)
+        function saveProgress() {
+            if (typeof db !== 'undefined' && typeof gameData !== 'undefined') {
+                db.collection("users").doc(userId).set({
+                    coins: gameData.coins,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: userId,
+                    lastSeen: new Date().toISOString()
+                }).then(() => {
+                    console.log("💾 Coin kaydedildi:", gameData.coins);
+                }).catch(error => {
+                    console.error("❌ Kayıt hatası:", error);
+                });
+            }
+        }
+
+        // 5 saniyede bir kaydet
+        setInterval(saveProgress, 5000);
+
+        // 🏆 LEADERBOARD FONKSİYONU
+        function loadFirebaseLeaderboard() {
+            if (typeof db === 'undefined') return;
+            
+            db.collection("users")
+                .orderBy("coins", "desc")
+                .limit(10)
+                .get()
+                .then(snapshot => {
+                    let html = "";
+                    let rank = 1;
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const userIdShort = data.userId ? data.userId.substr(0, 8) : "Anonim";
+                        const coins = data.coins || 0;
+                        
+                        html += `
+                            <div class="leaderboard-item">
+                                <span class="leaderboard-rank">#${rank}</span>
+                                <span class="leaderboard-name">${userIdShort}</span>
+                                <span class="leaderboard-coins">${coins.toLocaleString()}</span>
+                            </div>
+                        `;
+                        rank++;
+                    });
+                    
+                    if (html === "") {
+                        html = '<div style="text-align: center; padding: 10px; color: rgba(255,255,255,0.5);">Henüz veri yok</div>';
+                    }
+                    
+                    document.getElementById("firebase-leaderboard").innerHTML = html;
+                })
+                .catch(error => {
+                    console.error("❌ Leaderboard hatası:", error);
+                    document.getElementById("firebase-leaderboard").innerHTML = '<div style="text-align: center; padding: 10px; color: #ff5555;">Leaderboard yüklenemedi</div>';
+                });
+        }
+
+        // Leaderboard'u her 30 saniyede bir güncelle
+        setInterval(loadFirebaseLeaderboard, 30000);
+
         // ============================================
         // GERÇEK ASSET LOADING SİSTEMİ
         // ============================================
